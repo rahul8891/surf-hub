@@ -64,7 +64,7 @@
                     <option value="">--Select--</option> 
                     <option value="PUBLIC">Public</option>
                     <option value="PRIVATE">Private</option>
-                <select>            
+                <select>
             </div>
             
             <div class="mt-4">
@@ -82,6 +82,12 @@
                 <x-jet-input class="block mt-1 w-full" type="password" value="admin@123" name="password_confirmation" required autocomplete="new-password" />
             </div>
 
+            <div class="mt-4">
+                <input class="mr-2 leading-tight" type="checkbox" name="terms">
+                <span class="text-sm">Accept legal <a href="javaScript:void(0)">terms and conditions!</a></span>
+                <!-- {{ __( 'Accept legal terms and conditions!') }} -->
+            </div>
+            
             <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
                     {{ __('Already registered?') }}
