@@ -37,9 +37,10 @@ class CreateNewUser implements CreatesNewUsers
             'account_type'=>['required','string'],
             'language' => ['required','string'],
             'profile_photo_name' => ['image','mimes:jpeg,jpg,png'],
+            'terms' => ['required'],
             'password' => $this->passwordRules(),
         ])->validate(); 
-
+              
         try{
             $getImageArray = $this->uploadImage($input);
             $user->name = $input['name'];
