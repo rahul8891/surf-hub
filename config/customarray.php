@@ -1,5 +1,6 @@
 <?php
-
+use App\Providers\RouteServiceProvider;
+use Laravel\Fortify\Features;
 return [   
     
     /**
@@ -22,10 +23,22 @@ return [
     /**
      * Set language for drop down
      */
-    'language '=>[
+    'language'=>[
         'en'=>'English',
-        'es'=>'Spanish'      
+        'es'=>'Spanish'
     ],
 
+    /**
+     * 
+     */
+    'accountType'=>[
+        'PUBLIC'=>'Public',
+        'PRIVATE'=>'Private'
+    ],
+
+    // image storage path
     'image_path'=>'/storage/images',
+
+    // Admin dashboard redirect 
+    'adminhome' => RouteServiceProvider::ADMINHOME,
 ];

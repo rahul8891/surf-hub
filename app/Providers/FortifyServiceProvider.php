@@ -11,7 +11,8 @@ use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
 use Illuminate\Validation\ValidationException;
-
+use Illuminate\Support\Facades\View;
+use DB;
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
@@ -31,7 +32,8 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot()
     {      
-        Fortify::createUsersUsing(CreateNewUser::class);
+        $this->createUsersUsing();
+        Fortify::createUsersUsing(CreateNewUser::class);       
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
@@ -48,22 +50,16 @@ class FortifyServiceProvider extends ServiceProvider
                     ->orWhere('name', $request->email)->first();
             if ($user &&
                 Hash::check($request->password, $user->password)) {
-                if($user->user_type === config('customarray.userType.ADMIN')){
+                if($user->status === config('customarray.status.ACTIVE')){
+                    return $user;
+                }elseif($user->status === config('customarray.status.PENDING')){
                     throw ValidationException::withMessages([
-                        Fortify::username() => [trans('auth.authAccess')],
+                        Fortify::username() => [trans('auth.pending')],
                         ]);
-                }else{
-                    if($user->status === config('customarray.status.ACTIVE')){
-                        return $user;                   
-                    }elseif($user->status === config('customarray.status.PENDING')){
-                        throw ValidationException::withMessages([
-                            Fortify::username() => [trans('auth.pending')],
-                            ]);
-                    }elseif($user->status === config('customarray.status.DEACTIVATED')){
-                        throw ValidationException::withMessages([
-                            Fortify::username() => [trans('auth.deactivate')],
-                            ]);
-                    } 
+                }elseif($user->status === config('customarray.status.DEACTIVATED')){
+                    throw ValidationException::withMessages([
+                        Fortify::username() => [trans('auth.deactivate')],
+                        ]);
                 }
             }
         });
@@ -77,4 +73,18 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.verify-email');
         });
     }
+
+    /**
+     * Customize the user register page    
+     * @return object
+     */
+    public function createUsersUsing(){
+        Fortify::registerView(function () {
+            $countries = DB::table('countries')->select('id', 'name')->orderBy('name','asc')->get();           
+            $language = config('customarray.language'); 
+            $accountType = config('customarray.accountType');              
+            return view('auth.register', compact('countries','language','accountType'));         
+        });
+    }
+    
 }
