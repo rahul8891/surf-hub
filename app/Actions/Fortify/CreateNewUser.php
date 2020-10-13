@@ -16,6 +16,7 @@ class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
 
+    
     /**
      * Validate and create a newly registered user.
      *
@@ -23,11 +24,10 @@ class CreateNewUser implements CreatesNewUsers
      * @return \App\Models\User
      */
     public function create(array $input)
-    {
-              
+    {      
         $user = new User(); // user tabel object 
         $userProfile = new UserProfile(); // user profile table object
-
+        
         Validator::make($input, [
             'first_name' => ['required', 'string'],
             'last_name' => ['string'],
@@ -36,10 +36,12 @@ class CreateNewUser implements CreatesNewUsers
             'phone' => ['required','numeric','digits:10'],
             'account_type'=>['required','string'],
             'language' => ['required','string'],
+            'country_id' => ['required','numeric'],
             'profile_photo_name' => ['image','mimes:jpeg,jpg,png'],
+            'terms' => ['required'],
             'password' => $this->passwordRules(),
         ])->validate(); 
-
+          
         try{
             $getImageArray = $this->uploadImage($input);
             $user->name = $input['name'];
@@ -49,7 +51,7 @@ class CreateNewUser implements CreatesNewUsers
             $user->profile_photo_name = ($getImageArray['status']) ? $getImageArray['profile_photo_name'] :'';
             $user->profile_photo_path = ($getImageArray['status']) ? $getImageArray['profile_photo_path'] :'';
             $user->created_at = Carbon::now();
-            $user->updated_at = Carbon::now();                 
+            $user->updated_at = Carbon::now();
             if($user->save()){
                 $userProfile->user_id = $user->id;
                 $userProfile->first_name =  $input['first_name'];
@@ -57,6 +59,7 @@ class CreateNewUser implements CreatesNewUsers
                 $userProfile->facebook = $input['facebook'];
                 $userProfile->instagram = $input['instagram'];
                 $userProfile->language = $input['language'];
+                $userProfile->country_id = $input['country_id'];
                 $userProfile->phone = $input['phone'];
                 $userProfile->created_at = Carbon::now();
                 $userProfile->updated_at = Carbon::now();
@@ -64,7 +67,7 @@ class CreateNewUser implements CreatesNewUsers
                     return $user;
                 }
             }
-        }catch (\Exception $e){         
+        }catch (\Exception $e){
             if($user->id){
                 $this->deleteUplodedProfileImage($getImageArray['profile_photo_name']);
                 $this->deletUserRecord($user->id);
@@ -119,7 +122,7 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function deletUserRecord($id){
         $user = new User();
-        $user = $user::find($id);           
+        $user = $user::find($id);
         $user->delete();
     }
 }

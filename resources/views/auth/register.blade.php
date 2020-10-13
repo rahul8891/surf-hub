@@ -10,6 +10,7 @@
                 {{ __('Registration Successfull, Please verify the email sent on your email address.') }}
             </div>
         @endif
+        
         <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
             @csrf
 
@@ -47,14 +48,25 @@
             <div class="mt-4">
                 <x-jet-label value="{{ __('Instagram Profile Link') }}" />
                 <x-jet-input class="block mt-1 w-full" type="text" name="instagram" :value="old('instagram')" autocomplete="instagram" />
+            </div>  
+
+            <div class="mt-4">
+                <x-jet-label value="{{ __('Country *') }}" />
+                <select class="block mt-1 w-full" name="country_id">
+                    <option value="">--Select--</option>  
+                    @foreach($countries as $key => $value)
+                    <option value="{{ $value->id }}">{{ $value->name }}</option>
+                    @endforeach                  
+                <select> 
             </div>
 
             <div class="mt-4">
                 <x-jet-label value="{{ __('Preferred Language *') }}" />
                 <select class="block mt-1 w-full" name="language">
                     <option value="">--Select--</option> 
-                    <option value="es">English</option>
-                    <option value="es">Spanish</option>
+                    @foreach($language as $key => $value)
+                    <option value="{{ $key }}">{{ $value }}</option>
+                    @endforeach                  
                 <select> 
             </div>
 
@@ -62,9 +74,12 @@
                 <x-jet-label value="{{ __('Account Type *') }}" />
                 <select class="block mt-1 w-full" name="account_type" required>
                     <option value="">--Select--</option> 
-                    <option value="PUBLIC">Public</option>
-                    <option value="PRIVATE">Private</option>
-                <select>            
+                    @foreach($accountType as $key => $value)
+                    <option value="{{ $key }}">{{ $value }}</option>
+                    @endforeach 
+                    <!-- <option value="PUBLIC">Public</option>
+                    <option value="PRIVATE">Private</option> -->
+                <select>
             </div>
             
             <div class="mt-4">
@@ -82,6 +97,12 @@
                 <x-jet-input class="block mt-1 w-full" type="password" value="admin@123" name="password_confirmation" required autocomplete="new-password" />
             </div>
 
+            <div class="mt-4">
+                <input class="mr-2 leading-tight" type="checkbox" name="terms">
+                <span class="text-sm">Accept legal <a href="javaScript:void(0)">terms and conditions!</a></span>
+                <!-- {{ __( 'Accept legal terms and conditions!') }} -->
+            </div>
+            
             <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
                     {{ __('Already registered?') }}
