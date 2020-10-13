@@ -33,11 +33,11 @@ class FortifyServiceProvider extends ServiceProvider
     public function boot()
     {      
         $this->createUsersUsing();
-        Fortify::createUsersUsing(CreateNewUser::class);       
+        Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
-        $this->customLoginAuth();       
+        $this->customLoginAuth();
         $this->sendEmailVerificationMail();
     }
 

@@ -41,4 +41,12 @@ return [
 
     // Admin dashboard redirect 
     'adminhome' => RouteServiceProvider::ADMINHOME,
+
+    /**
+     * Site Title for user and admin
+     */
+    'siteTitle'=> [
+        'admin'=>'Surf Hub Admin',
+        'user'=>'Surf Hub'
+    ]
 ];

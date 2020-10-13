@@ -19,6 +19,6 @@ return [
     'deactivate'=>'Your account is currently deactivated, wait for admin approval.',
     'authAccess'=>'You do not have the user privilege required to login here',
     'profile_image'=>'Somthing went wrong with image, please try again',
-    'userCreateError'=>'Somthing went wrong with user creating, please try again'
+    'userCreateError'=>'Somthing went wrong with user creating, please try again',
 
 ];

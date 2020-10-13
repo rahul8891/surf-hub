@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>AdminLTE 3 | Dashboard 2</title>
+  <title>{{ config('customarray.siteTitle.admin') }}</title>
 
   <!-- Font Awesome Icons -->
   <link  href="{{ asset("/AdminLTE/plugins/fontawesome-free/css/all.min.css")}}" rel="stylesheet" >
@@ -19,16 +19,8 @@
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>      
-    </ul>
-  </nav>
+  @include('layouts/master_header')
   <!-- /.navbar -->
-
   <!-- Main Sidebar Container -->
   @include('layouts/master_sidebar')
   <!-- Content Wrapper. Contains page content -->

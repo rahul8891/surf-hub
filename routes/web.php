@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
- Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {     
+ Route::middleware(['auth:sanctum', 'verified','userAuth'])->get('/dashboard', function () {     
       return view('dashboard');
  })->name('dashboard');
 
@@ -26,7 +26,7 @@ Route::get('/', function () {
     Route::get('/dashboard/index', [AdminDashboard::class, 'index'])->middleware(['auth'])->name('admin');
 });*/
 
-Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function()
+Route::group(['prefix' => 'admin',  'middleware' => ['auth','adminAuth']], function()
 {
     Route::get('/dashboard/index', [AdminDashboard::class, 'index'])->name('admin');
 });
