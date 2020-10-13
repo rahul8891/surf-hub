@@ -12,13 +12,14 @@ class LoginResponse implements LoginResponseContract
     {
         $redirectRoute = '/';
         $user = Auth::user();        
-        $checkUserType = config('customarray.userType');  
-        if (in_array($user->user_type, $checkUserType)) {               
+        $checkUserType = config('customarray.userType');
+        if (in_array($user->user_type, $checkUserType)) {
             if($user->user_type == $checkUserType['ADMIN']){
                 // if user type belongs to ADMIN then redirect to the admin dashboard               
                 $redirectRoute = config('customarray.adminhome');
             }else{
-                $redirectRoute = config('fortify.home');                
+                // if user type belongs to USER then redirect to the admin dashboard
+                $redirectRoute = config('fortify.home');
             }
         }
 

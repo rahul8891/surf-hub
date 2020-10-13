@@ -44,7 +44,7 @@ class FortifyServiceProvider extends ServiceProvider
     /**
      * Custom user login check weater active or not 
      */
-    public function customLoginAuth(){        
+    public function customLoginAuth(){
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)
                     ->orWhere('name', $request->email)->first();
@@ -80,10 +80,10 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function createUsersUsing(){
         Fortify::registerView(function () {
-            $countries = DB::table('countries')->select('id', 'name')->orderBy('name','asc')->get();           
+            $countries = DB::table('countries')->select('id', 'name')->orderBy('name','asc')->get();
             $language = config('customarray.language'); 
-            $accountType = config('customarray.accountType');              
-            return view('auth.register', compact('countries','language','accountType'));         
+            $accountType = config('customarray.accountType');
+            return view('auth.register', compact('countries','language','accountType'));
         });
     }
     

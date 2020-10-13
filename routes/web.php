@@ -22,6 +22,11 @@ Route::get('/', function () {
       return view('dashboard');
  })->name('dashboard');
 
-Route::prefix('admin')->group(function () {
+/*Route::prefix('admin')->group(function () {
     Route::get('/dashboard/index', [AdminDashboard::class, 'index'])->middleware(['auth'])->name('admin');
+});*/
+
+Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function()
+{
+    Route::get('/dashboard/index', [AdminDashboard::class, 'index'])->name('admin');
 });
