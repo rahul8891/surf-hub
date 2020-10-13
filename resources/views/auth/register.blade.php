@@ -10,6 +10,7 @@
                 {{ __('Registration Successfull, Please verify the email sent on your email address.') }}
             </div>
         @endif
+        
         <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
             @csrf
 
@@ -47,14 +48,25 @@
             <div class="mt-4">
                 <x-jet-label value="{{ __('Instagram Profile Link') }}" />
                 <x-jet-input class="block mt-1 w-full" type="text" name="instagram" :value="old('instagram')" autocomplete="instagram" />
+            </div>  
+
+            <div class="mt-4">
+                <x-jet-label value="{{ __('Country *') }}" />
+                <select class="block mt-1 w-full" name="country_id">
+                    <option value="">--Select--</option>  
+                    @foreach($countries as $key => $value)
+                    <option value="{{ $value->id }}">{{ $value->name }}</option>
+                    @endforeach                  
+                <select> 
             </div>
 
             <div class="mt-4">
                 <x-jet-label value="{{ __('Preferred Language *') }}" />
                 <select class="block mt-1 w-full" name="language">
                     <option value="">--Select--</option> 
-                    <option value="es">English</option>
-                    <option value="es">Spanish</option>
+                    @foreach($language as $key => $value)
+                    <option value="{{ $key }}">{{ $value }}</option>
+                    @endforeach                  
                 <select> 
             </div>
 
@@ -62,8 +74,11 @@
                 <x-jet-label value="{{ __('Account Type *') }}" />
                 <select class="block mt-1 w-full" name="account_type" required>
                     <option value="">--Select--</option> 
-                    <option value="PUBLIC">Public</option>
-                    <option value="PRIVATE">Private</option>
+                    @foreach($accountType as $key => $value)
+                    <option value="{{ $key }}">{{ $value }}</option>
+                    @endforeach 
+                    <!-- <option value="PUBLIC">Public</option>
+                    <option value="PRIVATE">Private</option> -->
                 <select>
             </div>
             
