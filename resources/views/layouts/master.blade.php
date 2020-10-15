@@ -9,12 +9,19 @@
 
   <!-- Font Awesome Icons -->
   <link  href="{{ asset("/AdminLTE/plugins/fontawesome-free/css/all.min.css")}}" rel="stylesheet" >
+   <!-- DataTables -->
+   <link rel="stylesheet" href="{{ asset("/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css")}}">
+  <link rel="stylesheet" href="{{ asset("/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css")}}">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="{{ asset("/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css")}}">
   <!-- overlayScrollbars -->
   <link  href="{{ asset("/AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css")}}" rel="stylesheet" >
   <!-- Theme style -->
   <link  href="{{ asset("/AdminLTE/dist/css/adminlte.min.css")}}" rel="stylesheet" >
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="{{ asset("/css/loader.css")}}">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
@@ -30,7 +37,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Admin Dashboard</h1>
+            <!-- <h1 class="m-0 text-dark">Admin Dashboard</h1> -->
           </div><!-- /.col -->        
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -39,6 +46,17 @@
 
     <!-- Main content -->
     <section class="content">
+       @if ($message = Session::get('error'))
+        <div class="alert alert-danger alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          {{ ucfirst($message) }}
+        </div>
+        @elseif ($message = Session::get('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          {{ ucfirst($message) }}
+        </div>
+        @endif
       @yield('content')
     </section>
     <!-- /.content -->
@@ -54,15 +72,56 @@
 <script src="{{ asset("/AdminLTE/plugins/jquery/jquery.min.js")}}"></script>
 <!-- Bootstrap -->
 <script src="{{ asset("/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
-<!-- overlayScrollbars -->
+
+<!-- overlayScrollbars -->  
 <script src="{{ asset("/AdminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js")}}"></script>
+
+<script src="{{ asset("/AdminLTE/plugins/bootstrap-switch/js/bootstrap-switch.min.js")}}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset("/AdminLTE/dist/js/adminlte.js")}}"></script>
-<!-- OPTIONAL SCRIPTS -->
-<script src="dist/js/demo.js"></script>
-<!-- ChartJS -->
-<script src="{{ asset("/AdminLTE/plugins/chart.js/Chart.min.js")}}"></script>
+
 <!-- PAGE SCRIPTS -->
 <script src="{{ asset("/AdminLTE/dist/js/pages/dashboard2.js")}}"></script>
+<script src="{{ asset("/AdminLTE/plugins/datatables/jquery.dataTables.min.js")}}"></script>
+<script src="{{ asset("/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js")}}"></script>
+<script src="{{ asset("/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js")}}"></script>
+<script src="{{ asset("/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")}}"></script>
+
+<script src="{{ asset("/js/custom.js")}}"></script> 
+<script>
+ $(document).ready(function () {
+
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "ordering": true,
+    });
+
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+
+    $('#example3').DataTable({
+      'processing': true,
+      'paging'      : false,
+      'searching'   : true,
+        "bInfo" : false,
+      "columnDefs": [ {
+            "targets": 'no-sort',
+            "orderable": false,
+      } ]
+    })
+    $("input[data-bootstrap-switch]").each(function(){
+      $(this).bootstrapSwitch('state', $(this).prop('checked'));
+    });
+  });
+</script>
+
 </body>
 </html>

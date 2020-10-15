@@ -59,4 +59,20 @@ class AdminUserService {
       
 
     }
+
+   /**
+     * [getUsersListing] we are getiing all the user 
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getUsersListing(){
+
+        $userArray =  $this->users->where('user_type',$this->checkUserType['userType']['USER'])
+                                  ->whereIn('status', [$this->checkUserType['status']['ACTIVE'], 
+                                        $this->checkUserType['status']['DEACTIVATED']])
+                                  ->orderBy('id','DESC')
+                                  ->paginate(10);
+        return $userArray;
+    }
 }

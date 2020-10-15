@@ -27,7 +27,7 @@ class AdminMiddleware
                     return $next($request);
                 }
             }
-        }catch (\Exception $e){
+        }catch (\Exception $e){           
             throw ValidationException::withMessages([trans('customErrorMessage.unauthorized')]);
         }       
     }

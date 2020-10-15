@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Exceptions;
+use App\Exceptions\CustomException;
 use App\Exceptions\Handler;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use App\Exceptions\CustomException;
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -37,6 +38,6 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {       
-                
+        //
     }
 }

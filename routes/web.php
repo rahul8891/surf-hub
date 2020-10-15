@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserRedirect;
 use App\Http\Controllers\admin\AdminDashboard;
 use App\Http\Controllers\admin\AdminUserController;
+use App\Http\Controllers\WelcomeFeedController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,13 +16,13 @@ use App\Http\Controllers\admin\AdminUserController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+/*Route::get('/', function () {
+     return view('welcome');
+});*/
 
-Route::middleware(['auth:sanctum', 'verified','userAuth'])->get('/', function () {     
-    return view('welcome');
-})->name('welcome');
+Route::get('/', [WelcomeFeedController::class, 'welcome'])->name('feed');
+
+
 
  Route::middleware(['auth:sanctum', 'verified','userAuth'])->get('/dashboard', function () {     
       return view('dashboard');

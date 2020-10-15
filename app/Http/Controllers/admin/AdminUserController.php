@@ -40,8 +40,9 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        
-        return view('admin/admin_user.index');
+        $users = $this->users->getUsersListing();
+        $spiner = ($users) ? true : false;
+        return view('admin/admin_user.index', compact('users','spiner'));     
     }
 
     /**

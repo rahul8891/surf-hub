@@ -26,8 +26,10 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->checkUserType = config('customarray.userType');        
+        $this->checkUserType = config('customarray.userType'); 
+
         $this->registerPolicies();
+        
         Gate::define('isAdmin', function ($user) {
             return ($user->user_type == $this->checkUserType['ADMIN']) ? Response::allow() : Response::deny('You Are Not Authorized to Access This Page.');
         });

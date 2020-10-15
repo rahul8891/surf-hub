@@ -24,7 +24,7 @@ class CustomException extends Exception
      * @return \Illuminate\Http\Response
      */
     public function render($request)
-    {
-       // 
+    {       
+        // 
     }
 }
