@@ -13,6 +13,7 @@ return [
 |
 */
 'unauthorized'=>'You Are Not Authorized to Access This Page',
+'unauthorizedType'=>'You Are Not Authorized',
 
 
 

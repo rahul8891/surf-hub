@@ -13,6 +13,8 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array
      */
+
+    protected $checkUserType;
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
@@ -24,16 +26,14 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $checkUserType = config('customarray.userType');
-
+        $this->checkUserType = config('customarray.userType');        
         $this->registerPolicies();
-
         Gate::define('isAdmin', function ($user) {
-            return ($user->user_type === $checkUserType['ADMIN']) ? Response::allow() : Response::deny('You Are Not Authorized to Access This Page.');
+            return ($user->user_type == $this->checkUserType['ADMIN']) ? Response::allow() : Response::deny('You Are Not Authorized to Access This Page.');
         });
 
         Gate::define('isUser', function ($user) {
-            return $user->user_type === $checkUserType['USER'] ? Response::allow() : Response::deny('You Are Not Authorized to Access This Page.');
+            return $user->user_type == $this->checkUserType['USER'] ? Response::allow() : Response::deny('You Are Not Authorized to Access This Page.');
         });
 
     }

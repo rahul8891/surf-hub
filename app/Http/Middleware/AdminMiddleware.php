@@ -23,7 +23,7 @@ class AdminMiddleware
             $checkUserType = config('customarray.userType');
             if (in_array($user->user_type, $checkUserType)) {
                 if($user->user_type == $checkUserType['ADMIN']){
-                    // return true and allow route to user
+                    // return true and allow route to Admin User Only
                     return $next($request);
                 }
             }

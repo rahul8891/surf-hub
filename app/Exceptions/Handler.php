@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 use App\Exceptions\Handler;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-
+use App\Exceptions\CustomException;
 class Handler extends ExceptionHandler
 {
     /**
@@ -28,14 +28,15 @@ class Handler extends ExceptionHandler
         'status',
         'account_type'
     ];
-
+    
+    
     /**
      * Register the exception handling callbacks for the application.
      *
      * @return void
      */
     public function register()
-    { 
-       //
+    {       
+                
     }
 }

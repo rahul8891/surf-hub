@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserRedirect;
 use App\Http\Controllers\admin\AdminDashboard;
+use App\Http\Controllers\admin\AdminUserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,9 +15,13 @@ use App\Http\Controllers\admin\AdminDashboard;
 |
 */
 
-Route::get('/', function () {
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::middleware(['auth:sanctum', 'verified','userAuth'])->get('/', function () {     
     return view('welcome');
-});
+})->name('welcome');
 
  Route::middleware(['auth:sanctum', 'verified','userAuth'])->get('/dashboard', function () {     
       return view('dashboard');
@@ -28,5 +33,9 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin',  'middleware' => ['auth','adminAuth']], function()
 {
-    Route::get('/dashboard/index', [AdminDashboard::class, 'index'])->name('admin');
+    // Admin Dashboard Route
+    Route::get('/dashboard/index', [AdminDashboard::class, 'index'])->name('adminIndex');
+
+    // Admin User Listing Route
+    Route::get('/users/index', [AdminUserController::class, 'index'])->name('adminUserListIndex');
 });

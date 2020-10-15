@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Responses;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 
@@ -21,6 +22,9 @@ class LoginResponse implements LoginResponseContract
                 // if user type belongs to USER then redirect to the admin dashboard
                 $redirectRoute = config('fortify.home');
             }
+        }else{
+            Auth::logout();
+            throw ValidationException::withMessages([trans('customErrorMessage.unauthorizedType')]);
         }
 
         // below is the existing response
