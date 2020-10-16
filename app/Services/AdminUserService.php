@@ -172,4 +172,24 @@ class AdminUserService {
         $user = $this->users::find($id);
         $user->delete();
     }
+
+    public function updateUserStatus($input,&$message=''){
+        try{
+            $users = $this->users::find($input['id']);
+            if($users){
+                $users->id = $input['id'];
+                $users->status = ($input['status'] === 'true') ? $this->checkUserType['status']['ACTIVE'] : $this->checkUserType['status']['DEACTIVATED'];
+                if($users->save()){
+                    $message='User Status has been updated!';
+                    return true;
+                }else{
+                    $message='The user details not be updated. Please, try again.';
+                    return false;
+                }
+            }
+        }catch(\Exception $e){
+            $message=$e->getPrevious()->getMessage();
+            return false;
+        }        
+    }
 }

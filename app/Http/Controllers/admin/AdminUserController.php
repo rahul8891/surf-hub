@@ -157,6 +157,36 @@ class AdminUserController extends Controller
         //
     }
 
+
+    /**
+     * Activate /Deactivate user.
+     *
+     * @param  json object  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateUserStatus(Request $request){
+        $data = $request->all();
+        $rules = array(
+            'id' => ['required'],
+            'status' => ['required'] 
+        );
+        $inputArry = ['id' => $data['user_id'], 'status' => $data['status']];
+        $validate = Validator::make($inputArry, $rules);
+        if ($validate->fails()) {                                   
+            echo json_encode(array('status'=>'failure', 'message'=>'Invalid param.'));
+            die;
+        } else { 
+            
+            $result = $this->users->updateUserStatus($inputArry,$message);
+            if($result){               
+                 echo json_encode(array('status'=>'success', 'message'=>$message));
+             }else{
+                 echo json_encode(array('status'=>'failure', 'message'=>$message));
+             }
+            die;
+        }       
+        dd($data);
+    }
     /**
      * Remove the specified resource from storage.
      *

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>{{ config('customarray.siteTitle.admin') }}</title>
 
   <!-- Font Awesome Icons -->
@@ -65,7 +65,7 @@
           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           {{ ucfirst($message) }}
         </div>
-        @endif      
+        @endif         
       @yield('content')
       </div>
     </section>

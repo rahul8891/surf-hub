@@ -38,7 +38,7 @@
                   </div>
                   <div class="col-5 text-center">
                     @if($users->profile_photo_path)
-                        <img class="img-circle img-fluid" src="{{ asset('storage/'.$users->profile_photo_path) }}" alt="Profile Photo"/>
+                        <img class="img-circle img-fluid" src="{{ asset('storage/'.$users->profile_photo_path) }}" height="35%" width="35%" alt="Profile Photo"/>
                         @else
                         <img class="img-circle img-fluid" src="{{ asset("/AdminLTE/dist/img/avatar5.png")}}" alt="Profile Photo"/>
                     @endif 

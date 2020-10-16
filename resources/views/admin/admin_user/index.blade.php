@@ -1,12 +1,12 @@
 @extends('layouts.master')
 @section('content')
 <div class="card">
+<div id="error"></div>
 <div class="card-header">
    <a href="{{ route('adminUserCreate')}}" class="btn btn-primary pull-left">Add New User</a>
 </div>
 <!-- /.card-header -->
 <div id="loader"></div>
-<!-- <div class="lds-hourglass"></div> -->
 <div class="card-body">
    <table id="example3" class="table table-bordered">
       <thead>
@@ -25,9 +25,9 @@
             <td>{{ __(ucwords($value->user_profiles->first_name .' '.$value->user_profiles->last_name)) }}</td>
             <td>{{ __($value->email) }}</td>
             <td>
-               <input type="checkbox" name="my-checkbox" data-bootstrap-switch 
+               <input type="checkbox" class="changeStatus" name="my-checkbox" data-bootstrap-switch 
                data-off-color="danger" data-id="{{$value->id}}" data-on-color="success" data-on-text="ACTIVATED" 
-               data-off-text="Deactivated"  @if($value->status == 'ACTIVE') checked @endif>
+               data-off-text="Deactivated" @if($value->status == 'ACTIVE') checked @endif>
             </td>
             <td>
                <a class="btn btn-primary btn-sm" href="{{route('adminUserDetails', $value->id)}}"><i class="fas fa-folder"></i> View</a>
