@@ -1,19 +1,27 @@
 <?php
 
 namespace App\Http\Controllers\admin;
-
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Services\AdminUserService;
+use App\Services\MasterService;
+use App\Traits\PasswordTrait;
+use App\Models\User;
+use Carbon\Carbon;
 use Closure;
+use Redirect;
+use Session;
+
 
 class AdminUserController extends Controller
 {   
+    use PasswordTrait;
     /**
      * The user sevices implementation.
      *
@@ -21,15 +29,24 @@ class AdminUserController extends Controller
      */
     protected $users;
 
+    Protected $masterService;
+
+    public $language;
+
+    public $accountType;
+
     /**
      * Create a new controller instance.
      *
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct(AdminUserService $users)
+    public function __construct(AdminUserService $users,MasterService $masterService)
     {
         $this->users = $users;
+        $this->masterService = $masterService;
+        $this->language = config('customarray.language'); 
+        $this->accountType = config('customarray.accountType');
     }
 
 
@@ -52,7 +69,10 @@ class AdminUserController extends Controller
      */
     public function create()
     {
-        //
+        $countries = $this->masterService->getCountries();
+        $language = $this->language;
+        $accountType = $this->accountType;       
+        return view('admin/admin_user.create', compact('countries','language','accountType'));
     }
 
     /**
@@ -62,8 +82,38 @@ class AdminUserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {    
+        try{
+            $data = $request->all();
+            $rules = array(
+                'first_name' => ['required', 'string'],
+                'last_name' => ['nullable','string'],
+                'name' => ['required', 'string', 'max:255','unique:users','alpha_dash'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'phone' => ['nullable','numeric','digits:10'],
+                'account_type'=>['required','string'],
+                'language' => ['required','string'],
+                'country_id' => ['required','numeric'],
+                'profile_photo_name' => ['nullable','image','mimes:jpeg,jpg,png'],
+                'terms' => ['required'],
+                'password' => $this->passwordRules(),
+            );       
+            $validate = Validator::make($data, $rules);
+            if ($validate->fails()) {
+                // If validation falis redirect back to register.
+                return redirect()->back()->withErrors($validate)->withInput();
+            } else {
+                $result = $this->users->saveAdminUser($data,$message);
+                if($result){  
+                    return Redirect::to('admin/users/create')->withSuccess($message);
+                }else{
+                    return Redirect::to('admin/users/create')->withErrors($message);
+                }
+            }
+        }catch (\Exception $e){ 
+            throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+        }
+        
     }
 
     /**
@@ -73,8 +123,15 @@ class AdminUserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
+    {   
+        try{
+            $users = new User();    
+            $users = $users::findOrFail($id);
+            $spiner = ($users) ? true : false;
+        }catch (\Exception $e){ 
+            throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+        }
+        return view('admin/admin_user.show', compact('users','spiner'));  
     }
 
     /**

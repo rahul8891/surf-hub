@@ -37,6 +37,14 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth','adminAuth']], funct
     // Admin Dashboard Route
     Route::get('/dashboard/index', [AdminDashboard::class, 'index'])->name('adminIndex');
 
-    // Admin User Listing Route
+
+    /*********************************************************************************************
+     *                              Admin User Listing/Adding/Details/Edit Route
+     * ********************************************************************************************/
     Route::get('/users/index', [AdminUserController::class, 'index'])->name('adminUserListIndex');
+    Route::get('/users/create', [AdminUserController::class, 'create'])->name('adminUserCreate');
+    Route::post('/users/store', [AdminUserController::class, 'store'])->name('adminUserStore');  
+    Route::get('/users/show/{id}', [AdminUserController::class, 'show'])->name('adminUserDetails');
+
+    
 });

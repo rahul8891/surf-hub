@@ -10,3 +10,11 @@
         center;
     z-index: 10000;
 }
+
+.required {
+    color: red;
+}
+
+.notDisplayed {
+    display: none;
+}

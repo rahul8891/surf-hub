@@ -1,6 +1,5 @@
 @extends('layouts.master')
 @section('content')
-<div class="container-fluid">
         <!-- Info boxes -->
         <div class="row">
           <div class="col-12 col-sm-6 col-md-3">
@@ -57,5 +56,4 @@
           </div>
         </div>
         <!-- /.row -->
-      </div><!--/. container-fluid -->
       @endsection

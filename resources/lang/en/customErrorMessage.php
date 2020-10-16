@@ -14,6 +14,7 @@ return [
 */
 'unauthorized'=>'You Are Not Authorized to Access This Page',
 'unauthorizedType'=>'You Are Not Authorized',
+'userCreate '=>'User account has been created successfully.!',
 
 
 

@@ -46,18 +46,28 @@
 
     <!-- Main content -->
     <section class="content">
-       @if ($message = Session::get('error'))
-        <div class="alert alert-danger alert-dismissible" role="alert">
+    <div class="container-fluid">
+      @if ($errors->any())
+      <div class="alert alert-danger alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          @foreach ($errors->all() as $error)
+          <li>{{ ucfirst($error) }}</li>
+              @endforeach        
+      </div>
+      @endif
+      @if ($message = Session::get('error'))
+        <div class="alert alert-danger alert-dismissible" role="alert" id="msg">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           {{ ucfirst($message) }}
         </div>
         @elseif ($message = Session::get('success'))
-        <div class="alert alert-success alert-dismissible" role="alert">
+        <div class="alert alert-success alert-dismissible" role="alert" id="msg">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           {{ ucfirst($message) }}
         </div>
-        @endif
+        @endif      
       @yield('content')
+      </div>
     </section>
     <!-- /.content -->
   </div>
@@ -88,8 +98,13 @@
 <script src="{{ asset("/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")}}"></script>
 
 <script src="{{ asset("/js/custom.js")}}"></script> 
+
+<script src="{{ asset("/AdminLTE/plugins/bs-custom-file-input/bs-custom-file-input.min.js")}}"></script>
+
 <script>
  $(document).ready(function () {
+
+    bsCustomFileInput.init();
 
     $("#example1").DataTable({
       "responsive": true,
@@ -117,9 +132,11 @@
             "orderable": false,
       } ]
     })
+
     $("input[data-bootstrap-switch]").each(function(){
       $(this).bootstrapSwitch('state', $(this).prop('checked'));
     });
+
   });
 </script>
 
