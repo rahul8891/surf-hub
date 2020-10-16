@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Responses;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 
@@ -11,15 +12,19 @@ class LoginResponse implements LoginResponseContract
     public function toResponse($request)
     {
         $redirectRoute = '/';
-        $user = Auth::user();        
-        $checkUserType = config('customarray.userType');  
-        if (in_array($user->user_type, $checkUserType)) {               
+        $user = Auth::user();
+        $checkUserType = config('customarray.userType');
+        if (in_array($user->user_type, $checkUserType)) {
             if($user->user_type == $checkUserType['ADMIN']){
-                // if user type belongs to ADMIN then redirect to the admin dashboard               
+                // if user type belongs to ADMIN then redirect to the admin dashboard
                 $redirectRoute = config('customarray.adminhome');
             }else{
-                $redirectRoute = config('fortify.home');                
+                // if user type belongs to USER then redirect to the admin dashboard
+                $redirectRoute = config('fortify.home');
             }
+        }else{
+            Auth::logout();
+            throw ValidationException::withMessages([trans('customErrorMessage.unauthorizedType')]);
         }
 
         // below is the existing response
