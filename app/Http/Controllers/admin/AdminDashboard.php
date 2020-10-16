@@ -1,20 +1,41 @@
 <?php
 
 namespace App\Http\Controllers\admin;
-
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use App\Services\AdminUserService;
 class AdminDashboard extends Controller
 {
+    /**
+     * The user repository implementation.
+     *
+     * @var AdminUserService
+     */
+    protected $users;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  AdminUserService  $users
+     * @return void
+     */
+    public function __construct(AdminUserService $users)
+    {
+        $this->users = $users;       
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {             
-       return View::make('admin/dashboard.index');
+    {         
+        
+        $totalUser =$this->users->getUserTotal();
+        return view('admin/dashboard.index', compact('totalUser'));
     }
 
     /**

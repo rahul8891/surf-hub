@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Exceptions;
-
+use App\Exceptions\CustomException;
+use App\Exceptions\Handler;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -23,15 +24,20 @@ class Handler extends ExceptionHandler
     protected $dontFlash = [
         'password',
         'password_confirmation',
+        'email',
+        'user_type',
+        'status',
+        'account_type'
     ];
-
+    
+    
     /**
      * Register the exception handling callbacks for the application.
      *
      * @return void
      */
     public function register()
-    {
+    {       
         //
     }
 }
