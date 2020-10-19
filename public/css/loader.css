@@ -18,3 +18,11 @@
 .notDisplayed {
     display: none;
 }
+
+.errorMsg {
+    color: red;
+}
+
+.successMsg {
+    color: green;
+}

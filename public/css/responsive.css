@@ -1,0 +1,473 @@
+@media only screen and (min-width: 1300px) {
+    .container-1660 {
+        max-width: 1660px;
+    }
+}
+
+@media only screen and (min-width: 991px) {
+    .tab-dis-block {
+        display: none;
+    }
+
+    .tab-dis-none {
+        display: flex;
+    }
+}
+
+@media only screen and (min-width: 767px) {
+    .text-web-right {
+        text-align: right;
+    }
+}
+
+
+@media only screen and (max-width: 1700px) {
+    header .bg-light {
+        padding-left: 60px;
+        padding-right: 60px;
+    }
+}
+
+@media only screen and (max-width: 1500px) {
+    footer li .divider {
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+}
+
+@media only screen and (max-width: 1300px) {
+    footer li .divider {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    header .bg-light {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+
+    footer .copyright {
+        padding-left: 0px;
+        max-width: unset;
+        flex: 0 0 auto;
+    }
+
+    footer .btmNav {
+        margin: auto
+    }
+
+    .postsWrap .ratingShareWrap {
+        flex-wrap: wrap;
+    }
+
+    .postsWrap .ratingShareWrap .rating {
+        margin-right: 0px;
+        margin-bottom: 15px;
+    }
+
+    .postsWrap .ratingShareWrap .divider {
+        top: 6px;
+    }
+
+    header .m-auto a {
+        max-width: 130px;
+        flex: 0 0 130px;
+    }
+
+    header .navbar-light .navbar-brand img {
+        width: 200px;
+    }
+
+
+
+    footer.footerAfterLogin .copyright {
+        padding-right: 17px;
+    }
+
+}
+
+@media only screen and (max-width: 991px) {
+    header .m-auto {
+        margin-top: 20px !important;
+    }
+
+    header .nav-item::after {
+        content: none;
+    }
+
+    .adWrap {
+        text-align: center;
+        margin-bottom: 0px;
+        margin-top: 30px;
+    }
+
+    .banner .contentWrap {
+        background: #4e8df7;
+        padding: 40px 45px;
+        max-width: 530px;
+        flex: 0 0 530px;
+    }
+
+    footer .d-flex {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    footer .copyright {
+        max-width: 100%;
+        flex: 0 0 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    footer li .divider {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    footer {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background: #ffffff;
+    }
+
+    footer.footerAfterLogin .copyright {
+        padding-right: 0px;
+        max-width: 100%;
+        flex: 0 0 100%;
+    }
+
+    header #navbarDropdown {
+        padding: 0px;
+    }
+
+    header .tab-dis-block {
+        padding: 0px;
+        margin: 0px 0px 0px auto;
+        list-style: none;
+        padding-right: 20px;
+
+    }
+
+    header .tab-dis-block a {
+        font-size: 14px;
+        line-height: 24px;
+        color: #424242;
+        font-weight: 400;
+        text-transform: uppercase;
+    }
+
+    main {
+        padding-top: 77px;
+    }
+
+    .loginWrap .formWrap .form {
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+
+    .loginWrap .formWrap p {
+        margin: auto;
+        margin-bottom: 20px;
+    }
+
+    .loginWrap .formWrap {
+        padding: 40px 50px 50px 50px;
+    }
+
+    .loginWrap {
+        padding: 40px 0px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .postsWrap .ratingShareWrap ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .postsWrap .ratingShareWrap .rating {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .postsWrap .ratingShareWrap ul li {
+        margin-bottom: 10px;
+    }
+
+    .postsWrap .ratingShareWrap .rating li {
+        margin-bottom: 0px;
+    }
+
+    .postsWrap .post .playBtn {
+        width: 100px;
+    }
+
+    .postsWrap .post .playBtn img {
+        width: 100%;
+    }
+
+    .postsWrap .post .uploadWrap .head .dropdown {
+        margin-top: 10px;
+    }
+
+    .postsWrap .post .uploadWrap .head .dropdown-menu.filterWrap {
+        width: 500px;
+    }
+
+    .uploadModal .optionalFields .cstm-check,
+    .uploadModal .cstm-check,
+    .uploadModal .selectWrap,
+    .uploadModal .formWrap label {
+        margin-bottom: 10px;
+    }
+
+    .uploadModal .optionalFields .align-self-end {
+        display: none;
+    }
+
+    .uploadModal .optionalFields .pl-1.pr-1 {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+}
+
+@media only screen and (max-width: 567px) {
+    .banner .contentWrap {
+        padding: 20px;
+        max-width: 100%;
+        flex: 0 0 100%;
+    }
+
+    .banner .contentWrap li {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .postsWrap .post-head {
+        flex-wrap: wrap;
+        padding: 15px 15px 0px 15px
+    }
+
+    .postsWrap .description,
+    .postsWrap .ratingShareWrap {
+        padding: 15px;
+    }
+
+    .postsWrap .post-head .userDetail {
+        flex: 0 0 100%;
+        padding-right: 0px;
+        max-width: 100%;
+    }
+
+    .postsWrap .post {
+        padding: 15px;
+    }
+
+    .postsWrap .post h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .postsWrap .post-head h4 {
+        font-size: 20px;
+        line-height: 25px;
+    }
+
+    .postsWrap .post-head .profileImg {
+        height: 40px;
+        max-width: 40px;
+        flex: 0 0 40px;
+        font-size: 15px;
+    }
+
+    .postsWrap .post-head .userDetail .pl-3 {
+        padding-left: .5rem !important;
+    }
+
+    .postsWrap .post-head .followBtn {
+        font-size: 14px;
+    }
+
+    .postsWrap .post-head .followBtn {
+        font-size: 16px;
+        padding: 5px 8px;
+        flex: 0 0 120px;
+        max-width: 120px;
+    }
+
+    .postsWrap .description {
+        font-size: 16px;
+        line-height: 22px;
+    }
+
+    .postsWrap .ratingShareWrap .rating li span,
+    .postsWrap .ratingShareWrap li a {
+        font-size: 16px;
+    }
+
+    .postsWrap .ratingShareWrap .divider {
+        margin-left: 10px;
+        margin-right: 10px;
+        top: 4px;
+    }
+
+    .postsWrap .WriteComment {
+        padding: 15px;
+    }
+
+    .postsWrap .WriteComment textarea {
+        font-size: 20px;
+        padding: 10px 14px;
+        height: 54px;
+    }
+
+    .postsWrap .post .playBtn {
+        width: 50px;
+    }
+
+    .postsWrap .post-head .followBtn {
+        margin-top: 10px;
+    }
+
+    footer {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    footer ul li {
+        flex: 0 0 100%;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    footer li .divider {
+        display: none;
+    }
+
+    main {
+        padding-bottom: 280px;
+    }
+
+    header .m-auto {
+        flex-wrap: wrap;
+    }
+
+    header .m-auto a {
+        max-width: 100%;
+        flex: 0 0 100%;
+    }
+
+    header .m-auto span {
+        padding-left: 0px;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .postsWrap .uploadWrap .post-head h4,
+    .postsWrap .post .uploadWrap .head {
+        font-size: 20px;
+        line-height: 25px;
+    }
+
+    .postsWrap .uploadWrap .post-head {
+        padding: 15px 30px 30px 20px;
+    }
+
+    .postsWrap .post .uploadWrap .head {
+        padding: 15px 30px
+    }
+
+    .feedHubNav li a {
+        font-size: 20px;
+        padding: 13px 10px;
+    }
+
+    footer li a .followCount {
+        font-size: 12px;
+        line-height: 18px;
+        top: -17px;
+        right: -12px;
+    }
+
+    .saveInfo {
+        font-size: 12px;
+        width: 113px;
+        padding: 6px 11px;
+        right: -29px;
+    }
+
+    .postsWrap .post .uploadWrap .head .dropdown-menu.filterWrap {
+        width: 300px;
+    }
+
+    .postsWrap .post .uploadWrap .head .dropdown-menu.filterWrap .cstm-check {
+        margin-bottom: 10px;
+    }
+
+    .postsWrap .post .uploadWrap .head .dropdown-menu.filterWrap .form-control {
+        margin-bottom: 10px;
+    }
+
+    .postsWrap .post .uploadWrap .head .dropdown-menu.filterWrap .row {
+        margin-bottom: 10px !important;
+    }
+
+    .postsWrap .post .uploadWrap .head .dropdown-menu.filterWrap .filterBody {
+        padding-bottom: 118px;
+    }
+
+    .postsWrap .post .uploadWrap .head .dropdown-toggle {
+        font-size: 20px;
+    }
+
+    .uploadModal .modal-content {
+        padding: 45px 15px 20px 15px;
+    }
+
+    .uploadModal .modal-header {
+        flex-wrap: wrap;
+    }
+
+    .uploadModal .modal-header .modal-title {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .uploadModal .modal-header .selectWrap {
+        width: 100%;
+    }
+
+    header .tab-dis-block {
+        display: none;
+    }
+
+    .tab-dis-none {
+        display: block;
+    }
+
+    .infoHover {
+        width: 215px;
+        left: -30px;
+        right: auto;
+    }
+
+    .infoHover .pos-rel img {
+        bottom: -23px;
+        right: 1px;
+        left: auto;
+    }
+
+    .loginWrap .formWrap {
+        padding: 30px 20px 30px 20px;
+    }
+
+    .registrationWrap.loginWrap .formWrap {
+        padding: 30px 20px 20px 20px;
+    }
+}
