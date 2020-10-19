@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\Country;
+use App\Models\State;
 
 class UserProfile extends Model
 {
@@ -49,6 +50,15 @@ class UserProfile extends Model
     public function countries()
     {
         return $this->belongsTo(Country::class, 'country_id', 'id');
+    }
+
+    /**
+     * Relationship between state and user_follows model    
+     * @return object
+     */
+    public function states()
+    {
+        return $this->belongsTo(State::class, 'state_id', 'id');
     }
 
 }

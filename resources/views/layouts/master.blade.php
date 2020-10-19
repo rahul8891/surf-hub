@@ -97,6 +97,9 @@
 <script src="{{ asset("/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js")}}"></script>
 <script src="{{ asset("/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")}}"></script>
 
+<!-- Ekko Lightbox -->
+<script src="{{ asset("/AdminLTE/plugins/ekko-lightbox/ekko-lightbox.min.js")}}"></script>
+
 <script src="{{ asset("/js/custom.js")}}"></script> 
 
 <script src="{{ asset("/AdminLTE/plugins/bs-custom-file-input/bs-custom-file-input.min.js")}}"></script>
@@ -104,8 +107,21 @@
 <script>
  $(document).ready(function () {
 
+    // input browser file
     bsCustomFileInput.init();
+  /*******************************************************************************
+  *                   Image Show popup
+  ********************************************************************************/
+    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+      event.preventDefault();
+      $(this).ekkoLightbox({
+        alwaysShowClose: true
+      });
+    });
 
+  /*******************************************************************************
+  *                   Data Table 
+  ********************************************************************************/
     $("#example1").DataTable({
       "responsive": true,
       "autoWidth": false,
@@ -133,6 +149,9 @@
       } ]
     })
 
+  /*********************************************************************
+  *         Bootstrap Switch box
+  **********************************************************************/
     $("input[data-bootstrap-switch]").each(function(){
       $(this).bootstrapSwitch('state', $(this).prop('checked'));
     });

@@ -16,7 +16,10 @@ $(document).ready(function () {
     }
     /************** end spiner code ****************************/
     
-    $("#category-img-tag").addClass("notDisplayed");
+    /**********************************************************
+     * set image preview after selection
+     * ********************************************************/
+    // $("#category-img-tag").addClass("notDisplayed");
     $("#exampleInputFile").change(function(){
         readURL(this);
     });
@@ -33,6 +36,10 @@ $(document).ready(function () {
         }
     }
 
+
+    /************************************************************
+     *              Update user status
+     ***********************************************************/
     $('.changeStatus').on('switchChange.bootstrapSwitch',function (e,data) {
         var currentStatus = data;
         var userId = $(this).data("id");      
@@ -62,6 +69,9 @@ $(document).ready(function () {
 
 });
 
+/**
+ * remove message after time set hit
+ */
 function myTimerUserMessage() {
     document.getElementById('error').innerHTML = ''; 
     document.getElementById("error").className = ''; 

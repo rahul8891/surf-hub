@@ -45,6 +45,8 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth','adminAuth']], funct
     Route::get('/users/create', [AdminUserController::class, 'create'])->name('adminUserCreate');
     Route::post('/users/store', [AdminUserController::class, 'store'])->name('adminUserStore');  
     Route::get('/users/show/{id}', [AdminUserController::class, 'show'])->name('adminUserDetails');
+    Route::get('/users/edit/{id}',  [AdminUserController::class, 'edit'])->name('adminUserEdit');
+    Route::post('/users/update/{id}', [AdminUserController::class, 'update'])->name('adminUserUpdate');
     Route::post('/users/updateUserStatus', [AdminUserController::class, 'updateUserStatus'])->name('updateUserStatus');
     Route::post('/users/updateActivateStatus', ['as' => 'users.updateActivateStatus', 'uses' => 'UserController@updateActivateStatus','middleware' => ['permission:user_activate']]);
 
