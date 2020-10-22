@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Crypt;
 use App\Services\AdminUserService;
 use App\Services\MasterService;
 use App\Traits\PasswordTrait;
@@ -111,6 +112,7 @@ class AdminUserController extends Controller
                 }
             }
         }catch (\Exception $e){ 
+            
             throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         }
         
@@ -126,10 +128,10 @@ class AdminUserController extends Controller
     {   
         try{
             $users = new User();    
-            $users = $users::findOrFail($id);
+            $users = $users::findOrFail(Crypt::decrypt($id));
             $spiner = ($users) ? true : false;
         }catch (\Exception $e){ 
-            throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            throw ValidationException::withMessages([$e->getMessage()]);
         }
         return view('admin/admin_user.show', compact('users','spiner'));  
     }
@@ -141,8 +143,19 @@ class AdminUserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
+    {           
+        try{
+            $users = new User();
+            $countries = $this->masterService->getCountries();
+            $language = $this->language;
+            $accountType = $this->accountType;
+            $users = $users::findOrFail(Crypt::decrypt($id));
+            $spiner = ($users) ? true : false;
+        }catch (\Exception $e){         
+            throw ValidationException::withMessages([$e->getMessage()]);
+        }
+        
+        return view('admin/admin_user.edit', compact('users','countries','language','accountType','spiner'));
     }
 
     /**
@@ -153,8 +166,37 @@ class AdminUserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    {           
+        // $id = Crypt::decrypt($id);
+        // return redirect()->route('adminUserEdit', ['id' => $id])->withSuccess('welcoem');       
+        try{
+            $data = $request->all();
+            $rules = array(
+                'first_name' => ['required', 'string'],
+                'last_name' => ['nullable','string'],
+                'name' => ['required', 'string','alpha_dash'],
+                'email' => ['required', 'string', 'email', 'max:255'],
+                'phone' => ['nullable','numeric','digits:10'],
+                'account_type'=>['required','string'],
+                'language' => ['required','string'],
+                'country_id' => ['required','numeric'],
+                'profile_photo_name' => ['nullable','image','mimes:jpeg,jpg,png'],               
+            );       
+            $validate = Validator::make($data, $rules);
+            if ($validate->fails()) {
+                // If validation falis redirect back to register.
+                return redirect()->back()->withErrors($validate)->withInput();
+            } else {
+                $result = $this->users->updateAdminUser($data,$message);
+                if($result){
+                    return redirect()->route('adminUserEdit', ['id' => $id])->withSuccess($message);  
+                }else{
+                    return redirect()->route('adminUserEdit', ['id' => $id])->withErrors($message); 
+                }
+            }
+        }catch (\Exception $e){
+            throw ValidationException::withMessages([$e->getMessage()]);
+        }
     }
 
 
@@ -172,20 +214,18 @@ class AdminUserController extends Controller
         );
         $inputArry = ['id' => $data['user_id'], 'status' => $data['status']];
         $validate = Validator::make($inputArry, $rules);
-        if ($validate->fails()) {                                   
+        if ($validate->fails()) {
             echo json_encode(array('status'=>'failure', 'message'=>'Invalid param.'));
             die;
-        } else { 
-            
+        } else {
             $result = $this->users->updateUserStatus($inputArry,$message);
-            if($result){               
+            if($result){
                  echo json_encode(array('status'=>'success', 'message'=>$message));
              }else{
                  echo json_encode(array('status'=>'failure', 'message'=>$message));
              }
             die;
-        }       
-        dd($data);
+        }
     }
     /**
      * Remove the specified resource from storage.

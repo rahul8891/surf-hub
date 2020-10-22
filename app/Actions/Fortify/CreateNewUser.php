@@ -1,22 +1,21 @@
 <?php
 
 namespace App\Actions\Fortify;
-use Laravel\Fortify\Fortify;
+
+
 use App\Models\User;
 use App\Models\UserProfile;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
-use Storage;
 
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
 
-    
+
     /**
      * Validate and create a newly registered user.
      *
@@ -24,35 +23,36 @@ class CreateNewUser implements CreatesNewUsers
      * @return \App\Models\User
      */
     public function create(array $input)
-    {      
+    {
         $user = new User(); // user tabel object 
         $userProfile = new UserProfile(); // user profile table object
-        
+
         Validator::make($input, [
             'first_name' => ['required', 'string'],
-            'last_name' => ['string'],
-            'name' => ['required', 'string', 'max:255','unique:users','alpha_dash'],
+            'last_name' => ['nullable', 'string'],
+            'name' => ['required', 'string', 'max:255', 'unique:users', 'alpha_dash'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' => ['required','numeric','digits:10'],
-            'account_type'=>['required','string'],
-            'language' => ['required','string'],
-            'country_id' => ['required','numeric'],
-            'profile_photo_name' => ['image','mimes:jpeg,jpg,png'],
+            'phone' => ['nullable', 'numeric', 'digits:10'],
+            'account_type' => ['required', 'string'],
+            'language' => ['required', 'string'],
+            'country_id' => ['required', 'numeric'],
+            'profile_photo_name' => ['image', 'mimes:jpeg,jpg,png'],
+            'local_beach_break_id' => ['required', 'numeric'],
             'terms' => ['required'],
             'password' => $this->passwordRules(),
-        ])->validate(); 
-          
-        try{
+        ])->validate();
+
+        try {
             $getImageArray = $this->uploadImage($input);
             $user->name = $input['name'];
             $user->email = $input['email'];
             $user->password = Hash::make($input['password']);
             $user->account_type = $input['account_type'];
-            $user->profile_photo_name = ($getImageArray['status']) ? $getImageArray['profile_photo_name'] :'';
-            $user->profile_photo_path = ($getImageArray['status']) ? $getImageArray['profile_photo_path'] :'';
+            $user->profile_photo_name = ($getImageArray['status']) ? $getImageArray['profile_photo_name'] : '';
+            $user->profile_photo_path = ($getImageArray['status']) ? $getImageArray['profile_photo_path'] : '';
             $user->created_at = Carbon::now();
             $user->updated_at = Carbon::now();
-            if($user->save()){
+            if ($user->save()) {
                 $userProfile->user_id = $user->id;
                 $userProfile->first_name =  $input['first_name'];
                 $userProfile->last_name = $input['last_name'];
@@ -60,19 +60,20 @@ class CreateNewUser implements CreatesNewUsers
                 $userProfile->instagram = $input['instagram'];
                 $userProfile->language = $input['language'];
                 $userProfile->country_id = $input['country_id'];
+                $userProfile->local_beach_break_id = $input['local_beach_break_id'];
                 $userProfile->phone = $input['phone'];
                 $userProfile->created_at = Carbon::now();
                 $userProfile->updated_at = Carbon::now();
-                if($userProfile->save()){
+                if ($userProfile->save()) {
                     return $user;
                 }
             }
-        }catch (\Exception $e){
-            if($user->id){
+        } catch (\Exception $e) {
+            if ($user->id) {
                 $this->deleteUplodedProfileImage($getImageArray['profile_photo_name']);
                 $this->deletUserRecord($user->id);
             }
-           throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         }
     }
 
@@ -81,26 +82,27 @@ class CreateNewUser implements CreatesNewUsers
      * @param  object  $input
      * @return object array
      */
-    public function uploadImage($input){
+    public function uploadImage($input)
+    {
         $returnArray = [];
-        $path = public_path()."/storage/images/";
-        $timeDate = strtotime(Carbon::now()->toDateTimeString()); 
+        $path = public_path() . "/storage/images/";
+        $timeDate = strtotime(Carbon::now()->toDateTimeString());
         $returnArray['status'] = false;
-        if(isset($input['profile_photo_name']) && !empty($input['profile_photo_name'])){
+        if (isset($input['profile_photo_name']) && !empty($input['profile_photo_name'])) {
             $requestImageName = $input['profile_photo_name'];
             $imageNameWithExt = $requestImageName->getClientOriginalName();
-            $filename = pathinfo($imageNameWithExt, PATHINFO_FILENAME); 
+            $filename = pathinfo($imageNameWithExt, PATHINFO_FILENAME);
             $ext = $requestImageName->getClientOriginalExtension();
-            $image_name = $filename.'_'.$timeDate.'.'.$ext;
-            $image_path = 'images/'.$image_name;
-            if(!$requestImageName->move($path,$image_name)){
+            $image_name = $filename . '_' . $timeDate . '.' . $ext;
+            $image_path = 'images/' . $image_name;
+            if (!$requestImageName->move($path, $image_name)) {
                 throw ValidationException::withMessages([trans('auth.profile_image')]);
-            }else{
+            } else {
                 $returnArray['status'] = true;
                 $returnArray['profile_photo_name'] = $image_name;
                 $returnArray['profile_photo_path'] = $image_path;
             }
-           return $returnArray;
+            return $returnArray;
         }
     }
 
@@ -109,9 +111,10 @@ class CreateNewUser implements CreatesNewUsers
      * @param  string  $imageName
      * @return void
      */
-    public function deleteUplodedProfileImage($imageName){
-        if($imageName){
-            unlink(public_path()."/storage/images/". $imageName);
+    public function deleteUplodedProfileImage($imageName)
+    {
+        if ($imageName) {
+            unlink(public_path() . "/storage/images/" . $imageName);
         }
     }
 
@@ -120,7 +123,8 @@ class CreateNewUser implements CreatesNewUsers
      * @param  number  $id
      * @return void
      */
-    public function deletUserRecord($id){
+    public function deletUserRecord($id)
+    {
         $user = new User();
         $user = $user::find($id);
         $user->delete();

@@ -30,8 +30,8 @@
                data-off-text="Deactivated" @if($value->status == 'ACTIVE') checked @endif>
             </td>
             <td>
-               <a class="btn btn-primary btn-sm" href="{{route('adminUserDetails', $value->id)}}"><i class="fas fa-folder"></i> View</a>
-               <a class="btn btn-info btn-sm" href="#"><i class="fas fa-pencil-alt"></i> Edit</a>
+               <a class="btn btn-primary btn-sm" href="{{route('adminUserDetails', Crypt::encrypt($value->id))}}"><i class="fas fa-folder"></i> View</a>
+               <a class="btn btn-info btn-sm" href="{{route('adminUserEdit', Crypt::encrypt($value->id))}}"><i class="fas fa-pencil-alt"></i> Edit</a>
             </td>
          </tr>
          @endforeach

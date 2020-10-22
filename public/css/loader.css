@@ -18,3 +18,20 @@
 .notDisplayed {
     display: none;
 }
+
+.errorMsg {
+    color: red;
+}
+
+.successMsg {
+    color: green;
+}
+
+.reset-img {
+    /* padding-left: 20px; */
+    opacity: 1;
+    position: absolute;
+    left: 115px;
+    /* right: 10px; */
+    top: 24px;
+}
