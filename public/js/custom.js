@@ -1,70 +1,91 @@
 $(document).ready(function () {
     var csrf_token = $('meta[name="csrf-token"]').attr('content');
-    /************** spiner code ****************************/
-    var stopSpiner = "{{ $spiner}}";
-    var spinner = $('#loader');
-
-    $('#next').click(function (event) {
-        spinner.show();
-    });
-
-    /**
-    hide spiner
-    */
-    if (stopSpiner) {
-    spinner.hide();
-    }
-    /************** end spiner code ****************************/
     
-    /**********************************************************
-     * set image preview after selection
-     * ********************************************************/
-    // $("#category-img-tag").addClass("notDisplayed");
-    $("#exampleInputFile").change(function(){
-        readURL(this);
-    });
+	/************** spiner code ****************************/
+	var stopSpiner = "{{ $spiner}}";
+	var spinner = $('#loader');
 
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $("#category-img-tag").removeClass("notDisplayed");
-                $('#category-img-tag').attr('src', e.target.result);
-            }
-            
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
+	$('#next').click(function (event) {
+		spinner.show();
+	});
+
+	/**
+	hide spiner
+	*/
+	if (stopSpiner) {
+		spinner.hide();
+	}
+	/************** end spiner code ****************************/
+
+	/**********************************************************
+	 * set image preview after selection
+	 * ********************************************************/
+	$("#exampleInputFile").change(function () {
+		readURL(this);
+	});
+
+	function readURL(input) {
+		var url = input.value;
+		var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+		if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
+			$('#imageError').hide();
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				$('#category-img-tag').attr('src', e.target.result);
+				$('#category-img-tag').attr('width', '80px');
+			}
+			$('#remove-img').show();
+			reader.readAsDataURL(input.files[0]);
+		} else {
+			$("#exampleInputFile").val('');
+			$('#remove-img').hide();
+            $('#imageError').show();  
+            $('#category-img-tag').attr('width', 'auto');       
+			$('#category-img-tag').attr('src', '/img/image-file.png');
+		}
+	}
+
+	/**
+	 * Reset Image
+	 */
+	$("#remove-img").click(function () {
+		$('#remove-img').hide();
+        $("#exampleInputFile").val('');   
+        $('#category-img-tag').attr('width', 'auto');          
+		$('#category-img-tag').attr('src', '/img/image-file.png');
+	});
 
 
-    /************************************************************
-     *              Update user status
-     ***********************************************************/
-    $('.changeStatus').on('switchChange.bootstrapSwitch',function (e,data) {
-        var currentStatus = data;
-        var userId = $(this).data("id");      
-        spinner.show();
-        $.ajax({
-            type: "POST",
-            url: 'updateUserStatus',
-            data: {user_id : userId, status: currentStatus, _token: csrf_token},
-            dataType: 'json',
-            success: function(jsonResponse) {            
-              if(jsonResponse.status =='success')
-              {            
-               spinner.hide();  
-                document.getElementById('error').innerHTML = jsonResponse.message;
-                document.getElementById("error").className = "alert alert-success";
-              }else{
-                spinner.hide();
-                document.getElementById('error').innerHTML = jsonResponse.message; 
-                document.getElementById("error").className = "alert alert-danger"; 
-              }
-              setInterval(myTimerUserMessage, 4000); 
-            }
-          });       
-    });    
-
+	/************************************************************
+	 *              Admin Update user status
+	 ***********************************************************/
+	$('.changeStatus').on('switchChange.bootstrapSwitch', function (e, data) {
+		var currentStatus = data;
+		var userId = $(this).data("id");
+		spinner.show();
+		$.ajax({
+			type: "POST",
+			url: 'updateUserStatus',
+			data: {
+				user_id: userId,
+				status: currentStatus,
+				_token: csrf_token
+			},
+			dataType: 'json',
+			success: function (jsonResponse) {
+				if (jsonResponse.status == 'success') {
+					spinner.hide();
+					document.getElementById('error').innerHTML = jsonResponse.message;
+					document.getElementById("error").className = "alert alert-success";
+				} else {
+					spinner.hide();
+					document.getElementById('error').innerHTML = jsonResponse.message;
+					document.getElementById("error").className = "alert alert-danger";
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	});
 
 
 });
@@ -73,7 +94,6 @@ $(document).ready(function () {
  * remove message after time set hit
  */
 function myTimerUserMessage() {
-    document.getElementById('error').innerHTML = ''; 
-    document.getElementById("error").className = ''; 
- }
-
+	document.getElementById('error').innerHTML = '';
+	document.getElementById("error").className = '';
+}

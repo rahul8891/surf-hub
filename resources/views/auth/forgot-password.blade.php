@@ -1,45 +1,48 @@
 @extends('layouts.guest_user')
 @section('content')
 <section class="loginWrap">
-   <div class="innerWrap">
-      <div class="container">
-         <div class="text-center">
-            <img src="img/logo_2.png" alt="" class="img-fluid logo">
-         </div>
-         <div class="formWrap">
-            <div class="row">
-               <div class="col-lg-4  align-self-center text-center">
-                  <img src="img/img_1.jpg" class="img-fluid" alt="">
-               </div>
-               <div class="col-lg-6">
-                  <div class="form">
-                     <p>{{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}</p>
-                     <x-jet-validation-errors class="mb-4 errorMsg"/>
-                     @if (session('status'))
-                     <div class="mb-4 successMsg">
-                        {{ session('status') }}
-                     </div>
-                     @endif
-                     <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
-                        <div class="form-group pos-rel">
-                           <div class="inputWrap">
-                              <input type="text" class="form-control" name="email" :value="old('email')" placeholder="Email" autofocus required>
-                              <span><img src="img/email.png" alt=""></span>
-                           </div>
-                        </div>
-                        <div class="form-group">
-                           <input type="submit" value=" {{ __('Email Password Reset Link') }}" class="loginBtn">
-                        </div>
-                        <div class="text-center">
-                           <a href="{{ route('login') }}">{{ __('Back to Login?') }}</a>                       
-                        </div>
-                  </div>
-                  </form>
-               </div>
+    <div class="innerWrap">
+        <div class="container">
+            <div class="text-center">
+                <a href="{{ url('/') }}"><img src="img/logo_2.png" alt="" class="img-fluid logo"></a>
             </div>
-         </div>
-      </div>      
-   </div>
+            <div class="formWrap">
+                <div class="row">
+                    <div class="col-lg-4  align-self-center text-center">
+                        <img src="img/img_1.jpg" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form">
+                            <p>{{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+                            </p>
+                            <x-jet-validation-errors class="mb-4 errorMsg" />
+                            @if (session('status'))
+                            <div class="mb-4 successMsg">
+                                {{ session('status') }}
+                            </div>
+                            @endif
+                            <form method="POST" action="{{ route('password.email') }}">
+                                @csrf
+                                <div class="form-group pos-rel">
+                                    <div class="inputWrap">
+                                        <input type="text" class="form-control" name="email" :value="old('email')"
+                                            placeholder="Email" autofocus required>
+                                        <span><img src="img/email.png" alt=""></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" id="next" value=" {{ __('Email Password Reset Link') }}"
+                                        class="loginBtn">
+                                </div>
+                                <div class="text-center">
+                                    <a href="{{ route('login') }}">{{ __('Back to Login?') }}</a>
+                                </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 @endsection

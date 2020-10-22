@@ -1,3 +1,9 @@
+@media only screen and (max-height: 400px) {
+    header .notificationWrap .setHeight {
+        height: calc(100vh - 200px);
+    }
+}
+
 @media only screen and (min-width: 1300px) {
     .container-1660 {
         max-width: 1660px;
@@ -181,6 +187,14 @@
     .loginWrap {
         padding: 40px 0px;
     }
+
+    .contactUsWrap .loginWrap .formWrap {
+        padding: 35px 30px 35px 30px;
+    }
+
+    .contactUsWrap .loginWrap .formWrap .loginBtn {
+        margin-bottom: 0px;
+    }
 }
 
 @media only screen and (max-width: 767px) {
@@ -234,6 +248,46 @@
         padding-right: 15px !important;
     }
 
+    .feedHubNav.followRequestLinksWrap ul,
+    .followRequestMainWrap .requests>div {
+        flex-wrap: wrap;
+    }
+
+    .feedHubNav.followRequestLinksWrap ul li {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .feedHubNav.followRequestLinksWrap li a {
+        text-align: center;
+    }
+
+    .followRequestMainWrap .requests .userInfo {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .contactUsWrap .loginWrap .formWrap .form-control {
+        max-width: 100%;
+    }
+
+    footer {
+        position: static;
+    }
+
+    .profileWrap .loginWrap .formWrap .innerForm .pr-0 {
+        padding-right: 15px !important;
+        margin-bottom: 15px;
+    }
+
+    .profileWrap .loginWrap .formWrap .innerForm .row {
+        margin-bottom: 15px;
+    }
+
+    header .notificationWrap {
+        width: 450px;
+    }
 }
 
 @media only screen and (max-width: 567px) {
@@ -350,7 +404,7 @@
     }
 
     main {
-        padding-bottom: 280px;
+        padding-bottom: 50px;
     }
 
     header .m-auto {
@@ -383,8 +437,8 @@
     }
 
     .feedHubNav li a {
-        font-size: 20px;
-        padding: 13px 10px;
+        font-size: 18px;
+        padding: 13px 6px;
     }
 
     footer li a .followCount {
@@ -470,4 +524,81 @@
     .registrationWrap.loginWrap .formWrap {
         padding: 30px 20px 20px 20px;
     }
+
+    .followRequestMainWrap .requests .userInfo h4 {
+        font-size: 18px;
+    }
+
+    .followRequestMainWrap .requests {
+        padding: 10px 20px 0px 20px;
+    }
+
+    .followRequestMainWrap .requests>div {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .followRequestMainWrap .requests button {
+        font-size: 15px;
+    }
+
+    .contactUsWrap .loginWrap .formWrap {
+        padding: 35px 20px 35px 20px;
+    }
+
+    .loginWrap .formWrap .profileImgDetail .btnWrap {
+        padding-left: 0px;
+        padding-bottom: 0px;
+    }
+
+    .loginWrap .formWrap .profileImgDetail {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .loginWrap .formWrap .profileImgDetail .btnWrap {
+        flex: 0 0 100%;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .loginWrap .formWrap .profileImgDetail h3 {
+        margin-bottom: 10px;
+        font-size: 20px;
+    }
+
+    header .notificationWrap {
+        width: 100%;
+        padding: 20px 15px;
+    }
+
+    header .notificationWrap .noti .imgWrap {
+        height: 48px;
+        max-width: 48px;
+        flex: 0 0 48px;
+        font-size: 18px;
+        font-weight: 700;
+        overflow: hidden;
+    }
+
+    header .notificationWrap .noti .info {
+        padding-left: 10px;
+    }
+
+    header .notificationWrap .noti .info p {
+        font-size: 14px;
+        line-height: 22px;
+    }
+
+    header .notificationWrap .noti .info p span {
+        font-size: 16px;
+    }
+
+    header .notificationWrap h3 {
+        font-size: 20px;
+        line-height: 20px;
+    }
+
+
+
 }
