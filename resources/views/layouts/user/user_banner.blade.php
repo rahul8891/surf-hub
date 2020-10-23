@@ -1,4 +1,7 @@
-@if (!Auth::user())
+<?php 
+//dd(Request::path());
+?>
+@if (!Auth::user() && Request::path() == 'welcome' || Request::path() == '/')
 <section class="banner">
     <div class="container d-flex">
         <div class="ml-auto contentWrap">

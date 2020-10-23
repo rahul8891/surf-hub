@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Closure;
 use Illuminate\Http\Request;
-
+use Redirect;
 class UserMiddleware
 {
     /**
@@ -25,6 +25,8 @@ class UserMiddleware
                 if($user->user_type == $checkUserType['USER']){
                     // return true and allow route to USER
                     return $next($request);
+                }else{
+                    return Redirect::to('/admin/dashboard/index')->withErrors('Sorry, You Are Not Authorized to Access User Route'); 
                 }
             }
         }catch (\Exception $e){

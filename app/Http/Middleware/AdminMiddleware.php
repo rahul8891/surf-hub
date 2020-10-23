@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Closure;
 use Illuminate\Http\Request;
+use Redirect;
 
 class AdminMiddleware
 {
@@ -23,8 +24,10 @@ class AdminMiddleware
             $checkUserType = config('customarray.userType');
             if (in_array($user->user_type, $checkUserType)) {
                 if($user->user_type == $checkUserType['ADMIN']){
-                    // return true and allow route to Admin User Only
+                    // return true and allow route to Admin Only
                     return $next($request);
+                }else{
+                    return Redirect::to('/dashboard')->withErrors('Sorry, You Are Not Authorized to Access Administrator Route');                   
                 }
             }
         }catch (\Exception $e){           

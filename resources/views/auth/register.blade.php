@@ -199,8 +199,9 @@
                                         <div class="form-group">
                                             <div class="radioWrap">
                                                 <input type="radio" id="test1" name="terms" required>
-                                                <label for="test1">{{ __('Accept legal') }} <a
-                                                        href="javaScript:void(0)"><span>{{ __('terms and conditions.') }}</span></a></label>
+                                                <label for="test1">{{ __('Accept legal') }} <a href="javaScript:void(0)"
+                                                        data-toggle="modal"
+                                                        data-target="#exampleModal"><span>{{ __('terms and conditions.') }}</span></a></label>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -224,4 +225,5 @@
         </div>
     </div>
 </section>
+@include('layouts/models/terms-and-conditions')
 @endsection

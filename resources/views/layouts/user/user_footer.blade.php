@@ -29,25 +29,25 @@
                 </li>
                 @endif
                 <li>
-                    <a href="#">Privacy Policy</a>
+                    <a href="{{ route('privacy') }}">Privacy Policy</a>
                 </li>
                 <li>
                     <span class="divider"></span>
                 </li>
                 <li>
-                    <a href="#"> T&Cs</a>
+                    <a href="{{ route('terms') }}"> T&Cs</a>
                 </li>
                 <li>
                     <span class="divider"></span>
                 </li>
                 <li>
-                    <a href="#">Help/FAQs</a>
+                    <a href="{{ route('faq') }}">Help/FAQs</a>
                 </li>
                 <li>
                     <span class="divider"></span>
                 </li>
                 <li>
-                    <a href="#">Contact Us</a>
+                    <a href="{{ route('contact') }}">Contact Us</a>
                 </li>
                 @auth
                 <li>
