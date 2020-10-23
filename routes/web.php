@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminDashboard;
 use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\WelcomeFeedController;
+use App\Http\Controllers\admin\AdminPageController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,12 +17,21 @@ use App\Http\Controllers\WelcomeFeedController;
 |
 */
 
+/*********************************************************************************************
+ *                            Guest  User Route
+ * ********************************************************************************************/
+
+Route::get('/', [WelcomeFeedController::class, 'welcome'])->name('feed');
+Route::get('/privacy-policy', [WelcomeFeedController::class, 'privacy'])->name('privacy');
+Route::get('/terms-and-conditions', [WelcomeFeedController::class, 'terms'])->name('terms');
+Route::get('/help-faq', [WelcomeFeedController::class, 'faq'])->name('faq');
+Route::get('/contact-us', [WelcomeFeedController::class, 'contact'])->name('contact');
+
 
 /*********************************************************************************************
  *                              User Route
  * ********************************************************************************************/
 
-Route::get('/', [WelcomeFeedController::class, 'welcome'])->name('feed');
 Route::middleware(['auth:sanctum', 'verified', 'userAuth'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
@@ -47,4 +58,9 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::post('/users/update/{id}', [AdminUserController::class, 'update'])->name('adminUserUpdate');
     Route::post('/users/updateUserStatus', [AdminUserController::class, 'updateUserStatus'])->name('updateUserStatus');
     Route::post('/users/updateActivateStatus', ['as' => 'users.updateActivateStatus', 'uses' => 'UserController@updateActivateStatus', 'middleware' => ['permission:user_activate']]);
+
+    // pages Route
+    Route::get('/pages/index', [AdminPageController::class, 'index'])->name('adminPageIndex');
+    Route::get('/pages/edit/{id}',  [AdminPageController::class, 'edit'])->name('adminPageEdit');
+    Route::post('/pages/update/{id}', [AdminPageController::class, 'update'])->name('adminPageUpdate');
 });

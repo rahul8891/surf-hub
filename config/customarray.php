@@ -54,8 +54,11 @@ return [
         'unauthorized'=>'You Are Not Authorized to Access This Page',
         'unauthorizedType'=>'You Are Not Authorized',
         'userCreate '=>'User account has been created successfully.!',
+        "DEFAULT_ERROR"=> "Something went wrong!",
+        "MODEL_ERROR"=>"Model not found",
     ],
 
-    'success'=>[
+    'SUCCESS'=>[
+        'UPDATE_SUCCESS'=>'Record has been successfully updated'
     ],
 ];

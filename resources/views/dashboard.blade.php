@@ -853,5 +853,5 @@
         </div>
     </div>
 </section>
-@include('layouts/upload_video_photo')
+@include('layouts/models/upload_video_photo')
 @endsection
