@@ -21,7 +21,6 @@ use App\Http\Controllers\admin\AdminPageController;
  *                            Guest  User Route
  * ********************************************************************************************/
 
-
 Route::get('/', [WelcomeFeedController::class, 'welcome'])->name('feed');
 Route::get('/privacy-policy', [WelcomeFeedController::class, 'privacy'])->name('privacy');
 Route::get('/terms-and-conditions', [WelcomeFeedController::class, 'terms'])->name('terms');
