@@ -19,11 +19,20 @@
 <body>
     <!-- Header -->
     @include('layouts/user/user_header')
-    <main>
+    <main class="contactUsWrap">
         <div id="loader"></div>
         <!-- user banner -->
         @include('layouts/user/user_banner')
         <!-- Page Content -->
+        @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" id="error" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            @foreach ($errors->all() as $error)
+            <li>{{ ucfirst($error) }}</li>
+            @endforeach
+        </div>
+        @endif
         <!-- Loggedin user feed -->
         @include('layouts/user/user_feed_menu')
         @yield('content')
@@ -46,6 +55,9 @@
             cursorwidth: '10px',
             zindex: 999
         });
+
+        $('#error').delay(4000).fadeOut('slow');
+
     });
     </script>
     < /body>

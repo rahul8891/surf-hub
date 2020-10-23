@@ -34,7 +34,7 @@ class AdminDashboard extends Controller
     public function index()
     {         
         
-        $totalUser =$this->users->getUserTotal();
+        $totalUser = $this->users->getUserTotal();
         return view('admin/dashboard.index', compact('totalUser'));
     }
 
