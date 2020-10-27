@@ -3,18 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Crypt;
-use App\Models\User;
-use Carbon\Carbon;
-use Closure;
+use Illuminate\Support\Facades\Gate;
+
+use App\Services\MasterService;
+
 use Redirect;
-use Session;
-class VideoImagePostController extends Controller
+class DashboardController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  AdminUserService  $users
+     * @return void
+     */
+    public function __construct(MasterService $masterService)
+    {
+            $this->masterService = $masterService;
+            $this->customArray = config('customarray');
+    }
+    
+    public function dashboard(){
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;      
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $customArray = $this->customArray;      
+        return view('dashboard',compact('customArray','countries','states','currentUserCountryId'));
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -90,4 +108,9 @@ class VideoImagePostController extends Controller
     {
         //
     }
+
+   
+
+
+    
 }

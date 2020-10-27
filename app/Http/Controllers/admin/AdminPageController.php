@@ -104,10 +104,10 @@ class AdminPageController extends Controller
                     $pages->title = $data['title'];
                     $pages->body = $data['body'];
                     if($pages->save()){
-                        return redirect()->route('adminPageIndex')->withSuccess($this->message['SUCCESS']['UPDATE_SUCCESS']);
+                        return redirect()->route('adminPageIndex')->withSuccess($this->message['success']['UPDATE_SUCCESS']);
                     }
                 }else{
-                    return redirect()->route('adminPageIndex')->withErrors($this->message['SUCCESS']['MODEL_ERROR']);
+                    return redirect()->route('adminPageIndex')->withErrors($this->message['success']['MODEL_ERROR']);
                 }
             }
         }catch (\Exception $e){
