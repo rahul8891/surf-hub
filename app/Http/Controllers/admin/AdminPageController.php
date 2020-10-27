@@ -42,7 +42,7 @@ class AdminPageController extends Controller
      */
     public function index()
     {
-        $pages = $this->pages->All();     
+        $pages = $this->pages->where('is_deleted','0')->get();     
         $spiner = ($pages) ? true : false;
         return view('admin/admin_static_pages.index', compact('pages','spiner'));     
     }
@@ -104,10 +104,10 @@ class AdminPageController extends Controller
                     $pages->title = $data['title'];
                     $pages->body = $data['body'];
                     if($pages->save()){
-                        return redirect()->route('adminPageIndex')->withSuccess($this->message['SUCCESS']['UPDATE_SUCCESS']);
+                        return redirect()->route('adminPageIndex')->withSuccess($this->message['success']['UPDATE_SUCCESS']);
                     }
                 }else{
-                    return redirect()->route('adminPageIndex')->withErrors($this->message['SUCCESS']['MODEL_ERROR']);
+                    return redirect()->route('adminPageIndex')->withErrors($this->message['success']['MODEL_ERROR']);
                 }
             }
         }catch (\Exception $e){

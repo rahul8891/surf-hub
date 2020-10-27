@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use App\Models\Country;
-use App\Models\UserProfile;
-use App\Models\Post;
-class State extends Model
+use App\Models\State;
+
+class Post extends Model
 {
     use HasFactory;
 
@@ -16,30 +17,31 @@ class State extends Model
      ************************************************************************************************************/
 
     /**
-     * Relationship between state  and country model    
+     * Relationship between Post and user model    
      * @return object
      */
-    
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    /**
+     * Relationship between country and user_follows model    
+     * @return object
+     */
     public function countries()
     {
         return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 
     /**
-     * Relationship between state  and user profile model.
+     * Relationship between state and user_follows model    
+     * @return object
      */
-    public function user_profiles()
+    public function states()
     {
-        return $this->hasOne(UserProfile::class, 'state_id', 'id');
+        return $this->belongsTo(State::class, 'state_id', 'id');
     }
-
-    /**
-     * Get the user that owns the profile.
-     */
-    public function posts()
-    {
-        return $this->hasOne(Post::class, 'country_id', 'id');
-    }
-
     
+
 }

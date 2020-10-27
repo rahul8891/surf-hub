@@ -5,6 +5,8 @@ use App\Http\Controllers\admin\AdminDashboard;
 use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\WelcomeFeedController;
 use App\Http\Controllers\admin\AdminPageController;
+use App\Http\Controllers\user\PostController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +20,7 @@ use App\Http\Controllers\admin\AdminPageController;
 */
 
 /*********************************************************************************************
- *                            Guest  User Route
+ *                            Guest User Route
  * ********************************************************************************************/
 
 Route::get('/', [WelcomeFeedController::class, 'welcome'])->name('feed');
@@ -32,12 +34,22 @@ Route::get('/contact-us', [WelcomeFeedController::class, 'contact'])->name('cont
  *                              User Route
  * ********************************************************************************************/
 
-Route::middleware(['auth:sanctum', 'verified', 'userAuth'])->get('/dashboard', function () {
+/*Route::middleware(['auth:sanctum', 'verified', 'userAuth'])->get('/dashboard', function () {
     return view('dashboard');
-})->name('dashboard');
+})->name('dashboard');*/
+
+Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    
+});
 
 
+Route::group(['middleware' => ['auth', 'userAuth']], function () {
 
+    Route::post('store', [PostController::class, 'store'])->name('storePost');
+    
+});
 
 
 /*********************************************************************************************

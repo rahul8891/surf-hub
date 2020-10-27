@@ -1,4 +1,4 @@
-@extends('layouts.user.user')
+@extends('layouts.static_pages')
 @section('content')
 <div class="feedHubNav ">
     <div class="container">

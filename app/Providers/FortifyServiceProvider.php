@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 use App\Models\User;
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Actions\Fortify\CreateNewUser;
@@ -80,10 +81,11 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function createUsersUsing(){
         Fortify::registerView(function () {
+            $terms = DB::table('pages')->select('id', 'title','body')->where('alias','terms')->first();
             $countries = DB::table('countries')->select('id', 'name')->orderBy('name','asc')->get();
             $language = config('customarray.language'); 
             $accountType = config('customarray.accountType');
-            return view('auth.register', compact('countries','language','accountType'));
+            return view('auth.register', compact('countries','language','accountType','terms'));
         });
     }
     
