@@ -18,7 +18,10 @@
 
 <body>
     <main class="pt-0 bg-blue">
-        <div id="loader"></div>
+        <!-- <div id="loader"></div> -->
+        <div class="loaderWrap">
+            <div class="lds-hourglass"></div>
+        </div>
         @yield('content')
     </main>
     <footer>

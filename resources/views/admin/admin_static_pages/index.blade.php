@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.admin.master')
 @section('content')
 <div class="col-md-12">
     <div id="loader"></div>
@@ -21,7 +21,7 @@
                         <td>{{ __($value->title) }}</td>
                         <td>{!! substr($value->body,0, 100) !!}</td>
                         <td>
-                            <a class="btn btn-info btn-sm"
+                            <a id="next" class="btn btn-info btn-sm"
                                 href="{{route('adminPageEdit', Crypt::encrypt($value->id))}}"><i
                                     class="fas fa-pencil-alt"></i> Edit</a>
                         </td>

@@ -18,7 +18,7 @@ use App\Http\Controllers\admin\AdminPageController;
 */
 
 /*********************************************************************************************
- *                            Guest  User Route
+ *                            Guest User Route
  * ********************************************************************************************/
 
 Route::get('/', [WelcomeFeedController::class, 'welcome'])->name('feed');
@@ -36,7 +36,9 @@ Route::middleware(['auth:sanctum', 'verified', 'userAuth'])->get('/dashboard', f
     return view('dashboard');
 })->name('dashboard');
 
-
+/*Route::group(['middleware' => ['auth', 'userAuth']], function () {
+    Route::post('/users/store', [AdminUserController::class, 'store'])->name('createPost');
+});*/
 
 
 

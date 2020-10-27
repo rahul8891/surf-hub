@@ -42,7 +42,7 @@ class AdminPageController extends Controller
      */
     public function index()
     {
-        $pages = $this->pages->All();     
+        $pages = $this->pages->where('is_deleted','0')->get();     
         $spiner = ($pages) ? true : false;
         return view('admin/admin_static_pages.index', compact('pages','spiner'));     
     }

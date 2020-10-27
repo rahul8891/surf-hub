@@ -14,7 +14,7 @@ class AddLocalBeachBreakToUserProfilesTable extends Migration
     public function up()
     {
         Schema::table('user_profiles', function (Blueprint $table) {
-            $table->smallInteger('local_beach_break_id')->after('preferred_location')->nullable();
+            $table->integer('local_beach_break_id')->after('preferred_location')->nullable();
         });
     }
 

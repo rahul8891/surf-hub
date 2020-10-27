@@ -29,7 +29,7 @@ return [
     ],
 
     /**
-     * 
+     * user accountType
      */
     'accountType'=>[
         'PUBLIC'=>'Public',
@@ -49,7 +49,33 @@ return [
         'admin'=>'Surf Hub Admin',
         'user'=>'Surf Hub'
     ],
+    
+    /**
+     * Wave size drop down menu
+     */
+    'WAVE_SIZE'=>[
+        '1'=>'1-3 FT',
+        '2'=>'4-6 FT',
+        '3'=>'7 FT+',
+    ],
+    
+    /**
+     * BOARD TYPE drop down menu
+     */
+    'BOARD_TYPE'=>[
+        'SHORTBOARD'=>'Shortboard', 
+        'GUN'=>'Gun', 
+        'LONGBOARD'=>'Longboard', 
+        'BODYBOARD'=>'Bodyboard', 
+        'KNEEBOARD'=>'Kneeboard', 
+        'BODYSURF'=>'Bodysurf'
+    ],
 
+    
+
+    /****************************************************************************************************
+     *                                              Error msg
+     *****************************************************************************************************/
     'error'=>[
         'unauthorized'=>'You Are Not Authorized to Access This Page',
         'unauthorizedType'=>'You Are Not Authorized',
@@ -58,6 +84,9 @@ return [
         "MODEL_ERROR"=>"Model not found",
     ],
 
+    /****************************************************************************************************
+     *                                              Success msg
+     *****************************************************************************************************/
     'SUCCESS'=>[
         'UPDATE_SUCCESS'=>'Record has been successfully updated'
     ],

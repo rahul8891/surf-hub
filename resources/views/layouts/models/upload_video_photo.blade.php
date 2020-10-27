@@ -1,6 +1,7 @@
 <div class="modal fade uploadModal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
+
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><img src="img/logo_small.png">Upload Video/Photo</h5>
@@ -16,7 +17,7 @@
             </div>
             <div class="modal-body">
                 <div class="">
-                    <textarea placeholder="Type text ....."></textarea>
+                    <textarea placeholder="Share your surf experience....."></textarea>
                     <div class="videoImageUploader">
                         <div class="upload-btn-wrapper">
                             <button class=""><img alt="" src="img/photo.png"></button>
@@ -204,14 +205,14 @@
                                     </div>
                                     <div class="col-md-4 pl-1 pr-1 col-6">
                                         <div class="cstm-check pos-rel">
-                                            <input type="checkbox" id="Air" />
-                                            <label for="Air" class="">360</label>
+                                            <input type="checkbox" id="360" />
+                                            <label for="360" class="">360</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4 pl-1 pr-1 col-6">
                                         <div class="cstm-check pos-rel">
-                                            <input type="checkbox" id="Roll" />
-                                            <label for="Roll" class="">Wipeout</label>
+                                            <input type="checkbox" id="Wipeout" />
+                                            <label for="Wipeout" class="">Wipeout</label>
                                         </div>
                                     </div>
                                 </div>
@@ -227,5 +228,6 @@
                 <button data-dismiss="modal">UPLOAD</button>
             </div>
         </div>
+
     </div>
 </div>

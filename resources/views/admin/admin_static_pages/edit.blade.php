@@ -1,11 +1,11 @@
-@extends('layouts.master')
+@extends('layouts.admin.master')
 @section('content')
 <!--/. container-fluid -->
 
 <!-- right column -->
 <div class="col-md-12">
     <!-- general form elements disabled -->
-    <div id="loader"></div>
+    <!-- <div id="loader"></div> -->
     <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">Edit Page Details</h3>
