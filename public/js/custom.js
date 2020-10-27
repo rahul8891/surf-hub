@@ -3,7 +3,8 @@ $(document).ready(function () {
     
 	/************** spiner code ****************************/
 	var stopSpiner = "{{ $spiner}}";
-	var spinner = $('#loader');
+	// var spinner = $('#loader');
+	var spinner = $('.loaderWrap');
 
 	$('#next').click(function (event) {
 		spinner.show();

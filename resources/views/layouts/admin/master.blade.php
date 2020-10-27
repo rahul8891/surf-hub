@@ -24,16 +24,20 @@
     <link rel="stylesheet" href="{{ asset("/AdminLTE/plugins/summernote/summernote-bs4.css")}}">
 
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/loader.css")}}">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
     <div class="wrapper">
+        <div class="loaderWrap">
+            <div class="lds-hourglass"></div>
+        </div>
         <!-- Navbar -->
-        @include('layouts/master_header')
+        @include('layouts/admin/master_header')
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
-        @include('layouts/master_sidebar')
+        @include('layouts/admin/master_sidebar')
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
@@ -53,6 +57,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+
                     @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible" id="msg" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
@@ -82,7 +87,7 @@
         </div>
         <!-- /.content-wrapper -->
         <!-- Main Footer -->
-        @include('layouts/master_footer')
+        @include('layouts/admin/master_footer')
     </div>
     <!-- ./wrapper -->
     <!-- REQUIRED SCRIPTS -->

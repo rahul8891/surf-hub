@@ -19,11 +19,9 @@
 <body>
     <!-- Header -->
     @include('layouts/user/user_header')
-    <main>
+    <main class="contactUsWrap">
         <!-- class="contactUsWrap"-->
         <div id="loader"></div>
-        <!-- user banner -->
-        @include('layouts/user/user_banner')
         <!-- Page Content -->
         @if ($errors->any())
         <div class="alert alert-danger alert-dismissible" id="error" role="alert">
@@ -34,8 +32,6 @@
             @endforeach
         </div>
         @endif
-        <!-- Loggedin user feed -->
-        @include('layouts/user/user_feed_menu')
         @yield('content')
     </main>
     <footer>

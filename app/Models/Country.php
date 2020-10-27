@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\State;
 use App\Models\UserProfile;
+use App\Models\Post;
 class Country extends Model
 {
     use HasFactory;
@@ -31,4 +32,13 @@ class Country extends Model
     {
         return $this->hasOne(UserProfile::class, 'country_id', 'id');
     }
+
+    /**
+     * Get the user that owns the profile.
+     */
+    public function posts()
+    {
+        return $this->hasOne(Post::class, 'country_id', 'id');
+    }
+
 }

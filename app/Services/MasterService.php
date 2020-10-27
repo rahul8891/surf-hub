@@ -44,4 +44,23 @@ class MasterService {
     public function getCountries(){
         return $this->countries->select('id', 'name')->orderBy('name','asc')->get();
     }
+
+    /**
+     * [getStates] we are getiing all the states
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getStates(){
+        return $this->states->select('id', 'name')->orderBy('name','asc')->get();
+    }
+
+    /**
+     * [getStateByCountryId] we are getiing all the states based on the country id
+     * @param $countryId
+     * @return dataArray
+     */
+    public function getStateByCountryId($countryId){
+        return $this->states->select('id', 'name')->where('country_id',$countryId)->orderBy('name','asc')->get();
+    }
 }
