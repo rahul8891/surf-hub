@@ -177,7 +177,6 @@
                                         <div class="form-group pos-rel">
                                             <div class="selectWrap pos-rel">
                                                 <select class="form-control" name="local_beach_break_id" required>
-                                                    <option value="">-- Local Beach / Break --</option>
                                                     <option value="1"> Rolen Beach </option>
                                                 </select>
                                                 <span class="arrow">
@@ -205,7 +204,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="submit" id="next" value="Signup" class="loginBtn">
+                                            <input type="submit" id="next1" value="Signup" class="loginBtn">
                                         </div>
                                         <div class="alreadyAccount">
                                             {{ __('Already have an account?') }} <a
