@@ -31,7 +31,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="submit" id="next" value=" {{ __('Email Password Reset Link') }}"
+                                    <input type="submit" id="next1" value=" {{ __('Email Password Reset Link') }}"
                                         class="loginBtn">
                                 </div>
                                 <div class="text-center">

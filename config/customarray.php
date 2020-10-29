@@ -69,6 +69,11 @@ return [
         'WIPEOUT'=>'Wipeout',
     ],
     
+    'surfer'=>[
+        'ME'=>'Me',
+        'OTHERS'=>'Others',
+        'UNKNOWN'=>'Unknown'
+    ],
 
      /**********************************************************************************************************
      *                                  Global Access Data

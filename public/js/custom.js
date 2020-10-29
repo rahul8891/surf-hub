@@ -1,6 +1,19 @@
 $(document).ready(function () {
     var csrf_token = $('meta[name="csrf-token"]').attr('content');
-    
+	
+	/*$(':text').on('input change', function () {
+		$(':text').each(function () {
+			if ($(this).val() == '') {
+				$('#submit').prop('disabled', true);
+				return false;
+			}
+			else {
+				$('#submit').prop('disabled', false);
+			}
+		});
+	});*/
+
+
 	/************** spiner code ****************************/
 	var stopSpiner = "{{ $spiner}}";
 	// var spinner = $('#loader');
@@ -87,7 +100,6 @@ $(document).ready(function () {
 			}
 		});
 	});
-
 
 });
 
