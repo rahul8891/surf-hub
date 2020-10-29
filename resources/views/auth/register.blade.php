@@ -168,7 +168,7 @@
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
                                                 <input type="password" placeholder="Password" class="form-control"
-                                                    value="admin" name="password" autocomplete="new-password" required>
+                                                    value="" name="password" autocomplete="new-password" required>
                                                 <span><img src="img/lock.png" alt=""></span>
                                             </div>
                                         </div>
@@ -191,7 +191,7 @@
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
                                                 <input type="password" placeholder="Confirm Password"
-                                                    class="form-control" value="admin" name="password_confirmation"
+                                                    class="form-control" value="" name="password_confirmation"
                                                     autocomplete="new-password" required>
                                                 <span><img src="img/lock.png" alt=""></span>
                                             </div>
