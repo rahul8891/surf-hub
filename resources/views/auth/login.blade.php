@@ -47,7 +47,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="submit" id="next" value="{{ __('Login') }}" class="loginBtn">
+                                    <input type="submit" id="next1" value="{{ __('Login') }}" class="loginBtn">
                                 </div>
                                 <div class="text-center">
                                     @if (Route::has('password.request'))
