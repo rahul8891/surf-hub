@@ -1,7 +1,8 @@
 <div class="modal fade uploadModal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form method="POST" action="{{ route('storePost') }}" enctype="multipart/form-data">
+        <!-- action="javascript.void(0)" {{ route('storeVedioImagePost') }} -->
+        <form id="postForm">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"><img src="img/logo_small.png">Upload Video/Photo</h5>
@@ -13,21 +14,22 @@
                         </select>
                         <span><img src="img/select-downArrow.png" alt=""></span>
                     </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        onclick="this.form.reset();">
                         <img alt="" src="img/close.png">
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="">
-                        <textarea placeholder="Share your surf experience....."></textarea>
+                        <textarea placeholder="Share your surf experience....." name="post_text"></textarea>
                         <div class="videoImageUploader">
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="img/photo.png"></button>
-                                <input type="file" name="myfile" />
+                                <input type="file" name="surf_image[]" multiple />
                             </div>
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="img/video.png"></button>
-                                <input type="file" name="myfile" />
+                                <input type="file" name="surf_video[]" multiple />
                             </div>
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="img/tag-friend.png"></button>
@@ -56,7 +58,7 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="wave_size" required>
+                                                <select class="form-control" name="wave_size">
                                                     <option value="">{{ __('-- Select --')}}</option>
                                                     @foreach($customArray['wave_size'] as $key => $value)
                                                     <option value="{{ $key }}">{{ $value}}</option>
@@ -74,7 +76,7 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="country_id" required>
+                                                <select class="form-control" name="country_id">
                                                     <option value="">-- Country --</option>
                                                     @foreach($countries as $key => $value)
                                                     <option value="{{ $value->id }}"
@@ -95,8 +97,9 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control">
-                                                    <option></option>
+                                                <select class="form-control" name="local_beach_break_id">
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
                                                 </select>
                                                 <span><img src="img/select-downArrow.png" alt=""></span>
                                             </div>
@@ -110,7 +113,7 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="state_id" required>
+                                                <select class="form-control" name="state_id">
                                                     <option value="">-- State --</option>
                                                     @foreach($states as $key => $value)
                                                     <option value="{{ $value->id }}"
@@ -118,9 +121,7 @@
                                                         {{ $value->name }}</option>
                                                     @endforeach
                                                 </select>
-                                                <!-- <select class="form-control">
-                                                    <option></option>
-                                                </select> -->
+
                                                 <span><img src="img/select-downArrow.png" alt=""></span>
                                             </div>
                                         </div>
@@ -133,7 +134,7 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="board_type" required>
+                                                <select class="form-control" name="board_type">
                                                     <option value="">{{ __('-- Select --')}}</option>
                                                     @foreach($customArray['board_type'] as $key => $value)
                                                     <option value="{{ $key }}">{{ $value}}</option>
@@ -152,27 +153,31 @@
                                         <div class="col-md-3">
                                             <div class="d-flex meOthersCheck">
                                                 <div class="cstm-check pos-rel">
-                                                    <input type="checkbox" id="Me" />
+                                                    <input type="radio" name="surfer" value="me" id="Me" required />
                                                     <label for="Me" class="">Me</label>
                                                 </div>
                                                 <div class="cstm-check pos-rel">
-                                                    <input type="checkbox" id="Others" />
+                                                    <input type="radio" name="surfer" value="other" id="Others" />
                                                     <label for="Others" class="">Others</label>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 col-sm-8">
+                                        <div class="col-md-4 col-sm-8" style="display:none" id="otherSsurfer">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control">
-                                                    <option></option>
+                                                <select class="form-control" name="other_surfer" id="other_surfer">
+                                                    <option value=""></option>
+                                                    <option value="1">Sandeep</option>
+                                                    <option value="2">Raja</option>
+                                                    <option value="3">Raman</option>
+                                                    <option value="4">Sanoj</option>
                                                 </select>
                                                 <span><img src="img/select-downArrow.png" alt=""></span>
                                             </div>
                                         </div>
                                         <div class="col-md-1 col-sm-4">
                                             <div class="cstm-check pos-rel">
-                                                <input type="checkbox" id="Others" />
-                                                <label for="Others" class="">Unknown</label>
+                                                <input type="radio" name="surfer" id="Unknown" value="unknown" />
+                                                <label for="Unknown" class="">Unknown</label>
                                             </div>
                                         </div>
                                     </div>
@@ -190,53 +195,12 @@
                                         @foreach($customArray['optional'] as $key => $value)
                                         <div class="col-md-4 pl-1 pr-1 col-6">
                                             <div class="cstm-check pos-rel">
-                                                <input type="checkbox" name="optional_info[]" id="{{ __($key) }}" />
+                                                <input type="checkbox" name="optional_info[]" value="{{ __($key) }}"
+                                                    id="{{ __($key) }}" />
                                                 <label for="{{ __($key) }}" class="">{{ __($value) }}</label>
                                             </div>
                                         </div>
                                         @endforeach
-                                        <!--<div class="col-md-4 pl-1 pr-1 col-6">
-                                            <div class="cstm-check pos-rel">
-                                                <input type="checkbox" id="Drop" />
-                                                <label for="Drop" class="">Drop In</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 pl-1 pr-1 col-6">
-                                            <div class="cstm-check pos-rel">
-                                                <input type="checkbox" id="Cutback" />
-                                                <label for="Cutback" class="">Cutback </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 pl-1 pr-1 col-6">
-                                            <div class="cstm-check pos-rel">
-                                                <input type="checkbox" id="Air" />
-                                                <label for="Air" class="">Air</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 pl-1 pr-1 col-6">
-                                            <div class="cstm-check pos-rel">
-                                                <input type="checkbox" id="Roll" />
-                                                <label for="Roll" class="">Barrel Roll</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 pl-1 pr-1 col-6">
-                                            <div class="cstm-check pos-rel">
-                                                <input type="checkbox" id="Snap" />
-                                                <label for="Snap" class="">Snap </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 pl-1 pr-1 col-6">
-                                            <div class="cstm-check pos-rel">
-                                                <input type="checkbox" id="360" />
-                                                <label for="360" class="">360</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 pl-1 pr-1 col-6">
-                                            <div class="cstm-check pos-rel">
-                                                <input type="checkbox" id="Wipeout" />
-                                                <label for="Wipeout" class="">Wipeout</label>
-                                            </div>
-                                        </div>-->
                                     </div>
                                 </div>
                                 <div class="col-md-3 align-self-end">
@@ -247,7 +211,7 @@
                     </div>
                 </div>
                 <div class="modal-footer text-center justify-content-center">
-                    <!-- <button data-dismiss="modal">UPLOAD</button> -->
+                    <!-- <button type="reset">RESET</button> -->
                     <button type="submit">UPLOAD</button>
                 </div>
             </div>

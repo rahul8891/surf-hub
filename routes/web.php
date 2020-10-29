@@ -40,16 +40,18 @@ Route::get('/contact-us', [WelcomeFeedController::class, 'contact'])->name('cont
 
 Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-    
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');  
+     
+    Route::post('/post/store', [PostController::class, 'store'])->name('storeVedioImagePost');
 });
 
 
-Route::group(['middleware' => ['auth', 'userAuth']], function () {
-
-    Route::post('store', [PostController::class, 'store'])->name('storePost');
+// Route::group(['middleware' => ['auth', 'userAuth']], function () {
     
-});
+//     // Route::get('/post/index', [PostController::class, 'index'])->name('postindex');
+//     Route::post('/post/savepost', [PostController::class, 'storePost'])->name('storeVedioImagePost');
+    
+// });
 
 
 /*********************************************************************************************

@@ -42,7 +42,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="submit" id="next" value="{{ __('Reset Password') }}" class="loginBtn">
+                                    <input type="submit" id="next1" value="{{ __('Reset Password') }}" class="loginBtn">
                                 </div>
                         </div>
                         </form>
