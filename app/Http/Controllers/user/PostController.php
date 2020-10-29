@@ -17,6 +17,8 @@ use Session;
 
 class PostController extends Controller
 {
+
+   
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +26,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+       
     }
 
     /**
@@ -45,7 +47,12 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $data = $request->all();
+        Validator::make($data, [
+            'post_text' => ['required', 'string'],
+        ])->validate();
+        
+       dd($request);
     }
 
     /**
