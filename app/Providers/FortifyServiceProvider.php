@@ -48,7 +48,7 @@ class FortifyServiceProvider extends ServiceProvider
     public function customLoginAuth(){
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)
-                    ->orWhere('name', $request->email)->first();
+                    ->orWhere('user_name', $request->email)->first();
             if ($user &&
                 Hash::check($request->password, $user->password)) {
                 if($user->status === config('customarray.status.ACTIVE')){

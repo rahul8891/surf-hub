@@ -12,14 +12,23 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="m-auto d-flex align-items-center">
                 <a href="#">Search</a>
-                <span>Search here for video and photos from any surf break around the world!!</span>
+                <span>Search here for videos and photos from any surf break around the world!!</span>
             </div>
             <ul class="navbar-nav ml-auto tab-dis-none">
                 @auth
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="userImg no-image">EN <span class="followCount">14</span></div>Upender
+                        <div class="userImg ">
+                            @if(Auth::user()->profile_photo_path)
+                            <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}" class="img-fluid image"
+                                alt="">
+                            @else
+                            <img src="img/johan.png" class="img-fluid" alt="">
+                            @endif
+                            <span class="followCount">14</span>
+                        </div>
+                        {{ucwords(Auth::user()->user_profiles->first_name.' '.Auth::user()->user_profiles->last_name)}}
                     </a>
                     <div class="dropdown-menu notificationWrap" aria-labelledby="navbarDropdown">
                         <h3>Notifications</h3>
