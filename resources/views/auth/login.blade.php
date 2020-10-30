@@ -24,18 +24,18 @@
                                 {{ session('status') }}
                             </div>
                             @endif
-                            <form method="POST" action="{{ route('login') }}">
+                            <form method="POST" id="login" action="{{ route('login') }}">
                                 @csrf
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
-                                        <input type="text" class="form-control" name="email" :value="old('email')"
-                                            placeholder="Email / User Name" autofocus required>
+                                        <input type="text" class="form-control" id="email" name="email"
+                                            :value="old('email')" placeholder="Email / User Name" autofocus required>
                                         <span><img src="img/email.png" alt=""></span>
                                     </div>
                                 </div>
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
-                                        <input type="password" class="form-control" name="password"
+                                        <input type="password" class="form-control" id="password" name="password"
                                             placeholder="Password" autocomplete="current-password" required>
                                         <span><img src="img/lock.png" alt=""></span>
                                     </div>
@@ -51,10 +51,11 @@
                                 </div>
                                 <div class="text-center">
                                     @if (Route::has('password.request'))
-                                    <a href="{{ route('password.request') }}">{{ __('Forgot password?') }}</a>
+                                    <a href="{{ route('password.request') }}">{{ __('Forgot Password?') }}</a>
                                     @endif
                                 </div>
-                                <a href="{{ route('register') }}" class="signupBtn">{{ __('Signup for new User?') }}</a>
+                                <a href="{{ route('register') }}"
+                                    class="signupBtn">{{ __('Sign Up for New User?') }}</a>
                         </div>
                         </form>
                     </div>

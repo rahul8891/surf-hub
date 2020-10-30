@@ -1,19 +1,14 @@
 $(document).ready(function () {
     var csrf_token = $('meta[name="csrf-token"]').attr('content');
+
+	/*$('#login').click(function (event) {		
+		var email = $('#email').val();
+		var password = $('#password').val();
+		if(email && password){
+			spinner.show();
+		}
+	});*/	
 	
-	/*$(':text').on('input change', function () {
-		$(':text').each(function () {
-			if ($(this).val() == '') {
-				$('#submit').prop('disabled', true);
-				return false;
-			}
-			else {
-				$('#submit').prop('disabled', false);
-			}
-		});
-	});*/
-
-
 	/************** spiner code ****************************/
 	var stopSpiner = "{{ $spiner}}";
 	// var spinner = $('#loader');
@@ -41,7 +36,7 @@ $(document).ready(function () {
 	function readURL(input) {
 		var url = input.value;
 		var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
-		if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
+		if (input.files && input.files[0] && (ext == "png" || ext == "jpeg" || ext == "jpg")) {
 			$('#imageError').hide();
 			var reader = new FileReader();
 			reader.onload = function (e) {
@@ -52,10 +47,12 @@ $(document).ready(function () {
 			reader.readAsDataURL(input.files[0]);
 		} else {
 			$("#exampleInputFile").val('');
+			$('#category-img-tag').attr('src', '/img/image-file.png');
+			$('#category-img-tag').attr('width', 'auto'); 
 			$('#remove-img').hide();
             $('#imageError').show();  
-            $('#category-img-tag').attr('width', 'auto');       
-			$('#category-img-tag').attr('src', '/img/image-file.png');
+                 
+			
 		}
 	}
 
@@ -63,10 +60,11 @@ $(document).ready(function () {
 	 * Reset Image
 	 */
 	$("#remove-img").click(function () {
+		$("#exampleInputFile").val('');
+		$('#category-img-tag').attr('src','');
+		$('#category-img-tag').attr('src', 'img/image-file.png');
+		$('#category-img-tag').attr('width', 'auto');
 		$('#remove-img').hide();
-        $("#exampleInputFile").val('');   
-        $('#category-img-tag').attr('width', 'auto');          
-		$('#category-img-tag').attr('src', '/img/image-file.png');
 	});
 
 

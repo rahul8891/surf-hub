@@ -225,7 +225,7 @@ footer li a {
     font-size: 12px;
     letter-spacing: 1px;
     line-height: 23px;
-    color: #7e7e7e;
+    color: #474646;
     font-weight: 400;
     font-family: "Roboto", sans-serif;
 }
@@ -620,6 +620,12 @@ header .userImg .followCount {
     position: absolute;
     top: -3px;
     right: -5px;
+}
+
+header .userImg .image {
+    height: inherit;
+    border-radius: inherit;
+    width: fit-content;
 }
 
 header #navbarDropdown {
@@ -1294,7 +1300,7 @@ header .dropdown-toggle::after {
 .loginWrap .formWrap a {
     font-size: 14px;
     line-height: 18px;
-    color: #000101;
+    color: #4c8df5;
     font-weight: 400;
 }
 

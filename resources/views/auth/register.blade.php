@@ -17,8 +17,9 @@
                             <div class="form">
                                 <h2>Registration</h2>
                                 <div class="row">
-                                    <span id="remove-img" class="reset-img notDisplayed"><img src="img/close.png"
-                                            id="img-remove" width="18px" alt=""></span>
+                                    <span id="remove-img" class="reset-img notDisplayed">
+                                        <img src="img/close.png" id="img-remove" width="14px" alt="">
+                                    </span>
                                     <div class="col-md-6">
                                         <div class="d-flex uploadBtnMainWrap align-items-center form-group">
                                             <div class="upload-btn-wrapper ">
@@ -26,12 +27,12 @@
                                                     <img src="img/image-file.png" id="category-img-tag" alt="">
                                                 </button>
                                                 <input type="file" accept=".png, .jpg, .jpeg" id="exampleInputFile"
-                                                    name="profile_photo_name" />
+                                                    name="profile_photo_name" required />
                                             </div>
                                             <label class="mb-0 pl-1">Upload Profile Pic</label>
                                         </div>
-                                        <span id="imageError" class="notDisplayed required">Please upload files having
-                                            extensions: jpg, jpeg, png</span>
+                                        <span id="imageError" class="notDisplayed required">{{ __('Please upload files having
+                                            extensions: jpg, jpeg, png') }}</span>
                                     </div>
                                     <!-- Error display -->
                                     <div class="col-md-6">
@@ -47,8 +48,8 @@
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
                                                 <input class="form-control" type="text" name="first_name"
-                                                    value="{{ old('first_name') }}" autocomplete="first_name"
-                                                    placeholder="First Name" required>
+                                                    value="{{ old('first_name') }}" minlength="4"
+                                                    autocomplete="first_name" placeholder="First Name" required>
                                                 <span><img src="img/user-grey.png" alt=""></span>
                                             </div>
                                         </div>
@@ -57,8 +58,8 @@
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
                                                 <input type="text" placeholder="Last Name" class="form-control"
-                                                    name="last_name" value="{{ old('last_name') }}"
-                                                    autocomplete="last_name">
+                                                    name="last_name" value="{{ old('last_name') }}" minlength="4"
+                                                    autocomplete="last_name" required>
                                                 <span><img src="img/user-grey.png" alt=""></span>
                                             </div>
                                         </div>
@@ -67,7 +68,8 @@
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
                                                 <input type="text" class="form-control" placeholder="User Name"
-                                                    name="name" value="{{ old('name') }}" required autocomplete="name">
+                                                    name="user_name" value="{{ old('user_name') }}" minlength="5"
+                                                    maxlength="25" required autocomplete="user_name">
                                                 <span><img src="img/user-grey.png" alt=""></span>
                                             </div>
                                         </div>
@@ -85,7 +87,8 @@
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
                                                 <input type="text" placeholder="Phone No." class="form-control"
-                                                    name="phone" value="{{ old('phone') }}" autocomplete="phone">
+                                                    name="phone" value="{{ old('phone') }}" minlength="10"
+                                                    maxlength="15" autocomplete="phone">
                                                 <span><img src="img/phone1.png" alt=""></span>
                                             </div>
                                         </div>
@@ -147,8 +150,8 @@
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
-                                                <input type="text" placeholder="Facebook Account" class="form-control"
-                                                    name="facebook" value="{{ old('facebook') }}"
+                                                <input type="text" placeholder="Facebook Account Link"
+                                                    class="form-control" name="facebook" value="{{ old('facebook') }}"
                                                     autocomplete="facebook">
                                                 <span><img src="img/facebook-app-symbol.png" alt=""></span>
                                             </div>
@@ -157,8 +160,8 @@
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
-                                                <input type="text" placeholder="Instagram Account" class="form-control"
-                                                    name="instagram" value="{{ old('instagram') }}"
+                                                <input type="text" placeholder="Instagram Account Link"
+                                                    class="form-control" name="instagram" value="{{ old('instagram') }}"
                                                     autocomplete="instagram">
                                                 <span><img src="img/instagram-grey.png" alt=""></span>
                                             </div>
@@ -197,7 +200,8 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="radioWrap">
-                                                <input type="radio" id="test1" name="terms" required>
+                                                <input type="radio" id="test1" name="terms" value="true"
+                                                    required="required">
                                                 <label for="test1">{{ __('Accept legal') }} <a href="javaScript:void(0)"
                                                         data-toggle="modal"
                                                         data-target="#exampleModal"><span>{{ __('terms and conditions.') }}</span></a></label>
