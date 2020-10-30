@@ -7,13 +7,10 @@
     <link rel="shortcut icon" href="{{ asset('images/logo_small.png') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ config('customarray.siteTitle.user') }}</title>
-    <link rel="stylesheet" type="text/css" href="{{ asset("/css/fontawesome.css")}}">
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/bootstrap.min.css")}}">
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/style.css")}}">
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/loader.css")}}">
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/responsive.css")}}">
-    <link rel="stylesheet" type="text/css" href="{{ asset("/css/owl.carousel.min.css")}}">
-    <link rel="stylesheet" type="text/css" href="{{ asset("/css/owl.theme.default.min.css")}}">
 </head>
 
 <body>

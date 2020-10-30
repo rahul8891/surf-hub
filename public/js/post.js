@@ -1,5 +1,6 @@
 $(document).ready(function () {
     var csrf_token = $('meta[name="csrf-token"]').attr('content');
+    
     $("#postForm").submit(function(event){
         event.preventDefault();
         
