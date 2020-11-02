@@ -1,9 +1,9 @@
 <header class="border-btm">
     <nav class="navbar navbar-expand-lg navbar-light bg-light container-1660">
         @auth
-        <a class="navbar-brand" href="{{ url('/dashboard')}}"><img src="img/logo.png" alt=""></a>
+        <a class="navbar-brand" href="{{ url('/dashboard')}}"><img src="{{ asset("/img/logo.png")}}" alt=""></a>
         @else
-        <a class="navbar-brand" href="{{ url('/')}}"><img src="img/logo.png" alt=""></a>
+        <a class="navbar-brand" href="{{ url('/')}}"><img src="{{ asset("/img/logo.png")}}" alt=""></a>
         @endif
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +24,7 @@
                             <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}" class="img-fluid image"
                                 alt="">
                             @else
-                            <img src="img/johan.png" class="img-fluid" alt="">
+                            <img src="{{ asset("/img/johan.png")}}" class="img-fluid" alt="">
                             @endif
                             <span class="followCount">14</span>
                         </div>
@@ -47,7 +47,7 @@
                             <a class="dropdown-item" href="#">
                                 <div class="noti">
                                     <div class="imgWrap ">
-                                        <img src="img/johan.png" class="img-fluid" alt="">
+                                        <img src="{{ asset("/img/johan.png")}}" class="img-fluid" alt="">
                                     </div>
                                     <div class="info">
                                         <p><span>Upender</span> Added a new photo </p>
@@ -69,7 +69,7 @@
                             <a class="dropdown-item" href="#">
                                 <div class="noti">
                                     <div class="imgWrap ">
-                                        <img src="img/johan.png" class="img-fluid" alt="">
+                                        <img src="{{ asset("/img/johan.png")}}" class="img-fluid" alt="">
                                     </div>
                                     <div class="info">
                                         <p><span>Upender</span> Added a new photo </p>
@@ -91,7 +91,7 @@
                             <a class="dropdown-item" href="#">
                                 <div class="noti">
                                     <div class="imgWrap ">
-                                        <img src="img/johan.png" class="img-fluid" alt="">
+                                        <img src="{{ asset("/img/johan.png")}}" class="img-fluid" alt="">
                                     </div>
                                     <div class="info">
                                         <p><span>Upender</span> Added a new photo </p>
@@ -113,7 +113,7 @@
                             <a class="dropdown-item" href="#">
                                 <div class="noti">
                                     <div class="imgWrap ">
-                                        <img src="img/johan.png" class="img-fluid" alt="">
+                                        <img src="{{ asset("/img/johan.png")}}" class="img-fluid" alt="">
                                     </div>
                                     <div class="info">
                                         <p><span>Upender</span> Added a new photo </p>
@@ -135,7 +135,7 @@
                             <a class="dropdown-item" href="#">
                                 <div class="noti">
                                     <div class="imgWrap ">
-                                        <img src="img/johan.png" class="img-fluid" alt="">
+                                        <img src="{{ asset("/img/johan.png")}}" class="img-fluid" alt="">
                                     </div>
                                     <div class="info">
                                         <p><span>Upender</span> Added a new photo </p>
