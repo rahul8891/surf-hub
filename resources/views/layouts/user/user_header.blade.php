@@ -24,11 +24,13 @@
                             <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}" class="img-fluid image"
                                 alt="">
                             @else
-                            <img src="{{ asset("/img/johan.png")}}" class="img-fluid" alt="">
+                            <div class="imgWrap no-img">
+                                {{ucwords(substr(Auth::user()->user_profiles->first_name,0,1))}}
+                            </div>
                             @endif
                             <span class="followCount">14</span>
                         </div>
-                        {{ucwords(Auth::user()->user_profiles->first_name.' '.Auth::user()->user_profiles->last_name)}}
+                        {{ucwords(Auth::user()->user_profiles->first_name)}}
                     </a>
                     <div class="dropdown-menu notificationWrap" aria-labelledby="navbarDropdown">
                         <h3>Notifications</h3>

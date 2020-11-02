@@ -20,7 +20,7 @@
                             <p class="loginTxt">Login... To see it in action.</p>
                             <x-jet-validation-errors class="mb-4 errorMsg" />
                             @if (session('status'))
-                            <div class="mb-4 font-medium text-sm text-green-600">
+                            <div class="mb-4 successMsg">
                                 {{ session('status') }}
                             </div>
                             @endif
