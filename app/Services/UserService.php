@@ -35,6 +35,10 @@ class UserService {
         $this->users = new User();
         // get custom config file
         $this->checkUserType = config('customarray');
-    }    
+    }  
+    
+    public function updateUserPassword(){
+        
+    }
 
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Redirect;
 use Closure;
@@ -27,23 +28,21 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input)
     {
         $user = new User(); // user tabel object 
-        $userProfile = new UserProfile(); // user profile table object
-      
+        $userProfile = new UserProfile(); // user profile table object      
         Validator::make($input, [
-            'first_name' => ['required','min:4','string'],
-            'last_name' => ['required','min:4','string'],
+            'first_name' => ['required','min:3','string'],
+            'last_name' => ['required','min:3','string'],
             'user_name' => ['required', 'string','min:5', 'max:25', 'unique:users', 'alpha_dash'],
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
             'phone' => ['required', 'numeric','unique:user_profiles'],
-            'account_type' => ['required', 'string'],
             'language' => ['required', 'string'],
             'country_id' => ['required', 'numeric'],
-            'profile_photo_name' => ['required','image', 'mimes:jpeg,jpg,png'],
+            'account_type' => ['required', 'string'],
+            'profile_photo_name' => ['image', 'mimes:jpeg,jpg,png'],
             'local_beach_break_id' => ['required', 'numeric'],
             'terms' => ['required'],
             'password' => $this->passwordRules(),
-        ])->validate(); 
-        
+        ])->validate();
         try {
             $getImageArray = $this->uploadImage($input);
             $user->user_name = $input['user_name'];
