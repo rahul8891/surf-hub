@@ -18,7 +18,7 @@
                                 videos and photos! Follow your friends and enjoy the best search filters available to
                                 view surf footage from around the world!!</p>
                             <p class="loginTxt">Login... To see it in action.</p>
-                            <x-jet-validation-errors class="mb-4 errorMsg" />
+                            <!-- <x-jet-validation-errors class="mb-4 errorMsg" /> -->
                             @if (session('status'))
                             <div class="mb-4 successMsg">
                                 {{ session('status') }}
@@ -28,16 +28,25 @@
                                 @csrf
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
-                                        <input type="text" class="form-control" id="email" name="email"
-                                            :value="old('email')" placeholder="Email / User Name" autofocus required>
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                            id="email" name="email" :value="old('email')"
+                                            placeholder="Email / User Name" autofocus required>
                                         <span><img src="img/email.png" alt=""></span>
+                                        @error('email')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
-                                        <input type="password" class="form-control" id="password" name="password"
-                                            placeholder="Password" autocomplete="current-password" required>
+                                        <input type="password"
+                                            class="form-control @error('password') is-invalid @enderror" id="password"
+                                            name="password" placeholder="Password" autocomplete="current-password"
+                                            required>
                                         <span><img src="img/lock.png" alt=""></span>
+                                        @error('Password')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group">
