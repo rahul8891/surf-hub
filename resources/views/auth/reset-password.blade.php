@@ -22,7 +22,7 @@
 
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
-                                        <input type="text" class="form-control @error('email') is-invalid @enderror"
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror"
                                             name="email" value="{{ old('email',$request->email) }}" placeholder="Email"
                                             autofocus required readonly>
                                         <span><img src="{{ asset("/img/email.png")}}" alt=""></span>
