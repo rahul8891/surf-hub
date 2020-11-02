@@ -22,26 +22,38 @@
 
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
-                                        <input type="text" class="form-control" name="email"
-                                            value="{{ old('email',$request->email) }}" placeholder="Email" autofocus
-                                            required readonly>
+                                        <input type="text" class="form-control @error('email') is-invalid @enderror"
+                                            name="email" value="{{ old('email',$request->email) }}" placeholder="Email"
+                                            autofocus required readonly>
                                         <span><img src="{{ asset("/img/email.png")}}" alt=""></span>
+                                        @error('email')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
-                                        <input type="password" class="form-control" id="password" name="password"
-                                            placeholder="Password" autocomplete="new-password" required>
+                                        <input type="password"
+                                            class="form-control @error('password') is-invalid @enderror" id="password"
+                                            name="password" placeholder="Password" autocomplete="new-password" required>
                                         <span><img src="{{ asset("/img/lock.png")}}" alt=""></span>
+                                        @error('password_confirmation')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
-                                        <input type="password" class="form-control" name="password_confirmation"
-                                            placeholder="Confirm Password " required autocomplete="new-password">
+                                        <input type="password"
+                                            class="form-control @error('password_confirmation') is-invalid @enderror"
+                                            name="password_confirmation" placeholder="Confirm Password " required
+                                            autocomplete="new-password">
                                         <span><img src="{{ asset("/img/lock.png")}}" alt=""></span>
+                                        @error('email')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
