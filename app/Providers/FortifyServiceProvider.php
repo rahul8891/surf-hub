@@ -84,7 +84,7 @@ class FortifyServiceProvider extends ServiceProvider
             $terms = DB::table('pages')->select('id', 'title','body')->where('alias','terms')->first();
             $countries = DB::table('countries')->select('id', 'name')->orderBy('name','asc')->get();
             $language = config('customarray.language'); 
-            $accountType = config('customarray.accountType');
+            $accountType = config('customarray.accountType');           
             return view('auth.register', compact('countries','language','accountType','terms'));
         });
     }

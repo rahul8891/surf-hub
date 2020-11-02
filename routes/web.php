@@ -7,6 +7,7 @@ use App\Http\Controllers\WelcomeFeedController;
 use App\Http\Controllers\admin\AdminPageController;
 use App\Http\Controllers\user\PostController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\user\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,15 +44,13 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');  
      
     Route::post('/post/store', [PostController::class, 'store'])->name('storeVedioImagePost');
+
+    Route::get('/user/change-password', [UserController::class, 'showChangePassword'])->name('showPassword');
+    
+    Route::post('/user/change-password', [UserController::class, 'updateUserPassword'])->name('updatePassword');
 });
 
 
-// Route::group(['middleware' => ['auth', 'userAuth']], function () {
-    
-//     // Route::get('/post/index', [PostController::class, 'index'])->name('postindex');
-//     Route::post('/post/savepost', [PostController::class, 'storePost'])->name('storeVedioImagePost');
-    
-// });
 
 
 /*********************************************************************************************

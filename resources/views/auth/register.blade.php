@@ -27,7 +27,7 @@
                                                     <img src="img/image-file.png" id="category-img-tag" alt="">
                                                 </button>
                                                 <input type="file" accept=".png, .jpg, .jpeg" id="exampleInputFile"
-                                                    name="profile_photo_name" required />
+                                                    name="profile_photo_name" />
                                             </div>
                                             <label class="mb-0 pl-1">Upload Profile Pic</label>
                                         </div>
@@ -48,7 +48,7 @@
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
                                                 <input class="form-control" type="text" name="first_name"
-                                                    value="{{ old('first_name') }}" minlength="4"
+                                                    value="{{ old('first_name') }}" minlength="3"
                                                     autocomplete="first_name" placeholder="First Name" required>
                                                 <span><img src="img/user-grey.png" alt=""></span>
                                             </div>
@@ -58,7 +58,7 @@
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
                                                 <input type="text" placeholder="Last Name" class="form-control"
-                                                    name="last_name" value="{{ old('last_name') }}" minlength="4"
+                                                    name="last_name" value="{{ old('last_name') }}" minlength="3"
                                                     autocomplete="last_name" required>
                                                 <span><img src="img/user-grey.png" alt=""></span>
                                             </div>
@@ -78,7 +78,8 @@
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
                                                 <input type="email" placeholder="Email" class="form-control"
-                                                    name="email" value="{{ old('email') }}" required>
+                                                    name="email" value="{{ old('email') }}" autocomplete="email"
+                                                    required>
                                                 <span><img src="img/email.png" alt=""></span>
                                             </div>
                                         </div>
@@ -88,7 +89,7 @@
                                             <div class="inputWrap">
                                                 <input type="text" placeholder="Phone No." class="form-control"
                                                     name="phone" value="{{ old('phone') }}" minlength="10"
-                                                    maxlength="15" autocomplete="phone">
+                                                    maxlength="15" autocomplete="phone" required>
                                                 <span><img src="img/phone1.png" alt=""></span>
                                             </div>
                                         </div>
@@ -136,7 +137,8 @@
                                                     <option value="">-- Account Type --</option>
                                                     @foreach($accountType as $key => $value)
                                                     <option value="{{ $key }}"
-                                                        {{ old('account_type') == $key ? "selected" : "" }}>{{ $value }}
+                                                        {{ old('account_type') == $key ? "selected" : "" }}>
+                                                        {{ $value }}
                                                     </option>
                                                     @endforeach
                                                 </select>
@@ -171,7 +173,7 @@
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
                                                 <input type="password" placeholder="Password" class="form-control"
-                                                    value="" name="password" autocomplete="new-password" required>
+                                                    name="password" autocomplete="new-password" required>
                                                 <span><img src="img/lock.png" alt=""></span>
                                             </div>
                                         </div>
@@ -193,15 +195,14 @@
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
                                                 <input type="password" placeholder="Confirm Password"
-                                                    class="form-control" value="" name="password_confirmation"
+                                                    class="form-control" name="password_confirmation"
                                                     autocomplete="new-password" required>
                                                 <span><img src="img/lock.png" alt=""></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="radioWrap">
-                                                <input type="radio" id="test1" name="terms" value="true"
-                                                    required="required">
+                                                <input type="radio" id="test1" name="terms" value="true" required>
                                                 <label for="test1">{{ __('Accept legal') }} <a href="javaScript:void(0)"
                                                         data-toggle="modal"
                                                         data-target="#exampleModal"><span>{{ __('terms and conditions.') }}</span></a></label>

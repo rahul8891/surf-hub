@@ -15,6 +15,7 @@
                         <div class="form">
                             <p>
                                 {{ __('Reset your password.Just enter your new and confirm password') }}
+
                                 <x-jet-validation-errors class="mb-4 errorMsg" />
                             <form method="POST" action="{{ route('password.update') }}">
                                 @csrf

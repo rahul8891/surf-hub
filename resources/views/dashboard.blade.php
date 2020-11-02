@@ -1,5 +1,6 @@
 @extends('layouts.user.user')
 @section('content')
+@include('layouts/user/user_feed_menu')
 <section class="postsWrap">
     <div class="container">
         <div class="row">
