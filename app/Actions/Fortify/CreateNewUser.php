@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+use Symfony\Component\Console\Input\Input;
 use Carbon\Carbon;
 use Redirect;
 use Closure;

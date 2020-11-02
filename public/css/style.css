@@ -1357,7 +1357,7 @@ header .dropdown-toggle::after {
 }
 
 .loginWrap .formWrap .form-group span.arrow {
-    top: 50%;
+    top: 40%;
     right: 20px;
     left: auto;
 }
@@ -1855,4 +1855,9 @@ header .notificationWrap .setHeight {
 .nicescroll-rails > div {
     border: none !important;
     background-color: #4f8cf7 !important;
+}
+
+form .error {
+    color: #ff0000;
+    font-weight: normal;
 }

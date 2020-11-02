@@ -12,7 +12,8 @@
                         <img src="img/img_3.jpg" class="img-fluid" alt="">
                     </div>
                     <div class="col-lg-8">
-                        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+                        <form method="POST" name="register" action="{{ route('register') }}"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="form">
                                 <h2>Registration</h2>
@@ -33,10 +34,13 @@
                                         </div>
                                         <span id="imageError" class="notDisplayed required">{{ __('Please upload files having
                                             extensions: jpg, jpeg, png') }}</span>
+                                        @error('profile_photo_name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <!-- Error display -->
                                     <div class="col-md-6">
-                                        <x-jet-validation-errors class="errorMsg" />
+                                        <!-- <x-jet-validation-errors class="errorMsg" /> -->
                                         @if (session('status'))
                                         <div class="successMsg">
                                             {{ __('Registration Successfull, Please verify the email sent on your email address.') }}
@@ -47,57 +51,79 @@
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
-                                                <input class="form-control" type="text" name="first_name"
-                                                    value="{{ old('first_name') }}" minlength="3"
-                                                    autocomplete="first_name" placeholder="First Name" required>
+                                                <input class="form-control @error('first_name') is-invalid @enderror"
+                                                    type="text" name="first_name" value="{{ old('first_name') }}"
+                                                    minlength="3" autocomplete="first_name" placeholder="First Name"
+                                                    required>
                                                 <span><img src="img/user-grey.png" alt=""></span>
+                                                @error('first_name')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
-                                                <input type="text" placeholder="Last Name" class="form-control"
+                                                <input type="text" placeholder="Last Name"
+                                                    class="form-control @error('last_name') is-invalid @enderror"
                                                     name="last_name" value="{{ old('last_name') }}" minlength="3"
                                                     autocomplete="last_name" required>
                                                 <span><img src="img/user-grey.png" alt=""></span>
+                                                @error('last_name')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
-                                                <input type="text" class="form-control" placeholder="User Name"
-                                                    name="user_name" value="{{ old('user_name') }}" minlength="5"
-                                                    maxlength="25" required autocomplete="user_name">
+                                                <input type="text"
+                                                    class="form-control @error('user_name') is-invalid @enderror"
+                                                    placeholder="User Name" name="user_name"
+                                                    value="{{ old('user_name') }}" minlength="5" maxlength="25" required
+                                                    autocomplete="user_name">
                                                 <span><img src="img/user-grey.png" alt=""></span>
+                                                @error('user_name')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
-                                                <input type="email" placeholder="Email" class="form-control"
+                                                <input type="text" placeholder="Email"
+                                                    class="form-control @error('email') is-invalid @enderror"
                                                     name="email" value="{{ old('email') }}" autocomplete="email"
                                                     required>
                                                 <span><img src="img/email.png" alt=""></span>
+                                                @error('email')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
-                                                <input type="text" placeholder="Phone No." class="form-control"
+                                                <input type="text" placeholder="Phone No."
+                                                    class="form-control @error('phone') is-invalid @enderror"
                                                     name="phone" value="{{ old('phone') }}" minlength="10"
                                                     maxlength="15" autocomplete="phone" required>
                                                 <span><img src="img/phone1.png" alt=""></span>
+                                                @error('phone')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="country_id" required>
+                                                <select class="form-control @error('country_id') is-invalid @enderror"
+                                                    name="country_id" required>
                                                     <option value="">-- Country --</option>
                                                     @foreach($countries as $key => $value)
                                                     <option value="{{ $value->id }}"
@@ -109,13 +135,17 @@
                                                     <img src="img/select-downArrow.png" alt="">
                                                 </span>
                                                 <span class="first-icon"><img src="img/url.png" alt=""></span>
+                                                @error('country_id')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="language" required>
+                                                <select class="form-control @error('language') is-invalid @enderror"
+                                                    name="language" required>
                                                     <option value="">-- Preferred Language --</option>
                                                     @foreach($language as $key => $value)
                                                     <option value="{{ $key }}"
@@ -127,13 +157,17 @@
                                                     <img src="img/select-downArrow.png" alt="">
                                                 </span>
                                                 <span class="first-icon"><img src="img/global.png" alt=""></span>
+                                                @error('language')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="account_type" required>
+                                                <select class="form-control @error('account_type') is-invalid @enderror"
+                                                    name="account_type" required>
                                                     <option value="">-- Account Type --</option>
                                                     @foreach($accountType as $key => $value)
                                                     <option value="{{ $key }}"
@@ -146,6 +180,9 @@
                                                     <img src="img/select-downArrow.png" alt="">
                                                 </span>
                                                 <span class="first-icon"><img src="img/user-grey.png" alt=""></span>
+                                                @error('account_type')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -172,8 +209,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
-                                                <input type="password" placeholder="Password" class="form-control"
-                                                    name="password" autocomplete="new-password" required>
+                                                <input type="password" id="password" placeholder="Password"
+                                                    class="form-control" name="password" autocomplete="new-password"
+                                                    required>
                                                 <span><img src="img/lock.png" alt=""></span>
                                             </div>
                                         </div>
@@ -182,6 +220,7 @@
                                         <div class="form-group pos-rel">
                                             <div class="selectWrap pos-rel">
                                                 <select class="form-control" name="local_beach_break_id" required>
+                                                    <option value=""> --Select-- </option>
                                                     <option value="1"> Rolen Beach </option>
                                                 </select>
                                                 <span class="arrow">
@@ -199,14 +238,20 @@
                                                     autocomplete="new-password" required>
                                                 <span><img src="img/lock.png" alt=""></span>
                                             </div>
+                                            @error('password')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                         <div class="form-group">
-                                            <div class="radioWrap">
+                                            <div class="radioWrap @error('terms') is-invalid @enderror">
                                                 <input type="radio" id="test1" name="terms" value="true" required>
                                                 <label for="test1">{{ __('Accept legal') }} <a href="javaScript:void(0)"
                                                         data-toggle="modal"
                                                         data-target="#exampleModal"><span>{{ __('terms and conditions.') }}</span></a></label>
                                             </div>
+                                            @error('terms')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                         <div class="form-group">
                                             <input type="submit" id="next1" value="Signup" class="loginBtn">

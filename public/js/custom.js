@@ -99,6 +99,139 @@ $(document).ready(function () {
 		});
 	});
 
+
+
+
+	/*Page submit 
+	*/
+
+	$.validator.addMethod("pwcheck", function (value) {
+		return /[\@\#\$\%\^\&\*\(\)\_\+\!]/.test(value) && /[a-z]/.test(value) && /[0-9]/.test(value) && /[A-Z]/.test(value)
+	});
+
+	$("form[name='register']").validate({
+		rules: {
+				 
+		  first_name:{
+			required: true,
+			minlength: 3
+		  },
+		  last_name:{
+			required: true,
+			minlength: 3
+		  },
+		  user_name:{
+			required: true,
+			minlength: 5
+		  },
+		  email: {
+			required: true,
+			email: true
+		  },
+		  phone: {			
+			required: true,
+			minlength:10,
+            maxlength:15
+		  },
+		  country_id:{
+			required: true,
+		  },
+		  language:{
+			required: true,
+		  },	
+		  account_type:{
+			required: true,
+		  },
+		  local_beach_break_id:{
+			required: true,
+		  },
+		   password : {
+			minlength: 8,
+			required: true,
+			pwcheck: true
+			},
+			password_confirmation : {			
+				minlength: 8,
+				required: true,
+				pwcheck: true,
+				equalTo : "#password"
+			},
+
+		  terms:{
+			required: true,
+		  }
+		  
+		},
+	   errorPlacement: function(error, element) {
+			if ( element.is(":radio") ) {
+				//alert('oj');
+				error.insertAfter( element.parent().parent());
+			}
+			else { // This is the default behavior of the script for all fields
+				error.insertAfter( element );
+			}
+		},
+		messages: {				
+		  first_name: {
+			required: "Please enter your first name",
+			minlength: "Your password must be at least 3 characters long."
+		  },
+
+		  last_name: {
+			required: "Please enter your last name",
+			minlength: "Your password must be at least 3 characters long."
+		  },
+
+		  user_name: {
+			required: "Please enter your user name",
+			minlength: "Your password must be at least 5 characters long."
+		  },
+
+		  email: {
+			required: "Please enter your email",
+			email: "Please enter valid email address"
+		  },
+
+		  phone: {
+			required: "Please enter your phone number",
+			minlength: "Your phone must be minimun 10 number long.",
+			maxlength: "Your phone must be maximum 15 number long."
+		  },
+
+		  country_id:{
+			required: "Please select your country",
+		  },
+
+		  language:{
+			required: "Please select your language",
+		  },
+		  account_type:{
+			required: "Please select your account type",
+		  },
+
+		  local_beach_break_id:{
+			required: "Please select beach break",
+		  },
+		  password:{
+			// The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character.
+			required: "Please enter your password",
+			pwcheck:"The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+		  },
+		  password_confirmation:{
+			// The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character.
+			required: "Please enter your confirmation password",
+			pwcheck:"The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+		  },
+
+		  terms:{
+			required: "Please select terms and conditions",
+		  }
+		 
+		},
+		submitHandler: function(form) {
+		  form.submit();
+		}
+	  });
 });
 
 /**
