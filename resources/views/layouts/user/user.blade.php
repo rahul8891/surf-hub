@@ -29,7 +29,6 @@
             @endforeach
         </div>
         @endif
-        @include('layouts/user/user_feed_menu')
         @yield('content')
     </main>
     <footer>
@@ -56,6 +55,6 @@
 
     });
     </script>
-    < /body>
+</body>
 
 </html>

@@ -27,7 +27,7 @@ return [
     ],
 
     // User accountType
-    'accountType'=>[
+    'accountType'=>[     
         'PUBLIC'=>'Public',
         'PRIVATE'=>'Private'
     ],
