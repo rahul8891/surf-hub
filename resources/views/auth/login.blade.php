@@ -24,7 +24,7 @@
                                 {{ session('status') }}
                             </div>
                             @endif
-                            <form method="POST" id="login" action="{{ route('login') }}">
+                            <form method="POST" name="login" id=" login" action="{{ route('login') }}">
                                 @csrf
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">

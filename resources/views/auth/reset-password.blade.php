@@ -11,15 +11,15 @@
                     <div class="col-lg-4  align-self-center text-center">
                         <img src="{{ asset("/img/img_3.jpg")}}" class="img-fluid" alt="">
                     </div>
-                    <div class="col-lg-8">
+                    <div class="col-lg-6">
                         <div class="form">
                             <p>
                                 {{ __('Reset your password.Just enter your new and confirm password') }}
-
                                 <x-jet-validation-errors class="mb-4 errorMsg" />
-                            <form method="POST" action="{{ route('password.update') }}">
+                            <form method="POST" name="reset_password" action="{{ route('password.update') }}">
                                 @csrf
                                 <input type="hidden" name="token" value="{{ $request->route('token') }}">
+
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
                                         <input type="text" class="form-control" name="email"
@@ -28,13 +28,15 @@
                                         <span><img src="{{ asset("/img/email.png")}}" alt=""></span>
                                     </div>
                                 </div>
+
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
-                                        <input type="password" class="form-control" name="password"
+                                        <input type="password" class="form-control" id="password" name="password"
                                             placeholder="Password" autocomplete="new-password" required>
                                         <span><img src="{{ asset("/img/lock.png")}}" alt=""></span>
                                     </div>
                                 </div>
+
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
                                         <input type="password" class="form-control" name="password_confirmation"
@@ -42,9 +44,12 @@
                                         <span><img src="{{ asset("/img/lock.png")}}" alt=""></span>
                                     </div>
                                 </div>
+
+
                                 <div class="form-group">
                                     <input type="submit" id="next1" value="{{ __('Reset Password') }}" class="loginBtn">
                                 </div>
+
                         </div>
                         </form>
                     </div>
