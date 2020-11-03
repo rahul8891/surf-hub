@@ -108,48 +108,84 @@ $(document).ready(function () {
 	$.validator.addMethod("pwcheck", function (value) {
 		return /[\@\#\$\%\^\&\*\(\)\_\+\!]/.test(value) && /[a-z]/.test(value) && /[0-9]/.test(value) && /[A-Z]/.test(value)
 	});
+	// no space allow in text box
+	$.validator.addMethod("noSpace", function(value, element) { 
+		return value == '' || value.trim().length != 0;  
+	  }, "No space please and don't leave it empty");
+  
+	  // valid email format
+	$.validator.addMethod("validEmailFormat", function (email) {
+		var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
+    	return testEmail.test(email)
+	},"Please enter valid email with valid format");	
+	// NO SPACE ALLOW IN USER NAME
+	$.validator.addMethod("spaceNotAllow", function (value) {
+		var regexp = /^([A-z0-9!@#$%^&*().,<>{}[\]<>?_=+\-|;:\'\"\/])*[^\s]\1*$/;
+		return regexp.test(value)
+	},"No space are allowed in user name");
+
+	// only number allowed
+	$.validator.addMethod('numericOnly', function (value) {
+		return /^[0-9]+$/.test(value);
+ 	}, 'Please only enter numeric values (0-9)');
 
 	$("form[name='register']").validate({
 		rules: {
-
 			first_name: {
 				required: true,
-				minlength: 3
+				minlength: 3,
+				noSpace: true
 			},
+
 			last_name: {
 				required: true,
-				minlength: 3
+				minlength: 3,
+				noSpace: true
 			},
+
 			user_name: {
 				required: true,
-				minlength: 5
+				minlength: 5,
+				noSpace: true,
+				spaceNotAllow:true				
 			},
+
 			email: {
 				required: true,
-				email: true
+				email: true,
+				validEmailFormat: true
 			},
+
 			phone: {
+				noSpace: true,
 				required: true,
 				minlength: 10,
-				maxlength: 15
+				maxlength: 15,
+				spaceNotAllow:true,
+				numericOnly:true
 			},
+
 			country_id: {
 				required: true,
 			},
+
 			language: {
 				required: true,
 			},
 			account_type: {
 				required: true,
 			},
+
 			local_beach_break_id: {
 				required: true,
 			},
+
 			password: {
 				minlength: 8,
 				required: true,
 				pwcheck: true
 			},
+
 			password_confirmation: {
 				minlength: 8,
 				required: true,
@@ -171,19 +207,20 @@ $(document).ready(function () {
 			}
 		},
 		messages: {
+
 			first_name: {
 				required: "Please enter your first name",
-				minlength: "Your password must be at least 3 characters long."
+				minlength: "Your first name must be at least 3 characters long."
 			},
 
 			last_name: {
 				required: "Please enter your last name",
-				minlength: "Your password must be at least 3 characters long."
+				minlength: "Your last name must be at least 3 characters long."
 			},
 
 			user_name: {
 				required: "Please enter your user name",
-				minlength: "Your password must be at least 5 characters long."
+				minlength: "Your user name must be at least 5 characters long."
 			},
 
 			email: {
@@ -204,6 +241,7 @@ $(document).ready(function () {
 			language: {
 				required: "Please select your language",
 			},
+
 			account_type: {
 				required: "Please select your account type",
 			},
@@ -211,10 +249,12 @@ $(document).ready(function () {
 			local_beach_break_id: {
 				required: "Please select beach break",
 			},
+
 			password: {
 				required: "Please enter your password",
 				pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
 			},
+
 			password_confirmation: {
 				required: "Please enter your confirmation password",
 				pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
@@ -235,6 +275,7 @@ $(document).ready(function () {
 		rules: {
 			email: {
 				required: true,
+				validEmailFormat: true,
 			},
 			password: {
 				required: true,
@@ -269,6 +310,7 @@ $(document).ready(function () {
 		rules: {
 			email: {
 				required: true,
+				validEmailFormat: true
 			}
 		},
 		errorPlacement: function (error, element) {
@@ -294,6 +336,7 @@ $(document).ready(function () {
 		rules: {
 			email: {
 				required: true,
+				validEmailFormat: true
 			},
 			password: {
 				minlength: 8,
@@ -323,8 +366,8 @@ $(document).ready(function () {
 				pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
 			},
 			password_confirmation: {
-				required: "Please enter your confirmation password",
-				pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+				required: "Please enter your confirm password",
+				pwcheck: "The confirm password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
 			},
 		},
 		submitHandler: function (form) {
