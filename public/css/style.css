@@ -1266,6 +1266,7 @@ header .dropdown-toggle::after {
     font-weight: 400;
     box-shadow: -0.259px 0.966px 1.5px rgba(0, 0, 1, 0.18);
     padding: 11px 10px 11px 37px;
+    padding-right: 40px;
 }
 
 .loginWrap .formWrap .form-group span {
@@ -1357,9 +1358,10 @@ header .dropdown-toggle::after {
 }
 
 .loginWrap .formWrap .form-group span.arrow {
-    top: 40%;
+    top: 21px;
     right: 20px;
     left: auto;
+    pointer-events: none;
 }
 
 .loginWrap .formWrap .form-group span.first-icon {
