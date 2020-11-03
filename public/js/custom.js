@@ -274,8 +274,7 @@ $(document).ready(function () {
 	$("form[name='login']").validate({
 		rules: {
 			email: {
-				required: true,
-				validEmailFormat: true,
+				required: true,			
 			},
 			password: {
 				required: true,
@@ -292,7 +291,7 @@ $(document).ready(function () {
 		messages: {
 
 			email: {
-				required: "Please enter your email",
+				required: "Please enter your email / username",
 
 			},
 			password: {

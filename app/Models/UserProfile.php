@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Country;
 use App\Models\State;
+use App\Models\Beach;
+use App\Models\BeachBreak;
 
 class UserProfile extends Model
 {
@@ -58,5 +60,14 @@ class UserProfile extends Model
     public function states()
     {
         return $this->belongsTo(State::class, 'state_id', 'id');
+    }
+
+    /**
+     * Relationship between beach_breaks and user_profile model    
+     * @return object
+     */
+    public function beach_breaks()
+    {
+        return $this->belongsTo(BeachBreak::class, 'local_beach_break_id', 'id');
     }
 }

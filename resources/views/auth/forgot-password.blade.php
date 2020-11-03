@@ -35,11 +35,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="submit" id="next1" value=" {{ __('Email Password Reset Link') }}"
+                                    <input type="submit" id="next1" value=" {{ __('Reset My Password') }}"
                                         class="loginBtn">
                                 </div>
                                 <div class="text-center">
-                                    <a href="{{ route('login') }}">{{ __('Back to Login?') }}</a>
+                                    <a href="{{ route('login') }}">{{ __('Back to Login') }}</a>
                                 </div>
                         </div>
                         </form>
