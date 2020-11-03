@@ -28,8 +28,9 @@
                                 @csrf
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
-                                        <input type="email" class="form-control" id="email" name="email"
-                                            :value="old('email')" placeholder="Email / User Name" autofocus required>
+                                        <input type="text" class="form-control" id="email" name="email"
+                                            value="{{ old('email') }}" placeholder="Email / User Name" autofocus
+                                            required>
                                         <span><img src="img/email.png" alt=""></span>
                                     </div>
                                 </div>
