@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\State;
 use App\Models\UserProfile;
-use App\Models\Post;
-class Country extends Model
+class BeachBreak extends Model
 {
     use HasFactory;
 
@@ -15,31 +13,13 @@ class Country extends Model
      *                                          Eloquent: Relationships
      ************************************************************************************************************/
 
-    /**
-     * Relationship between country  and states model    
-     * @return object
-     */
-    
-    public function states()
-    {
-        return $this->hasMany(State::class, 'country_id', 'id');
-    }
-
      /**
      * Get the user that owns the profile.
      */
     public function user_profiles()
     {
-        return $this->hasOne(UserProfile::class, 'country_id', 'id');
+        return $this->hasOne(UserProfile::class, 'local_beach_break_id', 'id');
     }
 
-    /**
-     * Get the user that owns the profile.
-     */
-    public function posts()
-    {
-        return $this->hasOne(Post::class, 'country_id', 'id');
-    }
     
-
 }
