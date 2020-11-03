@@ -108,6 +108,12 @@
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
+                                                <!-- <input type="tel" class="form-control" id="phone" name="phone"
+                                                    value="{{ old('phone') }}" autocomplete="phone" required>
+                                                @error('phone')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror -->
+
                                                 <input type="text" placeholder="Phone No."
                                                     class="form-control @error('phone') is-invalid @enderror"
                                                     name="phone" value="{{ old('phone') }}" minlength="10"
@@ -117,7 +123,13 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
+
                                         </div>
+                                        <!-- <div class="text-danger">
+                                            <span id="valid-msg" class="hide">✓
+                                                Valid</span>
+                                            <span id="error-msg" class="hide"></span>
+                                        </div> -->
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
