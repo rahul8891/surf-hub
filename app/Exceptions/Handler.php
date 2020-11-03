@@ -23,11 +23,9 @@ class Handler extends ExceptionHandler
      */
     protected $dontFlash = [
         'password',
-        'password_confirmation',
-        'email',
+        'password_confirmation',       
         'user_type',
         'status',
-        'account_type'
     ];
     
     
@@ -38,6 +36,6 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {       
-        //
+        //       
     }
 }

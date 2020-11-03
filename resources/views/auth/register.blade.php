@@ -219,10 +219,20 @@
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="local_beach_break_id" required>
-                                                    <option value=""> --Select-- </option>
-                                                    <option value="1"> Rolen Beach </option>
+                                                <select
+                                                    class="form-control @error('local_beach_break_id') is-invalid @enderror"
+                                                    name="local_beach_break_id" required>
+                                                    <option value=""> --Select Beach Break-- </option>
+                                                    @foreach($beachBreaks as $key => $value)
+                                                    <option value="{{ $value->id }}"
+                                                        {{ old('local_beach_break_id') == $value->id ? "selected" : "" }}>
+                                                        {!! $value->beach_name.'
+                                                        '.$value->break_name.', '.$value->city_region.',
+                                                        '.$value->state.', '.$value->country
+                                                        !!}</option>
+                                                    @endforeach
                                                 </select>
+
                                                 <span class="arrow">
                                                     <img src="img/select-downArrow.png" alt="">
                                                 </span>
