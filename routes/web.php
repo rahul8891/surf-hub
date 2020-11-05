@@ -46,8 +46,11 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::post('/post/store', [PostController::class, 'store'])->name('storeVedioImagePost');
 
     Route::get('/user/change-password', [UserController::class, 'showChangePassword'])->name('showPassword');
+
+    Route::get('/user/profile', [UserController::class, 'showProfile'])->name('profile');
+
+    Route::post('/post/profile', [UserController::class, 'storeProfile'])->name('storeProfile');
     
-    Route::post('/user/change-password', [UserController::class, 'updateUserPassword'])->name('updatePassword');
 });
 
 

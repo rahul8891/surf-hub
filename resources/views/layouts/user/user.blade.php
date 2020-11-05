@@ -17,10 +17,13 @@
 <body>
     <!-- Header -->
     @include('layouts/user/user_header')
-    <main>
+    @php
+    $profileClass = (Auth::user() && Request::path() == 'user/profile') ? 'contactUsWrap profileWrap' : '';
+    @endphp
+    <main class="{{ $profileClass }}">
         <div id="loader"></div>
         @include('layouts/user/user_banner')
-        @if ($errors->any())
+        <!-- @if ($errors->any())
         <div class="alert alert-danger alert-dismissible" id="error" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                     aria-hidden="true">&times;</span></button>
@@ -28,7 +31,7 @@
             <li>{{ ucfirst($error) }}</li>
             @endforeach
         </div>
-        @endif
+        @endif -->
         @yield('content')
     </main>
     <footer>
@@ -38,9 +41,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.5.1/jquery.nicescroll.min.js"> </script>
     <script src="{{ asset("/js/bootstrap.js")}}"></script>
+
     @if (Auth::user() && Request::path() == 'dashboard')
     <script src="{{ asset("/js/post.js")}}"></script>
     @endif
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="{{ asset("/js/custom.js")}}"></script>
     <script>
     $(document).ready(function() {
         $(" #My-Profile").click(function() {
@@ -51,7 +57,8 @@
             zindex: 999
         });
 
-        $('#error').delay(4000).fadeOut('slow');
+        $('#msg').delay(4000).fadeOut('slow');
+        $('#msg').delay(4000).fadeOut('slow');
 
     });
     </script>

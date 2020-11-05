@@ -22,45 +22,50 @@
                         <img src="{{ asset("/img/changePswd-left.png")}}" class="img-fluid" alt="">
                     </div>
                     <div class="col-lg-4">
-                        <form method="POST" action="{{ route('updatePassword') }}">
+                        <form name="update_password" action="{{ route('user-password.update') }}">
                             @csrf
+                            @method('put')
                             <div class="form">
                                 <div class="text-center form-group">
                                     <img src="{{ asset("/img/logoMedium.png")}}" alt="">
                                 </div>
-                                @foreach ($errors->all() as $error)
-                                <li class="text-danger">
-                                    {{ ucfirst($error) }}
-                                </li>
-                                @endforeach
-                                @if($message = Session::get('success'))
-                                <div class="alert alert-success alert-dismissible fade show">
-                                    <strong>Success!</strong> Your password has been successfully updated.
-                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                @if (session('status'))
+                                <div class="alert alert-success">
+                                    {{ session('status') }}
                                 </div>
-                                <!-- <p class="text-success">{{ ucfirst($message) }}</p> -->
                                 @endif
-
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
                                         <input id="current_password" type="password" placeholder="Current Password"
-                                            autocomplete="current-password" name="current_password"
-                                            value="{{ old('current_password') }}" class="form-control " required>
+                                            autocomplete="current-password" id="current_password"
+                                            name="current_password" wire:model.defer="state.current_password"
+                                            class="form-control @error('current_password') is-invalid @enderror"
+                                            required>
                                         <span><img src="{{ asset("/img/lock.png")}}" alt=""></span>
+                                        @error('current_password')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
                                         <input type="password" name="password" placeholder="New Password"
-                                            class="form-control" required>
+                                            class="form-control @error('password') is-invalid @enderror" id="password"
+                                            wire:model.defer="state.password" required>
                                         <span><img src="{{ asset("/img/lock.png")}}" alt=""></span>
                                     </div>
                                 </div>
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
-                                        <input type="password" placeholder="Confirm Password" class="form-control"
-                                            name="password_confirmation" autocomplete="new-password" required>
+                                        <input type="password" placeholder="Confirm Password"
+                                            class="form-control @error('password') is-invalid @enderror"
+                                            name="password_confirmation" id="password_confirmation"
+                                            autocomplete="new-password" wire:model.defer="state.password_confirmation"
+                                            required>
                                         <span><img src="{{ asset("/img/lock.png")}}" alt=""></span>
+                                        @error('password')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group">

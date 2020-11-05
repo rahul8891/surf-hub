@@ -1863,3 +1863,7 @@ form .error {
     color: #ff0000;
     font-weight: normal;
 }
+
+.notDisplayed {
+    display: none;
+}
