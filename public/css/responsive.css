@@ -593,3 +593,11 @@
         line-height: 20px;
     }
 }
+
+/**
+rafi*/
+@media only screen and (max-width: 1024px) {
+    footer {
+        position: static;
+    }
+}

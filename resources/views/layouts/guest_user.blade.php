@@ -11,7 +11,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/style.css")}}">
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/loader.css")}}">
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/responsive.css")}}">
-    <link rel="stylesheet" type="text/css" href="{{ asset("/css/intlTelInput.css")}}">
+    <link rel="stylesheet" href="{{ asset("/css/croppie.css") }}" />
+    <link rel="stylesheet" href="{{ asset("/css/select2.css") }}" />
+
 </head>
 
 <body>
@@ -26,57 +28,17 @@
         @include('layouts/user/user_footer')
     </footer>
     <script src="{{ asset("/js/jquery.min.js")}}"></script>
+    <script src="{{ asset("/js/croppie.js")}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="{{ asset("/js/bootstrap.js")}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
     <script src="{{ asset("/js/custom.js")}}"></script>
-    <script src="{{ asset("/js/intlTelInput.js")}}"></script>
+    <script src="{{ asset("/js/select2.js")}}"></script>
     <script>
-    var input = document.querySelector("#phone"),
-        errorMsg = document.querySelector("#error-msg"),
-        validMsg = document.querySelector("#valid-msg");
-
-    intlTelInput(input, {
-        initialCountry: "auto",
-        geoIpLookup: function(success, failure) {
-            $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
-                var countryCode = (resp && resp.country) ? resp.country : "";
-                success(countryCode);
-            });
-        },
-        utilsScript: '{{ asset("js/utils.js")}}'
+    $('#local_beach_break_id').select2({
+        placeholder: 'Select a month',
+        selectOnClose: true,
     });
-
-    // Initialise plugin
-    var intl = window.intlTelInput(input, {
-        utilsScript: '{{asset("js/utils.js")}}'
-    });
-
-    var reset = function() {
-        input.classList.remove("error");
-        errorMsg.innerHTML = "";
-        errorMsg.classList.add("hide");
-        validMsg.classList.add("hide");
-    };
-
-    // Validate on blur event
-    input.addEventListener('blur', function() {
-        reset();
-        if (input.value.trim()) {
-            if (intl.isValidNumber()) {
-                validMsg.classList.remove("hide");
-            } else {
-                input.classList.add("error");
-                var errorCode = intl.getValidationError();
-                errorMsg.innerHTML = errorMap[errorCode];
-                errorMsg.classList.remove("hide");
-            }
-        }
-    });
-
-    // Reset on keyup/change event
-    input.addEventListener('change', reset);
-    input.addEventListener('keyup', reset);
     </script>
 </body>
 

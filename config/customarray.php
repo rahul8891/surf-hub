@@ -128,6 +128,7 @@ return [
     ],
      
     'success'=>[
-        'UPDATE_SUCCESS'=>'Record has been successfully updated'
+        'UPDATE_SUCCESS'=>'Record has been successfully updated',
+        'IMAGE_UPDATE_SUCCESS'=>'Profile Image has been successfully updated'
     ],
 ];

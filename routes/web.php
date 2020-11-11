@@ -50,6 +50,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/user/profile', [UserController::class, 'showProfile'])->name('profile');
 
     Route::post('/post/profile', [UserController::class, 'storeProfile'])->name('storeProfile');
+
+    Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');
     
 });
 

@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Storage;
 use DB;
+use File;
 
 class UserService {
 
@@ -88,5 +89,50 @@ class UserService {
         }  
     }
 
-    
+    /**
+     * [updateUserProfileImage]
+     * @param  [object] $dataRequest [description contain data which need to be update]
+     * @param  string &$message    [description ]
+     * @return [object]              [description]
+     */
+    public function updateUserProfileImage($dataRequest,&$message=''){
+        
+        $users = $this->users->find(Auth::user()->id);
+
+        if($users){                   
+            $userOldProfileImageName = $users->profile_photo_name; 
+            $path = public_path() . "/storage/images/";
+            $timeDate = strtotime(Carbon::now()->toDateTimeString());
+            $cropped_image = $dataRequest['image'];      
+            $image_parts = explode(";base64,", $cropped_image);
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+            $image_base64 = base64_decode($image_parts[1]);
+            $image_name = $timeDate .'.' .$image_type; // '_'.rand().
+            $image_path_forDB = 'images/' . $image_name;
+            $imgNewName = $path.$image_name; 
+            if(!file_put_contents($imgNewName, $image_base64)){
+                // Error message
+                $message = $this->checkUserType['common']['DEFAULT_ERROR'];                
+                return false;                
+            }else{
+                $users->id = Auth::user()->id;
+                $users->profile_photo_path = $image_path_forDB;
+                $users->profile_photo_name = $image_name;
+                // update user auth image 
+                Auth::user()->profile_photo_path = $image_path_forDB;
+                Auth::user()->profile_photo_path = $image_name;
+                
+                if($users->save()){
+                    // delete old image file 
+                    File::delete(public_path("/storage/images/".$userOldProfileImageName));
+                    $message = $this->checkUserType['success']['IMAGE_UPDATE_SUCCESS'];  
+                    return true;
+                }                
+            } 
+        }else{
+            $message = $this->checkUserType['common']['NO_RECORDS'];                
+            return false;
+        }
+    }
 }

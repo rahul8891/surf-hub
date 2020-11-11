@@ -117,11 +117,11 @@ class UserController extends Controller
      * Show User Profile Page
      */
     public function showProfile(){
-        $countries = DB::table('countries')->select('id', 'name')->orderBy('name','asc')->get();
+        $countries = DB::table('countries')->select('id', 'name','phone_code')->orderBy('name','asc')->get();
         $beachBreaks = DB::table('beach_breaks')->orderBy('beach_name','asc')->get();
         $language = config('customarray.language'); 
         $accountType = config('customarray.accountType');         
-        $user = $this->users->getUserDetailByID(Auth::user()->id);
+        $user = $this->users->getUserDetailByID(Auth::user()->id);       
         return view('user.profile',compact('user','countries','beachBreaks','language','accountType'));
     }
 
@@ -150,6 +150,27 @@ class UserController extends Controller
             return Redirect::to('user/profile')->withSuccess($message);
         }else{           
            return Redirect::to('user/profile')->withErrors($message);
+        }
+    }
+    
+    public function updateProfileImage(Request $request){
+        $data = $request->all();       
+        $rules = array(          
+            'image' => ['required'] 
+        );
+        $inputArry = ['image' => $data['image']];
+        $validate = Validator::make($inputArry, $rules);
+        if ($validate->fails()) {
+            echo json_encode(array('status'=>'failure', 'message'=>'Invalid Image.'));
+            die;
+        } else {
+            $result = $this->users->updateUserProfileImage($data,$message);
+            if($result){
+                echo json_encode(array('status'=>'success', 'message'=>$message));
+            }else{
+                echo json_encode(array('status'=>'failure', 'message'=>$message));
+            }
+            die;
         }
     }
     

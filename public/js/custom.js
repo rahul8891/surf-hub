@@ -1,578 +1,668 @@
-$(document).ready(function() {
-    var csrf_token = $('meta[name="csrf-token"]').attr("content");
+$(document).ready(function () {
+	var csrf_token = $('meta[name="csrf-token"]').attr("content");
 
-    /*$('#login').click(function (event) {		
+	/*$('#login').click(function (event) {		
 		var email = $('#email').val();
 		var password = $('#password').val();
 		if(email && password){
 			spinner.show();
 		}
 	});*/
-    
-    /************** spiner code ****************************/
+
+	/************** spiner code ****************************/
     var stopSpiner = "{{ $spiner}}";
+    
     // var spinner = $('#loader');
-    var spinner = $(".loaderWrap");
+    
+	var spinner = $(".loaderWrap");
 
-    $("#next").click(function(event) {
-        spinner.show();
-    });
+	$("#next").click(function (event) {
+		spinner.show();
+	});
 
-    /**
+	/**
 	hide spiner
 	*/
-    if (stopSpiner) {
-        spinner.hide();
+	if (stopSpiner) {
+		spinner.hide();
+	}
+	/************** end spiner code ****************************/
+
+	/** Phone Code  */
+	$(".country").change(function (e) {
+		var phone_code = $('option:selected', this).data("phone");
+		if (phone_code != '') {
+			$(".phone").val(phone_code);
+			// set phone code to phone input
+		} else {
+			$(".phone").val('');
+			// remove phone code to phone input
+		}
+	});
+
+	/**************************************************************************************
+	 *                     set image preview after selection and crop befor update
+	 ***************************************************************************************/
+	$("#exampleInputFile").change(function () {
+		readURL(this);
+    });
+    
+    var $image_crop;
+    $image_crop = $('#image').croppie({
+        enableExif: true,
+        enableOrientation: true,
+		viewport: {
+			width: 200,
+			height: 200,
+			type: 'square'
+		},
+		boundary: {
+			width: 300,
+			height: 300
+		}
+    });
+    
+	function readURL(input) {
+     
+		var url = input.value;
+		var ext = url.substring(url.lastIndexOf(".") + 1).toLowerCase();
+		if (
+			input.files &&
+			input.files[0] &&
+			(ext == "png" || ext == "jpeg" || ext == "jpg")
+		) {
+			$("#imageError").hide();
+            var reader = new FileReader();          
+			reader.onload = function (e) {                  
+				$image_crop.croppie('bind', {
+					url: e.target.result
+				}).then(function (blob) {
+                   // console.log(blob);               
+				 });			
+			};
+            reader.readAsDataURL(input.files[0]);     
+		    $('#myModal').modal('show');
+			$("#remove-img").show();
+		} else {
+			$('#imagebase64').val("");
+			$("#exampleInputFile").val("");
+			$("#category-img-tag").attr("src", "/img/image-file.png");
+			$("#category-img-tag").attr("width", "auto");
+			$("#remove-img").hide();
+			$("#imageError").show();
+		}
     }
-    /************** end spiner code ****************************/
+       
+	$('.crop_image').click(function (event) {
+		$image_crop.croppie('result', {
+			type: 'canvas',
+			size: 'viewport'
+		}).then(function (response) {
+            $('#imagebase64').val(response);
+			$("#category-img-tag").attr("src", response);
+			$("#category-img-tag").attr("width", "auto");
+			$('#myModal').modal('hide');
+		})
+	});
+  
+	/**
+	 * Model Cancle 
+	 */
+	$(".close").click(function () {
+		$('#imagebase64').val("");
+		$("#exampleInputFile").val("");
+		$("#category-img-tag").attr("src", "");
+		$("#category-img-tag").attr("src", "img/image-file.png");
+		$("#category-img-tag").attr("width", "auto");
+		$("#remove-img").hide();
+	});
 
-    /**********************************************************
-     * set image preview after selection
-     * ********************************************************/
-    $("#exampleInputFile").change(function() {
-        readURL(this);
+	/**
+	 * Reset Image
+	 */
+	$("#remove-img").click(function () {
+		$('#imagebase64').val("");
+		$("#exampleInputFile").val("");
+		$("#category-img-tag").attr("src", "");
+		$("#category-img-tag").attr("src", "img/image-file.png");
+		$("#category-img-tag").attr("width", "auto");
+		$("#remove-img").hide();
+	});
+
+	/**************************************************************************************
+	 *                    Profile Image
+	 ***************************************************************************************/
+	$("#exampleInputProfileFile").change(function () {
+		readProfileURL(this);
     });
 
-    function readURL(input) {
-        var url = input.value;
-        var ext = url.substring(url.lastIndexOf(".") + 1).toLowerCase();
-        if (
-            input.files &&
-            input.files[0] &&
-            (ext == "png" || ext == "jpeg" || ext == "jpg")
-        ) {
-            $("#imageError").hide();
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $("#category-img-tag").attr("src", e.target.result);
-                $("#category-img-tag").attr("width", "80px");
-            };
-            $("#remove-img").show();
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            $("#exampleInputFile").val("");
-            $("#category-img-tag").attr("src", "/img/image-file.png");
-            $("#category-img-tag").attr("width", "auto");
-            $("#remove-img").hide();
-            $("#imageError").show();
-        }
+	function readProfileURL(input) {
+		var url = input.value;
+		var ext = url.substring(url.lastIndexOf(".") + 1).toLowerCase();
+		if (
+			input.files &&
+			input.files[0] &&
+			(ext == "png" || ext == "jpeg" || ext == "jpg")
+		) {
+			$("#imageError").hide();
+            var reader = new FileReader();          
+			reader.onload = function (e) {                  
+				$image_crop.croppie('bind', {
+					url: e.target.result
+				}).then(function (blob) {
+                   // console.log(blob);               
+				 });			
+			};
+            reader.readAsDataURL(input.files[0]);     
+		    $('#myModal').modal('show');
+		} else {			
+			$("#imageError").show();
+		}
     }
 
-    /**
-     * Reset Image
-     */
-    $("#remove-img").click(function() {
-        $("#exampleInputFile").val("");
-        $("#category-img-tag").attr("src", "");
-        $("#category-img-tag").attr("src", "img/image-file.png");
-        $("#category-img-tag").attr("width", "auto");
-        $("#remove-img").hide();
-    });
+	/**
+	 * Update user profile using ajax
+	 */
+	$('.crop_profile_image').click(function (event) {
+		$image_crop.croppie('result', {
+			type: 'canvas',
+			size: 'viewport'
+		}).then(function (response) {
+            $('#imagebase64').val(response);
+			$("#category-img-tag").attr("src", response);
+			$("#category-img-tag").attr("width", "auto");
+			$('#myModal').modal('hide');
+			spinner.show();
+			$.ajax({
+				type: "POST",
+				url: "updateProfile",
+				data: {				
+					image: response,
+					_token: csrf_token
+				},
+				dataType: "json",
+				success: function (jsonResponse) {
+					if (jsonResponse.status == "success") {
+						spinner.hide();
+						$("#head").load(location.href+" #head>*","");
+						document.getElementById("error").innerHTML = jsonResponse.message;
+						document.getElementById("error").className ="alert alert-success";
+					} else {
+						spinner.hide();
+						$("#head").load(location.href+" #head>*","");
+						document.getElementById("error").innerHTML = jsonResponse.message;
+						document.getElementById("error").className = "alert alert-danger";
+					}
+					setInterval(myTimerUserMessage, 4000);
+				}
+			});
+		})
+	});
 
-    /************************************************************
-     *              Admin Update user status
-     ***********************************************************/
-    $(".changeStatus").on("switchChange.bootstrapSwitch", function(e, data) {
-        var currentStatus = data;
-        var userId = $(this).data("id");
-        spinner.show();
-        $.ajax({
-            type: "POST",
-            url: "updateUserStatus",
-            data: {
-                user_id: userId,
-                status: currentStatus,
-                _token: csrf_token
-            },
-            dataType: "json",
-            success: function(jsonResponse) {
-                if (jsonResponse.status == "success") {
-                    spinner.hide();
-                    document.getElementById("error").innerHTML =
-                        jsonResponse.message;
-                    document.getElementById("error").className =
-                        "alert alert-success";
-                } else {
-                    spinner.hide();
-                    document.getElementById("error").innerHTML =
-                        jsonResponse.message;
-                    document.getElementById("error").className =
-                        "alert alert-danger";
-                }
-                setInterval(myTimerUserMessage, 4000);
-            }
-        });
-    });
+	/*******************************************************************************************************
+	 * 									Register Page validation submit
+	 *
+	 ********************************************************************************************************/
 
-    /*******************************************************************************************************
-     * 									Register Page validation submit
-     *
-     ********************************************************************************************************/
+	$.validator.addMethod("pwcheck", function (value) {
+		return (
+			/[\@\#\$\%\^\&\*\(\)\_\+\!]/.test(value) &&
+			/[a-z]/.test(value) &&
+			/[0-9]/.test(value) &&
+			/[A-Z]/.test(value)
+		);
+	});
+	// no space allow in text box
+	$.validator.addMethod(
+		"noSpace",
+		function (value, element) {
+			return value == "" || value.trim().length != 0;
+		},
+		"No space please and don't leave it empty"
+	);
 
-    $.validator.addMethod("pwcheck", function(value) {
-        return (
-            /[\@\#\$\%\^\&\*\(\)\_\+\!]/.test(value) &&
-            /[a-z]/.test(value) &&
-            /[0-9]/.test(value) &&
-            /[A-Z]/.test(value)
-        );
-    });
-    // no space allow in text box
-    $.validator.addMethod(
-        "noSpace",
-        function(value, element) {
-            return value == "" || value.trim().length != 0;
-        },
-        "No space please and don't leave it empty"
-    );
+	// valid email format
+	$.validator.addMethod(
+		"validEmailFormat",
+		function (email) {
+			var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
+			return testEmail.test(email);
+		},
+		"Please enter valid email with valid format"
+	);
+	// NO SPACE ALLOW IN USER NAME
+	$.validator.addMethod(
+		"spaceNotAllow",
+		function (value) {
+			var regexp = /^([A-z0-9!@#$%^&*().,<>{}[\]<>?_=+\-|;:\'\"\/])*[^\s]\1*$/;
+			return regexp.test(value);
+		},
+		"No space are allowed in user name"
+	);
 
-    // valid email format
-    $.validator.addMethod(
-        "validEmailFormat",
-        function(email) {
-            var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
-            return testEmail.test(email);
-        },
-        "Please enter valid email with valid format"
-    );
-    // NO SPACE ALLOW IN USER NAME
-    $.validator.addMethod(
-        "spaceNotAllow",
-        function(value) {
-            var regexp = /^([A-z0-9!@#$%^&*().,<>{}[\]<>?_=+\-|;:\'\"\/])*[^\s]\1*$/;
-            return regexp.test(value);
-        },
-        "No space are allowed in user name"
-    );
+	// only number allowed
+	$.validator.addMethod(
+		"numericOnly",
+		function (value) {
+			// return /^[0-9]*$/.test(value);
+			 return /^[0-9 +-]+$/.test(value);
+			// return this.optional(element) || value == value.match(/^[\d+ ]*$/);
+		},
+		"Please only enter numeric values (0-9) and +-"
+	);
 
-    // only number allowed
-    $.validator.addMethod(
-        "numericOnly",
-        function(value) {
-            return /^[0-9]+$/.test(value);
-        },
-        "Please only enter numeric values (0-9)"
-    );
+	$("form[name='register']").validate({
+		rules: {
+			first_name: {
+				required: true,
+				minlength: 3,
+				noSpace: true
+			},
 
-    $("form[name='register']").validate({
-        rules: {
-            first_name: {
-                required: true,
-                minlength: 3,
-                noSpace: true
-            },
+			last_name: {
+				required: true,
+				minlength: 3,
+				noSpace: true
+			},
 
-            last_name: {
-                required: true,
-                minlength: 3,
-                noSpace: true
-            },
+			user_name: {
+				required: true,
+				minlength: 5,
+				noSpace: true,
+				spaceNotAllow: true
+			},
 
-            user_name: {
-                required: true,
-                minlength: 5,
-                noSpace: true,
-                spaceNotAllow: true
-            },
+			email: {
+				required: true,
+				email: true,
+				validEmailFormat: true
+			},
 
-            email: {
-                required: true,
-                email: true,
-                validEmailFormat: true
-            },
+			phone: {
+				// noSpace: true,
+				required: true,
+				minlength: 10,
+				maxlength: 15,
+				// spaceNotAllow: true,
+				numericOnly: true
+			},
 
-            phone: {
-                noSpace: true,
-                required: true,
-                minlength: 10,
-                maxlength: 15,
-                spaceNotAllow: true,
-                numericOnly: true
-            },
+			country_id: {
+				required: true
+			},
 
-            country_id: {
-                required: true
-            },
+			language: {
+				required: true
+			},
+			account_type: {
+				required: true
+			},
 
-            language: {
-                required: true
-            },
-            account_type: {
-                required: true
-            },
+			local_beach_break_id: {
+				required: true
+			},
 
-            local_beach_break_id: {
-                required: true
-            },
+			password: {
+				minlength: 8,
+				required: true,
+				pwcheck: true
+			},
 
-            password: {
-                minlength: 8,
-                required: true,
-                pwcheck: true
-            },
+			password_confirmation: {
+				minlength: 8,
+				required: true,
+				pwcheck: true,
+				equalTo: "#password"
+			},
 
-            password_confirmation: {
-                minlength: 8,
-                required: true,
-                pwcheck: true,
-                equalTo: "#password"
-            },
+			terms: {
+				required: true
+			}
+		},
+		errorPlacement: function (error, element) {
+			if (element.is(":radio")) {			
+				error.insertAfter(element.parent().parent());
+			} else {
+				// This is the default behavior of the script for all fields
+				error.insertAfter(element);
+			}
+		},
+		messages: {
+			first_name: {
+				required: "Please enter your first name",
+				minlength: "Your first name must be at least 3 characters long."
+			},
 
-            terms: {
-                required: true
-            }
-        },
-        errorPlacement: function(error, element) {
-            if (element.is(":radio")) {
-                //alert('oj');
-                error.insertAfter(element.parent().parent());
-            } else {
-                // This is the default behavior of the script for all fields
-                error.insertAfter(element);
-            }
-        },
-        messages: {
-            first_name: {
-                required: "Please enter your first name",
-                minlength: "Your first name must be at least 3 characters long."
-            },
+			last_name: {
+				required: "Please enter your last name",
+				minlength: "Your last name must be at least 3 characters long."
+			},
 
-            last_name: {
-                required: "Please enter your last name",
-                minlength: "Your last name must be at least 3 characters long."
-            },
+			user_name: {
+				required: "Please enter your user name",
+				minlength: "Your user name must be at least 5 characters long."
+			},
 
-            user_name: {
-                required: "Please enter your user name",
-                minlength: "Your user name must be at least 5 characters long."
-            },
+			email: {
+				required: "Please enter your email",
+				email: "Please enter valid email address"
+			},
 
-            email: {
-                required: "Please enter your email",
-                email: "Please enter valid email address"
-            },
+			phone: {
+				required: "Please enter your phone number",
+				minlength: "Your phone must be minimun 10 number long.",
+				maxlength: "Your phone must be maximum 15 number long."
+			},
 
-            phone: {
-                required: "Please enter your phone number",
-                minlength: "Your phone must be minimun 10 number long.",
-                maxlength: "Your phone must be maximum 15 number long."
-            },
+			country_id: {
+				required: "Please select your country"
+			},
 
-            country_id: {
-                required: "Please select your country"
-            },
+			language: {
+				required: "Please select your language"
+			},
 
-            language: {
-                required: "Please select your language"
-            },
+			account_type: {
+				required: "Please select your account type"
+			},
 
-            account_type: {
-                required: "Please select your account type"
-            },
+			local_beach_break_id: {
+				required: "Please select beach break"
+			},
 
-            local_beach_break_id: {
-                required: "Please select beach break"
-            },
+			password: {
+				required: "Please enter your password",
+				pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+			},
 
-            password: {
-                required: "Please enter your password",
-                pwcheck:
-                    "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
-            },
+			password_confirmation: {
+				required: "Please enter your confirmation password",
+				pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+			},
 
-            password_confirmation: {
-                required: "Please enter your confirmation password",
-                pwcheck:
-                    "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
-            },
+			terms: {
+				required: "Please select terms and conditions"
+			}
+		},
+		submitHandler: function (form) {
+			form.submit();
+		}
+	});
 
-            terms: {
-                required: "Please select terms and conditions"
-            }
-        },
-        submitHandler: function(form) {
-            form.submit();
-        }
-    });
+	// Login Validation
+	$("form[name='login']").validate({
+		rules: {
+			email: {
+				required: true
+			},
+			password: {
+				required: true
+			}
+		},
+		errorPlacement: function (error, element) {
+			if (element.is(":radio")) {
+				error.insertAfter(element.parent().parent());
+			} else {
+				// This is the default behavior of the script for all fields
+				error.insertAfter(element);
+			}
+		},
+		messages: {
+			email: {
+				required: "Please enter your email / username"
+			},
+			password: {
+				required: "Please enter your password"
+			}
+		},
+		submitHandler: function (form) {
+			form.submit();
+			spinner.show();
+		}
+	});
 
-    // Login Validation
-    $("form[name='login']").validate({
-        rules: {
-            email: {
-                required: true
-            },
-            password: {
-                required: true
-            }
-        },
-        errorPlacement: function(error, element) {
-            if (element.is(":radio")) {
-                error.insertAfter(element.parent().parent());
-            } else {
-                // This is the default behavior of the script for all fields
-                error.insertAfter(element);
-            }
-        },
-        messages: {
-            email: {
-                required: "Please enter your email / username"
-            },
-            password: {
-                required: "Please enter your password"
-            }
-        },
-        submitHandler: function(form) {
-            form.submit();
-        }
-    });
-
-    // forgot password
-    $("form[name='forgot_password']").validate({
-        rules: {
-            email: {
-                required: true,
-                validEmailFormat: true
-            }
-        },
-        errorPlacement: function(error, element) {
-            if (element.is(":radio")) {
-                error.insertAfter(element.parent().parent());
-            } else {
-                // This is the default behavior of the script for all fields
-                error.insertAfter(element);
-            }
-        },
-        messages: {
-            email: {
-                required: "Please enter valid email "
-            }
-        },
-        submitHandler: function(form) {
-            form.submit();
-        }
-    });
-
-    // reset password
-    $("form[name='reset_password']").validate({
-        rules: {
-            email: {
-                required: true,
-                validEmailFormat: true
-            },
-            password: {
-                minlength: 8,
-                required: true,
-                pwcheck: true
-            },
-            password_confirmation: {
-                minlength: 8,
-                required: true,
-                pwcheck: true,
-                equalTo: "#password"
-            }
-        },
-        errorPlacement: function(error, element) {
-            if (element.is(":radio")) {
-                error.insertAfter(element.parent().parent());
-            } else {
-                // This is the default behavior of the script for all fields
-                error.insertAfter(element);
-            }
-        },
-        messages: {
-            email: {
-                required: "Please enter valid email "
-            },
-            password: {
-                required: "Please enter your password",
-                pwcheck:
-                    "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
-            },
-            password_confirmation: {
-                required: "Please enter your confirm password",
-                pwcheck:
-                    "The confirm password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
-            }
-        },
-        submitHandler: function(form) {
-            form.submit();
-        }
-    });
+	// forgot password
+	$("form[name='forgot_password']").validate({
+		rules: {
+			email: {
+				required: true,
+				validEmailFormat: true
+			}
+		},
+		errorPlacement: function (error, element) {
+			if (element.is(":radio")) {
+				error.insertAfter(element.parent().parent());
+			} else {
+				// This is the default behavior of the script for all fields
+				error.insertAfter(element);
+			}
+		},
+		messages: {
+			email: {
+				required: "Please enter valid email "
+			}
+		},
+		submitHandler: function (form) {
+			form.submit();
+			spinner.show();
+		}
+	});
 
 	// reset password
-    $("form[name='update_password']").validate({
-        rules: {
-
-            current_password: {
-                required: true,
+	$("form[name='reset_password']").validate({
+		rules: {
+			email: {
+				required: true,
+				validEmailFormat: true
 			},
-			
-            password: {
-                minlength: 8,
-                required: true,
-                pwcheck: true
+			password: {
+				minlength: 8,
+				required: true,
+				pwcheck: true
 			},
-			
-            password_confirmation: {
-                minlength: 8,
-                required: true,
-                pwcheck: true,
-                equalTo: "#password"
-            }
-        },
-        errorPlacement: function(error, element) {
-            if (element.is(":radio")) {
-                error.insertAfter(element.parent().parent());
-            } else {
-                // This is the default behavior of the script for all fields
-                error.insertAfter(element);
-            }
-        },
-        messages: {
-            current_password: {
-                required: "Please enter your current password "
-            },
-            password: {
-                required: "Please enter your new password",
-                pwcheck:
-                    "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
-            },
-            password_confirmation: {
-                required: "Please enter your confirm password",
-                pwcheck:
-                    "The confirm password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
-            }
-        },
-        submitHandler: function(form) {
-            form.submit();
-        }
+			password_confirmation: {
+				minlength: 8,
+				required: true,
+				pwcheck: true,
+				equalTo: "#password"
+			}
+		},
+		errorPlacement: function (error, element) {
+			if (element.is(":radio")) {
+				error.insertAfter(element.parent().parent());
+			} else {
+				// This is the default behavior of the script for all fields
+				error.insertAfter(element);
+			}
+		},
+		messages: {
+			email: {
+				required: "Please enter valid email "
+			},
+			password: {
+				required: "Please enter your password",
+				pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+			},
+			password_confirmation: {
+				required: "Please enter your confirm password",
+				pwcheck: "The confirm password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+			}
+		},
+		submitHandler: function (form) {
+			form.submit();
+			spinner.show();
+		}
 	});
-	
-    $("form[name='update_profile']").validate({
-        rules: {
-            first_name: {
-                required: true,
-                minlength: 3,
-                noSpace: true
-            },
 
-            last_name: {
-                required: true,
-                minlength: 3,
-                noSpace: true
-            },
+	// reset password
+	$("form[name='update_password']").validate({
+		rules: {
+			current_password: {
+				required: true
+			},
 
-            user_name: {
-                required: true,
-                minlength: 5,
-                noSpace: true,
-                spaceNotAllow: true
-            },
+			password: {
+				minlength: 8,
+				required: true,
+				pwcheck: true
+			},
 
-            email: {
-                required: true,
-                email: true,
-                validEmailFormat: true
-            },
+			password_confirmation: {
+				minlength: 8,
+				required: true,
+				pwcheck: true,
+				equalTo: "#password"
+			}
+		},
+		errorPlacement: function (error, element) {
+			if (element.is(":radio")) {
+				error.insertAfter(element.parent().parent());
+			} else {
+				// This is the default behavior of the script for all fields
+				error.insertAfter(element);
+			}
+		},
+		messages: {
+			current_password: {
+				required: "Please enter your current password "
+			},
+			password: {
+				required: "Please enter your new password",
+				pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+			},
+			password_confirmation: {
+				required: "Please enter your confirm password",
+				pwcheck: "The confirm password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+			}
+		},
+		submitHandler: function (form) {
+			form.submit();
+			spinner.show();
+		}
+	});
 
-            phone: {
-                noSpace: true,
-                required: true,
-                minlength: 10,
-                maxlength: 15,
-                spaceNotAllow: true,
-                numericOnly: true
-            },
+    // update profile
+	$("form[name='update_profile']").validate({			
+		rules: {
+			first_name: {
+				required: true,
+				minlength: 3,
+				noSpace: true
+			},
 
-            country_id: {
-                required: true
-            },
+			last_name: {
+				required: true,
+				minlength: 3,
+				noSpace: true
+			},
 
-            language: {
-                required: true
-            },
+			user_name: {
+				required: true,
+				minlength: 5,
+				noSpace: true,
+				spaceNotAllow: true
+			},
 
-            account_type: {
-                required: true
-            },
+			email: {
+				required: true,
+				email: true,
+				validEmailFormat: true
+			},
 
-            local_beach_break_id: {
-                required: true
-            },
-        },
-        errorPlacement: function(error, element) {
-            if (element.is(":radio")) {            
-                error.insertAfter(element.parent().parent());
-            } else {
-                // This is the default behavior of the script for all fields               
-                error.insertAfter(element);
-               // error.insertAfter(element.parent().parent());
-                /*var name = element.attr('name');
-                var errorSelector = '.validation_error_message[for="' + name + '"]';
-                var $element =  $(errorSelector).html(error.html());
-           
-                if ($element.length) { 
-                   $(errorSelector).html(error.html());                 
-                } else {     
-                    $(errorSelector).html('');
-                    error.insertAfter(element);
-                }*/
+			phone: {
+				// noSpace: true,
+				required: true,
+				minlength: 10,
+				maxlength: 15,
+				// spaceNotAllow: true,
+				numericOnly: true
+			},
 
-            }
-        },
-        messages: {
-            first_name: {
-                required: "Please enter your first name",
-                minlength: "Your first name must be at least 3 characters long."
-            },
+			country_id: {
+				required: true
+			},
 
-            last_name: {
-                required: "Please enter your last name",
-                minlength: "Your last name must be at least 3 characters long."
-            },
+			language: {
+				required: true
+			},
 
-            user_name: {
-                required: "Please enter your user name",
-                minlength: "Your user name must be at least 5 characters long."
-            },
+			account_type: {
+				required: true
+			},
 
-            email: {
-                required: "Please enter your email",
-                email: "Please enter valid email address"
-            },
+			local_beach_break_id: {
+				required: true
+			}
+		},
+		errorPlacement: function (error, element) {
+			if (element.is(":radio")) {
+				error.insertAfter(element.parent().parent());
+			} else {
+				// This is the default behavior of the script for all fields
+				error.insertAfter(element);
+			}
+		},
+		messages: {
+			first_name: {
+				required: "Please enter your first name",
+				minlength: "Your first name must be at least 3 characters long."
+			},
 
-            phone: {
-                required: "Please enter your phone number",
-                minlength: "Your phone must be minimun 10 number long.",
-                maxlength: "Your phone must be maximum 15 number long."
-            },
+			last_name: {
+				required: "Please enter your last name",
+				minlength: "Your last name must be at least 3 characters long."
+			},
 
-            country_id: {
-                required: "Please select your country"
-            },
+			user_name: {
+				required: "Please enter your user name",
+				minlength: "Your user name must be at least 5 characters long."
+			},
 
-            language: {
-                required: "Please select your language"
-            },
+			email: {
+				required: "Please enter your email",
+				email: "Please enter valid email address"
+			},
 
-            account_type: {
-                required: "Please select your account type"
-            },
+			phone: {
+				required: "Please enter your phone number",
+				minlength: "Your phone must be minimun 10 number long.",
+				maxlength: "Your phone must be maximum 15 number long."
+			},
 
-            local_beach_break_id: {
-                required: "Please select beach break"
-            },
-        },
-        submitHandler: function(form) {
-            form.submit();
-        }
-    });
+			country_id: {
+				required: "Please select your country"
+			},
+
+			language: {
+				required: "Please select your language"
+			},
+
+			account_type: {
+				required: "Please select your account type"
+			},
+
+			local_beach_break_id: {
+				required: "Please select beach break"
+			}
+		},
+		submitHandler: function (form) {
+			form.submit();
+			spinner.show();
+		}
+	});
+
+	$('form input[type=text]').focus(function () {
+		// get selected input error container
+		$(this).siblings(".text-danger").hide();		
+	});
+
+
 });
 
 /**
  * remove message after time set hit
  */
 function myTimerUserMessage() {
-    document.getElementById("error").innerHTML = "";
-    document.getElementById("error").className = "";
+	document.getElementById("error").innerHTML = "";
+	document.getElementById("error").className = "";
 }
