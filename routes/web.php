@@ -52,8 +52,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::post('/post/profile', [UserController::class, 'storeProfile'])->name('storeProfile');
 
     Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');    
+   
     
-    // Route::get('/user/getBeachBreach', [UserController::class, 'getBeachBreach'])->name('getBeachBreach');
 });
 
 
