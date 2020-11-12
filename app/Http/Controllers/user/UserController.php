@@ -179,7 +179,6 @@ class UserController extends Controller
     public function getBeachBreach(Request $request){
         $data = $request->all();   
         $string = $data['searchTerm'];
-        dd($string);
         if(!empty($string)){
             $field = ['beach_name','break_name','city_region','state','country'];
             $resultData = DB::Table('beach_breaks')->Where(function ($query) use($string, $field) {
