@@ -12,7 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 use App\Models\UserProfile;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail 
 {
     use HasApiTokens;
     use HasFactory;

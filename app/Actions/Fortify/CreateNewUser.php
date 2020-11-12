@@ -35,12 +35,12 @@ class CreateNewUser implements CreatesNewUsers
             'last_name' => ['required','min:3','string'],
             'user_name' => ['required', 'string','min:5', 'max:25', 'unique:users', 'alpha_dash'],
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
-            'phone' => ['required', 'numeric','unique:user_profiles'],
+            'phone' => ['required', 'numeric'],
             'language' => ['required', 'string'],
             'country_id' => ['required', 'numeric'],
             'account_type' => ['required', 'string'],
             'profile_photo_name' => ['image', 'mimes:jpeg,jpg,png'],
-            'local_beach_break_id' => ['required', 'numeric'],
+            'local_beach_break' => ['required', 'string'],
             'terms' => ['required'],
             'password' => $this->passwordRules(),
         ])->validate();
@@ -75,6 +75,7 @@ class CreateNewUser implements CreatesNewUsers
                 $this->deleteUplodedProfileImage($getImageArray['profile_photo_name']);
                 $this->deletUserRecord($user->id);
             }
+            dd($e);
             throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         }
     }
@@ -86,10 +87,34 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function uploadImage($input)
     {
+
         $returnArray = [];
         $path = public_path() . "/storage/images/";
         $timeDate = strtotime(Carbon::now()->toDateTimeString());
-        $returnArray['status'] = false;
+        $returnArray['status'] = false; 
+        if (isset($input['profile_photo_blob']) && !empty($input['profile_photo_blob'])) {
+            $cropped_image = $input['profile_photo_blob'];      
+            $image_parts = explode(";base64,", $cropped_image);
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+            $image_base64 = base64_decode($image_parts[1]);
+            $image_name = $timeDate .'.' .$image_type; // '_'.rand().
+            $image_path_forDB = 'images/' . $image_name;
+            $imgNewName = $path.$image_name;         
+            if(!file_put_contents($imgNewName, $image_base64)){
+                throw ValidationException::withMessages([trans('auth.profile_image')]);
+            }else{
+                $returnArray['status'] = true;
+                $returnArray['profile_photo_name'] = $image_name;
+                $returnArray['profile_photo_path'] = $image_path_forDB;
+            }           
+            return $returnArray;
+        }
+        // Form Data without croping
+       /* $returnArray = [];
+        $path = public_path() . "/storage/images/";
+        $timeDate = strtotime(Carbon::now()->toDateTimeString());
+        $returnArray['status'] = false; 
         if (isset($input['profile_photo_name']) && !empty($input['profile_photo_name'])) {
             $requestImageName = $input['profile_photo_name'];
             $imageNameWithExt = $requestImageName->getClientOriginalName();
@@ -105,7 +130,7 @@ class CreateNewUser implements CreatesNewUsers
                 $returnArray['profile_photo_path'] = $image_path;
             }
             return $returnArray;
-        }
+        }*/
     }
 
     /**

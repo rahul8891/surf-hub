@@ -29,7 +29,7 @@ Route::get('/privacy-policy', [WelcomeFeedController::class, 'privacy'])->name('
 Route::get('/terms-and-conditions', [WelcomeFeedController::class, 'terms'])->name('terms');
 Route::get('/help-faq', [WelcomeFeedController::class, 'faq'])->name('faq');
 Route::get('/contact-us', [WelcomeFeedController::class, 'contact'])->name('contact');
-
+Route::get('/getBeachBreach', [UserController::class, 'getBeachBreach'])->name('getBeachBreach');
 
 /*********************************************************************************************
  *                              User Route
@@ -46,8 +46,14 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::post('/post/store', [PostController::class, 'store'])->name('storeVedioImagePost');
 
     Route::get('/user/change-password', [UserController::class, 'showChangePassword'])->name('showPassword');
+
+    Route::get('/user/profile', [UserController::class, 'showProfile'])->name('profile');
+
+    Route::post('/post/profile', [UserController::class, 'storeProfile'])->name('storeProfile');
+
+    Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');    
+   
     
-    Route::post('/user/change-password', [UserController::class, 'updateUserPassword'])->name('updatePassword');
 });
 
 
