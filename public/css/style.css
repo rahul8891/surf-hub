@@ -1266,6 +1266,7 @@ header .dropdown-toggle::after {
     font-weight: 400;
     box-shadow: -0.259px 0.966px 1.5px rgba(0, 0, 1, 0.18);
     padding: 11px 10px 11px 37px;
+    padding-right: 40px;
 }
 
 .loginWrap .formWrap .form-group span {
@@ -1357,9 +1358,10 @@ header .dropdown-toggle::after {
 }
 
 .loginWrap .formWrap .form-group span.arrow {
-    top: 40%;
+    top: 21px;
     right: 20px;
     left: auto;
+    pointer-events: none;
 }
 
 .loginWrap .formWrap .form-group span.first-icon {
@@ -1427,7 +1429,7 @@ header .dropdown-toggle::after {
 
 .registrationWrap .upload-btn-wrapper button {
     height: 100px;
-    width: 100px;
+    width: 105px;
     background: transparent;
     border: 1px solid #4c8df5;
     box-shadow: -0.259px 0.966px 1.5px rgba(0, 0, 1, 0.18);
@@ -1729,8 +1731,9 @@ header .navbar-light .navbar-toggler-icon {
 
 .loginWrap .formWrap .profileImgDetail .imgWrap {
     border-radius: 50%;
-    width: 123px;
+    width: 90px;
     overflow: hidden;
+    /* border: 1px solid #007bff; */
 }
 
 .profileWrap .loginWrap .formWrap .innerForm label {
@@ -1860,4 +1863,20 @@ header .notificationWrap .setHeight {
 form .error {
     color: #ff0000;
     font-weight: normal;
+}
+
+.notDisplayed {
+    display: none;
+}
+
+.id-error label {
+    background-color: white !important;
+    color: #ff0000 !important;
+    padding-left: initial !important;
+    padding: 2px !important;
+}
+
+.auto-search ul li {
+    background-color: #eef2f8 !important;
+    border-color: #4c8df5 !important;
 }

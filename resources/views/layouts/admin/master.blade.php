@@ -108,11 +108,11 @@
     <script src="{{ asset("/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")}}"></script>
     <!-- Ekko Lightbox -->
     <script src="{{ asset("/AdminLTE/plugins/ekko-lightbox/ekko-lightbox.min.js")}}"></script>
-    <script src="{{ asset("/js/custom.js")}}"></script>
+    <!-- <script src="{{ asset("/js/custom.js")}}"></script> -->
     <script src="{{ asset("/AdminLTE/plugins/bs-custom-file-input/bs-custom-file-input.min.js")}}"></script>
     <!-- Summernote -->
     <script src="{{ asset("/AdminLTE/plugins/summernote/summernote-bs4.min.js")}}"></script>
-
+    <script src="{{ asset("/js/admin_custom.js")}}"></script>
     <script>
     $(document).ready(function() {
 

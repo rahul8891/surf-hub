@@ -48,7 +48,7 @@ class FortifyServiceProvider extends ServiceProvider
     public function customLoginAuth(){
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)
-                    ->orWhere('user_name', $request->email)->first();
+                    ->orWhere('user_name', $request->email)->first();                   
             if ($user &&
                 Hash::check($request->password, $user->password)) {
                 if($user->status === config('customarray.status.ACTIVE')){
@@ -82,7 +82,7 @@ class FortifyServiceProvider extends ServiceProvider
     public function createUsersUsing(){
         Fortify::registerView(function () {
             $terms = DB::table('pages')->select('id', 'title','body')->where('alias','terms')->first();
-            $countries = DB::table('countries')->select('id', 'name')->orderBy('name','asc')->get();
+            $countries = DB::table('countries')->select('id', 'name','phone_code')->orderBy('name','asc')->get();           
             $beachBreaks = DB::table('beach_breaks')->orderBy('beach_name','asc')->get();
             $language = config('customarray.language'); 
             $accountType = config('customarray.accountType');                  

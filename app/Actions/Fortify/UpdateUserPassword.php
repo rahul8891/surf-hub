@@ -5,7 +5,8 @@ namespace App\Actions\Fortify;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
-
+use Illuminate\Routing\Redirector;
+use Redirect;
 class UpdateUserPassword implements UpdatesUserPasswords
 {
     use PasswordValidationRules;
@@ -18,7 +19,7 @@ class UpdateUserPassword implements UpdatesUserPasswords
      * @return void
      */
     public function update($user, array $input)
-    {
+    {       
         Validator::make($input, [
             'current_password' => ['required', 'string'],
             'password' => $this->passwordRules(),
@@ -26,7 +27,7 @@ class UpdateUserPassword implements UpdatesUserPasswords
             if (! Hash::check($input['current_password'], $user->password)) {
                 $validator->errors()->add('current_password', __('The provided password does not match your current password.'));
             }
-        })->validateWithBag('updatePassword');
+        })->validate();
 
         $user->forceFill([
             'password' => Hash::make($input['password']),
