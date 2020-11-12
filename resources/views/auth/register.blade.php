@@ -1,23 +1,6 @@
 @extends('layouts.guest_user')
 @section('content')
-<style>
-.select2-selection {
-    -webkit-box-shadow: 0;
-    box-shadow: 0;
-    background-color: #fff;
-    border: 0;
-    border-radius: 0;
-    color: #555555;
-    font-size: 14px;
-    outline: 0;
-    min-height: 42px;
-    text-align: left;
-}
 
-.select2-selection__rendered {
-    margin: 13px;
-}
-</style>
 <section class="loginWrap registrationWrap">
     <div class="innerWrap">
         <div class="container">
@@ -126,8 +109,11 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
-                                            <div class="selectWrap pos-rel">
-                                                <select class="form-control country" name="country_id" required>
+                                            <div class="selectWrap">
+                                                <select
+                                                    class="form-control select2 select2-hidden-accessible country local_beach_break_id"
+                                                    style="width: 100%;" tabindex="-1" aria-hidden="true"
+                                                    name="country_id" required>
                                                     <option value="" data-phone="">-- Country --</option>
                                                     @foreach($countries as $key => $value)
                                                     <option value="{{ $value->id }}" data-phone="{{$value->phone_code}}"
@@ -149,11 +135,6 @@
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
-                                                <!-- <input type="tel" class="form-control" id="phone" name="phone"
-                                                    value="{{ old('phone') }}" autocomplete="phone" required>
-                                                @error('phone')
-                                                <div class="text-danger">{{ $message }}</div>
-                                                @enderror -->
                                                 <input type="text" placeholder="Phone No." class="form-control phone"
                                                     name="phone" value="{{ old('phone') }}" minlength="10"
                                                     maxlength="15" autocomplete="phone" required>
@@ -174,7 +155,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="language" required>
+                                                <select class="form-control select2 select2-hidden-accessible language"
+                                                    style="width: 100%;" tabindex="-1" aria-hidden="true"
+                                                    name="language" required>
                                                     <option value="">-- Preferred Language --</option>
                                                     @foreach($language as $key => $value)
                                                     <option value="{{ $key }}"
@@ -196,7 +179,10 @@
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="account_type" required>
+                                                <select
+                                                    class="form-control select2 select2-hidden-accessible accountType"
+                                                    style="width: 100%;" tabindex="-1" aria-hidden="true"
+                                                    name="account_type" required>
                                                     <option value="">-- Account Type --</option>
                                                     @foreach($accountType as $key => $value)
                                                     <option value="{{ $key }}"
@@ -205,12 +191,67 @@
                                                     </option>
                                                     @endforeach
                                                 </select>
+
                                                 <span class="arrow">
                                                     <img src="{{ asset("/img/select-downArrow.png")}}" alt="">
                                                 </span>
                                                 <span class="first-icon"><img src="{{ asset("/img/user-grey.png")}}"
                                                         alt=""></span>
-                                                @error('account_type')
+                                                @error('language')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group pos-rel">
+                                            <div class="inputWrap">
+                                                <input type="password" id="password" placeholder="Password"
+                                                    class="form-control" name="password" autocomplete="new-password"
+                                                    required>
+                                                <span><img src="{{ asset("/img/lock.png")}}" alt=""></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group pos-rel">
+                                            <div class="inputWrap">
+                                                <input type="password" placeholder="Confirm Password"
+                                                    class="form-control" name="password_confirmation"
+                                                    autocomplete="new-password" required>
+                                                <span><img src="{{ asset("/img/lock.png")}}" alt=""></span>
+                                                @error('password')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group pos-rel">
+                                            <div class="selectWrap pos-rel">
+                                                <!-- <select
+                                                    class="form-control select2 select2-hidden-accessible local_beach_break"
+                                                    style="width: 100%;" tabindex="-1" aria-hidden="true"
+                                                    id="local_beach_break_id" name="local_beach_break_id" required>
+                                                    <option value=""> --Select Beach Break-- </option>
+                                                    @foreach($beachBreaks as $key => $value)
+                                                    <option value="{{ $value->id }}"
+                                                        {{ old('local_beach_break_id') == $value->id ? "selected" : "" }}>
+                                                        {!! $value->beach_name.'
+                                                        '.$value->break_name.', '.$value->city_region.',
+                                                        '.$value->state.', '.$value->country
+                                                        !!}</option>
+                                                    @endforeach
+                                                </select> -->
+                                                <input type="text" value="" name="local_beach_break" id="search-box"
+                                                    placeholder="Search Beach Break " class="form-control">
+                                                <input type="hidden" name="local_beach_break_id"
+                                                    id="local_beach_break_id" class="form-control">
+
+                                                <div class="auto-search" id="country_list"></div>
+                                                <span class="first-icon"><img src="{{ asset("/img/location.png")}}"
+                                                        alt=""></span>
+                                                @error('local_beach_break')
                                                 <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -236,63 +277,7 @@
                                                 <span><img src="{{ asset("/img/instagram-grey.png")}}" alt=""></span>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group pos-rel">
-                                            <div class="inputWrap">
-                                                <input type="password" id="password" placeholder="Password"
-                                                    class="form-control" name="password" autocomplete="new-password"
-                                                    required>
-                                                <span><img src="{{ asset("/img/lock.png")}}" alt=""></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group pos-rel">
-                                            <div class="selectWrap pos-rel">
-                                                <select class="form-control" id="local_beach_break_id"
-                                                    name="local_beach_break_id" required>
-                                                    <option value=""> --Select Beach Break-- </option>
-                                                    @foreach($beachBreaks as $key => $value)
-                                                    <option value="{{ $value->id }}"
-                                                        {{ old('local_beach_break_id') == $value->id ? "selected" : "" }}>
-                                                        {!! $value->beach_name.'
-                                                        '.$value->break_name.', '.$value->city_region.',
-                                                        '.$value->state.', '.$value->country
-                                                        !!}</option>
-                                                    @endforeach
-                                                </select>
-                                                <!-- <select class="form-control" name="local_beach_break_id" required>
-                                                    <option value=""> --Select Beach Break-- </option>
-                                                    @foreach($beachBreaks as $key => $value)
-                                                    <option value="{{ $value->id }}"
-                                                        {{ old('local_beach_break_id') == $value->id ? "selected" : "" }}>
-                                                        {!! $value->beach_name.'
-                                                        '.$value->break_name.', '.$value->city_region.',
-                                                        '.$value->state.', '.$value->country
-                                                        !!}</option>
-                                                    @endforeach
-                                                </select> -->
-                                                <span class="arrow">
-                                                    <img src="{{ asset("/img/select-downArrow.png")}}" alt="">
-                                                </span>
-                                                <span class="first-icon"><img src="{{ asset("/img/location.png")}}"
-                                                        alt=""></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group pos-rel">
-                                            <div class="inputWrap">
-                                                <input type="password" placeholder="Confirm Password"
-                                                    class="form-control" name="password_confirmation"
-                                                    autocomplete="new-password" required>
-                                                <span><img src="{{ asset("/img/lock.png")}}" alt=""></span>
-                                            </div>
-                                            @error('password')
-                                            <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
+
                                         <div class="form-group">
                                             <div class="radioWrap">
                                                 <input type="radio" id="test1" name="terms" value="true" required>
@@ -326,7 +311,7 @@
         </div>
     </div>
 </section>
-<!-- <div id="myModal" class="modal" role="dialog">
+<div id="myModal" class="modal" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -349,7 +334,7 @@
             </div>
         </div>
     </div>
-</div> -->
-@include('layouts/models/image_crop')
+</div>
+<!-- @include('layouts/models/image_crop') -->
 @include('layouts/models/terms-and-conditions')
 @endsection

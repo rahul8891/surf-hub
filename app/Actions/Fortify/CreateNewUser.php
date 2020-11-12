@@ -40,7 +40,7 @@ class CreateNewUser implements CreatesNewUsers
             'country_id' => ['required', 'numeric'],
             'account_type' => ['required', 'string'],
             'profile_photo_name' => ['image', 'mimes:jpeg,jpg,png'],
-            'local_beach_break_id' => ['required', 'numeric'],
+            'local_beach_break' => ['required', 'string'],
             'terms' => ['required'],
             'password' => $this->passwordRules(),
         ])->validate();

@@ -100,7 +100,7 @@ $(document).ready(function () {
 		}).then(function (response) {
             $('#imagebase64').val(response);
 			$("#category-img-tag").attr("src", response);
-			$("#category-img-tag").attr("width", "auto");
+			$("#category-img-tag").attr("width", "90px");
 			$('#myModal').modal('hide');
 		})
 	});
@@ -298,7 +298,7 @@ $(document).ready(function () {
 				required: true
 			},
 
-			local_beach_break_id: {
+			local_beach_break: {
 				required: true
 			},
 
@@ -366,8 +366,8 @@ $(document).ready(function () {
 				required: "Please select your account type"
 			},
 
-			local_beach_break_id: {
-				required: "Please select beach break"
+			local_beach_break: {
+				required: "Please enter beach break"
 			},
 
 			password: {
@@ -590,7 +590,7 @@ $(document).ready(function () {
 				required: true
 			},
 
-			local_beach_break_id: {
+			local_beach_break: {
 				required: true
 			}
 		},
@@ -641,8 +641,8 @@ $(document).ready(function () {
 				required: "Please select your account type"
 			},
 
-			local_beach_break_id: {
-				required: "Please select beach break"
+			local_beach_break: {
+				required: "Please enter beach break"
 			}
 		},
 		submitHandler: function (form) {
@@ -656,9 +656,105 @@ $(document).ready(function () {
 		$(this).siblings(".text-danger").hide();		
 	});
 
+	/*$("#search-box").keyup(function(){
+		$.ajax({
+			type: "GET",
+			url: "getBeachBreach",
+			data: {				
+				searchTerm: $(this).val(),
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {			
+				$('#country_list').html(jsonResponse);
+			}
+		})
+	});
+
+	$(document).on('click', 'li', function(){
+		var value = $(this).text();
+		$('#search-box').val(value);
+		$('#country_list').html("");
+	});*/
+
+	/**
+	* Execute a function given a delay time
+	* 
+	* @param {type} func
+	* @param {type} wait
+	* @param {type} immediate
+	* @returns {Function}
+	*/
+	var debounce = function (func, wait, immediate) {
+		var timeout;
+		return function() {
+			var context = this, args = arguments;
+			var later = function() {
+					timeout = null;
+					if (!immediate) func.apply(context, args);
+			};
+			var callNow = immediate && !timeout;
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+			if (callNow) func.apply(context, args);
+		};
+	};
+
+	$('#search-box').keyup(debounce(function(){
+		// the following function will be executed every half second	
+		if($(this).val().length > 2){		
+			$.ajax({
+				type: "GET",
+				url: "getBeachBreach",
+				data: {				
+					searchTerm: $(this).val(),
+					_token: csrf_token
+				},
+				dataType: "json",
+				success: function (jsonResponse) {			
+					$('#country_list').html(jsonResponse);
+				}
+			})
+		}else{
+			$('#local_beach_break_id').val('');
+			$('#country_list').html("");
+		}
+
+   },100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+
+    $(document).on('click', 'li', function(){
+		var value = $(this).text();
+		var dataId = $(this).attr("data-id");
+		$('#search-box').val(value);
+		$('#local_beach_break_id').val(dataId);
+		$('#country_list').html("");
+	});
+
+
+
+	// $("#search-box").keyup(function(){
+	// 	$.ajax({
+	// 	type: "POST",
+	// 	url: "readCountry.php",
+	// 	data:'keyword='+$(this).val(),
+	// 	beforeSend: function(){
+	// 		$("#search-box").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
+	// 	},
+	// 	success: function(data){
+	// 		$("#suggesstion-box").show();
+	// 		$("#suggesstion-box").html(data);
+	// 		$("#search-box").css("background","#FFF");
+	// 	}
+	// 	});
+	// });
+	
 
 });
-
+//To select country name
+function selectCountry(val) {
+	$("#search-box").val(val);
+	$("#suggesstion-box").hide();
+	}
 /**
  * remove message after time set hit
  */

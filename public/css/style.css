@@ -1875,3 +1875,8 @@ form .error {
     padding-left: initial !important;
     padding: 2px !important;
 }
+
+.auto-search ul li {
+    background-color: #eef2f8 !important;
+    border-color: #4c8df5 !important;
+}

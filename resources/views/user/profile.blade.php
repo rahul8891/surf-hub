@@ -236,8 +236,8 @@
                                             Break</label>
                                     </div>
                                     <div class="col-md-8 col-xl-9">
-                                        <!-- <input type="text" value="Local beach" class="form-control"> -->
-                                        <select class="form-control @error('local_beach_break_id') is-invalid @enderror"
+                                        <!-- <input type="text" value="Local beach" id="search-box" class="form-control"> -->
+                                        <!-- <select class="form-control @error('local_beach_break_id') is-invalid @enderror"
                                             name="local_beach_break_id" required>
                                             <option value=""> --Select Beach Break-- </option>
                                             @foreach($beachBreaks as $key => $value)
@@ -248,12 +248,29 @@
                                                 '.$value->state.', '.$value->country
                                                 !!}</option>
                                             @endforeach
-                                        </select>
-                                        @error('local_beach_break_id')
+                                        </select> -->
+                                        @php
+                                        $beachBreaksValue = ($user->user_profiles->beach_breaks) ?
+                                        $user->user_profiles->beach_breaks->beach_name.','.$user->user_profiles->beach_breaks->break_name.
+                                        ','.$user->user_profiles->beach_breaks->city_region.','.$user->user_profiles->beach_breaks->state.
+                                        ','.$user->user_profiles->beach_breaks->country : '';
+                                        @endphp
+
+                                        <input type="text" value="{{ old('local_beach_break',$beachBreaksValue)}}"
+                                            name="local_beach_break" data-beachID="" id="search-box"
+                                            placeholder="Search Beach Break " class="form-control">
+
+                                        <input type="hidden"
+                                            value="{{ old('local_beach_break_id',$user->user_profiles->local_beach_break_id)}}"
+                                            name="local_beach_break_id" id="local_beach_break_id" class="form-control">
+
+                                        <div class="auto-search" id="country_list"></div>
+
+                                        @error('local_beach_break')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                         <div class="id-error" id="id-error">
-                                            <label for="local_beach_break_id" class="error" generated="true"></label>
+                                            <label for="local_beach_break" class="error" generated="true"></label>
                                         </div>
                                     </div>
                                 </div>

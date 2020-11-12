@@ -17,6 +17,7 @@ use Illuminate\Auth\RequestGuard;
 use Illuminate\Support\Facades\DB;
 use App\Services\UserService;
 use Redirect;
+
 class UserController extends Controller
 {
     use PasswordTrait;
@@ -142,7 +143,7 @@ class UserController extends Controller
             'language' => ['required', 'string'],
             'country_id' => ['required', 'numeric'],
             'account_type' => ['required', 'string'],           
-            'local_beach_break_id' => ['required', 'numeric'],           
+            'local_beach_break' => ['required', 'numeric'],           
         ])->validate();
         
         $result = $this->users->updateUserProfile($data,$message);        
@@ -173,5 +174,41 @@ class UserController extends Controller
             die;
         }
     }
-    
+
+    // https://www.codechief.org/article/autocomplete-search-with-laravel-jquery-and-ajax
+    public function getBeachBreach(Request $request){
+        $data = $request->all();   
+        $string = $data['searchTerm'];
+        dd($string);
+        if(!empty($string)){
+            $field = ['beach_name','break_name','city_region','state','country'];
+            $resultData = DB::Table('beach_breaks')->Where(function ($query) use($string, $field) {
+                for ($i = 0; $i < count($field); $i++){             
+                    $query->orWhere($field[$i], 'LIKE',  '%' . $string .'%');
+                }      
+            })->get(); 
+        
+            $returnObject = '';
+            if(!$resultData->isEmpty()){
+                
+                $returnObject = '<ul class="list-group" style="display: block; position: relative; z-index: 1">';
+                foreach ($resultData as $key => $value) {
+                    $first = ($value->beach_name) ? $value->beach_name.',' : '';
+                    $val = $first.$value->break_name.','.$value->city_region.','.$value->state.','.$value->country;             
+                    $returnObject .= '<li class="list-group-item" data-id="'.$value->id.'">'.$val.'</li>';
+                }
+                $returnObject .='</ul>';
+                /*foreach ($resultData as $key => $value) {
+                    $myArray['id'] = $value->id;
+                    $first = ($value->beach_name) ? $value->beach_name.',' : '';
+                    $myArray['value'] = $first.$value->break_name.','.$value->city_region.','.$value->state.','.$value->country;
+                    $returnObject[] = $myArray;
+                }*/
+                return response()->json($returnObject);       
+            }else{               
+                return response()->json($returnObject); 
+            }
+        }
+    }   
+
 }
