@@ -108,7 +108,7 @@ return [
         'LOGIN_FAILED_EMAIL_NOT_VERIFIED'=> 'Please verify your email to login!',
         'AUTHORIZATION_REQUIRED'=> 'Access Denied - Authorization required',
         'EMAIL_DUPLICATE'=> 'Email already registered with us!',
-        'BLOCKED_USER'=> 'This account has been blocked / Restricted! Please connect us for furthur instructions.',
+        'BLOCKED_USER'=> 'This account has been blocked / pending / de-activated / deleted, Please connect to the  for furthur instructions.',
         'ACTION_NOT_ALLOWED'=> 'User is not allowed to perform this action!',
         'PASSWORD_RESET_MAIL_SENT'=> 'Password reset mail sent successfully.',
         'PASSWORD_RESET_SUCCESS'=> 'Password has been reset successfully.',
@@ -116,7 +116,7 @@ return [
         'MODEL_NOT_FOUND'=>'Requested entity does not exists!',
         'NO_FILE_SELECTED'=> 'Please select a file to upload!',
         'NO_RECORDS'=> 'No record found!',
-        'UPDATE_SUCCESS'=> 'updated successfully.'
+        'UPDATE_SUCCESS'=> 'updated successfully.',       
      ],
 
     'error'=>[
@@ -128,6 +128,7 @@ return [
     ],
      
     'success'=>[
-        'UPDATE_SUCCESS'=>'Record has been successfully updated'
+        'UPDATE_SUCCESS'=>'Record has been successfully updated',
+        'IMAGE_UPDATE_SUCCESS'=>'Profile Image has been successfully updated'
     ],
 ];

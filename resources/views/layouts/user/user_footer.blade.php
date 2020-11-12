@@ -19,7 +19,11 @@
                     </a>
                     <div class="profileChangePswd">
                         <ul>
+<<<<<<< HEAD
                             <li><a href="javascript:void(0)">Profile</a></li>
+=======
+                            <li><a href="{{ route('profile') }}">Profile</a></li>
+>>>>>>> f2ae944ff546de483d82b60541317cf2bd40027e
                             <li><a href="{{ route('showPassword') }}">Change Password</a></li>
                         </ul>
                     </div>

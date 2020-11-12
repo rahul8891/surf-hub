@@ -8,6 +8,9 @@
                     <li class="hover-no">
                         <a href="javascript:void(0);">{{ __('Contact Us') }}</a>
                     </li>
+                    <li class="backBtn">
+                        <a href="javascript:void(0);"><img src="img/backBtnIcon.png" alt="" class="pr-2">Back</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -23,7 +26,7 @@
                         <div class="row">
 
                             <div class="col-lg-9">
-                                <!-- <h2>Contact US</h2> -->
+                                <h2>Contact US</h2>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                                     tempor incididunt ut labore
                                     et dolore magna aliqua.</p>
