@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\AdminPageController;
 use App\Http\Controllers\user\PostController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\user\UserController;
+use App\Http\Controllers\user\MyHubController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +52,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
     Route::post('/post/profile', [UserController::class, 'storeProfile'])->name('storeProfile');
 
-    Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');    
+    Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
+    
+    Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');
    
     
 });

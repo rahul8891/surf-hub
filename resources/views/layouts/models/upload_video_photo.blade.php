@@ -1,22 +1,22 @@
 <div class="modal fade uploadModal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <!-- action="javascript.void(0)" {{ route('storeVedioImagePost') }} -->
         <form id="postForm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"><img src="img/logo_small.png">Upload Video/Photo</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"><img src="{{ asset("/img/logo_small.png")}}">Upload
+                        Video/Photo</h5>
                     <div class="selectWrap pos-rel">
                         <select class="form-control" name="post_type" required>
                             @foreach($customArray['post_type'] as $key => $value)
                             <option value="{{ $key }}">{{ $value}}</option>
                             @endforeach
                         </select>
-                        <span><img src="img/select-downArrow.png" alt=""></span>
+                        <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                     </div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"
                         onclick="this.form.reset();">
-                        <img alt="" src="img/close.png">
+                        <img alt="" src="{{ asset("/img/close.png")}}">
                     </button>
                 </div>
                 <div class="modal-body">
@@ -24,15 +24,15 @@
                         <textarea placeholder="Share your surf experience....." name="post_text"></textarea>
                         <div class="videoImageUploader">
                             <div class="upload-btn-wrapper">
-                                <button class=""><img alt="" src="img/photo.png"></button>
+                                <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
                                 <input type="file" name="surf_image[]" multiple />
                             </div>
                             <div class="upload-btn-wrapper">
-                                <button class=""><img alt="" src="img/video.png"></button>
+                                <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
                                 <input type="file" name="surf_video[]" multiple />
                             </div>
                             <div class="upload-btn-wrapper">
-                                <button class=""><img alt="" src="img/tag-friend.png"></button>
+                                <button class=""><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>
                             </div>
                         </div>
                         <div class="formWrap">
@@ -64,7 +64,7 @@
                                                     <option value="{{ $key }}">{{ $value}}</option>
                                                     @endforeach
                                                 </select>
-                                                <span><img src="img/select-downArrow.png" alt=""></span>
+                                                <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                                             </div>
                                         </div>
                                     </div>
@@ -84,7 +84,7 @@
                                                         {{ $value->name }}</option>
                                                     @endforeach
                                                 </select>
-                                                <span><img src="img/select-downArrow.png" alt=""></span>
+                                                <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                                             </div>
                                         </div>
                                     </div>
@@ -101,7 +101,7 @@
                                                     <option value="1">One</option>
                                                     <option value="2">Two</option>
                                                 </select>
-                                                <span><img src="img/select-downArrow.png" alt=""></span>
+                                                <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                                             </div>
                                         </div>
                                     </div>
@@ -122,7 +122,7 @@
                                                     @endforeach
                                                 </select>
 
-                                                <span><img src="img/select-downArrow.png" alt=""></span>
+                                                <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                                             </div>
                                         </div>
                                     </div>
@@ -140,7 +140,7 @@
                                                     <option value="{{ $key }}">{{ $value}}</option>
                                                     @endforeach
                                                 </select>
-                                                <span><img src="img/select-downArrow.png" alt=""></span>
+                                                <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                                             </div>
                                         </div>
                                     </div>
@@ -171,7 +171,7 @@
                                                     <option value="3">Raman</option>
                                                     <option value="4">Sanoj</option>
                                                 </select>
-                                                <span><img src="img/select-downArrow.png" alt=""></span>
+                                                <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                                             </div>
                                         </div>
                                         <div class="col-md-1 col-sm-4">
@@ -188,7 +188,7 @@
                             <h2>Optional Info</h2>
                             <div class="row">
                                 <div class="col-md-3 align-self-end">
-                                    <img src="img/img_4.jpg" alt="" class="img-fluid">
+                                    <img src="{{ asset("/img/img_4.jpg")}}" alt="" class="img-fluid">
                                 </div>
                                 <div class="col-md-6">
                                     <div class="row">
@@ -204,7 +204,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 align-self-end">
-                                    <img src="img/filterRightIcon.jpg" alt="" class="img-fluid">
+                                    <img src="{{ asset("/img/filterRightIcon.jpg")}}" alt="" class="img-fluid">
                                 </div>
                             </div>
                         </div>

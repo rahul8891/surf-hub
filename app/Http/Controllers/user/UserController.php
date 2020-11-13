@@ -196,13 +196,7 @@ class UserController extends Controller
                     $val = $first.$value->break_name.','.$value->city_region.','.$value->state.','.$value->country;             
                     $returnObject .= '<li class="list-group-item" data-id="'.$value->id.'">'.$val.'</li>';
                 }
-                $returnObject .='</ul>';
-                /*foreach ($resultData as $key => $value) {
-                    $myArray['id'] = $value->id;
-                    $first = ($value->beach_name) ? $value->beach_name.',' : '';
-                    $myArray['value'] = $first.$value->break_name.','.$value->city_region.','.$value->state.','.$value->country;
-                    $returnObject[] = $myArray;
-                }*/
+                $returnObject .='</ul>';              
                 return response()->json($returnObject);       
             }else{               
                 return response()->json($returnObject); 
