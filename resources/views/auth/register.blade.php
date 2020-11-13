@@ -243,12 +243,16 @@
                                                         !!}</option>
                                                     @endforeach
                                                 </select> -->
-                                                <input type="text" value="" name="local_beach_break" id="search-box"
-                                                    placeholder="Search Beach Break " class="form-control">
+                                                <input type="text" value="{{ old('local_beach_break')}}"
+                                                    name="local_beach_break" data-beachID=""
+                                                    placeholder="Search Beach Break "
+                                                    class="form-control  @error('local_beach_break') is-invalid @enderror search-box">
+
                                                 <input type="hidden" name="local_beach_break_id"
                                                     id="local_beach_break_id" class="form-control">
 
-                                                <div class="auto-search" id="country_list"></div>
+                                                <div class="auto-search search1" id="country_list"></div>
+
                                                 <span class="first-icon"><img src="{{ asset("/img/location.png")}}"
                                                         alt=""></span>
                                                 @error('local_beach_break')
@@ -256,6 +260,7 @@
                                                 @enderror
                                             </div>
                                         </div>
+
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
