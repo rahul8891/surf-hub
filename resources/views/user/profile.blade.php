@@ -226,29 +226,15 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- This -->
                                 <div class="row">
                                     <div class="col-md-4 col-xl-3 pr-0">
                                         <label>
                                             <span><img src="{{ asset("/img/location.png")}}" alt=""></span>
-                                            Local
-                                            Beach
-                                            /
-                                            Break</label>
+                                            Local Beach / Break
+                                        </label>
                                     </div>
                                     <div class="col-md-8 col-xl-9">
-                                        <!-- <input type="text" value="Local beach" id="search-box" class="form-control"> -->
-                                        <!-- <select class="form-control @error('local_beach_break_id') is-invalid @enderror"
-                                            name="local_beach_break_id" required>
-                                            <option value=""> --Select Beach Break-- </option>
-                                            @foreach($beachBreaks as $key => $value)
-                                            <option value="{{ $value->id }}"
-                                                {{ ($value->id == $user->user_profiles->local_beach_break_id) ? "selected" : "" }}>
-                                                {!! $value->beach_name.'
-                                                '.$value->break_name.', '.$value->city_region.',
-                                                '.$value->state.', '.$value->country
-                                                !!}</option>
-                                            @endforeach
-                                        </select> -->
                                         @php
                                         $beachBreaksValue = ($user->user_profiles->beach_breaks) ?
                                         $user->user_profiles->beach_breaks->beach_name.','.$user->user_profiles->beach_breaks->break_name.
@@ -256,24 +242,36 @@
                                         ','.$user->user_profiles->beach_breaks->country : '';
                                         @endphp
 
+                                        <!-- <input type="text" value="" name="local_beach_break"
+                                            placeholder="Search Beach Break " class="form-control search-box"> -->
+
                                         <input type="text" value="{{ old('local_beach_break',$beachBreaksValue)}}"
-                                            name="local_beach_break" data-beachID="" id="search-box"
-                                            placeholder="Search Beach Break " class="form-control">
+                                            name="local_beach_break" data-beachID="" placeholder="Search Beach Break "
+                                            class="form-control  @error('local_beach_break') is-invalid @enderror search-box">
 
-                                        <input type="hidden"
-                                            value="{{ old('local_beach_break_id',$user->user_profiles->local_beach_break_id)}}"
-                                            name="local_beach_break_id" id="local_beach_break_id" class="form-control">
+                                        <input type="hidden" name="local_beach_break_id" id="local_beach_break_id"
+                                            class="form-control">
 
-                                        <div class="auto-search" id="country_list"></div>
-
+                                        <div class="auto-search search1" id="country_list"></div>
                                         @error('local_beach_break')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                         <div class="id-error" id="id-error">
                                             <label for="local_beach_break" class="error" generated="true"></label>
                                         </div>
+                                        <!-- <input type="text" value="{{ old('local_beach_break')}}"
+                                            name="local_beach_break" data-beachID="" placeholder="Search Beach Break "
+                                            class="form-control  @error('local_beach_break') is-invalid @enderror">
+
+                                        @error('local_beach_break')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                        <div class="id-error" id="id-error">
+                                            <label for="local_beach_break" class="error" generated="true"></label>
+                                        </div> -->
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-md-4 col-xl-3 pr-0">
                                         <label>
@@ -301,6 +299,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-md-4 col-xl-3 pr-0">
                                         <label>
