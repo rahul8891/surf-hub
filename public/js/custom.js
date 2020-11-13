@@ -685,14 +685,13 @@ $(document).ready(function () {
 		if($(this).val().length > 2){		
 			$.ajax({
 				type: "GET",
-				url: "getBeachBreach",
+				url: "/getBeachBreach",
 				data: {				
 					searchTerm: $(this).val(),
 					_token: csrf_token
 				},
 				dataType: "json",
 				success: function (jsonResponse) {
-								
 					$('#country_list').html(jsonResponse);
 				}
 			})
@@ -707,8 +706,10 @@ $(document).ready(function () {
 
 
     $(document).on('click', 'li', function(){
+		
 		var value = $(this).text();
 		var dataId = $(this).attr("data-id");
+		$('#country_list').html("");
 		$('.search-box').val(value);
 		$('#local_beach_break_id').val(dataId);
 		$('#country_list').html("");

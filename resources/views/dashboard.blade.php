@@ -5,25 +5,8 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-9">
-                <div class="post p-0 ">
-                    <div class="uploadWrap">
-                        <div class="head">
-                            <img src="img/upload.png" alt=""> Upload Video/Photo
-                        </div>
-                        <div class="post-head">
-                            <a href="#" data-toggle="modal" data-target="#exampleModal">
-                                <div class="userDetail">
-                                    <div class="profileImg no-image">
-                                        EN
-                                    </div>
-                                    <div class="pl-3">
-                                        <h4>Upload your latest Photo/Video</h4>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                <!--include comman upload video and photo layout -->
+                @include('layouts/user/upload_layout')
                 <div class="post">
                     <h2>My Feed</h2>
                     <div class="inner">

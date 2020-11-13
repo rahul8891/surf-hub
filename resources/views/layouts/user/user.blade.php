@@ -41,7 +41,7 @@
     <script src="{{ asset("/js/bootstrap.js")}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
     <script src="{{ asset("/js/custom.js")}}"></script>
-    @if (Auth::user() && Request::path() == 'dashboard')
+    @if (Auth::user())
     <script src="{{ asset("/js/post.js")}}"></script>
     @endif
 
