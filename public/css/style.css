@@ -1876,7 +1876,13 @@ form .error {
     padding: 2px !important;
 }
 
+.search1 {
+    width: max-content !important;
+    position: absolute !important;
+}
 .auto-search ul li {
     background-color: #eef2f8 !important;
     border-color: #4c8df5 !important;
+    height: 39px;
+    padding: 8px;
 }

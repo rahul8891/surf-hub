@@ -656,27 +656,6 @@ $(document).ready(function () {
 		$(this).siblings(".text-danger").hide();		
 	});
 
-	/*$("#search-box").keyup(function(){
-		$.ajax({
-			type: "GET",
-			url: "getBeachBreach",
-			data: {				
-				searchTerm: $(this).val(),
-				_token: csrf_token
-			},
-			dataType: "json",
-			success: function (jsonResponse) {			
-				$('#country_list').html(jsonResponse);
-			}
-		})
-	});
-
-	$(document).on('click', 'li', function(){
-		var value = $(this).text();
-		$('#search-box').val(value);
-		$('#country_list').html("");
-	});*/
-
 	/**
 	* Execute a function given a delay time
 	* 
@@ -699,22 +678,25 @@ $(document).ready(function () {
 			if (callNow) func.apply(context, args);
 		};
 	};
-
-	$('#search-box').keyup(debounce(function(){
+	
+	var getBeachBreachURL = "{{ route('ajax.getBeachBreach') }}";
+	$('.search-box').keyup(debounce(function(){
 		// the following function will be executed every half second	
 		if($(this).val().length > 2){		
 			$.ajax({
 				type: "GET",
-				url: "getBeachBreach",
+				url: "/getBeachBreach",
 				data: {				
 					searchTerm: $(this).val(),
 					_token: csrf_token
 				},
 				dataType: "json",
-				success: function (jsonResponse) {			
+				success: function (jsonResponse) {
+								
 					$('#country_list').html(jsonResponse);
 				}
 			})
+			
 		}else{
 			$('#local_beach_break_id').val('');
 			$('#country_list').html("");
@@ -722,10 +704,12 @@ $(document).ready(function () {
 
    },100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
+
+
     $(document).on('click', 'li', function(){
 		var value = $(this).text();
 		var dataId = $(this).attr("data-id");
-		$('#search-box').val(value);
+		$('.search-box').val(value);
 		$('#local_beach_break_id').val(dataId);
 		$('#country_list').html("");
 	});
