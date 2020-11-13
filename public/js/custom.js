@@ -679,13 +679,13 @@ $(document).ready(function () {
 		};
 	};
 	
-	var getBeachBreachURL = "{{ route('ajax.getBeachBreach') }}";
+	
 	$('.search-box').keyup(debounce(function(){
 		// the following function will be executed every half second	
 		if($(this).val().length > 2){		
 			$.ajax({
 				type: "GET",
-				url: "/getBeachBreach",
+				url: "getBeachBreach",
 				data: {				
 					searchTerm: $(this).val(),
 					_token: csrf_token
@@ -713,25 +713,6 @@ $(document).ready(function () {
 		$('#local_beach_break_id').val(dataId);
 		$('#country_list').html("");
 	});
-
-
-
-	// $("#search-box").keyup(function(){
-	// 	$.ajax({
-	// 	type: "POST",
-	// 	url: "readCountry.php",
-	// 	data:'keyword='+$(this).val(),
-	// 	beforeSend: function(){
-	// 		$("#search-box").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
-	// 	},
-	// 	success: function(data){
-	// 		$("#suggesstion-box").show();
-	// 		$("#suggesstion-box").html(data);
-	// 		$("#search-box").css("background","#FFF");
-	// 	}
-	// 	});
-	// });
-	
 
 });
 //To select country name
