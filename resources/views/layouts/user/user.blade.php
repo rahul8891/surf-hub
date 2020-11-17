@@ -50,9 +50,34 @@
     $(document).ready(function() {
 
 
-        $(" #My-Profile").click(function() {
+        $("#My-Profile").click(function() {
             $(".profileChangePswd").toggleClass("show");
         });
+
+        /* $(document).on('click.bs.dropdown.data-api', '.dropdown.keep-inside-clicks-open', function(e) {
+             e.stopPropagation();
+         });*/
+
+        $('.dropdown.keep-inside-clicks-open').on({
+            "shown.bs.dropdown": function() {
+                this.closable = false;
+            },
+            "click": function() {
+                this.closable = false;
+            },
+            "hide.bs.dropdown": function() {
+                return this.closable;
+            }
+        });
+
+
+        $('.close').on('click', function(event) {
+            // $(this).parents('.dropdown').find('button.dropdown-toggle').dropdown('toggle')
+            //$(".close").dropdown('hide');
+            // $("#close").dropdown("toggle");
+        });
+
+
 
         $(".nice-wrapper").niceScroll({
             cursorwidth: '10px',

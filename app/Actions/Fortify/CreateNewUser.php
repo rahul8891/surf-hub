@@ -74,8 +74,7 @@ class CreateNewUser implements CreatesNewUsers
             if ($user->id) {
                 $this->deleteUplodedProfileImage($getImageArray['profile_photo_name']);
                 $this->deletUserRecord($user->id);
-            }
-            dd($e);
+            }           
             throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         }
     }

@@ -30,7 +30,7 @@ class AdminUserSeeder extends Seeder
         ]);
 
         DB::table('user_profiles')->insert([
-            'user_id' => 1,           
+            'user_id' => 1,
             'first_name' => 'jhon',
             'last_name' => 'ward',
             'gender'=>'M',

@@ -1,7 +1,7 @@
 <div class="modal fade uploadModal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form id="postForm">
+        <form id="postForm" name="postForm" class="upload-form">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"><img src="{{ asset("/img/logo_small.png")}}">Upload
@@ -14,14 +14,17 @@
                         </select>
                         <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                     </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close"
                         onclick="this.form.reset();">
                         <img alt="" src="{{ asset("/img/close.png")}}">
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="">
-                        <textarea placeholder="Share your surf experience....." name="post_text"></textarea>
+                        <textarea placeholder="Share your surf experience....." name="post_text" required></textarea>
+                        <!-- <div class="id-error" id="id-error">
+                            <label for="post_text" class="error" generated="true"></label>
+                        </div> -->
                         <div class="videoImageUploader">
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
@@ -45,11 +48,15 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
-                                                <input class="form-control" type="date" name="surf_date"
-                                                    id="datepicker" />
+                                                <input class="form-control" type="date" name="surf_date" id="datepicker"
+                                                    value="{{ old('surf_date') }}" required />
                                             </div>
+                                            <!-- <div class="id-error" id="id-error">
+                                                <label for="surf_date" class="error" generated="true"></label>
+                                            </div> -->
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="col-md-6">
                                     <div class="row">
@@ -58,16 +65,23 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="wave_size">
+                                                <select class="form-control" name="wave_size" required>
                                                     <option value="">{{ __('-- Select --')}}</option>
                                                     @foreach($customArray['wave_size'] as $key => $value)
-                                                    <option value="{{ $key }}">{{ $value}}</option>
+                                                    <option value="{{ $key }}"
+                                                        {{ old('wave_size') == $key ? "selected" : "" }}>{{ $value}}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                                 <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
+                                                <!-- <div class="id-error" id="id-error">
+                                                    <label for="wave_size" class="error" generated="true"></label>
+                                                </div> -->
                                             </div>
                                         </div>
+
                                     </div>
+
                                 </div>
                                 <div class="col-md-6">
                                     <div class="row">
@@ -76,7 +90,8 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="country_id">
+                                                <select class="form-control" name="country_id" id="country_id" district
+                                                    required>
                                                     <option value="">-- Country --</option>
                                                     @foreach($countries as $key => $value)
                                                     <option value="{{ $value->id }}"
@@ -87,6 +102,9 @@
                                                 <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                                             </div>
                                         </div>
+                                        <!-- <div class="id-error" id="id-error">
+                                            <label for="country_id" class="error" generated="true"></label>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -97,11 +115,12 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="local_beach_break_id">
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                </select>
-                                                <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
+                                                <input type="text" value="{{ old('local_beach_break')}}"
+                                                    name="local_beach_break" placeholder="Search Beach Break "
+                                                    class="form-control search-box" required>
+                                                <input type="hidden" name="local_beach_break_id"
+                                                    id="local_beach_break_id" class="form-control">
+                                                <div class="auto-search search1" id="country_list"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -113,15 +132,14 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="state_id">
-                                                    <option value="">-- State --</option>
+                                                <select class="form-control" name="state_id" id="state_id" required>
+                                                    <option selected="selected" value="">-- State --</option>
                                                     @foreach($states as $key => $value)
                                                     <option value="{{ $value->id }}"
                                                         {{ old('state_id') == $value->id ? "selected" : "" }}>
                                                         {{ $value->name }}</option>
                                                     @endforeach
                                                 </select>
-
                                                 <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                                             </div>
                                         </div>
@@ -134,10 +152,12 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="board_type">
+                                                <select class="form-control" name="board_type" required>
                                                     <option value="">{{ __('-- Select --')}}</option>
                                                     @foreach($customArray['board_type'] as $key => $value)
-                                                    <option value="{{ $key }}">{{ $value}}</option>
+                                                    <option value="{{ $key }}"
+                                                        {{ old('board_type') == $key ? "selected" : "" }}>{{ $value}}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                                 <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
@@ -164,13 +184,23 @@
                                         </div>
                                         <div class="col-md-4 col-sm-8" style="display:none" id="otherSsurfer">
                                             <div class="selectWrap pos-rel">
+
+                                                <!-- <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
+                                                    placeholder="Search User " class="form-control other_surfer_box"
+                                                    id="other_surfer" required>
+
+                                                <input type="hidden" name="user_id" id="user_id" class="form-control">
+
+                                                <div class="auto-search search1" id="other_surfer_list"></div> -->
+
                                                 <select class="form-control" name="other_surfer" id="other_surfer">
-                                                    <option value=""></option>
+                                                    <option value="">-- Select User --</option>
                                                     <option value="1">Sandeep</option>
                                                     <option value="2">Raja</option>
                                                     <option value="3">Raman</option>
                                                     <option value="4">Sanoj</option>
                                                 </select>
+
                                                 <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                                             </div>
                                         </div>
