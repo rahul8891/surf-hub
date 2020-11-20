@@ -27,7 +27,8 @@ class MasterService {
        
         // Country model object
         $this->countries = new Country();
-        
+
+  
         // State model object
         $this->states = new State();
        
@@ -44,6 +45,7 @@ class MasterService {
     public function getCountries(){
         return $this->countries->select('id', 'name','phone_code')->orderBy('name','asc')->get();
     }
+
 
     /**
      * [getStates] we are getiing all the states

@@ -168,6 +168,8 @@ $(document).ready(function () {
 			type: 'canvas',
 			size: 'viewport'
 		}).then(function (response) {
+			var id = $("#user-id").data("userid");//$(this).data("userid");
+			console.log(id);
             $('#imagebase64').val(response);
 			$("#category-img-tag").attr("src", response);
 			$("#category-img-tag").attr("width", "auto");
@@ -175,9 +177,10 @@ $(document).ready(function () {
 			spinner.show();
 			$.ajax({
 				type: "POST",
-				url: "updateProfile",
+				url: "/updateProfile",
 				data: {				
 					image: response,
+					userId:id,
 					_token: csrf_token
 				},
 				dataType: "json",
@@ -260,7 +263,7 @@ $(document).ready(function () {
 			},
 
 			last_name: {
-				required: true,
+				required: false,
 				minlength: 3,
 				noSpace: true
 			},
@@ -279,11 +282,11 @@ $(document).ready(function () {
 			},
 
 			phone: {
-				// noSpace: true,
+				noSpace: true,
 				required: true,
 				minlength: 10,
 				maxlength: 15,
-				// spaceNotAllow: true,
+				spaceNotAllow: true,
 				numericOnly: true
 			},
 
