@@ -46,13 +46,63 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $data = $request->all();
-        Validator::make($data, [
-            'post_text' => ['required', 'string'],
-        ])->validate();
-        
-       dd($request);
+    {       
+        /*
+         "post_type" => "PRIVATE"
+        "post_text" => "ghjkhgjk"
+        "surf_date" => "2020-11-17"
+        "wave_size" => "2"
+        "country_id" => "101"
+        "local_beach_break" => "Avalon Beach,South Avalon,Sydney,NSW,Australia"
+        "local_beach_break_id" => "2"
+        "state_id" => "4024"
+        "board_type" => "GUN"
+        "surfer" => "me"
+        "other_surfer" => null
+        "optional_info[" => "AIR"
+        "_token" => "ezRB08R6Nkgn4o0jh2OxbIY4r8t7NmJM1BjpUbwW"
+        "optional" => array:2 [
+        0 => "FLOATER"
+        1 => "AIR"
+        ]
+    ]
+    "_token" => "ezRB08R6Nkgn4o0jh2OxbIY4r8t7NmJM1BjpUbwW"
+        */
+        try{
+            $data = $request->all();      
+            dd($data['formData']);   
+            $rules = array(
+                'post_type' => ['required', 'string'],
+                'post_text' => ['required','string'],
+                'wave_size' => ['required','numeric'],
+                'surf_date' => ['required','date_format:Y-m-d'],
+                'country_id' => ['required','numeric'],
+                'state_id' => ['required','numeric'],
+                'local_beach_break_id' => ['required','numeric'],
+                'board_type' => ['required', 'string'],
+                'surfer' => ['required', 'string'],
+            );       
+            $validate = Validator::make($data['formData'], $rules);          
+            if ($validate->fails()) {
+                return response()->json(['error'=>$validate->errors()]);     
+            }else {
+                dd($data['formData']);
+                return response()->json(['success'=>'Data Successfully updated']);  
+            }
+           /* if ($validate->fails()) {
+                // If validation falis redirect back to register.
+                return redirect()->back()->withErrors($validate)->withInput();
+            } else {
+                $result = $this->users->saveAdminUser($data,$message);
+                if($result){  
+                    return Redirect::to('admin/users/create')->withSuccess($message);
+                }else{
+                    return Redirect::to('admin/users/create')->withErrors($message);
+                }
+            }*/
+        }catch (\Exception $e){     
+            return response()->json(['error'=>$e->getMessage()]);               
+        }
     }
 
     /**

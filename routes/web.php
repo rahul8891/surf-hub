@@ -31,6 +31,7 @@ Route::get('/terms-and-conditions', [WelcomeFeedController::class, 'terms'])->na
 Route::get('/help-faq', [WelcomeFeedController::class, 'faq'])->name('faq');
 Route::get('/contact-us', [WelcomeFeedController::class, 'contact'])->name('contact');
 Route::get('/getBeachBreach', [UserController::class, 'getBeachBreach'])->name('getBeachBreach');
+Route::get('/getState', [DashboardController::class, 'getState'])->name('getState');
 
 /*********************************************************************************************
  *                              User Route
@@ -44,7 +45,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');  
      
-    Route::post('/post/store', [PostController::class, 'store'])->name('storeVedioImagePost');
+    Route::post('/create-post', [PostController::class, 'store'])->name('storeVedioImagePost');
 
     Route::get('/user/change-password', [UserController::class, 'showChangePassword'])->name('showPassword');
 
@@ -54,7 +55,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
     Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
     
-    Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');
+    Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');   
    
     
 });

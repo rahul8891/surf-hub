@@ -22,7 +22,7 @@
                         <img src="{{ asset("/img/changePswd-left.png")}}" class="img-fluid" alt="">
                     </div>
                     <div class="col-lg-4">
-                        <form name="update_password" action="{{ route('user-password.update') }}">
+                        <form method="POST" name="update_password" action="{{ route('user-password.update') }}">
                             @csrf
                             @method('put')
                             <div class="form">

@@ -135,4 +135,14 @@ class UserService {
             return false;
         }
     }
+
+    public function getAllUserForCreatePost(){
+        $users = $this->users->select('id','user_name')->where('email_verified_at','!=',null)   
+                    ->where('status',$this->checkUserType['status']['ACTIVE'])   
+                    ->where('is_deleted','0')
+                    ->where('user_type',$this->checkUserType['userType']['USER']) 
+                    ->whereNotIn('id',[Auth::user()->id])
+                    ->orderBy('id','asc')->get();
+        return $users;
+    }
 }
