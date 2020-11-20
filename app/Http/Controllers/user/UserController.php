@@ -143,7 +143,7 @@ class UserController extends Controller
             'language' => ['required', 'string'],
             'country_id' => ['required', 'numeric'],
             'account_type' => ['required', 'string'],           
-            'local_beach_break' => ['required', 'numeric'],           
+            'local_beach_break' => ['required', 'string'],         
         ])->validate();
         
         $result = $this->users->updateUserProfile($data,$message);        
@@ -178,15 +178,17 @@ class UserController extends Controller
     // https://www.codechief.org/article/autocomplete-search-with-laravel-jquery-and-ajax
     public function getBeachBreach(Request $request){
         $data = $request->all();   
-        $string = $data['searchTerm'];
-        if(!empty($string)){
+        $searchTerm = $data['searchTerm'];      
+        if(!empty($searchTerm)){
+            $searchTerm = explode(",",$searchTerm);
+            $string = $searchTerm['0'];        
             $field = ['beach_name','break_name','city_region','state','country'];
             $resultData = DB::Table('beach_breaks')->Where(function ($query) use($string, $field) {
                 for ($i = 0; $i < count($field); $i++){             
                     $query->orWhere($field[$i], 'LIKE',  '%' . $string .'%');
                 }      
             })->get(); 
-        
+           
             $returnObject = '';
             if(!$resultData->isEmpty()){
                 
