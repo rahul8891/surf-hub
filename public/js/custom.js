@@ -685,7 +685,7 @@ $(document).ready(function () {
 		if($(this).val().length > 2){		
 			$.ajax({
 				type: "GET",
-				url: "getBeachBreach",
+				url: "/getBeachBreach",
 				data: {				
 					searchTerm: $(this).val(),
 					_token: csrf_token
