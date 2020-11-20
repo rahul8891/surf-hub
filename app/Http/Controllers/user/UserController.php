@@ -178,15 +178,17 @@ class UserController extends Controller
     // https://www.codechief.org/article/autocomplete-search-with-laravel-jquery-and-ajax
     public function getBeachBreach(Request $request){
         $data = $request->all();   
-        $string = $data['searchTerm'];
-        if(!empty($string)){
+        $searchTerm = $data['searchTerm'];      
+        if(!empty($searchTerm)){
+            $searchTerm = explode(",",$searchTerm);
+            $string = $searchTerm['0'];        
             $field = ['beach_name','break_name','city_region','state','country'];
             $resultData = DB::Table('beach_breaks')->Where(function ($query) use($string, $field) {
                 for ($i = 0; $i < count($field); $i++){             
                     $query->orWhere($field[$i], 'LIKE',  '%' . $string .'%');
                 }      
             })->get(); 
-        
+           
             $returnObject = '';
             if(!$resultData->isEmpty()){
                 
@@ -196,13 +198,7 @@ class UserController extends Controller
                     $val = $first.$value->break_name.','.$value->city_region.','.$value->state.','.$value->country;             
                     $returnObject .= '<li class="list-group-item" data-id="'.$value->id.'">'.$val.'</li>';
                 }
-                $returnObject .='</ul>';
-                /*foreach ($resultData as $key => $value) {
-                    $myArray['id'] = $value->id;
-                    $first = ($value->beach_name) ? $value->beach_name.',' : '';
-                    $myArray['value'] = $first.$value->break_name.','.$value->city_region.','.$value->state.','.$value->country;
-                    $returnObject[] = $myArray;
-                }*/
+                $returnObject .='</ul>';              
                 return response()->json($returnObject);       
             }else{               
                 return response()->json($returnObject); 

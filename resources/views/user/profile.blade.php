@@ -240,7 +240,7 @@
                                             name="local_beach_break" data-beachID="" placeholder="Search Beach Break "
                                             class="form-control  @error('local_beach_break') is-invalid @enderror search-box">
 
-                                        <input type="text"
+                                        <input type="hidden"
                                             value="{{ old('local_beach_break_id',$user->user_profiles->local_beach_break_id)}}"
                                             name="local_beach_break_id" id="local_beach_break_id" class="form-control">
 
