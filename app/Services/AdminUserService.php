@@ -97,8 +97,8 @@ class AdminUserService {
             $this->users->email = trim(Str::lower($input['email']));
             $this->users->password = Hash::make($input['password']);
             $this->users->account_type = $input['account_type'];
-            $this->users->profile_photo_name = ($getImageArray['status']) ? $getImageArray['profile_photo_name'] :'';
-            $this->users->profile_photo_path = ($getImageArray['status']) ? $getImageArray['profile_photo_path'] :'';
+            $this->users->profile_photo_name = (isset($getImageArray['profile_photo_name']) && !empty($getImageArray['profile_photo_name'])) ? $getImageArray['profile_photo_name'] :'';
+            $this->users->profile_photo_path = (isset($getImageArray['profile_photo_path']) && !empty($getImageArray['profile_photo_path'])) ? $getImageArray['profile_photo_path'] :'';
             $this->users->created_at = Carbon::now();
             $this->users->updated_at = Carbon::now();
             if($this->users->save()){
@@ -109,6 +109,7 @@ class AdminUserService {
                 $this->userProfile->instagram = $input['instagram'];
                 $this->userProfile->language = $input['language'];
                 $this->userProfile->country_id = $input['country_id'];
+                $this->userProfile->local_beach_break_id = $input['local_beach_break_id'];
                 $this->userProfile->phone = trim(Str::lower($input['phone']));
                 $this->userProfile->created_at = Carbon::now();
                 $this->userProfile->updated_at = Carbon::now();

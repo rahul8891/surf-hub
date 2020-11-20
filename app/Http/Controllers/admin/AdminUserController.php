@@ -59,6 +59,7 @@ class AdminUserController extends Controller
     public function index()
     {
         $users = $this->users->getUsersListing();
+        // dd($users[0]->user_profiles->first_name);
         $spiner = ($users) ? true : false;
         return view('admin/admin_user.index', compact('users','spiner'));     
     }
@@ -95,11 +96,13 @@ class AdminUserController extends Controller
                 'phone' => ['required', 'numeric'],
                 'country_id' => ['required','numeric'],
                 'language' => ['required','string'],
-                'local_beach_break' => ['required', 'string'],
+                'local_beach_break_id' => ['required', 'string'],
                 'account_type'=>['required','string'],
                 'password' => $this->passwordRules(),
                 'terms' => ['required'],
-            );       
+            );
+            
+            // dd($rules);
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
@@ -113,7 +116,6 @@ class AdminUserController extends Controller
                 }
             }
         }catch (\Exception $e){ 
-            
             throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         }
         
@@ -171,7 +173,7 @@ class AdminUserController extends Controller
         try{
             $data = $request->all();
             $rules = array(
-                // 'profile_photo_name' => ['nullable','image','mimes:jpeg,jpg,png'],               
+                'profile_photo_name' => ['nullable','image','mimes:jpeg,jpg,png'],            
                 'first_name' => ['required', 'string'],
                 'last_name' => ['nullable','string'],
                 'user_name' => ['required', 'string','alpha_dash'],

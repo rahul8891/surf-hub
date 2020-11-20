@@ -17,20 +17,21 @@
                 <div class="row">
                     <!-- Row Start -->
                     <div class="col-sm-4">
+                        <label for="exampleInputFile">{{ __('Profile Photo') }}</label>
                         <div class="form-group">
-                            <img src="{{asset("/AdminLTE/dist/img/avatar5.png")}}" alt="Profile Photo" class="img-circle img-fluid" />
                         </div>
-                    </div>
-                    <div class="col-sm-4 py-5">
-                        <div class="form-group">
-                            <label for="exampleInputFile">{{ __('Profile Photo') }}</label>
-                            <div class="input-group">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="exampleInputFile"
-                                        name="profile_photo_name" value="{{ old('profile_photo_name') }}">
-                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                </div>
-                            </div>
+                        <img for="exampleInputFile" src="{{asset("/img/profile1.jpg")}}" width="80px" alt="Profile Photo" id="category-img-tag" class="img-fluid" for="exampleInputFile" />
+
+                        <div class="d-flex uploadBtnMainWrap align-items-center form-group">
+                                    
+                                        <input type="file" accept=".png, .jpg, .jpeg" id="exampleInputFile"
+                                                    name="profile_photo_name" value="{{ old('profile_photo_name') }}"/>
+
+                                            <input type="hidden" accept=".png, .jpg, .jpeg" id="imagebase64"
+                                                    name="profile_photo_blob" />
+
+                                    {{-- <label class="custom-file-label" for="exampleInputFile">Choose file</label> --}}
+                            
                         </div>
                         {{-- <div class="imgWrap upload-btn-wrapper">
                             <img src="{{asset("/AdminLTE/dist/img/avatar5.png")}}" alt="Profile Photo" class="img-circle img-fluid" />
@@ -176,7 +177,7 @@
 
                             <input type="text"
                                 class="form-control @error('local_beach_break') is-invalid @enderror search-box"
-                                name="local_beach_break" placeholder="Search Beach Break "
+                                name="local_beach_break_id" placeholder="Search Beach Break "
                                 value="{{ old('local_beach_break')}}">
                             @error('local_beach_break')
                             <span class="invalid-feedback" role="alert">
