@@ -145,12 +145,6 @@
                                             <label for="last_name" class="error" generated="true"></label>
                                         </div>
                                     </div>
-                                    <!-- <div class="col-md-3 col-xl-3 id-error" id="id-error">
-                              <@error('last_name')
-                              <div class="text-danger">{{ $message }}</div>
-                              @enderror 
-                              <label for="last_name" class="error" generated="true"></label>
-                              </div> -->
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4 col-xl-3 pr-0">
@@ -168,9 +162,6 @@
                                                 {{ $value->name }}</option>
                                             @endforeach
                                         </select>
-                                        <!-- <span class="arrow">
-                                 <img src="{{ asset("/img/select-downArrow.png") }}" alt="">
-                                 </span> -->
                                         @error('country_id')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -218,9 +209,9 @@
                                             </option>
                                             @endforeach
                                         </select>
-                                        <span class="arrow">
+                                        <!-- <span class="arrow">
                                             <img src="{{ asset("/img/select-downArrow.png")}}" alt="">
-                                        </span>
+                                        </span> -->
                                         @error('language')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -252,8 +243,9 @@
                                             name="local_beach_break" data-beachID="" placeholder="Search Beach Break "
                                             class="form-control  @error('local_beach_break') is-invalid @enderror search-box">
 
-                                        <input type="hidden" name="local_beach_break_id" id="local_beach_break_id"
-                                            class="form-control">
+                                        <input type="hidden"
+                                            value="{{ old('local_beach_break_id',$user->user_profiles->local_beach_break_id)}}"
+                                            name="local_beach_break_id" id="local_beach_break_id" class="form-control">
 
                                         <div class="auto-search search1" id="country_list"></div>
                                         @error('local_beach_break')

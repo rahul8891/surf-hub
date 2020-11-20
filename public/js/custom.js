@@ -682,7 +682,9 @@ $(document).ready(function () {
 	
 	$('.search-box').keyup(debounce(function(){
 		// the following function will be executed every half second	
-		if($(this).val().length > 2){		
+	
+		if($(this).val().length > 2){
+		
 			$.ajax({
 				type: "GET",
 				url: "/getBeachBreach",
@@ -692,6 +694,7 @@ $(document).ready(function () {
 				},
 				dataType: "json",
 				success: function (jsonResponse) {
+				
 					$('#country_list').html(jsonResponse);
 				}
 			})
@@ -706,7 +709,6 @@ $(document).ready(function () {
 
 
     $(document).on('click', 'li', function(){
-		
 		var value = $(this).text();
 		var dataId = $(this).attr("data-id");
 		$('#country_list').html("");
@@ -715,7 +717,45 @@ $(document).ready(function () {
 		$('#country_list').html("");
 	});
 
+
+	/**
+	 * State Baded on the selection on country
+	 */
+
+	$(document).on('change', '#country_id', function (e) {    
+        var currentcountryValue = $(this).val();
+        if (currentcountryValue != 0) {
+           $.ajax({
+              type: "GET",
+              url:'/getState',
+              data: {
+				 country_id: currentcountryValue,
+                 _token: csrf_token
+              },
+              dataType: "json",
+              success: function (jsonResponse) {
+                 //console.log(jsonResponse);
+                 if (jsonResponse.status == 'success') {
+                    $("#state_id").empty();
+                    var myJsonData = jsonResponse.data;
+                    $("#state_id").append('<option value="">--Select--</option>');
+                    $.each(myJsonData, function (key, value) {
+                       $("#state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                 } else {
+                    $("#state_id").empty();
+                 }
+              }
+           });
+        } else {
+           $("#state_id").empty();          
+        }
+	 });
+	 
+
+	
 });
+
 //To select country name
 function selectCountry(val) {
 	$("#search-box").val(val);

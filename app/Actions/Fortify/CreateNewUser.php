@@ -75,7 +75,6 @@ class CreateNewUser implements CreatesNewUsers
                 $this->deleteUplodedProfileImage($getImageArray['profile_photo_name']);
                 $this->deletUserRecord($user->id);
             }
-            dd($e);
             throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         }
     }
@@ -108,8 +107,8 @@ class CreateNewUser implements CreatesNewUsers
                 $returnArray['profile_photo_name'] = $image_name;
                 $returnArray['profile_photo_path'] = $image_path_forDB;
             }           
-            return $returnArray;
         }
+        return $returnArray;
         // Form Data without croping
        /* $returnArray = [];
         $path = public_path() . "/storage/images/";
