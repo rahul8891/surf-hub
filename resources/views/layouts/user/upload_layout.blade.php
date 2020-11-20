@@ -301,9 +301,14 @@
         <div class="post-head">
             <a href="#" data-toggle="modal" data-target="#exampleModal" data-backdrop="static" data-keyboard="false">
                 <div class="userDetail">
+
+                    @if(Auth::user()->profile_photo_path)
+                    <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}" class="profileImg" alt="">
+                    @else
                     <div class="profileImg no-image">
-                        EN
+                        {{ucwords(substr(Auth::user()->user_profiles->first_name,0,1))}}
                     </div>
+                    @endif
                     <div class="pl-3">
                         <h4>Upload your latest Photo/Video</h4>
                     </div>

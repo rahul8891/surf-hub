@@ -69,7 +69,8 @@ class PostController extends Controller
     "_token" => "ezRB08R6Nkgn4o0jh2OxbIY4r8t7NmJM1BjpUbwW"
         */
         try{
-            $data = $request->all();         
+            $data = $request->all();      
+            dd($data['formData']);   
             $rules = array(
                 'post_type' => ['required', 'string'],
                 'post_text' => ['required','string'],

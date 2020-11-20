@@ -7,7 +7,8 @@
 <div class="modal fade uploadModal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form id="postForm" name="postForm" class="upload-form">
+        <form id="postForm" method="POST" name="postForm" action="javascript:void(0)" class="upload-form"
+            accept-charset="utf-8" enctype="multipart/form-data">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"><img src="{{ asset("/img/logo_small.png")}}">Upload
@@ -27,22 +28,20 @@
                 </div>
                 <div class="modal-body">
                     <div class="">
-                        <textarea placeholder="Share your surf experience....." name="post_text"></textarea>
-                        <!-- <div class="id-error" id="id-error">
-                            <label for="post_text" class="error" generated="true"></label>
-                        </div> -->
+                        <textarea placeholder="Share your surf experience....." name="post_text" required></textarea>
                         <div class="videoImageUploader">
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
-                                <input type="file" id="input_multifileSelect" name="surf_image[]"
-                                    accept=".png, .jpg, .jpeg" multiple />
 
-                                <input type="hidden" id="imagebase64Multi" name="surf_image_array[]"
-                                    accept=".png, .jpg, .jpeg" multiple />
+                                <input type="file" id="input_multifileSelect" name="files[]" accept=".png, .jpg, .jpeg"
+                                    multiple />
+
+                                <!-- <input type="hidden" id="imagebase64Multi" name="surf_image_array[]"
+                                    accept=".png, .jpg, .jpeg" multiple /> -->
                             </div>
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
-                                <input type="file" name="surf_video[]" multiple />
+                                <input type="file" name="videos[]" multiple />
                             </div>
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>
