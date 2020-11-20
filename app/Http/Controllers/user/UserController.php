@@ -155,10 +155,11 @@ class UserController extends Controller
     }
     
     public function updateProfileImage(Request $request){
-        $data = $request->all();       
+        $data = $request->all();
         $rules = array(          
             'image' => ['required'] 
         );
+       // dd($data);
         $inputArry = ['image' => $data['image']];
         $validate = Validator::make($inputArry, $rules);
         if ($validate->fails()) {

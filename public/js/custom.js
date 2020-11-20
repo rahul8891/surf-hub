@@ -168,6 +168,8 @@ $(document).ready(function () {
 			type: 'canvas',
 			size: 'viewport'
 		}).then(function (response) {
+			var id = $("#user-id").data("userid");//$(this).data("userid");
+			console.log(id);
             $('#imagebase64').val(response);
 			$("#category-img-tag").attr("src", response);
 			$("#category-img-tag").attr("width", "auto");
@@ -175,9 +177,10 @@ $(document).ready(function () {
 			spinner.show();
 			$.ajax({
 				type: "POST",
-				url: "updateProfile",
+				url: "/updateProfile",
 				data: {				
 					image: response,
+					userId:id,
 					_token: csrf_token
 				},
 				dataType: "json",

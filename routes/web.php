@@ -53,7 +53,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
     Route::post('/post/profile', [UserController::class, 'storeProfile'])->name('storeProfile');
 
-    Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
+   // Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
     
     Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');   
    
@@ -61,6 +61,13 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 });
 
 
+/**
+ * Comman Route
+ */
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::post('/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
+});
 
 
 /*********************************************************************************************

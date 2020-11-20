@@ -178,7 +178,7 @@ class AdminUserController extends Controller
                 'last_name' => ['nullable','string'],
                 'user_name' => ['required', 'string','alpha_dash'],
                 'email' => ['required', 'string', 'email', 'max:255'],
-                'phone' => ['required', 'numeric'],
+                'phone' => ['required', 'string'],
                 'account_type'=>['required','string'],
                 'language' => ['required','string'],
                 'local_beach_break' => ['required', 'string'],
