@@ -1,3 +1,9 @@
+<style>
+.pip {
+    display: inline-block;
+    margin: 10px 10px 0 0;
+}
+</style>
 <div class="modal fade uploadModal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -21,14 +27,18 @@
                 </div>
                 <div class="modal-body">
                     <div class="">
-                        <textarea placeholder="Share your surf experience....." name="post_text" required></textarea>
+                        <textarea placeholder="Share your surf experience....." name="post_text"></textarea>
                         <!-- <div class="id-error" id="id-error">
                             <label for="post_text" class="error" generated="true"></label>
                         </div> -->
                         <div class="videoImageUploader">
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
-                                <input type="file" name="surf_image[]" multiple />
+                                <input type="file" id="input_multifileSelect" name="surf_image[]"
+                                    accept=".png, .jpg, .jpeg" multiple />
+
+                                <input type="hidden" id="imagebase64Multi" name="surf_image_array[]"
+                                    accept=".png, .jpg, .jpeg" multiple />
                             </div>
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
@@ -38,6 +48,18 @@
                                 <button class=""><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>
                             </div>
                         </div>
+                        <div class="row" id="filesInfo"></div>
+
+                        <span id="imageError" class="notDisplayed required">{{ __('Please upload files having
+                                            extensions: jpg, jpeg, png') }}</span>
+
+                        <!-- <output></output> -->
+                        <!-- <span id="imageError">{{ __('Please upload files having
+                                            extensions: jpg, jpeg, png') }}</span> -->
+                        <!-- <div id="div_uploadedImgs"></div> -->
+                        <!-- <div class="row justify-content-center" id="showImage">
+
+                        </div> -->
                         <div class="formWrap">
                             <h2>Mandatory Info</h2>
                             <div class="row">

@@ -39,7 +39,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.5.1/jquery.nicescroll.min.js"> </script>
     <script src="{{ asset("/js/bootstrap.js")}}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="{{ asset("/js/jquery.validate.min.js")}}"></script>
     <script src="{{ asset("/js/custom.js")}}"></script>
     @if (Auth::user())
     <script src="{{ asset("/js/post.js")}}"></script>

@@ -8,23 +8,108 @@ $(document).ready(function () {
       validator.resetForm();      
     });
 
+    var base_url = window.location.origin;
+
+
+    /**************************************************************************************
+     *               Manage Image
+     *************************************************************************************/    
+    var dataImage = new Array();     
+
+    $("#input_multifileSelect").change(function () {
+      readImageURL(this);
+    });
+
+    function readImageURL(input) {
+      var newFileList = Array.from(input.files);
+      $.each(newFileList, function(index, img ) {
+        var ext = img.name.substring(img.name.lastIndexOf(".") + 1).toLowerCase();
+        if (img && (ext == "png" || ext == "jpeg" || ext == "jpg")) {
+          $("#imageError").hide();
+          var f = newFileList[index]
+          dataImage.push(input.files[index]);
+          // dataImage[index] = newFileList[index];
+          reader = new FileReader();
+            reader.onload = (function (e) {
+              var file = e.target;
+                $("<span class=\"pip\">" +
+                "<img style=\"width: 50px;\" class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
+                "<br/><span class=\"remove\" data-index=\""+index+"\"><img src=\""+base_url+"\/img/close.png\" id=\"remove\" style=\"margin: -4px;position: absolute;top: 148px;cursor: pointer;\" width=\"14px\"></span>" +
+                "</span>").insertAfter("#filesInfo");
+                $(".remove").click(function(){                
+                  var indexRemoved = $(this).data('index');
+                  dataImage.splice(indexRemoved,1); 
+                  $(this).parent(".pip").remove();
+                                
+                });
+                  /*return function (evt) {
+                  var div = document.createElement('div');
+                  div.className = 'pip';
+                  div.innerHTML = '<img style="width: 50px;" src="' + evt.target.result + '" /><span id="remove-img" class="removeImg"><img src="http://127.0.0.1:8000/img/close.png" id="remove" data-index="'+index+'" style="margin: -13px;position: absolute;top: 187px;cursor: pointer;" width="14px" alt=""></span>';                    
+                  document.getElementById('filesInfo').appendChild(div);
+                  $(".remove").click(function(){
+                    $(this).parent(".pip").remove();
+                  });
+              };*/
+          });
+          reader.readAsDataURL(f);
+        }else{
+           // REMOVE IMAGE INDEX IF NOT IMAGE 
+           newFileList.splice(index);
+        }
+        if(newFileList.length == 0){
+          $("#imageError").show();
+        }
+
+      });
+      
+    /*  newFileList = Array.from(input.files);
+      $.each(newFileList, function(index, img ) {     
+      var ext = img.name.substring(img.name.lastIndexOf(".") + 1).toLowerCase();
+        if (img && (ext == "png" || ext == "jpeg" || ext == "jpg")) {
+          $("#imageError").hide();
+          dataImage[index] = img;
+          reader = new FileReader();
+            reader.onload = (function (tFile) {
+                return function (evt) {
+                    var div = document.createElement('div');
+                    div.innerHTML = '<img style="width: 50px;" src="' + evt.target.result + '" /><span id="remove-img" class="removeImg"><img src="http://127.0.0.1:8000/img/close.png" id="img-remove" data-index="'+index+'" style="margin: -13px;position: absolute;top: 187px;cursor: pointer;" width="14px" alt=""></span>';                    
+                    document.getElementById('filesInfo').appendChild(div);
+                };
+            }(img));
+            reader.readAsDataURL(img);
+        }else{
+          // REMOVE IMAGE INDEX IF NOT IMAGE 
+          newFileList.splice(index);
+        }     
+        if(newFileList.length == 0){
+          $("#imageError").show();
+          $('#imagebase64Multi').val('');
+        }
+        $('#imagebase64Multi').val(newFileList);
+      });  */    
+    }     
+
+    /*************************************************************************************/ 
+
+
+
 
     /**
      * Validate post form befor submit
      */
     $("form[name='postForm']").validate({			
       rules: {
-
         post_type: {
           required: true,        
         },
   
         post_text: {
-          required: true,         
+          required: false,         
         },
   
         surf_date: {
-          required: true,        
+          required: false,        
         },
   
         wave_size: {
@@ -99,43 +184,47 @@ $(document).ready(function () {
        
       },
       submitHandler: function (form) {       
-        //spinner.show();
-
+        //spinner.show();       
         // Manage Form Data
+
+        console.log(dataImage);
+        
         var myCheckboxes = $('input[name="optional_info[]"]:checked').map(function(){
           return $(this).val();
         }).get();
 
-        var result = [];
+        var result = {};
         
         $.each($('form').serializeArray(), function() {
             result[this.name] = this.value;
         });
 
-        result['optional_info'] = myCheckboxes;
-        console.log( result);
-
+        result['optional'] = myCheckboxes;       
+        $.ajax({
+          type: "POST",
+          url: "/create-post",
+          data: {				
+             formData: result,
+            _token: csrf_token
+          },
+          dataType: "json",
+          success: function (jsonResponse) {
+            postResult(jsonResponse);
+           // console.log(jsonResponse);
+          }
+        })
       }
     });
 
-    /*$("#postForm").submit(function(event){
-        event.preventDefault();
-        
-        // manage optional info check box array
-        var myCheckboxes = $('input[name="optional_info[]"]:checked').map(function(){
-            return $(this).val();
-          }).get();
-        
-        // Manage Form Data
-        var result = [];
-        $.each($('form').serializeArray(), function() {
-            result[this.name] = this.value;
+    function postResult (jsonResponse) {
+      if($.isEmptyObject(jsonResponse.error)){
+          $('.alert-block').css('display','block').append('<strong>'+jsonResponse.success+'</strong>');
+      }else{     
+        $.each( jsonResponse.error, function( key, value ) {        
+          $(document).find('[name='+key+']').after('<lable class="text-strong textdanger error">' +value+ '</lable>');
         });
-        result['optional_info'] = myCheckboxes;
-
-        console.log( result);
-        
-    });*/
+      }
+    }
 
     /**
      * Manage radio button

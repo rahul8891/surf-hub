@@ -682,7 +682,9 @@ $(document).ready(function () {
 	
 	$('.search-box').keyup(debounce(function(){
 		// the following function will be executed every half second	
-		if($(this).val().length > 2){		
+	
+		if($(this).val().length > 2){
+		
 			$.ajax({
 				type: "GET",
 				url: "/getBeachBreach",
@@ -692,6 +694,7 @@ $(document).ready(function () {
 				},
 				dataType: "json",
 				success: function (jsonResponse) {
+				
 					$('#country_list').html(jsonResponse);
 				}
 			})

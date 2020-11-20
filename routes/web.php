@@ -45,7 +45,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');  
      
-    Route::post('/post/store', [PostController::class, 'store'])->name('storeVedioImagePost');
+    Route::post('/create-post', [PostController::class, 'store'])->name('storeVedioImagePost');
 
     Route::get('/user/change-password', [UserController::class, 'showChangePassword'])->name('showPassword');
 
@@ -55,7 +55,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
     Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
     
-    Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');
+    Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');   
    
     
 });
