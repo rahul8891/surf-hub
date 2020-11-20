@@ -143,7 +143,7 @@ class UserController extends Controller
             'language' => ['required', 'string'],
             'country_id' => ['required', 'numeric'],
             'account_type' => ['required', 'string'],           
-            'local_beach_break' => ['required', 'numeric'],           
+            'local_beach_break' => ['required', 'string'],         
         ])->validate();
         
         $result = $this->users->updateUserProfile($data,$message);        
