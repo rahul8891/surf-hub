@@ -260,7 +260,7 @@ $(document).ready(function () {
 			},
 
 			last_name: {
-				required: true,
+				required: false,
 				minlength: 3,
 				noSpace: true
 			},
@@ -279,11 +279,11 @@ $(document).ready(function () {
 			},
 
 			phone: {
-				// noSpace: true,
+				noSpace: true,
 				required: true,
 				minlength: 10,
 				maxlength: 15,
-				// spaceNotAllow: true,
+				spaceNotAllow: true,
 				numericOnly: true
 			},
 

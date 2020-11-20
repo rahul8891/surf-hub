@@ -190,7 +190,7 @@ class UserController extends Controller
             $returnObject = '';
             if(!$resultData->isEmpty()){
                 
-                $returnObject = '<ul class="list-group" style="display: block; position: relative; z-index: 1">';
+                $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1">';
                 foreach ($resultData as $key => $value) {
                     $first = ($value->beach_name) ? $value->beach_name.',' : '';
                     $val = $first.$value->break_name.','.$value->city_region.','.$value->state.','.$value->country;             
