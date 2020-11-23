@@ -1,12 +1,12 @@
 @extends('layouts.admin.master')
 @section('content')
 <div class="card">
-    <div id="error"></div>
     <div class="card-header bg-primary">
-        <h3 class="card-title">Users List</h3>
+        <h3 class="card-title">Post List</h3>
     </div>
+    <div id="error"></div>
     <div class="card-header">
-        <a href="{{ route('adminUserCreate')}}" class="btn btn-primary pull-left">Add New Post</a>
+        <a href="{{ route('postCreate')}}" class="btn btn-primary pull-left">Add New Post</a>
     </div>
     <!-- /.card-header -->
     <div id="loader"></div>
@@ -15,47 +15,45 @@
             <thead>
                 <tr>
                     <th>Sr.No</th>
-                    <th>Name</th>
-                    <th class="no-sort">Email</th>
-                    <th class="no-sort">Status</th>
+                    <th>Post</th>
+                    <th class="no-sort">By User</th>
+                    <th class="no-sort">Uploaded On</th>
                     <th class="no-sort">Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($users as $key => $value)
+                @foreach($posts as $key => $value)
                 <tr>
-                    <td>{{ ($users->currentpage()-1) * $users->perpage() + $key + 1  }}</td>
+                    <td>{{ ($posts->currentpage()-1) * $posts->perpage() + $key + 1  }}</td>
+                    <td>{{ __(ucwords($value->post_text)) }}</td>
                     <td>{{ __(ucwords($value->user_profiles->first_name .' '.$value->user_profiles->last_name)) }}</td>
-                    <td>{{ __($value->email) }}</td>
-                    <td>
-                        <input type="checkbox" class="changeStatus" name="my-checkbox" data-bootstrap-switch
-                            data-off-color="danger" data-id="{{$value->id}}" data-on-color="success"
-                            data-on-text="ACTIVATED" data-off-text="Deactivated" @if($value->status == 'ACTIVE') checked
-                        @endif>
-                    </td>
+                    <td>{{ __($value->surf_start_date) }}</td>
                     <td>
                         <a class="btn btn-primary btn-sm"
-                            href="{{route('adminUserDetails', Crypt::encrypt($value->id))}}"><i
+                            href="{{route('postDetail', Crypt::encrypt($value->id))}}"><i
                                 class="fas fa-folder"></i> View</a>
-                        <a class="btn btn-info btn-sm" href="{{route('adminUserEdit', Crypt::encrypt($value->id))}}"><i
+                        <a class="btn btn-info btn-sm" href="{{route('postEdit', Crypt::encrypt($value->id))}}"><i
                                 class="fas fa-pencil-alt"></i> Edit</a>
+                        <a class="btn btn-danger btn-sm"
+                            href="{{route('deletePost', Crypt::encrypt($value->id))}}"><i
+                                class="fas fa-trash-alt"></i> remove</a>
                     </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
-        @if(!empty($users))
+        @if(!empty($posts))
         <div class="text-right margin-r-5" id="resultShow">
             <div class="row d-flex-row">
                 <div class="col-md-8"></div>
                 <div class="col-md-4" id="next">
                     <div class="d-flex justify-content-end">
-                        {!! $users->links() !!}
+                        {!! $posts->links() !!}
                     </div>
                 </div>
             </div>
-            <div>Showing {{($users->currentpage()-1)*$users->perpage()+1}} to
-                {{(($users->currentpage()-1)*$users->perpage())+$users->count()}} of {{$users->total()}} entries</div>
+            <div>Showing {{($posts->currentpage()-1)*$posts->perpage()+1}} to
+                {{(($posts->currentpage()-1)*$posts->perpage())+$posts->count()}} of {{$posts->total()}} entries</div>
             <div>
                 @endif
             </div>

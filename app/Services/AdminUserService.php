@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\Post;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -24,6 +25,8 @@ class AdminUserService {
     protected $currentUserDetails;
 
     protected $users;
+    
+    protected $posts;
 
     protected $userProfile;
 
@@ -34,6 +37,9 @@ class AdminUserService {
         $this->currentUserDetails = Auth::user();
         // User model object
         $this->users = new User();
+
+        // post model object
+        $this->posts = new Post();
 
         $this->userProfile = new UserProfile();
 
@@ -85,9 +91,24 @@ class AdminUserService {
     }
 
     /**
+     * [getPostListing] we are getiing all the post
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getPostsListing(){
+
+        $postArray =  $this->posts->whereNull('deleted_at')                               
+                                  ->orderBy('created_at','ASC')
+                                  ->paginate(10);
+        return $postArray;
+    }
+
+
+    /**
      * [saveAdminUser] we are storing the User Details from admin section 
      * @param  requestInput get all the requested input data
-     * @param  message return message based on the confition 
+     * @param  message return message based on the condition 
      * @return dataArray with message
      */
     public function saveAdminUser($input,&$message=''){
@@ -200,21 +221,6 @@ class AdminUserService {
 
 
     public function updateAdminUser($dataRequest,$id,&$message=''){
-            //         array:13 [▼
-            // "_token" => "IztDT3b9IpCmorjCkWIy8t4vtXSK1XBQUEbuLKcN"
-            // "first_name" => "shubh"
-            // "last_name" => "sharma"
-            // "user_name" => "shubh_sharma"
-            // "email" => "shubh@yopmail.com"
-            // "account_type" => "PRIVATE"
-            // "language" => "es"
-            // "country_id" => "101"
-            // "phone" => "+917830409696"
-            // "local_beach_break" => "Bilgola Beach,,Sydney,NSW,Australia"
-            // "local_beach_break_id" => "6"
-            // "facebook" => null
-            // "instagram" => null
-            // ]
       
         $users = $this->users->find($id); 
         $userProfiles =  new UserProfile();
@@ -279,5 +285,38 @@ class AdminUserService {
         //     }         
         //     throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         // }
+    }
+
+
+     /**
+     * [savePost] we are storing the post Details from admin section 
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function savePost($input,&$message=''){
+        try{
+            $this->posts->post_text = $input['post_text'];
+            $this->posts->post_type = $input['post_type'];
+            $this->posts->country_id =$input['country_id'];
+            $this->posts->surf_date = $input['surf_start_date'];
+            $this->posts->wave_size = $input['wave_size'];
+            $this->posts->board_type = $input['board_type'];
+            $this->posts->state_id = $input['state_id'];
+            $this->posts->local_beach_break_id = $input['local_beach_break_id'];
+            $this->posts->surfer = $input['surfer'];
+            $this->posts->optional_info = $input['optional_info'];
+            $this->posts->created_at = Carbon::now();
+            $this->posts->updated_at = Carbon::now();
+            if($this->posts->save()){
+                    $message = 'Post has been created successfully.!';
+                    return true;
+                
+            }
+        }catch (\Exception $e){     
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message='"'.$e->getMessage().'"';
+            return false;
+        }
     }
 }

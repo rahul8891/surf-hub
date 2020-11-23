@@ -1,0 +1,220 @@
+<?php
+
+namespace App\Http\Controllers\admin;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Crypt;
+use App\Services\AdminUserService;
+use App\Services\MasterService;
+use App\Traits\PasswordTrait;
+use App\Models\User;
+use App\Models\Post;
+use Carbon\Carbon;
+use Closure;
+use Redirect;
+use Session;
+
+class PostController extends Controller
+{
+    use PasswordTrait;
+    /**
+     * The user sevices implementation.
+     *
+     * @var AdminUserService
+     */
+    protected $posts;
+
+    Protected $masterService;
+
+    public $language;
+
+    public $accountType;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  AdminUserService  $users
+     * @return void
+     */
+    public function __construct(AdminUserService $posts,MasterService $masterService)
+    {
+        $this->posts = $posts;
+        $this->masterService = $masterService;
+        $this->customArray = config('customarray');
+        $this->language = config('customarray.language'); 
+        $this->accountType = config('customarray.accountType');
+        $this->post_type = config('customarray.post_type');
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $posts = $this->posts->getPostsListing();
+        $spiner = ($posts) ? true : false;
+        return view('admin/Post/index', compact('posts','spiner'));     
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;    
+        $countries = $this->masterService->getCountries();
+        $language = $this->language;
+        $users=User::all();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $customArray = $this->customArray;   
+        return view('admin/post/create', compact('users','countries','currentUserCountryId','customArray','language','states'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {   
+        
+        try{
+            $data = $request->all();
+            $rules = array(
+                'post_text' => ['required', 'string', 'max:255'],
+                'files[]' => ['nullable','image','mimes:jpeg,jpg,png'],
+                'videos[]' => ['nullable','video','mimes:mp4,mpeg4,mkv,gif'],
+                'surf_date' => ['required', 'string'],
+                'wave_size' => ['required', 'string'],
+                'state_id' => ['required', 'numeric'],
+                'board_type' => ['required', 'string'],
+                'surfer' => ['required'],
+                'country_id' => ['required','numeric'],
+                'local_beach_break_id' => ['nullable', 'string'],
+                'optional_info'=>['nullable'],
+            );
+            
+            $validate = Validator::make($data, $rules);
+            dd($validate);
+            if ($validate->fails()) {
+                // If validation falis redirect back to register.
+                return redirect()->back()->withErrors($validate)->withInput();
+            } else {
+                $result = $this->posts->savePost($data,$message);
+                if($result){  
+                    return Redirect::to('post/create')->withSuccess($message);
+                }else{
+                    return Redirect::to('post/create')->withErrors($message);
+                }
+            }
+        }catch (\Exception $e){ 
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            echo "exception";
+        }
+        
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {   
+        try{
+            $post=Post::findOrFail(Crypt::decrypt($id));
+            $spiner = ($post) ? true : false;
+        }catch (\Exception $e){ 
+            throw ValidationException::withMessages([$e->getMessage()]);
+        }
+        return view('admin/post/show', compact('post','spiner'));  
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {           
+        try{
+            $currentUserCountryId = Auth::user()->user_profiles->country_id;    
+            $countries = $this->masterService->getCountries();
+            $language = $this->language;
+            $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+            $customArray = $this->customArray;  
+            $posts = Post::findOrFail(Crypt::decrypt($id));
+            $spiner = ($this->posts) ? true : false;
+        }catch (\Exception $e){         
+            throw ValidationException::withMessages([$e->getMessage()]);
+        }
+        
+        return view('admin/post/edit', compact('countries','posts','currentUserCountryId','customArray','language','states'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {           
+        try{
+            $data = $request->all();
+            $rules = array(
+                'profile_photo_name' => ['nullable','image','mimes:jpeg,jpg,png'],            
+                'first_name' => ['required', 'string'],
+                'last_name' => ['nullable','string'],
+                'user_name' => ['required', 'string','alpha_dash'],
+                'email' => ['required', 'string', 'email', 'max:255'],
+                'phone' => ['required', 'string'],
+                'account_type'=>['required','string'],
+                'language' => ['required','string'],
+                'local_beach_break' => ['required', 'string'],
+                'country_id' => ['required','numeric'],
+            );       
+            $validate = Validator::make($data, $rules);
+            if ($validate->fails()) {
+                // If validation falis redirect back to register.
+                return redirect()->back()->withErrors($validate)->withInput();
+            } else {
+                $result = $this->users->updateAdminUser($data,Crypt::decrypt($id),$message);
+                if($result){
+                    return redirect()->route('adminUserEdit', ['id' => $id])->withSuccess($message);  
+                }else{
+                    return redirect()->route('adminUserEdit', ['id' => $id])->withErrors($message); 
+                }
+            }
+        }catch (\Exception $e){
+            return redirect()->route('adminUserEdit', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage()); 
+        }
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+}
