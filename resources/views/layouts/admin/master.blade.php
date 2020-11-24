@@ -120,6 +120,7 @@
     <script src="{{ asset("/js/admin_custom.js")}}"></script>
     <script src="{{ asset("/js/croppie.js")}}"></script>
     <script src="{{ asset("/js/custom.js")}}"></script>
+    <script src="{{ asset("/js/post.js")}}"></script>
     <script>
     $(document).ready(function() {
 

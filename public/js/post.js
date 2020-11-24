@@ -186,7 +186,8 @@ $(document).ready(function () {
 
     },
     submitHandler: function (form, e) {
-      //spinner.show();       
+      spinner.show();  
+      form.submit();     
       // Manage Form Data        
       // let formData = new FormData(form);
       e.preventDefault();
@@ -266,19 +267,19 @@ $(document).ready(function () {
   $('input[type=radio]').on('change', function () {
     switch ($(this).val()) {
       case 'me':
-        $("#otherSsurfer").hide();
+        $("#othersSurfer").hide();
         $("#other_surfer").val("");
         break;
       case 'other':
-        $("#otherSsurfer").show();
+        $("#othersSurfer").show();
         $("#other_surfer").val("");
         break;
       case 'unknown':
-        $("#otherSsurfer").hide();
+        $("#othersSurfer").hide();
         $("#other_surfer").val("");
         break;
       default:
-        $("#otherSsurfer").hide();
+        $("#othersSurfer").hide();
         $("#other_surfer").val("");
     }
   });

@@ -11,7 +11,7 @@
             <h3 class="card-title">Create New User</h3>
         </div>
         <!-- /.card-header -->
-        <form role="form" id="register" name="register" method="POST" action="{{ route('postStore') }}" enctype="multipart/form-data">
+        <form role="form" id="postForm" name="postForm" method="POST" action="{{ route('postStore') }}" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
 
@@ -31,10 +31,6 @@
                                     </option>
                                     @endforeach
                                 </select>
-                                
-                                {{-- <!-- <div class="id-error" id="id-error">
-                                    <label for="wave_size" class="error" generated="true"></label>
-                                </div> --> --}}
                             </div>
                         </div>
                     </div>
@@ -44,15 +40,15 @@
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-4">
-                            <label>By User<span class="required">*</span></label>
+                            <label for="user_id">By User<span class="required">*</span></label>
                         </div>
                         <div class="col-md-8">
                             <div class="selectWrap pos-rel">
                                 <select class="form-control" name="user_id" required>
-                                <option value="{{$users['user_name']??''}}">{{ __('-- Select --')}}</option>
+                                    <option value="">{{ __('-- Select --')}}</option>
                                     @foreach($users as $key => $value)
-                                    <option value="{{ $key }}"
-                                    {{ old('user_name') == $key ? "selected" : "" }}>{{ $value}}
+                                    <option value="{{ $value->id }}"
+                                    {{ old('user_name') == $key ? "selected" : "" }}>{{ $value->user_name}}
                                 </option>
                                 @endforeach
                             </select>
@@ -63,11 +59,12 @@
                     </div>
 
                 </div>
-
-                <h1>Upload Video/Photo</h1>
                 <hr/>
+
+                <h2 class="text-primary">Upload Video/Photo</h2>
                 <div class="form-group">
                     <textarea placeholder="Share your surf experience....." name="post_text" required class="form-control" rows="3"></textarea>
+                    <hr/>
                     <div class="videoImageUploader">
                         <div class="upload-btn-wrapper">
                             <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
@@ -80,7 +77,7 @@
                         </div>
                         <div class="upload-btn-wrapper">
                             <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
-                            <input type="file" name="videos[]" accept=".mp4, .mkv, .gif, .mpeg4" multiple />
+                            <input type="file" name="files[]" accept=".mp4, .mkv, .gif, .mpeg4" multiple />
                         </div>
                         {{-- <div class="upload-btn-wrapper">
                             <button class=""><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>
@@ -139,21 +136,23 @@
                                     <label>Country <span class="required">*</span></label>
                                 </div>
                                 <div class="col-md-8">
-                                    <div class="selectWrap pos-rel">
-                                        <select class="form-control" name="country_id" id="country_id" district
-                                            required>
-                                            <option value="">-- Country --</option>
-                                            @foreach($countries as $key => $value)
-                                            <option value="{{ $value->id }}"
-                                                {{ ( $value->id == $currentUserCountryId) ? 'selected' : '' }}>
-                                                {{ $value->name }}</option>
-                                            @endforeach
-                                        </select>
+                                <div class="selectWrap pos-rel">
+                                <select class="form-control select2 select2-hidden-accessible country local_beach_break_id"
+                                 name="country_id" id="country_id" required>
+                                <option value="">-- Country --</option>
+                                @foreach($countries as $key => $value)
+                                <option value="{{ $value->id }}"
+                                    {{ old('country_id') == $value->id ? "selected" : "" }}>
+                                    {{ $value->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('country_id')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                                         
                                     </div>
-                                </div>
-                                <div class="id-error" id="id-error">
-                                    <label for="country_id" class="error" generated="true"></label>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +235,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-sm-8" style="display:none" id="otherSsurfer">
+                            </div>
+
+                                <div class="col-md-4 col-sm-8" style="display:none" id="othersSurfer">
                                     <div class="selectWrap pos-rel">
 
                                         <!-- <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
@@ -259,7 +260,6 @@
                                     </div>
                                 </div>
                                 
-                            </div>
                         </div>
                     </div>
                 </div>

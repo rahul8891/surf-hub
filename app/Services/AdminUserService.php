@@ -296,27 +296,64 @@ class AdminUserService {
      */
     public function savePost($input,&$message=''){
         try{
-            $this->posts->post_text = $input['post_text'];
             $this->posts->post_type = $input['post_type'];
+            $this->posts->user_id = $input['user_id'];
+            $this->posts->post_text = $input['post_text'];
             $this->posts->country_id =$input['country_id'];
-            $this->posts->surf_date = $input['surf_start_date'];
+            $this->posts->surf_start_date = $input['surf_date'];
             $this->posts->wave_size = $input['wave_size'];
             $this->posts->board_type = $input['board_type'];
             $this->posts->state_id = $input['state_id'];
             $this->posts->local_beach_break_id = $input['local_beach_break_id'];
             $this->posts->surfer = $input['surfer'];
-            $this->posts->optional_info = $input['optional_info'];
+            // $this->posts->optional_info = $input['optional_info'];
             $this->posts->created_at = Carbon::now();
             $this->posts->updated_at = Carbon::now();
+            $this->posts->save();
             if($this->posts->save()){
-                    $message = 'Post has been created successfully.!';
+                $message = 'Post has been created successfully.!';
                     return true;
                 
             }
         }catch (\Exception $e){     
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message='"'.$e->getMessage().'"';
-            return false;
+            return $message;
+        }
+    }
+
+    /**
+     * [updatePost] we are updating the post Details from admin section 
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function updatePost($input,$id,&$message=''){
+        $posts=$this->posts->find($id);
+        try{
+            $posts->post_type = $input['post_type'];
+            $posts->user_id = $input['user_id'];
+            $posts->post_text = $input['post_text'];
+            $posts->country_id =$input['country_id'];
+            $posts->surf_start_date = $input['surf_date'];
+            $posts->wave_size = $input['wave_size'];
+            $posts->board_type = $input['board_type'];
+            $posts->state_id = $input['state_id'];
+            $posts->local_beach_break_id = $input['local_beach_break_id'];
+            $posts->surfer = $input['surfer'];
+            // $posts->optional_info = $input['optional_info'];
+            $posts->created_at = Carbon::now();
+            $posts->updated_at = Carbon::now();
+            $posts->save();
+            if($posts->save()){
+                $message = 'Post has been updated successfully.!';
+                    return $message;
+                
+            }
+        }catch (\Exception $e){     
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message='"'.$e->getMessage().'"';
+            return $message;
         }
     }
 }

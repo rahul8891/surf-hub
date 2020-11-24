@@ -26,7 +26,7 @@
                 <tr>
                     <td>{{ ($posts->currentpage()-1) * $posts->perpage() + $key + 1  }}</td>
                     <td>{{ __(ucwords($value->post_text)) }}</td>
-                    <td>{{ __(ucwords($value->user_profiles->first_name .' '.$value->user_profiles->last_name)) }}</td>
+                    <td>{{ __(ucwords($value->user->user_profiles->first_name .' '.$value->user->user_profiles->last_name)) }}</td> 
                     <td>{{ __($value->surf_start_date) }}</td>
                     <td>
                         <a class="btn btn-primary btn-sm"

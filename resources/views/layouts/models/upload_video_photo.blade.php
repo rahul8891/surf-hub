@@ -203,7 +203,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 col-sm-8" style="display:none" id="otherSsurfer">
+                                        <div class="col-md-4 col-sm-8" style="display:none" id="othersSurfer">
                                             <div class="selectWrap pos-rel">
 
                                                 <!-- <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"

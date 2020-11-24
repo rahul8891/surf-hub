@@ -101,4 +101,5 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::get('/post/create', [PostController::class, 'create'])->name('postCreate');
     Route::post('/post/store', [PostController::class, 'store'])->name('postStore');
     Route::get('/post/edit/{id}', [PostController::class, 'edit'])->name('postEdit');
+    Route::post('/post/update/{id}', [PostController::class, 'update'])->name('postUpdate');
 });

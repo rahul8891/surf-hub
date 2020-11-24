@@ -42,9 +42,10 @@ class PostController extends Controller
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct(AdminUserService $posts,MasterService $masterService)
+    public function __construct(AdminUserService $posts,AdminUserService $users,MasterService $masterService)
     {
         $this->posts = $posts;
+        $this->users = $users;
         $this->masterService = $masterService;
         $this->customArray = config('customarray');
         $this->language = config('customarray.language'); 
@@ -72,7 +73,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        $currentUserCountryId = Auth::user()->user_profiles->country_id;    
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();
         $language = $this->language;
         $users=User::all();
@@ -92,8 +93,11 @@ class PostController extends Controller
         
         try{
             $data = $request->all();
+            return $data;
             $rules = array(
-                'post_text' => ['required', 'string', 'max:255'],
+                'post_type' => ['required'],
+                'user_id' => ['required','numeric'],
+                'post_text' => ['nullable', 'string', 'max:255'],
                 'files[]' => ['nullable','image','mimes:jpeg,jpg,png'],
                 'videos[]' => ['nullable','video','mimes:mp4,mpeg4,mkv,gif'],
                 'surf_date' => ['required', 'string'],
@@ -107,21 +111,19 @@ class PostController extends Controller
             );
             
             $validate = Validator::make($data, $rules);
-            dd($validate);
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
                 $result = $this->posts->savePost($data,$message);
                 if($result){  
-                    return Redirect::to('post/create')->withSuccess($message);
+                    return Redirect::to('admin/post/create')->withSuccess($message);
                 }else{
-                    return Redirect::to('post/create')->withErrors($message);
+                    return Redirect::to('admin/post/create')->withErrors($message);
                 }
             }
         }catch (\Exception $e){ 
-            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
-            echo "exception";
+            throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         }
         
     }
@@ -150,11 +152,13 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {           
+    {         
+
         try{
             $currentUserCountryId = Auth::user()->user_profiles->country_id;    
             $countries = $this->masterService->getCountries();
             $language = $this->language;
+            $users = $this->users->getUsersListing();
             $states = $this->masterService->getStateByCountryId($currentUserCountryId);
             $customArray = $this->customArray;  
             $posts = Post::findOrFail(Crypt::decrypt($id));
@@ -163,7 +167,7 @@ class PostController extends Controller
             throw ValidationException::withMessages([$e->getMessage()]);
         }
         
-        return view('admin/post/edit', compact('countries','posts','currentUserCountryId','customArray','language','states'));
+        return view('admin/post/edit', compact('users','countries','posts','currentUserCountryId','customArray','language','states'));
     }
 
     /**
@@ -174,35 +178,40 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {           
+    {   
+        $id=Crypt::decrypt($id);
         try{
             $data = $request->all();
             $rules = array(
-                'profile_photo_name' => ['nullable','image','mimes:jpeg,jpg,png'],            
-                'first_name' => ['required', 'string'],
-                'last_name' => ['nullable','string'],
-                'user_name' => ['required', 'string','alpha_dash'],
-                'email' => ['required', 'string', 'email', 'max:255'],
-                'phone' => ['required', 'string'],
-                'account_type'=>['required','string'],
-                'language' => ['required','string'],
-                'local_beach_break' => ['required', 'string'],
+                'post_type' => ['required'],
+                'user_id' => ['required','numeric'],
+                'post_text' => ['nullable', 'string', 'max:255'],
+                'files[]' => ['nullable','image','mimes:jpeg,jpg,png'],
+                'videos[]' => ['nullable','video','mimes:mp4,mpeg4,mkv,gif'],
+                'surf_date' => ['required', 'string'],
+                'wave_size' => ['required', 'string'],
+                'state_id' => ['required', 'numeric'],
+                'board_type' => ['required', 'string'],
+                'surfer' => ['required'],
                 'country_id' => ['required','numeric'],
-            );       
+                'local_beach_break_id' => ['nullable', 'string'],
+                'optional_info'=>['nullable'],
+            );
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-                $result = $this->users->updateAdminUser($data,Crypt::decrypt($id),$message);
+                $result = $this->posts->updatePost($data,$id,$message);
                 if($result){
-                    return redirect()->route('adminUserEdit', ['id' => $id])->withSuccess($message);  
+                    return redirect()->route('postEdit', ['id' => Crypt::encrypt($id)])->withSuccess($message);
                 }else{
-                    return redirect()->route('adminUserEdit', ['id' => $id])->withErrors($message); 
+                    return redirect()->route('postEdit', ['id' => Crypt::encrypt($id)])->withErrors($message); 
                 }
             }
         }catch (\Exception $e){
-            return redirect()->route('adminUserEdit', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage()); 
+                
+            return redirect()->route('postEdit', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage()); 
         }
     }
 
