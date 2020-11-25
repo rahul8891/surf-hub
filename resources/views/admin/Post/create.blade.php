@@ -63,7 +63,7 @@
 
                 <h2 class="text-primary">Upload Video/Photo</h2>
                 <div class="form-group">
-                    <textarea placeholder="Share your surf experience....." name="post_text" required class="form-control" rows="3"></textarea>
+                    <textarea placeholder="Share your surf experience....." name="post_text" class="form-control" rows="3"></textarea>
                     <hr/>
                     <div class="videoImageUploader">
                         <div class="upload-btn-wrapper">
@@ -72,13 +72,13 @@
                             <input type="file" id="input_multifileSelect" name="files[]" accept=".png, .jpg, .jpeg"
                                 multiple />
 
-                            <!-- <input type="hidden" id="imagebase64Multi" name="surf_image_array[]"
-                                accept=".png, .jpg, .jpeg" multiple /> -->
+                           {{-- <input type="hidden" id="imagebase64Multi" name="surf_image_array[]"
+                                accept=".png, .jpg, .jpeg" multiple />
                         </div>
-                        <div class="upload-btn-wrapper">
+                        {{-- <div class="upload-btn-wrapper">
                             <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
                             <input type="file" name="files[]" accept=".mp4, .mkv, .gif, .mpeg4" multiple />
-                        </div>
+                        </div> --}}
                         {{-- <div class="upload-btn-wrapper">
                             <button class=""><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>
                         </div> --}}
@@ -167,7 +167,7 @@
                                         <input type="text" value="{{ old('local_beach_break')}}"
                                             name="local_beach_break" placeholder="Search Beach Break "
                                             class="form-control search-box" required>
-                                        <input type="hidden" name="local_beach_break_id"
+                                        <input type="hidden" value="{{ old('local_beach_break_id')}}" name="local_beach_break_id"
                                             id="local_beach_break_id" class="form-control">
                                         <div class="auto-search search1" id="country_list"></div>
                                     </div>
@@ -181,7 +181,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="selectWrap pos-rel">
-                                        <select class="form-control" name="state_id" id="state_id" required>
+                                        <select class="form-control" name="state_id" id="state_id">
                                             <option selected="selected" value="">-- State --</option>
                                             @foreach($states as $key => $value)
                                             <option value="{{ $value->id }}"

@@ -27,7 +27,7 @@
                     <td>{{ ($posts->currentpage()-1) * $posts->perpage() + $key + 1  }}</td>
                     <td>{{ __(ucwords($value->post_text)) }}</td>
                     <td>{{ __(ucwords($value->user->user_profiles->first_name .' '.$value->user->user_profiles->last_name)) }}</td> 
-                    <td>{{ __($value->surf_start_date) }}</td>
+                    <td>{{ __((date('d-m-Y', strtotime($value->created_at)))) }}</td>
                     <td>
                         <a class="btn btn-primary btn-sm"
                             href="{{route('postDetail', Crypt::encrypt($value->id))}}"><i

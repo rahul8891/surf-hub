@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\Post;
 use App\Models\UserProfile;
+use App\Models\Post;
+use App\Models\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -40,6 +41,9 @@ class AdminUserService {
 
         // post model object
         $this->posts = new Post();
+
+        // post model object
+        $this->upload = new Upload();
 
         $this->userProfile = new UserProfile();
 
@@ -177,6 +181,24 @@ class AdminUserService {
            return $returnArray;
         }
     }
+    /**
+     * upload image into directory
+     * @param  object  $input
+     * @return object array
+     */
+    public function uploadPostImage($input){
+        if(isset($input['files']) && !empty($input['files']))
+            {
+                foreach($input->file('files') as $image)
+                {
+                    $destinationPath = 'storage/images/';
+                    $filename = $input->input('surf_date').'_'.$input->input('user_id').'_'.$image->getClientOriginalName();
+                    dd($filename);
+                    $image->move($destinationPath, $filename);
+                }
+                
+            }
+    }
 
      /**
      * Delete profile image if data not stor in db
@@ -294,7 +316,8 @@ class AdminUserService {
      * @param  message return message based on the condition 
      * @return dataArray with message
      */
-    public function savePost($input,&$message=''){
+    public function savePost($input,$image,&$message=''){
+        // $image=$this->uploadPostImage($input);
         try{
             $this->posts->post_type = $input['post_type'];
             $this->posts->user_id = $input['user_id'];
@@ -306,10 +329,14 @@ class AdminUserService {
             $this->posts->state_id = $input['state_id'];
             $this->posts->local_beach_break_id = $input['local_beach_break_id'];
             $this->posts->surfer = $input['surfer'];
-            // $this->posts->optional_info = $input['optional_info'];
+            $this->posts->optional_info = implode(" ",$input['optional_info']);
             $this->posts->created_at = Carbon::now();
             $this->posts->updated_at = Carbon::now();
-            $this->posts->save();
+            if($this->posts->save()){
+                $this->upload->post_id = $this->posts->id;
+                $this->upload->image = $image;
+                $this->upload->save();
+            }
             if($this->posts->save()){
                 $message = 'Post has been created successfully.!';
                     return true;
@@ -341,7 +368,7 @@ class AdminUserService {
             $posts->state_id = $input['state_id'];
             $posts->local_beach_break_id = $input['local_beach_break_id'];
             $posts->surfer = $input['surfer'];
-            // $posts->optional_info = $input['optional_info'];
+            $posts->optional_info = implode(" ",$input['optional_info']);
             $posts->created_at = Carbon::now();
             $posts->updated_at = Carbon::now();
             $posts->save();

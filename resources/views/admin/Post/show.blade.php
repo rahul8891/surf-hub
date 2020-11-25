@@ -30,8 +30,8 @@
                             <p class="text-muted text-md"><b>Surf Start Date : </b> {{ __($post->surf_start_date)}}</p>
                             <p class="text-muted text-md"><b>Surf end Date : </b> {{ __($post->surf_end_date)}}</p>
                             <p class="text-muted text-md"><b>Optional Info : </b> {{ __($post->optional_info)}}</p>
-                            <p class="text-muted text-md"><b>Uploaded on : </b> {{ __()}}</p>
-                            <p class="text-muted text-md"><b>Last Update : </b> {{ __()}}</p>
+                            <p class="text-muted text-md"><b>Uploaded on : </b> {{ __((date('d-m-Y', strtotime($post->created_at))))}}</p>
+                            <p class="text-muted text-md"><b>Last Update : </b> {{ __((date('d-m-Y', strtotime($post->updated_at))))}}</p>
                         </div>
                         <div class="col-6">
                             <label for="exampleInputFile">{{ __('Profile Photo') }}</label>

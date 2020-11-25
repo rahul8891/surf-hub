@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Country;
 use App\Models\BeachBreak;
 use App\Models\State;
+use App\Models\Upload;
 
 class Post extends Model
 {
@@ -34,6 +35,16 @@ class Post extends Model
     public function user_profiles()
     {
         return $this->hasOne(UserProfile::class, 'user_id', 'id');
+    }
+
+    /**
+     * Relationship between post and upload model    
+     * @return object
+     */
+    
+    public function upload()
+    {
+        return $this->hasOne(Upload::class, 'post_id', 'id');
     }
 
     /**

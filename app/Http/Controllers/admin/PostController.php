@@ -90,19 +90,26 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {   
-        
         try{
+            if($request->hasFile('files'))
+            {
+                foreach($request->file('files') as $image)
+                {
+                    $destinationPath = 'storage/images/';
+                    $timeDate = strtotime(Carbon::now()->toDateTimeString()); 
+                    $filename = $timeDate.'_'.$image->getClientOriginalName();
+                    $image->move($destinationPath, $filename);
+                }
+                
+            }
             $data = $request->all();
-            return $data;
             $rules = array(
                 'post_type' => ['required'],
                 'user_id' => ['required','numeric'],
                 'post_text' => ['nullable', 'string', 'max:255'],
-                'files[]' => ['nullable','image','mimes:jpeg,jpg,png'],
-                'videos[]' => ['nullable','video','mimes:mp4,mpeg4,mkv,gif'],
                 'surf_date' => ['required', 'string'],
                 'wave_size' => ['required', 'string'],
-                'state_id' => ['required', 'numeric'],
+                'state_id' => ['nullable', 'numeric'],
                 'board_type' => ['required', 'string'],
                 'surfer' => ['required'],
                 'country_id' => ['required','numeric'],
@@ -115,7 +122,7 @@ class PostController extends Controller
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-                $result = $this->posts->savePost($data,$message);
+                $result = $this->posts->savePost($data,$image,$message);
                 if($result){  
                     return Redirect::to('admin/post/create')->withSuccess($message);
                 }else{
@@ -123,6 +130,7 @@ class PostController extends Controller
                 }
             }
         }catch (\Exception $e){ 
+            echo "exception";
             throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         }
         

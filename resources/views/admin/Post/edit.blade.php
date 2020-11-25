@@ -82,10 +82,10 @@
                 </div>
                 <hr/>
                 <div class="formWrap">
-                    <p>{{$posts->surf_start_date}}</p>
+                    {{-- <p>{{$posts->surf_start_date}}</p>
                     <p>{{date_format(date_create($posts->surf_start_date),"m/d/Y")}}</p>
                     <p>{{date('m/d/yy', strtotime($posts->surf_start_date))}}</p>
-                    <p>{{ \Carbon\Carbon::parse($posts->surf_start_date)->format('m/d/Y')}}</p>
+                    <p>{{ \Carbon\Carbon::parse($posts->surf_start_date)->format('m/d/Y')}}</p> --}}
                     <h2 class="text-primary">Mandatory Info</h2>
                     <div class="row">
                         <div class="col-md-6">
@@ -199,7 +199,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="selectWrap pos-rel">
-                                        <select class="form-control" name="state_id" id="state_id" required>
+                                        <select class="form-control" name="state_id" id="state_id">
                                             <option selected="selected" value="">-- State --</option>
                                             @foreach($states as $key => $value)
                                             <option value="{{ $key }}"
@@ -269,7 +269,8 @@
                                 @foreach($customArray['optional'] as $key => $value)
                                 <div class="col-md-4 pl-1 pr-1 col-6">
                                     <div class="cstm-check pos-rel">
-                                        <input type="checkbox" name="optional_info[]" value="{{ __($key) }}"
+                                        <input type="checkbox" name="optional_info[]" 
+                                        {{(in_array($key, old('optional_info[]', explode(" ",$posts->optional_info))))? 'checked' : ''}}  value="{{ __($key) }}"
                                             id="{{ __($key) }}" />
                                         <label for="{{ __($key) }}" class="">{{ __($value) }}</label>
                                     </div>

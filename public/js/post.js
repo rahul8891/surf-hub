@@ -127,7 +127,7 @@ $(document).ready(function () {
       },
 
       state_id: {
-        required: true
+        required: false
       },
 
       board_type: {
@@ -198,12 +198,12 @@ $(document).ready(function () {
         return $(this).val();
       }).get();
 
-      /*var files = new Array();
+      var files = new Array();
       files = $('input[name="files[]"]').map(function(){
         return $(this).val();
       }).get();
 
-      console.log(files);*/
+      console.log(files);
 
       var result = {};
       
