@@ -19,6 +19,13 @@
                             <h4 class="text-muted">
                                 {{ __($post->post_text)}}
                             </h4>
+                            <div class="image-wrapper">
+                                @if (!empty($postImages))
+                                @foreach (explode(' ', json_decode($postImages, true)[0]['image'] ?? '') as $postImage)
+                                    <img src="{{ asset('storage/images/'.$postImage) }}" class="img-fluid img-thumbnail rounded mx-auto px-2" width="20%" alt="No photo attached">
+                                @endforeach
+                                @endif
+                            </div>
                             {{-- <p class="text-muted text-md"><b>Post text: </b> {{ __($post->post_text)}} </p> --}}
                             <p class="text-muted text-md"><b>Post Type : </b> {{ __($post->post_type)}} </p>
                             <p class="text-muted text-md"><b>Country : </b> {{ __($post->countries->name)}} </p>
@@ -50,12 +57,12 @@
                             <h2 class="lead"><b><br /></b></h2>
                             <p class="text-muted text-md"><b>Username: </b> {{ __($post->user->user_name)}} </p>
                             <p class="text-muted text-md"><b>Email: </b> {{ __($post->user->email)}} </p>
-                            <p class="text-muted text-md"><b>Full Name : </b> {{ __(ucwords($post->user_profiles->first_name .' '.$post->user_profiles->last_name))}}</p>
-                            <p class="text-muted text-md"><b>Phone: </b> {{ __($post->user_profiles->phone)}} </p>
-                            <p class="text-muted text-md"><b>Gender: </b> {{ __($post->user_profiles->gender)}} </p>
-                            <p class="text-muted text-md"><b>Relationship : </b> {{ __($post->user_profiles->relationship)}} </p>
-                            <p class="text-muted text-md"><b>Suburb : </b> {{ __($post->user_profiles->suburb)}} </p>
-                            <p class="text-muted text-md"><b>Address : </b> {{ _($post->user_profiles->address ? $post->user_profiles->address :  'NA') }} </p>
+                            <p class="text-muted text-md"><b>Full Name : </b> {{ __(ucwords($post->user->user_profiles->first_name .' '.$post->user->user_profiles->last_name))}}</p>
+                            <p class="text-muted text-md"><b>Phone: </b> {{ __($post->user->user_profiles->phone)}} </p>
+                            <p class="text-muted text-md"><b>Gender: </b> {{ __($post->user->user_profiles->gender)}} </p>
+                            <p class="text-muted text-md"><b>Relationship : </b> {{ __($post->user->user_profiles->relationship)}} </p>
+                            <p class="text-muted text-md"><b>Suburb : </b> {{ __($post->user->user_profiles->suburb)}} </p>
+                            <p class="text-muted text-md"><b>Address : </b> {{ _($post->user->user_profiles->address ? $post->user->user_profiles->address :  'NA') }} </p>
 
                         </div>
                     </div>

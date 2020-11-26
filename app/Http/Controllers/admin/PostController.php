@@ -14,8 +14,9 @@ use App\Services\AdminUserService;
 use App\Services\MasterService;
 use App\Traits\PasswordTrait;
 use App\Models\User;
-use App\Models\Post;
 use Carbon\Carbon;
+use App\Models\Post;
+use App\Models\Upload;
 use Closure;
 use Redirect;
 use Session;
@@ -91,18 +92,8 @@ class PostController extends Controller
     public function store(Request $request)
     {   
         try{
-            if($request->hasFile('files'))
-            {
-                foreach($request->file('files') as $image)
-                {
-                    $destinationPath = 'storage/images/';
-                    $timeDate = strtotime(Carbon::now()->toDateTimeString()); 
-                    $filename = $timeDate.'_'.$image->getClientOriginalName();
-                    $image->move($destinationPath, $filename);
-                }
-                
-            }
             $data = $request->all();
+            $imageArray=$request->file('files');
             $rules = array(
                 'post_type' => ['required'],
                 'user_id' => ['required','numeric'],
@@ -122,9 +113,9 @@ class PostController extends Controller
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-                $result = $this->posts->savePost($data,$image,$message);
+                $result = $this->posts->savePost($data,$imageArray,$message);
                 if($result){  
-                    return Redirect::to('admin/post/create')->withSuccess($message);
+                    return Redirect::to('admin/post/index')->withSuccess($message);
                 }else{
                     return Redirect::to('admin/post/create')->withErrors($message);
                 }
@@ -145,12 +136,13 @@ class PostController extends Controller
     public function show($id)
     {   
         try{
-            $post=Post::findOrFail(Crypt::decrypt($id));
+        $post=Post::findOrFail(Crypt::decrypt($id));
+        $postImages=Upload::where('post_id',Crypt::decrypt($id))->get('image');
             $spiner = ($post) ? true : false;
         }catch (\Exception $e){ 
             throw ValidationException::withMessages([$e->getMessage()]);
         }
-        return view('admin/post/show', compact('post','spiner'));  
+        return view('admin/post/show', compact('post','postImages','spiner'));  
     }
 
     /**
@@ -170,12 +162,13 @@ class PostController extends Controller
             $states = $this->masterService->getStateByCountryId($currentUserCountryId);
             $customArray = $this->customArray;  
             $posts = Post::findOrFail(Crypt::decrypt($id));
+            $postImages=Upload::where('post_id',Crypt::decrypt($id))->get('image');
             $spiner = ($this->posts) ? true : false;
         }catch (\Exception $e){         
             throw ValidationException::withMessages([$e->getMessage()]);
         }
         
-        return view('admin/post/edit', compact('users','countries','posts','currentUserCountryId','customArray','language','states'));
+        return view('admin/post/edit', compact('users','countries','postImages','posts','currentUserCountryId','customArray','language','states'));
     }
 
     /**
@@ -190,15 +183,14 @@ class PostController extends Controller
         $id=Crypt::decrypt($id);
         try{
             $data = $request->all();
+            $imageArray=$request->file('files');
             $rules = array(
                 'post_type' => ['required'],
                 'user_id' => ['required','numeric'],
                 'post_text' => ['nullable', 'string', 'max:255'],
-                'files[]' => ['nullable','image','mimes:jpeg,jpg,png'],
-                'videos[]' => ['nullable','video','mimes:mp4,mpeg4,mkv,gif'],
-                'surf_date' => ['required', 'string'],
+                'surf_date' => ['nullable', 'string'],
                 'wave_size' => ['required', 'string'],
-                'state_id' => ['required', 'numeric'],
+                'state_id' => ['nullable', 'numeric'],
                 'board_type' => ['required', 'string'],
                 'surfer' => ['required'],
                 'country_id' => ['required','numeric'],
@@ -210,7 +202,7 @@ class PostController extends Controller
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-                $result = $this->posts->updatePost($data,$id,$message);
+                $result = $this->posts->updatePost($data,$imageArray,$id,$message);
                 if($result){
                     return redirect()->route('postEdit', ['id' => Crypt::encrypt($id)])->withSuccess($message);
                 }else{
@@ -232,6 +224,9 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post=Post::find(Crypt::decrypt($id));
+        $post->delete();
+        return Redirect::to('admin/post/index')->withSuccess("succesfully deleted");
     }
+
 }

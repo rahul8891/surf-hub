@@ -42,7 +42,7 @@ class AdminUserService {
         // post model object
         $this->posts = new Post();
 
-        // post model object
+        // upload model object
         $this->upload = new Upload();
 
         $this->userProfile = new UserProfile();
@@ -181,23 +181,24 @@ class AdminUserService {
            return $returnArray;
         }
     }
+    
     /**
      * upload image into directory
      * @param  object  $input
      * @return object array
      */
-    public function uploadPostImage($input){
-        if(isset($input['files']) && !empty($input['files']))
-            {
-                foreach($input->file('files') as $image)
-                {
-                    $destinationPath = 'storage/images/';
-                    $filename = $input->input('surf_date').'_'.$input->input('user_id').'_'.$image->getClientOriginalName();
-                    dd($filename);
-                    $image->move($destinationPath, $filename);
-                }
+    public function uploadPostImage($image){
+        
+        $destinationPath = 'storage/images/';
+        $timeDate = strtotime(Carbon::now()->toDateTimeString());
+        $ext = $image->getClientOriginalExtension();
+        // $imageNameWithExt = $requestImageName->getClientOriginalName(); 
+        $filename = $timeDate.'_'.rand().'.'.$ext;
+        $image->move($destinationPath, $filename);
+        return $filename;
+
                 
-            }
+        
     }
 
      /**
@@ -316,8 +317,13 @@ class AdminUserService {
      * @param  message return message based on the condition 
      * @return dataArray with message
      */
-    public function savePost($input,$image,&$message=''){
-        // $image=$this->uploadPostImage($input);
+    public function savePost($input,$imageArray,&$message=''){
+        if($imageArray){
+            foreach($imageArray as $image)
+            {
+                $newImageArray[] = $this->uploadPostImage($image);
+            }
+        }
         try{
             $this->posts->post_type = $input['post_type'];
             $this->posts->user_id = $input['user_id'];
@@ -332,9 +338,9 @@ class AdminUserService {
             $this->posts->optional_info = implode(" ",$input['optional_info']);
             $this->posts->created_at = Carbon::now();
             $this->posts->updated_at = Carbon::now();
-            if($this->posts->save()){
+            if($this->posts->save()){  
                 $this->upload->post_id = $this->posts->id;
-                $this->upload->image = $image;
+                $this->upload->image = implode(" ",$newImageArray);
                 $this->upload->save();
             }
             if($this->posts->save()){
@@ -355,7 +361,7 @@ class AdminUserService {
      * @param  message return message based on the condition 
      * @return dataArray with message
      */
-    public function updatePost($input,$id,&$message=''){
+    public function updatePost($input,$imageArray,$id,&$message=''){
         $posts=$this->posts->find($id);
         try{
             $posts->post_type = $input['post_type'];
@@ -371,7 +377,26 @@ class AdminUserService {
             $posts->optional_info = implode(" ",$input['optional_info']);
             $posts->created_at = Carbon::now();
             $posts->updated_at = Carbon::now();
-            $posts->save();
+            if($posts->save()){
+                $oldPostImages=Upload::where('post_id',$posts->id)->get('image');
+                 ///function for merge old and new post images
+                if(!empty($imageArray)){
+                    if(!empty($oldPostImages)){
+                $newImageArray=[];
+                foreach($imageArray as $image){
+                    $newImageArray[] = $this->uploadPostImage($image);
+                    }
+
+                    $oldPostImageArray=explode(' ', json_decode($oldPostImages, true)[0]['image']);
+                    $imageArray=array_merge($oldPostImageArray,$newImageArray);
+                }
+                //updating the image field
+                    Upload::where('post_id', $id)
+                    ->update([
+                        'image'=>implode(" ",$imageArray),
+                        ]);
+                }
+            }
             if($posts->save()){
                 $message = 'Post has been updated successfully.!';
                     return $message;

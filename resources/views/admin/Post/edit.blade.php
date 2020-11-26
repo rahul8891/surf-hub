@@ -59,6 +59,14 @@
 
                 <h1>Upload Video/Photo</h1>
                 <hr/>
+                <div class="image-wrapper">
+                    @if (!empty($postImages))
+                    @foreach (explode(' ', json_decode($postImages, true)[0]['image'] ?? '') as $postImage)
+                        <img src="{{ asset('storage/images/'.$postImage) }}" class="img-fluid img-thumbnail rounded mx-auto px-2" width="15%" alt="No photo attached">
+                    @endforeach
+                    @endif
+                </div>
+                <hr/>
                 <div class="form-group">
                 <textarea placeholder="Share your surf experience....." name="post_text" autofocus required class="form-control" rows="3" >{{ old('post_text',$posts->post_text) }}</textarea>
                     <div class="videoImageUploader">
@@ -66,7 +74,7 @@
                             <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
 
                             <input type="file" id="input_multifileSelect" name="files[]" accept=".png, .jpg, .jpeg"
-                                multiple />
+                            multiple />
 
                             <!-- <input type="hidden" id="imagebase64Multi" name="surf_image_array[]"
                                 accept=".png, .jpg, .jpeg" multiple /> -->
@@ -246,6 +254,28 @@
                                         @endforeach
                                         
                                     </div>
+                                </div>
+                            </div>
+                                <div class="col-md-4 col-sm-8" style="display:none" id="othersSurfer">
+                                    <div class="selectWrap pos-rel">
+
+                                        <!-- <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
+                                            placeholder="Search User " class="form-control other_surfer_box"
+                                            id="other_surfer" required>
+
+                                        <input type="hidden" name="user_id" id="user_id" class="form-control">
+
+                                        <div class="auto-search search1" id="other_surfer_list"></div> -->
+
+                                        <select class="form-control" name="other_surfer" id="other_surfer">
+                                            <option value="">-- Select User --</option>
+                                            <option value="1">Sandeep</option>
+                                            <option value="2">Raja</option>
+                                            <option value="3">Raman</option>
+                                            <option value="4">Sanoj</option>
+                                        </select>
+
+                                        
                                 </div>
                             </div>
                             @error('surfer')

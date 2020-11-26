@@ -102,4 +102,6 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::post('/post/store', [PostController::class, 'store'])->name('postStore');
     Route::get('/post/edit/{id}', [PostController::class, 'edit'])->name('postEdit');
     Route::post('/post/update/{id}', [PostController::class, 'update'])->name('postUpdate');
+    Route::get('/post/delete/{id}', [PostController::class, 'destroy'])->name('deletePost');
+    
 });

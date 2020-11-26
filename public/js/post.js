@@ -266,15 +266,15 @@ $(document).ready(function () {
    */
   $('input[type=radio]').on('change', function () {
     switch ($(this).val()) {
-      case 'me':
+      case 'Me':
         $("#othersSurfer").hide();
         $("#other_surfer").val("");
         break;
-      case 'other':
+      case 'Others':
         $("#othersSurfer").show();
         $("#other_surfer").val("");
         break;
-      case 'unknown':
+      case 'Unknown':
         $("#othersSurfer").hide();
         $("#other_surfer").val("");
         break;

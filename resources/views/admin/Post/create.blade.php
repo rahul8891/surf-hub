@@ -220,19 +220,14 @@
                                     <label>Surfer<span class="required">*</span></label>
                                 </div>  
                                 <div class="col-md-3">
-                                    <div class="d-flex ">
+                                    <div class="d-flex">
+                                        @foreach ($customArray['surfer'] as $key => $value)
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="surfer" value="me" id="Me" required />
-                                            <label for="Me" class="form-check-label text-primary">Me</label>
+                                        <input class="form-check-input" type="radio" name="surfer"  value="{{$value}}" id="{{$value}}" required />
+                                            <label for="" class="form-check-label text-primary">{{$value}}</label>
                                         </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="surfer" value="other" id="Others" />
-                                            <label for="Others" class="form-check-label text-primary">Others</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="surfer" id="Unknown" value="unknown" />
-                                            <label for="Unknown" class="form-check-label text-primary">Unknown</label>
-                                        </div>
+                                        @endforeach
+                                        
                                     </div>
                                 </div>
                             </div>
