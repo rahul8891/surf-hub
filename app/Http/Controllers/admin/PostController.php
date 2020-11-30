@@ -231,20 +231,4 @@ class PostController extends Controller
         return Redirect::to('admin/post/index')->withSuccess("succesfully deleted");
     }
 
-
-    public function videoUpload(Request $request){
-        $files=$request->file('files');
-        $imageArray=[];
-        if($files){
-            foreach($files as $image){
-                $filenameWithExt= $image->getClientOriginalName();
-                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                $extension = $image->getClientOriginalExtension();
-                $fileNameToStore = $filename. '_'.time().'.'.$extension;
-                $path = $image->move('storage/videos',$fileNameToStore);
-                $imageArray[]=$fileNameToStore;
-            }
-            }
-        return view('admin.Post.video',compact('imageArray','data'));
-    }
 }
