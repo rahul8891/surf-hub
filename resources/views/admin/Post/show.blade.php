@@ -32,7 +32,6 @@
                                     @endforeach
                                 @endif      
                             </div>
-                            {{-- <p class="text-muted text-md"><b>Post text: </b> {{ __($post->post_text)}} </p> --}}
                             <p class="text-muted text-md"><b>Post Type : </b> {{ __($post->post_type)}} </p>
                             <p class="text-muted text-md"><b>Country : </b> {{ __($post->countries->name)}} </p>
                             <p class="text-muted text-md"><b>state : </b> {{ __($post->states ? $post->states->name : 'NA')}} </p>

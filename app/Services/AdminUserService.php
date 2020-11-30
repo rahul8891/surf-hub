@@ -360,7 +360,8 @@ class AdminUserService {
         }
         // dd(array_merge($newImageArray,json_decode($oldUploadJsonString, true)));
         $finalArray= array_merge($newImageArray,json_decode($oldUploadJsonString, true));
-        return $finalArray[0];
+        // dd($finalArray);
+        return (!empty($finalArray)) ? $finalArray[0] : $finalArray;
     }
 
      /**
@@ -385,7 +386,8 @@ class AdminUserService {
             }
         }
         $finalArray =array_merge($newVideoArray,json_decode($oldUploadJsonString, true));
-        return $finalArray[0];
+        // dd($finalArray);
+        return (!empty($finalArray)) ? $finalArray[0] : $finalArray;
     }
 
 
@@ -410,19 +412,20 @@ class AdminUserService {
             $this->posts->optional_info = implode(" ",$input['optional_info']);
             $this->posts->created_at = Carbon::now();
             $this->posts->updated_at = Carbon::now();
-            if($this->posts->save()){  
+            
+            if($this->posts->save()){
+                //for store media into upload table
                 $post_id=$this->posts->id;
                 $newImageArray = $this->getPostImageArray($imageArray,$post_id);
                 $newVideoArray = $this->getPostVideoArray($videoArray,$post_id);
                 $this->upload->post_id = $this->posts->id;
                 $this->upload->image = ($newImageArray!=[]) ? implode(" ",$newImageArray) : null;
                 $this->upload->video = ($newVideoArray!=[]) ? implode(" ",$newVideoArray) : null;
-                $this->upload->save();
-            }
                 
-            if($this->posts->save()){
+                if($this->upload->save()){
                     $message = 'Post has been created successfully.!';
                     return true;
+                }
                     
              }
                 
@@ -457,17 +460,16 @@ class AdminUserService {
             $posts->created_at = Carbon::now();
             $posts->updated_at = Carbon::now();
             
-            if($posts->save()){
+            ///for updating media into upload table
                 $newImageArray = $this->getPostImageArray($imageArray,$posts->id);
                 $newVideoArray = $this->getPostVideoArray($videoArray,$posts->id);
                 
-                //updating the image field
                     Upload::where('post_id', $posts->id)
                     ->update([
                         'image'=>($newImageArray!=[]) ? implode(' ', array_filter($newImageArray)) : null,
                         'video'=>($newVideoArray!=[]) ? implode(' ', array_filter($newVideoArray)) : null,
                         ]);
-            }
+            
             
             if($posts->save()){
                 $message = 'Post has been updated successfully.!';
