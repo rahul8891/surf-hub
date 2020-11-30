@@ -103,5 +103,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::get('/post/edit/{id}', [PostController::class, 'edit'])->name('postEdit');
     Route::post('/post/update/{id}', [PostController::class, 'update'])->name('postUpdate');
     Route::get('/post/delete/{id}', [PostController::class, 'destroy'])->name('deletePost');
-    
+
+    Route::view('/post/video','admin.Post.video');
+    Route::post('/post/video/upload', [PostController::class, 'videoUpload'])->name('videoUploader');
 });

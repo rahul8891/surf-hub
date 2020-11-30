@@ -60,11 +60,17 @@
                 <h1>Upload Video/Photo</h1>
                 <hr/>
                 <div class="image-wrapper">
-                    @if (!empty($postImages))
-                    @foreach (explode(' ', json_decode($postImages, true)[0]['image'] ?? '') as $postImage)
-                        <img src="{{ asset('storage/images/'.$postImage) }}" class="img-fluid img-thumbnail rounded mx-auto px-2" width="15%" alt="No photo attached">
-                    @endforeach
-                    @endif
+                    @if (!empty($postMedia))
+                        @foreach (explode(' ', json_decode($postMedia, true)[0]['image'] ?? '') as $postImage)
+                            <img src="{{ asset('storage/images/'.$postImage) }}" class="img-fluid img-thumbnail rounded mx-auto px-2" width="10%" alt="No photo attached">
+                        @endforeach
+                        <hr/>
+                        @foreach (explode(' ', json_decode($postMedia, true)[0]['video'] ?? '') as $postVideo)
+                            <video width="200" height="150" controls="true">
+                            <source src="{{ asset('storage/videos/'.$postVideo) }}" type="" />
+                            </video>
+                        @endforeach
+                   @endif 
                 </div>
                 <hr/>
                 <div class="form-group">
@@ -81,7 +87,7 @@
                         </div>
                         <div class="upload-btn-wrapper">
                             <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
-                            <input type="file" name="videos[]" accept=".mp4, .mkv, .gif, .mpeg4" multiple />
+                            <input type="file" name="videos[]" multiple />
                         </div>
                         {{-- <div class="upload-btn-wrapper">
                             <button class=""><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>

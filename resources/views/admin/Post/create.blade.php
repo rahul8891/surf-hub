@@ -72,6 +72,9 @@
                             <input type="file" id="input_multifileSelect" name="files[]" accept=".png, .jpg, .jpeg"
                                 multiple />
 
+                            <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
+                            <input type="file" name="videos[]" multiple>
+
                            {{-- <input type="hidden" id="imagebase64Multi" name="surf_image_array[]"
                                 accept=".png, .jpg, .jpeg" multiple />
                         </div>

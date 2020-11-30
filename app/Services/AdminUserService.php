@@ -95,6 +95,19 @@ class AdminUserService {
     }
 
     /**
+     * [getPostTotal] we are getiing number of total posts
+     * @param  
+     * @param  
+     * @return dataCount
+     */
+    public function getPostTotal(){
+
+        $postArray =  $this->posts->whereNull('deleted_at')                               
+                                  ->orderBy('created_at','ASC')
+                                  ->count();
+        return $postArray;
+    }
+    /**
      * [getPostListing] we are getiing all the post
      * @param  
      * @param  
@@ -187,7 +200,7 @@ class AdminUserService {
      * @param  object  $input
      * @return object array
      */
-    public function uploadPostImage($image){
+    public function getPostImage($image){
         
         $destinationPath = 'storage/images/';
         $timeDate = strtotime(Carbon::now()->toDateTimeString());
@@ -196,9 +209,21 @@ class AdminUserService {
         $filename = $timeDate.'_'.rand().'.'.$ext;
         $image->move($destinationPath, $filename);
         return $filename;
-
-                
-        
+    }
+    
+    /**
+     * upload video into directory
+     * @param  object  $video
+     * @return object array
+     */
+    public function getPostVideo($video){
+        $destinationPath = 'storage/videos/';
+        $timeDate = strtotime(Carbon::now()->toDateTimeString());
+        $filenameWithExt= $video->getClientOriginalName();
+        $extension = $video->getClientOriginalExtension();
+        $fileNameToStore = $filenameWithExt. '_'.$timeDate.'.'.$extension;
+        $path = $video->move($destinationPath,$fileNameToStore);
+        return $fileNameToStore;
     }
 
      /**
@@ -312,18 +337,65 @@ class AdminUserService {
 
 
      /**
+     * get postImageArray to store
+     * @param  object  $imageArray,$post_id
+     * @return object array
+     */
+    public function getPostImageArray($imageArray,$post_id){
+        $newImageArray=[];
+        $oldUploadJsonString=Upload::where('post_id',$post_id)->get('image');
+        // dd(json_decode($oldUploadJsonString, true)[0]['image']);
+        if(!empty($imageArray)){
+            foreach($imageArray as $image){
+                $newImageArray[] = $this->getPostImage($image);
+            }
+            if(!empty($oldUploadJsonString) || $oldUploadJsonString!=null){
+                $oldPostImageArray=explode(' ', json_decode($oldUploadJsonString, true)[0]['image']);
+                $imageArray=array_merge($oldPostImageArray,$newImageArray);
+                return $imageArray;
+            }
+            else{
+                return $newImageArray;
+            }
+        }
+        // dd(array_merge($newImageArray,json_decode($oldUploadJsonString, true)));
+        $finalArray= array_merge($newImageArray,json_decode($oldUploadJsonString, true));
+        return $finalArray[0];
+    }
+
+     /**
+     * get postVideoArray to store
+     * @param  object  $imageArray,$post_id
+     * @return object array
+     */
+    public function getPostVideoArray($videoArray,$post_id){
+        $newVideoArray=[];
+        $oldUploadJsonString=Upload::where('post_id',$post_id)->get('video');
+        if(!empty($videoArray)){
+            foreach($videoArray as $video){
+                $newVideoArray[] = $this->getPostVideo($video);
+            }
+            if($oldUploadJsonString!=null || $oldUploadJsonString!=[] ){
+                $oldPostVideoArray=explode(' ', json_decode($oldUploadJsonString, true)[0]['video']);
+                $videoArray=array_merge($oldPostVideoArray,$newVideoArray);
+                return $videoArray;
+            }
+            else{
+                return $newVideoArray;
+            }
+        }
+        $finalArray =array_merge($newVideoArray,json_decode($oldUploadJsonString, true));
+        return $finalArray[0];
+    }
+
+
+     /**
      * [savePost] we are storing the post Details from admin section 
      * @param  requestInput get all the requested input data
      * @param  message return message based on the condition 
      * @return dataArray with message
      */
-    public function savePost($input,$imageArray,&$message=''){
-        if($imageArray){
-            foreach($imageArray as $image)
-            {
-                $newImageArray[] = $this->uploadPostImage($image);
-            }
-        }
+    public function savePost($input,$imageArray,$videoArray,&$message=''){
         try{
             $this->posts->post_type = $input['post_type'];
             $this->posts->user_id = $input['user_id'];
@@ -339,16 +411,23 @@ class AdminUserService {
             $this->posts->created_at = Carbon::now();
             $this->posts->updated_at = Carbon::now();
             if($this->posts->save()){  
+                $post_id=$this->posts->id;
+                $newImageArray = $this->getPostImageArray($imageArray,$post_id);
+                $newVideoArray = $this->getPostVideoArray($videoArray,$post_id);
                 $this->upload->post_id = $this->posts->id;
-                $this->upload->image = implode(" ",$newImageArray);
+                $this->upload->image = ($newImageArray!=[]) ? implode(" ",$newImageArray) : null;
+                $this->upload->video = ($newVideoArray!=[]) ? implode(" ",$newVideoArray) : null;
                 $this->upload->save();
             }
+                
             if($this->posts->save()){
-                $message = 'Post has been created successfully.!';
+                    $message = 'Post has been created successfully.!';
                     return true;
+                    
+             }
                 
             }
-        }catch (\Exception $e){     
+        catch (\Exception $e){     
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message='"'.$e->getMessage().'"';
             return $message;
@@ -361,7 +440,7 @@ class AdminUserService {
      * @param  message return message based on the condition 
      * @return dataArray with message
      */
-    public function updatePost($input,$imageArray,$id,&$message=''){
+    public function updatePost($input,$imageArray,$videoArray,$id,&$message=''){
         $posts=$this->posts->find($id);
         try{
             $posts->post_type = $input['post_type'];
@@ -377,32 +456,26 @@ class AdminUserService {
             $posts->optional_info = implode(" ",$input['optional_info']);
             $posts->created_at = Carbon::now();
             $posts->updated_at = Carbon::now();
+            
             if($posts->save()){
-                $oldPostImages=Upload::where('post_id',$posts->id)->get('image');
-                 ///function for merge old and new post images
-                if(!empty($imageArray)){
-                    if(!empty($oldPostImages)){
-                $newImageArray=[];
-                foreach($imageArray as $image){
-                    $newImageArray[] = $this->uploadPostImage($image);
-                    }
-
-                    $oldPostImageArray=explode(' ', json_decode($oldPostImages, true)[0]['image']);
-                    $imageArray=array_merge($oldPostImageArray,$newImageArray);
-                }
+                $newImageArray = $this->getPostImageArray($imageArray,$posts->id);
+                $newVideoArray = $this->getPostVideoArray($videoArray,$posts->id);
+                
                 //updating the image field
-                    Upload::where('post_id', $id)
+                    Upload::where('post_id', $posts->id)
                     ->update([
-                        'image'=>implode(" ",$imageArray),
+                        'image'=>($newImageArray!=[]) ? implode(' ', array_filter($newImageArray)) : null,
+                        'video'=>($newVideoArray!=[]) ? implode(' ', array_filter($newVideoArray)) : null,
                         ]);
-                }
             }
+            
             if($posts->save()){
                 $message = 'Post has been updated successfully.!';
                     return $message;
                 
             }
-        }catch (\Exception $e){     
+        }
+        catch (\Exception $e){     
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message='"'.$e->getMessage().'"';
             return $message;

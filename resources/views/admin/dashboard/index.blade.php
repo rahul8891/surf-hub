@@ -7,9 +7,7 @@
             <span class="info-box-icon bg-info elevation-1"><i class="fas fa-book"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">Total Post</span>
-                <span class="info-box-number">
-                    10
-                </span>
+                <span class="info-box-number">{{ _( number_format($totalPost) ) }}</span>
             </div>
             <!-- /.info-box-content -->
         </div>

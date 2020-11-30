@@ -94,6 +94,7 @@ class PostController extends Controller
         try{
             $data = $request->all();
             $imageArray=$request->file('files');
+            $videoArray=$request->file('videos');
             $rules = array(
                 'post_type' => ['required'],
                 'user_id' => ['required','numeric'],
@@ -113,7 +114,7 @@ class PostController extends Controller
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-                $result = $this->posts->savePost($data,$imageArray,$message);
+                $result = $this->posts->savePost($data,$imageArray,$videoArray,$message);
                 if($result){  
                     return Redirect::to('admin/post/index')->withSuccess($message);
                 }else{
@@ -137,12 +138,12 @@ class PostController extends Controller
     {   
         try{
         $post=Post::findOrFail(Crypt::decrypt($id));
-        $postImages=Upload::where('post_id',Crypt::decrypt($id))->get('image');
+        $postMedia=Upload::where('post_id',Crypt::decrypt($id))->get();
             $spiner = ($post) ? true : false;
         }catch (\Exception $e){ 
             throw ValidationException::withMessages([$e->getMessage()]);
         }
-        return view('admin/post/show', compact('post','postImages','spiner'));  
+        return view('admin/post/show', compact('post','postMedia','spiner'));  
     }
 
     /**
@@ -162,13 +163,13 @@ class PostController extends Controller
             $states = $this->masterService->getStateByCountryId($currentUserCountryId);
             $customArray = $this->customArray;  
             $posts = Post::findOrFail(Crypt::decrypt($id));
-            $postImages=Upload::where('post_id',Crypt::decrypt($id))->get('image');
+            $postMedia=Upload::where('post_id',Crypt::decrypt($id))->get();
             $spiner = ($this->posts) ? true : false;
         }catch (\Exception $e){         
             throw ValidationException::withMessages([$e->getMessage()]);
         }
         
-        return view('admin/post/edit', compact('users','countries','postImages','posts','currentUserCountryId','customArray','language','states'));
+        return view('admin/post/edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));
     }
 
     /**
@@ -184,6 +185,7 @@ class PostController extends Controller
         try{
             $data = $request->all();
             $imageArray=$request->file('files');
+            $videoArray=$request->file('videos');
             $rules = array(
                 'post_type' => ['required'],
                 'user_id' => ['required','numeric'],
@@ -202,9 +204,9 @@ class PostController extends Controller
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-                $result = $this->posts->updatePost($data,$imageArray,$id,$message);
+                $result = $this->posts->updatePost($data,$imageArray,$videoArray,$id,$message);
                 if($result){
-                    return redirect()->route('postEdit', ['id' => Crypt::encrypt($id)])->withSuccess($message);
+                    return redirect()->route('postDetail', ['id' => Crypt::encrypt($id)])->withSuccess($message);
                 }else{
                     return redirect()->route('postEdit', ['id' => Crypt::encrypt($id)])->withErrors($message); 
                 }
@@ -229,4 +231,20 @@ class PostController extends Controller
         return Redirect::to('admin/post/index')->withSuccess("succesfully deleted");
     }
 
+
+    public function videoUpload(Request $request){
+        $files=$request->file('files');
+        $imageArray=[];
+        if($files){
+            foreach($files as $image){
+                $filenameWithExt= $image->getClientOriginalName();
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension = $image->getClientOriginalExtension();
+                $fileNameToStore = $filename. '_'.time().'.'.$extension;
+                $path = $image->move('storage/videos',$fileNameToStore);
+                $imageArray[]=$fileNameToStore;
+            }
+            }
+        return view('admin.Post.video',compact('imageArray','data'));
+    }
 }

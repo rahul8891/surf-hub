@@ -21,9 +21,10 @@ class AdminDashboard extends Controller
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct(AdminUserService $users)
+    public function __construct(AdminUserService $users, AdminUserService $posts)
     {
         $this->users = $users;       
+        $this->posts = $posts;       
     }
 
     /**
@@ -35,7 +36,8 @@ class AdminDashboard extends Controller
     {         
         
         $totalUser = $this->users->getUserTotal();
-        return view('admin/dashboard.index', compact('totalUser'));
+        $totalPost = $this->posts->getPostTotal();
+        return view('admin/dashboard.index', compact('totalPost','totalUser'));
     }
 
     /**
