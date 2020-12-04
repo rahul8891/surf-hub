@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\admin;
+
+use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -12,6 +13,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Crypt;
 use App\Services\AdminUserService;
 use App\Services\MasterService;
+use App\Services\PostService;
 use App\Traits\PasswordTrait;
 use App\Models\User;
 use Carbon\Carbon;
@@ -20,6 +22,8 @@ use App\Models\Upload;
 use Closure;
 use Redirect;
 use Session;
+use FFMpeg\FFMpeg;
+// use FFMpeg;
 
 class PostController extends Controller
 {
@@ -43,7 +47,7 @@ class PostController extends Controller
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct(AdminUserService $posts,AdminUserService $users,MasterService $masterService)
+    public function __construct(PostService $posts,AdminUserService $users,MasterService $masterService)
     {
         $this->posts = $posts;
         $this->users = $users;
@@ -232,3 +236,4 @@ class PostController extends Controller
     }
 
 }
+// exec("ffmpeg -ss 00:01:00 -i input.mp4 -to 00:02:00 -c copy output.mp4");

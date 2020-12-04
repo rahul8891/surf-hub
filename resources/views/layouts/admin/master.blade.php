@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="{{ asset("/css/croppie.css") }}" />
     <link href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
     
+    
     <!-- script -->
     
 </head>
@@ -98,6 +99,9 @@
     <!-- REQUIRED SCRIPTS -->
     <!-- jQuery -->
     <script src="{{ asset("/AdminLTE/plugins/jquery/jquery.min.js")}}"></script>
+
+    <!-- ddslick -->
+    <script type="text/javascript" src="https://cdn.rawgit.com/prashantchaudhary/ddslick/master/jquery.ddslick.min.js" ></script>
     <!-- Bootstrap -->
     <script src="{{ asset("/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
     <!-- overlayScrollbars -->

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use App\Services\AdminUserService;
+use App\Services\PostService;
 class AdminDashboard extends Controller
 {
     /**
@@ -21,7 +22,7 @@ class AdminDashboard extends Controller
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct(AdminUserService $users, AdminUserService $posts)
+    public function __construct(AdminUserService $users, PostService $posts)
     {
         $this->users = $users;       
         $this->posts = $posts;       

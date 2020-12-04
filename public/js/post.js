@@ -5,6 +5,21 @@ $(document).ready(function () {
    * resetForm Form  validator on close     
    * remove image preview on close (pip)
    */
+
+   // ddslick dropdown script
+  $('#other_surfer').ddslick({
+    imagePosition:"right",
+    background: "#f5f5f5",
+  });
+
+  $("#file_button").click(function(){
+    $("input[name='files[]']").trigger("click");
+  });
+
+  $("#video_button").click(function(){
+    $("input[name='videos[]']").trigger("click");
+  });
+
   $(".close").click(function (e) {
     var validator = $("#postForm").validate();
     validator.resetForm();
