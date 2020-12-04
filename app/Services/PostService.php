@@ -161,7 +161,7 @@ class PostService {
             $this->posts->state_id = $input['state_id'];
             $this->posts->local_beach_break_id = $input['local_beach_break_id'];
             $this->posts->surfer = $input['surfer'];
-            $this->posts->optional_info = implode(" ",$input['optional_info']);
+            $this->posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
             $this->posts->created_at = Carbon::now();
             $this->posts->updated_at = Carbon::now();
             
@@ -210,7 +210,7 @@ class PostService {
             $posts->state_id = $input['state_id'];
             $posts->local_beach_break_id = $input['local_beach_break_id'];
             $posts->surfer = $input['surfer'];
-            $posts->optional_info = implode(" ",$input['optional_info']);
+            $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
             $posts->created_at = Carbon::now();
             $posts->updated_at = Carbon::now();
             

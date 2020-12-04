@@ -33,6 +33,9 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                @error('post_type')
+                                <strong class="required">{{ $message }}</strong>
+                                @enderror
                             </div>
                         </div>
 
@@ -80,13 +83,13 @@
                     {{-- <div class="upload-btn-wrapper">
                             <button class=""><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>
                 </div> --}}
-            </div>
-    </div>
+                    </div>
+                </div>
     <hr />
     <div class="formWrap">
         <h2 class="text-primary">Mandatory Info</h2>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 my-2">
                 <div class="row">
                     <div class="col-md-4">
                         <label>Surf Date <span class="required">*</span></label>
@@ -96,14 +99,14 @@
                             <input class="form-control" type="date" name="surf_date" id="datepicker"
                                 value="{{ old('surf_date') }}" required />
                         </div>
-                        <!-- <div class="id-error" id="id-error">
-                                        <label for="surf_date" class="error" generated="true"></label>
-                                    </div> -->
-                    </div>
+                        @error('surf_date')
+                        <strong class="required">{{ $message }}</strong>
+                        @enderror
+                     </div>                          
                 </div>
 
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 my-2">
                 <div class="row">
                     <div class="col-md-4">
                         <label>Wave size <span class="required">*</span></label>
@@ -117,17 +120,18 @@
                                 </option>
                                 @endforeach
                             </select>
-
-                            {{-- <!-- <div class="id-error" id="id-error">
-                                            <label for="wave_size" class="error" generated="true"></label>
-                                        </div> --> --}}
                         </div>
+                        @error('wave_size')
+                        <strong class="required">{{ $message }}</strong>
+                        @enderror
                     </div>
 
                 </div>
 
             </div>
-            <div class="col-md-6">
+        </div>
+        <div class="row">
+            <div class="col-md-6 my-2">
                 <div class="row">
                     <div class="col-md-4">
                         <label>Country <span class="required">*</span></label>
@@ -144,16 +148,14 @@
                                 @endforeach
                             </select>
                             @error('country_id')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
+                            <strong class="required">{{ $message }}</strong>
                             @enderror
 
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 my-2">
                 <div class="row">
                     <div class="col-md-4">
                         <label class="width-102">Beach / Break <span class="required">*</span></label>
@@ -169,10 +171,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+        </div>
+        <div class="row">
+            <div class="col-md-6 my-2">
                 <div class="row">
                     <div class="col-md-4">
-                        <label>State <span class="required">*</span></label>
+                        <label>State</label>
                     </div>
                     <div class="col-md-8">
                         <div class="selectWrap pos-rel">
@@ -183,15 +187,14 @@
                                     {{ $value->name }}</option>
                                 @endforeach
                             </select>
-
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 my-2">
                 <div class="row">
                     <div class="col-md-4">
-                        <label>Board Type</label>
+                        <label>Board Type<span class="required">*</span></label>
                     </div>
                     <div class="col-md-8">
                         <div class="selectWrap pos-rel">
@@ -202,11 +205,13 @@
                                 </option>
                                 @endforeach
                             </select>
-
                         </div>
+                        @error('board_type')
+                        <strong class="required">{{ $message }}</strong>
+                        @enderror
                     </div>
-                </div>
             </div>
+        </div>
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-2">
@@ -222,7 +227,10 @@
                             </div>
                             @endforeach
 
-                        </div>
+                        </div>  
+                        @error('surfer')
+                        <strong class="required">{{ $message }}</strong>
+                        @enderror
                     </div>
                 </div>
 
@@ -249,7 +257,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        
     </div>
 
     <hr />

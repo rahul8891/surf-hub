@@ -6,7 +6,7 @@
         <h3 class="card-title">Users List</h3>
     </div>
     <div class="card-header">
-        <a href="{{ route('adminUserCreate')}}" class="btn btn-primary pull-left">Add New Post</a>
+        <a href="{{ route('adminUserCreate')}}" class="btn btn-primary pull-left">Add New User</a>
     </div>
     <!-- /.card-header -->
     <div id="loader"></div>

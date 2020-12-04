@@ -126,7 +126,6 @@ class PostController extends Controller
                 }
             }
         }catch (\Exception $e){ 
-            echo "exception";
             throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         }
         
@@ -185,6 +184,7 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {   
+        // dd($request->all());
         $id=Crypt::decrypt($id);
         try{
             $data = $request->all();
@@ -194,7 +194,7 @@ class PostController extends Controller
                 'post_type' => ['required'],
                 'user_id' => ['required','numeric'],
                 'post_text' => ['nullable', 'string', 'max:255'],
-                'surf_date' => ['nullable', 'string'],
+                'surf_date' => ['required', 'string'],
                 'wave_size' => ['required', 'string'],
                 'state_id' => ['nullable', 'numeric'],
                 'board_type' => ['required', 'string'],
