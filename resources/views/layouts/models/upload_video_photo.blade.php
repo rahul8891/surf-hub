@@ -7,8 +7,9 @@
 <div class="modal fade uploadModal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form id="postForm" method="POST" name="postForm" action="javascript:void(0)" class="upload-form"
+        <form id="postForm" method="POST" name="postForm" action="{{ route('storeVideoImagePost') }}" class="upload-form"
             accept-charset="utf-8" enctype="multipart/form-data">
+            @csrf
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"><img src="{{ asset("/img/logo_small.png")}}">Upload
@@ -28,20 +29,17 @@
                 </div>
                 <div class="modal-body">
                     <div class="">
+                        <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
                         <textarea placeholder="Share your surf experience....." name="post_text" required></textarea>
                         <div class="videoImageUploader">
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
-
                                 <input type="file" id="input_multifileSelect" name="files[]" accept=".png, .jpg, .jpeg"
                                     multiple />
-
-                                <!-- <input type="hidden" id="imagebase64Multi" name="surf_image_array[]"
-                                    accept=".png, .jpg, .jpeg" multiple /> -->
                             </div>
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
-                                <input type="file" name="videos[]" multiple />
+                                <input type="file" name="videos[]" accept=".mp4, .wmv, .mkv, .gif, .mpeg4" multiple />
                             </div>
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>
@@ -192,49 +190,37 @@
                                             <label>Surfer<span class="mandatory">*</span></label>
                                         </div>
                                         <div class="col-md-3">
-                                            <div class="d-flex meOthersCheck">
+                                            <div class="d-flex">
                                                 <div class="cstm-check pos-rel">
-                                                    <input type="radio" name="surfer" value="me" id="Me" required />
+                                                    <input type="radio" name="surfer" value="Me" id="Me" required />
                                                     <label for="Me" class="">Me</label>
                                                 </div>
                                                 <div class="cstm-check pos-rel">
-                                                    <input type="radio" name="surfer" value="other" id="Others" />
+                                                    <input type="radio" name="surfer" value="Others" id="Others" />
                                                     <label for="Others" class="">Others</label>
+                                                </div>
+                                                <div class="cstm-check pos-rel">
+                                                    <input type="radio" name="surfer" id="Unknown" value="Unknown" />
+                                                    <label for="Unknown" class="">Unknown</label>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 col-sm-8" style="display:none" id="otherSsurfer">
+                                    </div>
+                                        <div class="col-md-4 col-sm-8" style="display:none" id="othersSurfer">
                                             <div class="selectWrap pos-rel">
-
-                                                <!-- <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
-                                                    placeholder="Search User " class="form-control other_surfer_box"
-                                                    id="other_surfer" required>
-
-                                                <input type="hidden" name="user_id" id="user_id" class="form-control">
-
-                                                <div class="auto-search search1" id="other_surfer_list"></div> -->
-
                                                 <select class="form-control" name="other_surfer" id="other_surfer">
                                                     <option value="">-- Select User --</option>
-                                                    <option value="1">Sandeep</option>
-                                                    <option value="2">Raja</option>
-                                                    <option value="3">Raman</option>
-                                                    <option value="4">Sanoj</option>
+                                                    <option value="0" data-imagesrc="{{ asset("/img/photo.png")}}">Sandeep</option>
+                                                    <option value="1" data-imagesrc="{{ asset("/img/video.png")}}">Raja</option>
+                                                    <option value="2" data-imagesrc="{{ asset("/img/photo.png")}}">Raman</option>
+                                                    <option value="3" data-imagesrc="{{ asset("/img/video.png")}}">Sanoj</option>
                                                 </select>
 
-                                                <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-1 col-sm-4">
-                                            <div class="cstm-check pos-rel">
-                                                <input type="radio" name="surfer" id="Unknown" value="unknown" />
-                                                <label for="Unknown" class="">Unknown</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         <div class="formWrap optionalFields">
                             <h2>Optional Info</h2>
                             <div class="row">

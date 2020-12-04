@@ -24,7 +24,7 @@
                             @if($users->profile_photo_path)
                             <img src="{{ asset('storage/'.$users->profile_photo_path) }}" width="120px"
                                 alt="Profile Photo" data-userid="{{ $users->id }}" id="category-img-tag"
-                                class="img-fluid" alt="" id="category-img-tag">
+                                class="img-fluid" id="category-img-tag">
                             @else
                             <img src="{{ asset("/img/profile1.jpg")}}" width="120px" alt="Profile Photo"
                                 id="category-img-tag" data-userid="{{ $users->id }}" class="img-fluid">

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Models\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -34,6 +35,9 @@ class AdminUserService {
         $this->currentUserDetails = Auth::user();
         // User model object
         $this->users = new User();
+
+        // upload model object
+        $this->upload = new Upload();
 
         $this->userProfile = new UserProfile();
 
@@ -84,10 +88,11 @@ class AdminUserService {
         return $userArray;
     }
 
+
     /**
      * [saveAdminUser] we are storing the User Details from admin section 
      * @param  requestInput get all the requested input data
-     * @param  message return message based on the confition 
+     * @param  message return message based on the condition 
      * @return dataArray with message
      */
     public function saveAdminUser($input,&$message=''){
@@ -156,6 +161,7 @@ class AdminUserService {
            return $returnArray;
         }
     }
+    
 
      /**
      * Delete profile image if data not stor in db
@@ -200,21 +206,6 @@ class AdminUserService {
 
 
     public function updateAdminUser($dataRequest,$id,&$message=''){
-            //         array:13 [▼
-            // "_token" => "IztDT3b9IpCmorjCkWIy8t4vtXSK1XBQUEbuLKcN"
-            // "first_name" => "shubh"
-            // "last_name" => "sharma"
-            // "user_name" => "shubh_sharma"
-            // "email" => "shubh@yopmail.com"
-            // "account_type" => "PRIVATE"
-            // "language" => "es"
-            // "country_id" => "101"
-            // "phone" => "+917830409696"
-            // "local_beach_break" => "Bilgola Beach,,Sydney,NSW,Australia"
-            // "local_beach_break_id" => "6"
-            // "facebook" => null
-            // "instagram" => null
-            // ]
       
         $users = $this->users->find($id); 
         $userProfiles =  new UserProfile();
@@ -280,4 +271,7 @@ class AdminUserService {
         //     throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         // }
     }
+
+
+    
 }

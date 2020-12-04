@@ -5,6 +5,21 @@ $(document).ready(function () {
    * resetForm Form  validator on close     
    * remove image preview on close (pip)
    */
+
+   // ddslick dropdown script
+  $('#other_surfer').ddslick({
+    imagePosition:"right",
+    background: "#f5f5f5",
+  });
+
+  $("#file_button").click(function(){
+    $("input[name='files[]']").trigger("click");
+  });
+
+  $("#video_button").click(function(){
+    $("input[name='videos[]']").trigger("click");
+  });
+
   $(".close").click(function (e) {
     var validator = $("#postForm").validate();
     validator.resetForm();
@@ -127,7 +142,7 @@ $(document).ready(function () {
       },
 
       state_id: {
-        required: true
+        required: false
       },
 
       board_type: {
@@ -186,7 +201,8 @@ $(document).ready(function () {
 
     },
     submitHandler: function (form, e) {
-      //spinner.show();       
+      spinner.show();  
+      form.submit();     
       // Manage Form Data        
       // let formData = new FormData(form);
       e.preventDefault();
@@ -197,12 +213,12 @@ $(document).ready(function () {
         return $(this).val();
       }).get();
 
-      /*var files = new Array();
+      var files = new Array();
       files = $('input[name="files[]"]').map(function(){
         return $(this).val();
       }).get();
 
-      console.log(files);*/
+      console.log(files);
 
       var result = {};
       
@@ -265,20 +281,20 @@ $(document).ready(function () {
    */
   $('input[type=radio]').on('change', function () {
     switch ($(this).val()) {
-      case 'me':
-        $("#otherSsurfer").hide();
+      case 'Me':
+        $("#othersSurfer").hide();
         $("#other_surfer").val("");
         break;
-      case 'other':
-        $("#otherSsurfer").show();
+      case 'Others':
+        $("#othersSurfer").show();
         $("#other_surfer").val("");
         break;
-      case 'unknown':
-        $("#otherSsurfer").hide();
+      case 'Unknown':
+        $("#othersSurfer").hide();
         $("#other_surfer").val("");
         break;
       default:
-        $("#otherSsurfer").hide();
+        $("#othersSurfer").hide();
         $("#other_surfer").val("");
     }
   });
