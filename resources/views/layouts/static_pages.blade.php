@@ -40,6 +40,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.5.1/jquery.nicescroll.min.js"> </script>
     <script src="{{ asset("/js/bootstrap.js")}}"></script>
+    <script src="{{ asset("/js/jquery.validate.min.js")}}"></script>
+    <script src="{{ asset("/js/custom.js")}}"></script>
+    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.min.js"></script>
     <script>
     $(document).ready(function() {
         $(" #My-Profile").click(function() {
@@ -51,6 +54,69 @@
         });
 
         $('#error').delay(4000).fadeOut('slow');
+
+        // valid email format
+        $.validator.addMethod(
+            "validEmailFormat",
+            function (email) {
+                var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
+                return testEmail.test(email);
+            },
+            "Please enter valid email with valid format"
+        );
+
+        $("form[name='contactUs']").validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3
+                },
+
+                email: {
+                    required: true,
+                    email: true,
+                    validEmailFormat: true
+                },
+
+                subject: {
+                    required: true
+                },
+
+                message: {
+                    required: true
+                }
+            },
+            errorPlacement: function (error, element) {
+                if (element.is(":radio")) {         
+                    error.insertAfter(element.parent().parent());
+                } else {
+                    // This is the default behavior of the script for all fields
+                    error.insertAfter(element);
+                }
+            },
+            messages: {
+                name: {
+                    required: "Please enter your name",
+                    minlength: "Your name must be at least 3 characters long."
+                },
+
+                email: {
+                    required: "Please enter your email",
+                    email: "Please enter valid email address"
+                },
+
+                subject: {
+                    required: "Please enter your subject"
+                },
+
+                message: {
+                    required: "Please enter your message"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
 
     });
     </script>

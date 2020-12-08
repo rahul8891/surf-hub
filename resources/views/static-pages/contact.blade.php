@@ -9,7 +9,7 @@
                         <a href="javascript:void(0);">{{ __('Contact Us') }}</a>
                     </li>
                     <li class="backBtn">
-                        <a href="javascript:void(0);"><img src="img/backBtnIcon.png" alt="" class="pr-2">Back</a>
+                        <a href="javascript:history.back()"><img src="img/backBtnIcon.png" alt="" class="pr-2">Back</a>
                     </li>
                 </ul>
             </div>
@@ -24,7 +24,8 @@
                 <div class="col-lg-9">
                     <div class="formWrap">
                         <div class="row">
-
+                            <form method="POST" id="contactUs" name="contactUs" action="{{ route('contact') }}"
+                            enctype="multipart/form-data">
                             <div class="col-lg-9">
                                 <h2>Contact US</h2>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -33,29 +34,36 @@
                                 <div class="form">
                                     <div class="form-group pos-rel">
                                         <div class="inputWrap">
-                                            <input type="Name" placeholder="Name" class="form-control">
+                                            <input type="text" placeholder="Name" name="name" class="form-control" required>
+                                            @error('name')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="form-group pos-rel">
                                         <div class="inputWrap">
-                                            <input type="Email" placeholder="Email" class="form-control">
-
+                                            <input type="text" placeholder="Email" name="email" class="form-control" required>
+                                            @error('email')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="form-group pos-rel">
                                         <div class="inputWrap">
-                                            <input type="text" placeholder="Subject" class="form-control">
-
+                                            <input type="text" placeholder="Subject" name="subject" class="form-control" required>
+                                            @error('subject')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="form-group pos-rel">
                                         <div class="inputWrap">
-                                            <textarea placeholder="Subject" class="form-control"></textarea>
+                                            <textarea placeholder="Message" name="message" class="form-control" required></textarea>
 
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="subnit" value="SEND MESSAGE" class="loginBtn">
+                                        <input type="submit" value="SEND MESSAGE" class="loginBtn">
                                     </div>
 
 
@@ -63,6 +71,7 @@
 
                                 </div>
                             </div>
+                            </form>
                             <div class="col-lg-3  align-self-end text-center">
 
                                 <img src="img/changePswdright.png" class="img-fluid mt-auto" alt="">

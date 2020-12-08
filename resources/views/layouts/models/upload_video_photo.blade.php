@@ -135,7 +135,7 @@
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
                                                 <input type="text" value="{{ old('local_beach_break')}}"
-                                                    name="local_beach_break" placeholder="Search Beach Break "
+                                                    name="local_beach_break" placeholder="Your Local Beach / Break "
                                                     class="form-control search-box" required>
                                                 <input type="hidden" name="local_beach_break_id"
                                                     id="local_beach_break_id" class="form-control">
@@ -209,11 +209,10 @@
                                         <div class="col-md-4 col-sm-8" style="display:none" id="othersSurfer">
                                             <div class="selectWrap pos-rel">
                                                 <select class="form-control" name="other_surfer" id="other_surfer">
-                                                    <option value="">-- Select User --</option>
-                                                    <option value="0" data-imagesrc="{{ asset("/img/photo.png")}}">Sandeep</option>
-                                                    <option value="1" data-imagesrc="{{ asset("/img/video.png")}}">Raja</option>
-                                                    <option value="2" data-imagesrc="{{ asset("/img/photo.png")}}">Raman</option>
-                                                    <option value="3" data-imagesrc="{{ asset("/img/video.png")}}">Sanoj</option>
+                                                    <option value="0" data-description="Description with Facebook" data-imagesrc="{{ asset("/img/photo.png")}}">Sandeep</option>
+                                                    <option value="1" data-description="Description with Facebook" data-imagesrc="{{ asset("/img/video.png")}}">Raja</option>
+                                                    <option value="2" data-description="Description with Facebook" data-imagesrc="{{ asset("/img/photo.png")}}">Raman</option>
+                                                    <option value="3" data-description="Description with Facebook" data-imagesrc="{{ asset("/img/video.png")}}">Sanoj</option>
                                                 </select>
 
                                             </div>

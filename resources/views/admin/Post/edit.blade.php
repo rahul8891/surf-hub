@@ -9,7 +9,7 @@
     <!-- <div id="loader"></div> -->
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Create New User</h3>
+            <h3 class="card-title">Edit Post</h3>
         </div>
         <!-- /.card-header -->
         <form role="form" id="postForm" name="postForm" method="POST" action="{{ route('postUpdate',Crypt::encrypt($posts->id)) }}" enctype="multipart/form-data">
@@ -98,7 +98,7 @@
                 <div class="formWrap">
                     {{-- <p>{{$posts->surf_start_date}}</p>
                     <p>{{date_format(date_create($posts->surf_start_date),"m/d/Y")}}</p>
-                    <p>{{date('m/d/yy', strtotime($posts->surf_start_date))}}</p>
+                    <p>{{date('dd/mm/yyyy', strtotime($posts->surf_start_date))}}</p>
                     <p>{{ \Carbon\Carbon::parse($posts->surf_start_date)->format('m/d/Y')}}</p> --}}
                     <h2 class="text-primary">Mandatory Info</h2>
                     <div class="row">
@@ -110,7 +110,7 @@
                                 <div class="col-md-8">
                                     <div class="selectWrap pos-rel">
                                         <input class="form-control" type="date" name="surf_date" id="datepicker"
-                                            value="{{ old('surf_date'),$posts->surf_start_date }}" required />
+                                            value="{{ $posts->surf_start_date }}" required />
                                     </div>
                                     @error('surf_date')
                                     <span class="invalid-feedback" role="alert">
@@ -189,7 +189,7 @@
                                             @endphp
                                             <input type="text"
                                                 class="form-control @error('local_beach_break') is-invalid @enderror search-box"
-                                                name="local_beach_break" placeholder="Search Beach Break "
+                                                name="local_beach_break" placeholder="Your Local Beach / Break "
                                                 value="{{ old('local_beach_break',$beach_break)}}">
                                             @error('local_beach_break')
                                             <span class="invalid-feedback" role="alert">
@@ -216,8 +216,8 @@
                                         <select class="form-control" name="state_id" id="state_id">
                                             <option selected="selected" value="">-- State --</option>
                                             @foreach($states as $key => $value)
-                                            <option value="{{ $key }}"
-                                                {{ ( old('state_id',$posts->state_id) == $key) ? 'selected' : '' }}>
+                                            <option value="{{ $value->id }}"
+                                                {{ ( old('state_id',$posts->state_id) == $value->id) ? 'selected' : '' }}>
                                                 {{ $value->name }}</option>
                                             @endforeach
                                         </select>
