@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    <main class="pt-0 bg-blue">
+    <main class="pt-0">
         <!-- <div id="loader"></div> -->
         <div class="loaderWrap">
             <div class="lds-hourglass"></div>
