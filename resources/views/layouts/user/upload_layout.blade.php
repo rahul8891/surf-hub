@@ -39,7 +39,7 @@
                             <div class="filterBody">
                                 <div class="row mb-3">
                                     <div class="col-md-2">
-                                        <label class="mb-0">Surfe</label>
+                                        <label class="mb-0">Surfer</label>
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="row">
