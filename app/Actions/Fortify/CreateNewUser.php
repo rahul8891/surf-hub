@@ -35,7 +35,7 @@ class CreateNewUser implements CreatesNewUsers
             'last_name' => ['required','min:3','string'],
             'user_name' => ['required', 'string','min:5', 'max:25', 'unique:users', 'alpha_dash'],
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
-            'phone' => ['required', 'numeric'],
+            'phone' => ['required', 'string'],
             'language' => ['required', 'string'],
             'country_id' => ['required', 'numeric'],
             'account_type' => ['required', 'string'],

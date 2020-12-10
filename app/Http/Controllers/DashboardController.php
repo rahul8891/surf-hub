@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 use App\Services\MasterService;
+use App\Services\UserService;
 
 use Redirect;
 class DashboardController extends Controller
@@ -19,10 +20,11 @@ class DashboardController extends Controller
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct(MasterService $masterService)
+    public function __construct(MasterService $masterService,UserService $userService)
     {
             $this->masterService = $masterService;
             $this->customArray = config('customarray');
+            $this->userService = $userService;
     }
     
     public function dashboard(){
@@ -30,9 +32,22 @@ class DashboardController extends Controller
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;      
+        // $usersList = $this->userService->getAllUserForCreatePost();
         return view('dashboard',compact('customArray','countries','states','currentUserCountryId'));
     }
 
+
+    public function getState(Request $request){
+        $data = $request->all();   
+
+        $getStateArray = $this->masterService->getStateByCountryId($data['country_id']);       
+        if($getStateArray){
+            echo json_encode(array('status'=>'success', 'message'=>'true','data'=>$getStateArray));
+        }else{
+            echo json_encode(array('status'=>'failure', 'message'=>'false','data'=>null));
+        }
+        die;
+    }
     /**
      * Display a listing of the resource.
      *

@@ -23,9 +23,16 @@
     color: red;
 }
 
+form .error {
+    background-color: white !important;
+    color: orangered !important;
+}
+
 .successMsg {
     color: green;
 }
+
+
 
 .reset-img {
     opacity: 1;

@@ -24,7 +24,7 @@
                                     </span>
                                     <div class="col-md-6">
                                         <div class="d-flex uploadBtnMainWrap align-items-center form-group">
-                                            <div class="upload-btn-wrapper ">
+                                            <div class="upload-btn-wrapper">
                                                 <button class="">
                                                     <img src="{{ asset("/img/image-file.png")}}" id="category-img-tag"
                                                         alt="">

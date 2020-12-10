@@ -977,6 +977,7 @@ header .dropdown-toggle::after {
 
 .uploadModal .selectWrap span {
     right: 10px;
+    top: 16px;
 }
 
 .uploadModal .modal-body {
@@ -1033,8 +1034,8 @@ header .dropdown-toggle::after {
 
 .uploadModal .formWrap label {
     font-size: 15px;
-    /* line-height: 44px; */
-    color: #333333;
+    /* line-height: 44px; 
+    color: #333333;*/
     font-weight: 400;
     margin-bottom: 15px;
 }
@@ -1875,6 +1876,7 @@ form .error {
     padding-left: initial !important;
     padding: 2px !important;
 }
+
 .search1 {
     position: absolute !important;
 }
@@ -1884,4 +1886,11 @@ form .error {
     /* height: 39px;
     padding: 8px;
     position: absolute !important; */
+}
+
+.upload-form .id-error label {
+    background-color: white !important;
+    color: #ff0000 !important;
+    padding-left: initial !important;
+    padding: 2px !important;
 }

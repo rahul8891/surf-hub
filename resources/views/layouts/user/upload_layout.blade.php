@@ -21,18 +21,20 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-6 text-web-right">
-                    <div class="dropdown show">
+                    <div class="dropdown show keep-inside-clicks-open" id="dropdown-toggle-id">
+
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            data-toggle="dropdown" data-hover="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src="{{ asset("/img/filter.png")}}" alt=""> Filter
                         </button>
+
                         <div class="dropdown-menu filterWrap" aria-labelledby="dropdownMenuButton2">
                             <div class="filterHeader">
                                 <div class="heading">
                                     <img src="{{ asset("/img/logo_small.png")}}" alt="">
                                     <h2>Filter</h2>
                                 </div>
-                                <a href="#" class="ml-auto">Clear</a>
+                                <a href="#" class="ml-auto close" id="close" data-toggle="dropdown">Clear</a>
                             </div>
                             <div class="filterBody">
                                 <div class="row mb-3">
@@ -288,6 +290,8 @@
                             </div>
 
                         </div>
+
+
                     </div>
                 </div>
                 @endif
@@ -295,11 +299,16 @@
             </div>
         </div>
         <div class="post-head">
-            <a href="#" data-toggle="modal" data-target="#exampleModal">
+            <a href="#" data-toggle="modal" data-target="#exampleModal" data-backdrop="static" data-keyboard="false">
                 <div class="userDetail">
+
+                    @if(Auth::user()->profile_photo_path)
+                    <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}" class="profileImg" alt="">
+                    @else
                     <div class="profileImg no-image">
-                        EN
+                        {{ucwords(substr(Auth::user()->user_profiles->first_name,0,1))}}
                     </div>
+                    @endif
                     <div class="pl-3">
                         <h4>Upload your latest Photo/Video</h4>
                     </div>

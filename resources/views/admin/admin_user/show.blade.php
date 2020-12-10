@@ -19,7 +19,7 @@
                             <h2 class="">
                                 {{ __(ucwords($users->user_profiles->first_name .' '.$users->user_profiles->last_name)) }}
                             </h2>
-                            <p class="text-muted text-md"><b>User Name: </b> {{ __($users->name)}} </p>
+                            <p class="text-muted text-md"><b>User Name: </b> {{ __($users->user_name)}} </p>
                             <p class="text-muted text-md"><b>Email : </b> {{ __($users->email)}} </p>
                             <p class="text-muted text-md">
                                 <b>Status : </b>
@@ -76,7 +76,7 @@
                         <a href="{{ route('adminUserListIndex')}}" class="btn btn-sm btn-default">
                             <i class="fa fa-chevron-left"></i> Back
                         </a>
-                        <a href="#" class="btn btn-sm btn-primary">
+                        <a href="{{route('adminUserEdit', Crypt::encrypt($users->id))}}" class="btn btn-sm btn-primary">
                             <i class="fas fa-edit"></i> Edit Profile
                         </a>
                     </div>
