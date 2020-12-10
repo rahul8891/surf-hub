@@ -21,14 +21,14 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-6 text-web-right">
-                    <div class="dropdown show keep-inside-clicks-open" id="dropdown-toggle-id">
+                    <div class="dropdown" id="dropdown-toggle-id">
 
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2"
                             data-toggle="dropdown" data-hover="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src="{{ asset("/img/filter.png")}}" alt=""> Filter
                         </button>
 
-                        <div class="dropdown-menu filterWrap" aria-labelledby="dropdownMenuButton2">
+                        <form class="dropdown-menu filterWrap" aria-labelledby="dropdownMenuButton2">
                             <div class="filterHeader">
                                 <div class="heading">
                                     <img src="{{ asset("/img/logo_small.png")}}" alt="">
@@ -202,8 +202,8 @@
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="cstm-check pos-rel">
-                                            <input type="checkbox" id="test7" />
-                                            <label for="test7" class="width-138">Wipeout</label>
+                                            <input type="checkbox" id="test8" />
+                                            <label for="test8" class="width-138">Wipeout</label>
                                         </div>
 
                                     </div>
@@ -226,8 +226,8 @@
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="cstm-check pos-rel">
-                                            <input type="checkbox" id="test8" />
-                                            <label for="test8" class="width-138">Cutback </label>
+                                            <input type="checkbox" id="test9" />
+                                            <label for="test9" class="width-138">Cutback </label>
                                         </div>
 
                                     </div>
@@ -289,7 +289,7 @@
                                 <img src="{{ asset("/img/filterRightIcon.jpg")}}" alt="" class="rightImg">
                             </div>
 
-                        </div>
+                        </form>
 
 
                     </div>
