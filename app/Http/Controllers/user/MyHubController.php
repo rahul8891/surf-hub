@@ -4,6 +4,8 @@ namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Models\Upload;
 use App\Services\MasterService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -26,11 +28,14 @@ class MyHubController extends Controller
      */
     public function index()
     {
+        $userId = Auth::user()->id;
+        $post=  Post::where('user_id',$userId)
+        ->join('uploads', function ($join) { $join->on('posts.id', '=', 'uploads.post_id');})->get();
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
-        $customArray = $this->customArray;      
-        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId'));       
+        $customArray = $this->customArray;
+        return view('user.myhub',compact('post','customArray','countries','states','currentUserCountryId'));       
     }
 
     /**

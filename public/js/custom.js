@@ -8,6 +8,13 @@ $(document).ready(function () {
 			spinner.show();
 		}
 	});*/
+/************** myhub image zoom ****************************/
+    
+	$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+		event.preventDefault();
+		$(this).ekkoLightbox();
+	});
+		
 
 	/************** spiner code ****************************/
     var stopSpiner = "{{ $spiner}}";

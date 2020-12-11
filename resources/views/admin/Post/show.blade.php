@@ -22,7 +22,7 @@
                             <div class="">
                                 @if (!empty($postMedia))
                                     @foreach (explode(' ', json_decode($postMedia, true)[0]['image'] ?? '') as $postImage)
-                                    <img src="{{ asset('storage/images/'.$postImage) }}" class="img-fluid img-thumbnail rounded mx-auto px-2" width="20%" alt="No photo attached">
+                                    <img src="{{ asset('storage/images/'.$postImage) }}" class="img-fluid img-thumbnail" width="20%" alt="No photo attached">
                                     @endforeach
                                     <hr/>
                                     @foreach (explode(' ', json_decode($postMedia, true)[0]['video'] ?? '') as $postVideo)
