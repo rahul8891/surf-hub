@@ -20,6 +20,21 @@ $(document).ready(function () {
     $("input[name='videos[]']").trigger("click");
   });
 
+  $("input[name='files[]']").on("change", function() {
+    if (parseInt($("input[name='files[]']").get(0).files.length) > 10) {
+        alert("You can select only 10 images");
+        $(this).val('');
+      }
+  });
+
+  $("input[name='videos[]']").on("change", function() {
+    if (parseInt($("input[name='videos[]']").get(0).files.length) > 10) {
+        alert("You can select only 10 videos");
+        $(this).val('');
+      }
+  });
+
+
   $(".close").click(function (e) {
     var validator = $("#postForm").validate();
     validator.resetForm();
