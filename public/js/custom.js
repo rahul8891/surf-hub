@@ -40,6 +40,13 @@ $(document).ready(function () {
 		}
 	});
 
+
+	$("#register").on('load',function(){
+		$('#country').val('');
+		$('.phone').val('');
+	})
+
+
 	/**************************************************************************************
 	 *                     set image preview after selection and crop befor update
 	 ***************************************************************************************/
