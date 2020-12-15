@@ -6,6 +6,10 @@ use Redirect;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Page;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\sendMail;
 
 class WelcomeFeedController extends Controller
 {
@@ -58,4 +62,33 @@ class WelcomeFeedController extends Controller
         return view('static-pages.contact');
     }
     
+    public function query_submit(Request $request){
+        $input= $request->all();
+        $rules = array (
+                'name' => ['required','string','min:3'],
+                'email' => ['required', 'string', 'email:rfc,dns', 'max:255'],
+                'subject' => ['required', 'string', 'max:50'],
+                'description' => ['required', 'string'],
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        
+        if($validator -> passes()){
+            $data=array(
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'subject'=>$request->subject,
+                'description'=>$request->description,
+                );
+
+            Mail::to('Sharma.shubham@evontech.com')
+            ->cc('shubh@yopmail.com')
+            ->send(new sendMail($data));
+
+            return redirect()->back()->with('success','Thanks for Contacting Us, Feedback Submitted!');
+        } else {
+            return redirect()->back()->with('error','Thanks for Contacting Us but for now Feedback is not Submitted!');
+        }
+    }
 }

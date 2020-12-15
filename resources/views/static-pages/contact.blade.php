@@ -17,6 +17,20 @@
 
     </div>
 </div>
+                    @if ($message = Session::get('error'))
+                    <div class="alert alert-danger alert-dismissible" role="alert" id="msg">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        {{ ucfirst($message) }}
+                    </div>
+                    @elseif ($message = Session::get('success'))
+                    <div class="alert alert-success alert-dismissible" role="alert" id="msg">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        {{ ucfirst($message) }}
+                    </div>
+                    @endif
+
 <section class="loginWrap changePswd">
     <div class="innerWrap">
         <div class="container">
@@ -27,42 +41,35 @@
 
                             <div class="col-lg-9">
                                 <h2>Contact US</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore
-                                    et dolore magna aliqua.</p>
-                                <div class="form">
+                                <p>Submit your detail here with message, We will consider your query shortly</p>
+                                <form class="form" role="form" id="contact_us" name="contact_us" method="get" action="{{ route('getQuery') }}">
+                                    @csrf
                                     <div class="form-group pos-rel">
                                         <div class="inputWrap">
-                                            <input type="Name" placeholder="Name" class="form-control">
+                                            <input type="Name" name="name" placeholder="Name" class="form-control">
                                         </div>
                                     </div>
                                     <div class="form-group pos-rel">
                                         <div class="inputWrap">
-                                            <input type="Email" placeholder="Email" class="form-control">
-
+                                            <input type="Email" name="email" placeholder="Email" class="form-control">
                                         </div>
                                     </div>
                                     <div class="form-group pos-rel">
                                         <div class="inputWrap">
-                                            <input type="text" placeholder="Subject" class="form-control">
-
+                                            <input type="text" name="subject" placeholder="Subject" class="form-control">
                                         </div>
                                     </div>
                                     <div class="form-group pos-rel">
                                         <div class="inputWrap">
-                                            <textarea placeholder="Subject" class="form-control"></textarea>
-
+                                            <textarea name="description" placeholder="Description" class="form-control"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="subnit" value="SEND MESSAGE" class="loginBtn">
+                                        <input type="submit" value="SEND MESSAGE" class="loginBtn">
                                     </div>
-
-
-
-
-                                </div>
+                                </form>
                             </div>
+
                             <div class="col-lg-3  align-self-end text-center">
 
                                 <img src="img/changePswdright.png" class="img-fluid mt-auto" alt="">
