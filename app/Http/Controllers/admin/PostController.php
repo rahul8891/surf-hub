@@ -22,9 +22,6 @@ use App\Models\Upload;
 use Closure;
 use Redirect;
 use Session;
-use FFMpeg;
-use FFMpeg\Coordinate\Dimension;
-use FFMpeg\Format\Video\X264;
 
 class PostController extends Controller
 {
@@ -235,54 +232,5 @@ class PostController extends Controller
         $post->delete();
         return Redirect::to('admin/post/index')->withSuccess("succesfully deleted");
     }
-
-
-    public function trimmer(Request $request){
-        $text=$request->text;
-        $files=$request->file('files');
-        if($files){
-            foreach($files as $video){
-                $filename= $video->getClientOriginalName();
-                $extension = $video->getClientOriginalExtension();
-                $fileNameToStore = time().'_'.$filename;
-                $path = $video->storeAs('/public/videos',$fileNameToStore);
-                $videoArray[]=$fileNameToStore;
-
-            }
-            $media=FFMpeg::open('public/videos'.'/'.$videoArray[0])
-            ->filters()
-            ->clip(FFMpeg\Coordinate\TimeCode::fromSeconds(1), FFMpeg\Coordinate\TimeCode::fromSeconds(60));
-            dd($media);
-        return view('video',compact('media','text'));
-    }
-
+    
 }
-// exec("ffmpeg -ss 00:01:00 -i input.mp4 -to 00:02:00 -c copy output.mp4");
-
-
-// FFMpeg::fromDisk('local')
-            //     ->open('/public/videos'.'/'.$videoArray[0])
-            //     ->addFilter($clipFilter)
-            //     ->export()
-            //     ->toDisk('local')
-            //     ->inFormat(new \FFMpeg\Format\Video\X264)
-            //     ->save('short_steve.mkv');
-
-            //     dd('done');
-            //     $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
- 
-            //     $converted_name = $path;
-
-            //     FFMpeg::open('/public/videos'.'/'.$videoArray[0])
-            // // add the 'resize' filter...
-            // ->addFilter(function ($filters) {
-            //     $filters->resize(new Dimension(960, 540));
-            // })
-            // // call the 'export' method...
-            // ->export()
-            // // tell the MediaExporter to which disk and in which format we want to export...
-            // ->toDisk('public')
-            // ->inFormat($lowBitrateFormat)
-            // // call the 'save' method with a filename...
-            // ->save($videoArray[0]);
-        }

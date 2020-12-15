@@ -63,6 +63,7 @@ class WelcomeFeedController extends Controller
     }
     
     public function query_submit(Request $request){
+        
         $input= $request->all();
         $rules = array (
                 'name' => ['required','string','min:3'],

@@ -108,10 +108,3 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::get('/post/delete/{id}', [PostController::class, 'destroy'])->name('deletePost');
 
 });
-
-
-Route::get('/video',function(){
-    return view('video');
-});
-
-Route::post('video/upload',[PostController::class,'trimmer'])->name('trimmer');
