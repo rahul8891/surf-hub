@@ -8,6 +8,10 @@ $(document).ready(function () {
 			spinner.show();
 		}
 	});*/
+	/************** country and phone field onload register ****************************/
+	
+	$('.country option:selected').prop("selected", false);
+	$('.phone').val('');
 
 	/************** spiner code ****************************/
     var stopSpiner = "{{ $spiner}}";
@@ -41,10 +45,6 @@ $(document).ready(function () {
 	});
 
 
-	$("#register").on('load',function(){
-		$('#country').val('');
-		$('.phone').val('');
-	})
 
 
 	/**************************************************************************************
