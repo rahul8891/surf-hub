@@ -24,6 +24,10 @@ $(document).ready(function () {
 		spinner.show();
 	});
 
+	$("#next1").click(function (event) {
+		spinner.show();
+	});
+
 	/**
 	hide spiner
 	*/
@@ -747,7 +751,7 @@ $(document).ready(function () {
 				}
 			})
 		}else{
-			$('#user_id').val('');
+			$('#surfer_id').val('');
 			$('#other_surfer_list').html("");
 		}
 
@@ -759,7 +763,7 @@ $(document).ready(function () {
 		var dataId = $(this).attr("data-id");
 		$('#other_surfer_list').html("");
 		$('.other_surfer').val(value);
-		$('#user_id').val(dataId);
+		$('#surfer_id').val(dataId);
 		$('#other_surfer_list').html("");
 		$('input[name="surfer"]').val(value);
 	});
