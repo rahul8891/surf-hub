@@ -20,6 +20,10 @@ $(document).ready(function () {
 		spinner.show();
 	});
 
+	$("#next1").click(function (event) {
+		spinner.show();
+	});
+
 	/**
 	hide spiner
 	*/

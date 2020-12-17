@@ -16,6 +16,10 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Storage;
 use DB;
+use FFMpeg;
+use FFMpeg\Coordinate\Dimension;
+use FFMpeg\Format\Video\X264;
+use FFMpeg\Filters\Video\VideoFilters;
 
 class PostService {
     /**
@@ -87,12 +91,28 @@ class PostService {
      * @return object array
      */
     public function getPostVideo($video){
-        $destinationPath = 'storage/videos/';
+
+        $destinationPath = 'public/fullVideos/';
         $timeDate = strtotime(Carbon::now()->toDateTimeString());
         $filenameWithExt= $video->getClientOriginalName();
         $extension = $video->getClientOriginalExtension();
-        $fileNameToStore = $filenameWithExt. '_'.$timeDate.'.'.$extension;
-        $path = $video->move($destinationPath,$fileNameToStore);
+        $fileNameToStore = $timeDate.'_'.$filenameWithExt;
+        $path = $video->storeAs($destinationPath,$fileNameToStore);
+        // dd($path);
+
+        $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(0);
+        $end   = \FFMpeg\Coordinate\TimeCode::fromSeconds(60);
+        $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start,$end);
+                
+
+                FFMpeg::open($path)
+                    ->addFilter($clipFilter)
+                    ->export()
+                    ->toDisk('trim')
+                    ->inFormat(new FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))
+                    ->save($fileNameToStore);
+
+
         return $fileNameToStore;
     }
 

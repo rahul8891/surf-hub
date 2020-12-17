@@ -186,7 +186,6 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {   
-        // dd($request->all());
         $id=Crypt::decrypt($id);
         try{
             $data = $request->all();
@@ -246,7 +245,7 @@ class PostController extends Controller
                 $filename= $video->getClientOriginalName();
                 $extension = $video->getClientOriginalExtension();
                 $fileNameToStore = time().'_'.$filename;
-                $path = $video->storeAs('public/videos',$fileNameToStore);
+                $path = $video->storeAs('trim',$fileNameToStore);
                 $videoArray[]=$fileNameToStore;
 
                 // ******************************clip****************************
@@ -259,9 +258,9 @@ class PostController extends Controller
                 FFMpeg::open($path)
                     ->addFilter($clipFilter)
                     ->export()
-                    ->toDisk('public')
+                    ->toDisk('trim')
                     ->inFormat(new FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))
-                    ->save('clipped.mkv');
+                    ->save($fileNameToStore);
                 
             }
 
