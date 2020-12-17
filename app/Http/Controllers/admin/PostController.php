@@ -25,6 +25,7 @@ use Session;
 use FFMpeg;
 use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Format\Video\X264;
+use FFMpeg\Filters\Video\VideoFilters;
 
 class PostController extends Controller
 {
@@ -245,44 +246,40 @@ class PostController extends Controller
                 $filename= $video->getClientOriginalName();
                 $extension = $video->getClientOriginalExtension();
                 $fileNameToStore = time().'_'.$filename;
-                $path = $video->storeAs('/public/videos',$fileNameToStore);
+                $path = $video->storeAs('public/videos',$fileNameToStore);
                 $videoArray[]=$fileNameToStore;
 
+
+
+                // ******************************format****************************
+
+                // FFMpeg::open($path)
+                // // ->getFrameFromSeconds(10)
+                // ->export()
+                // ->toDisk('public')
+                // ->inFormat(new \FFMpeg\Format\Video\WMV)
+                // ->save('my_movie.wmv');
+
+                // ******************************clip****************************
+
+                // $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(5);
+                // $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start);
+
+                // FFMpeg::open($path)
+                //     ->addFilter($clipFilter)
+                //     ->export()
+                //     ->toDisk('public')
+                //     ->inFormat(new \FFMpeg\Format\Video\X264)
+                //     ->save('clipped.mkv');
+                
             }
-            $media=FFMpeg::open('public/videos'.'/'.$videoArray[0])
-            ->filters()
-            ->clip(FFMpeg\Coordinate\TimeCode::fromSeconds(1), FFMpeg\Coordinate\TimeCode::fromSeconds(60));
-            dd($media);
+
+        dd('exported');
+            
         return view('video',compact('media','text'));
     }
 
 }
 // exec("ffmpeg -ss 00:01:00 -i input.mp4 -to 00:02:00 -c copy output.mp4");
 
-
-// FFMpeg::fromDisk('local')
-            //     ->open('/public/videos'.'/'.$videoArray[0])
-            //     ->addFilter($clipFilter)
-            //     ->export()
-            //     ->toDisk('local')
-            //     ->inFormat(new \FFMpeg\Format\Video\X264)
-            //     ->save('short_steve.mkv');
-
-            //     dd('done');
-            //     $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
- 
-            //     $converted_name = $path;
-
-            //     FFMpeg::open('/public/videos'.'/'.$videoArray[0])
-            // // add the 'resize' filter...
-            // ->addFilter(function ($filters) {
-            //     $filters->resize(new Dimension(960, 540));
-            // })
-            // // call the 'export' method...
-            // ->export()
-            // // tell the MediaExporter to which disk and in which format we want to export...
-            // ->toDisk('public')
-            // ->inFormat($lowBitrateFormat)
-            // // call the 'save' method with a filename...
-            // ->save($videoArray[0]);
         }
