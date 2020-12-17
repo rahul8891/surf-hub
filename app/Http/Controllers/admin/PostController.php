@@ -182,7 +182,6 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {   
-        // dd($request->all());
         $id=Crypt::decrypt($id);
         try{
             $data = $request->all();
