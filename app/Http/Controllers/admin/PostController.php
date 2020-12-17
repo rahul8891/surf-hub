@@ -249,28 +249,19 @@ class PostController extends Controller
                 $path = $video->storeAs('public/videos',$fileNameToStore);
                 $videoArray[]=$fileNameToStore;
 
-
-
-                // ******************************format****************************
-
-                // FFMpeg::open($path)
-                // // ->getFrameFromSeconds(10)
-                // ->export()
-                // ->toDisk('public')
-                // ->inFormat(new \FFMpeg\Format\Video\WMV)
-                // ->save('my_movie.wmv');
-
                 // ******************************clip****************************
 
-                // $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(5);
-                // $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start);
+                $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(0);
+                $end   = \FFMpeg\Coordinate\TimeCode::fromSeconds(60);
+                $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start,$end);
+                
 
-                // FFMpeg::open($path)
-                //     ->addFilter($clipFilter)
-                //     ->export()
-                //     ->toDisk('public')
-                //     ->inFormat(new \FFMpeg\Format\Video\X264)
-                //     ->save('clipped.mkv');
+                FFMpeg::open($path)
+                    ->addFilter($clipFilter)
+                    ->export()
+                    ->toDisk('public')
+                    ->inFormat(new FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))
+                    ->save('clipped.mkv');
                 
             }
 
