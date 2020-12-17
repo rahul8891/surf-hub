@@ -715,17 +715,54 @@ $(document).ready(function () {
 		}
 
    },100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+	
+ 
+	 $(document).on('click', 'li', function(){
+		 var value = $(this).text();
+		 var dataId = $(this).attr("data-id");
+		 $('#country_list').html("");
+		 $('.search-box').val(value);
+		 $('#local_beach_break_id').val(dataId);
+		 $('#country_list').html("");
+	 });
 
 
 
-    $(document).on('click', 'li', function(){
+	
+	$('.other_surfer').keyup(debounce(function(){
+		// the following function will be executed every half second	
+	
+		if($(this).val().length > 1){
+			$.ajax({
+				type: "GET",
+				url: "/getUsers",
+				data: {				
+					searchTerm: $(this).val(),
+					_token: csrf_token
+				},
+				dataType: "json",
+				success: function (jsonResponse) {
+				
+					$('#other_surfer_list').html(jsonResponse);
+				}
+			})
+		}else{
+			$('#user_id').val('');
+			$('#other_surfer_list').html("");
+		}
+
+   },100)); // Milliseconds in which the ajax call should be executed (100 = half second)
+
+
+		$(document).on('click','li', function(){
 		var value = $(this).text();
 		var dataId = $(this).attr("data-id");
-		$('#country_list').html("");
-		$('.search-box').val(value);
-		$('#local_beach_break_id').val(dataId);
-		$('#country_list').html("");
+		$('#other_surfer_list').html("");
+		$(this).parent(".search2").child('.other_surfer').val(value);
+		$(this).parent(".search2").child('.other_surfer').val(dataId);
+		$('#other_surfer_list').html("");
 	});
+
 
 
 	/**

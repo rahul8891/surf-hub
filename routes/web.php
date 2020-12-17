@@ -33,6 +33,7 @@ Route::get('/help-faq', [WelcomeFeedController::class, 'faq'])->name('faq');
 Route::get('/contact-us', [WelcomeFeedController::class, 'contact'])->name('contact');
 Route::get('/getBeachBreach', [UserController::class, 'getBeachBreach'])->name('getBeachBreach');
 Route::get('/getState', [DashboardController::class, 'getState'])->name('getState');
+Route::get('/getUsers', [UserController::class, 'getUsers'])->name('getUsers');
 
 /*********************************************************************************************
  *                              User Route

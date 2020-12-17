@@ -44,7 +44,7 @@
                     <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="user_id">By User<span class="required">*</span></label>
+                                <label for="user_id">User<span class="required">*</span></label>
                             </div>
                             <div class="col-md-8">
                                 <div class="selectWrap pos-rel">
@@ -212,48 +212,34 @@
                     </div>
             </div>
         </div>
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <label>Surfer<span class="required">*</span></label>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-8">
                         <div class="d-flex">
                             @foreach ($customArray['surfer'] as $key => $value)
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="surfer" value="{{$value}}"
-                                    id="{{$value}}" required />
+                                    id="{{$value}}" required/>
                                 <label for="{{$value}}" class="form-check-label text-primary">{{$value}}</label>
                             </div>
                             @endforeach
-
                         </div>  
                         @error('surfer')
                         <strong class="required">{{ $message }}</strong>
                         @enderror
                     </div>
                 </div>
-
-
-                <div class="col-md-6 col-sm-3" style="display:none" id="othersSurfer">
-                    <div class="d-flex float-right">
-
-                        <!-- <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
-                                            placeholder="Search User " class="form-control other_surfer_box"
-                                            id="other_surfer" required>
-
-                                        <input type="hidden" name="user_id" id="user_id" class="form-control">
-
-                                        <div class="auto-search search1" id="other_surfer_list"></div> -->
-
-                        <select class="form-control" name="other_surfer" id="other_surfer">
-                            <option value="">-- Select User --</option>
-                            <option value="0" data-imagesrc="{{ asset("/img/photo.png")}}">Sandeep</option>
-                            <option value="1" data-imagesrc="{{ asset("/img/video.png")}}">Raja</option>
-                            <option value="2" data-imagesrc="{{ asset("/img/photo.png")}}">Raman</option>
-                            <option value="3" data-imagesrc="{{ asset("/img/video.png")}}">Sanoj</option>
-                        </select>
-
+                <div class="col-md-8 col-sm-4 float-right" style="display:none" id="othersSurfer">
+                    
+                    <div class="selectWrap pos-rel">
+                        <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
+                            placeholder="@ Search other user" class="form-control other_surfer" required>
+                        <input type="hidden" value="{{ old('user_id')}}" name="user_id"
+                            id="user_id" class="form-control">
+                        <div class="auto-search search2" id="other_surfer_list"></div>
                     </div>
                 </div>
             </div>
@@ -264,10 +250,7 @@
     <div class="formWrap optionalFields">
         <h2 class="text-primary">Optional Info</h2>
         <div class="row">
-            <div class="col-md-3 align-self-end">
-                <img src="{{ asset("/img/img_4.jpg")}}" alt="" class="img-fluid">
-            </div>
-            <div class="col-md-6">
+            <div class="col-md-6 mx-auto">
                 <div class="row">
                     @foreach($customArray['optional'] as $key => $value)
                     <div class="col-md-4 pl-1 pr-1 col-6">
@@ -278,9 +261,6 @@
                     </div>
                     @endforeach
                 </div>
-            </div>
-            <div class="col-md-3 align-self-end">
-                <img src="{{ asset("/img/filterRightIcon.jpg")}}" alt="" class="img-fluid">
             </div>
         </div>
     </div>

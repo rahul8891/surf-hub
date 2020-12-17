@@ -6,7 +6,8 @@ $(document).ready(function () {
    * remove image preview on close (pip)
    */
 
-   // ddslick dropdown script
+  //  ddslick dropdown script
+   
   $('#other_surfer').ddslick({
     imagePosition:"right",
     background: "#f5f5f5",
