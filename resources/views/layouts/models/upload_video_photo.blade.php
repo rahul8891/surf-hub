@@ -184,12 +184,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="row">
-                                        <div class="col-md-2">
+                                        <div class="col-md-4">
                                             <label>Surfer<span class="mandatory">*</span></label>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-8">
                                             <div class="d-flex">
                                                 <div class="cstm-check pos-rel">
                                                     <input type="radio" name="surfer" value="Me" id="Me" required />
@@ -206,15 +206,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                        <div class="col-md-4 col-sm-8" style="display:none" id="othersSurfer">
+                                        <div class="col-md-8 col-sm-4 float-right" style="display:none" id="othersSurfer">
                                             <div class="selectWrap pos-rel">
-                                                <select class="form-control" name="other_surfer" id="other_surfer">
-                                                    <option value="">-- Select User --</option>
-                                                    <option value="0" data-imagesrc="{{ asset("/img/photo.png")}}">Sandeep</option>
-                                                    <option value="1" data-imagesrc="{{ asset("/img/video.png")}}">Raja</option>
-                                                    <option value="2" data-imagesrc="{{ asset("/img/photo.png")}}">Raman</option>
-                                                    <option value="3" data-imagesrc="{{ asset("/img/video.png")}}">Sanoj</option>
-                                                </select>
+                                                <div class="selectWrap pos-rel">
+                                                    <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
+                                                        placeholder="@ Search other user" class="form-control other_surfer" required>
+                                                    <input type="hidden" value="{{ old('user_id')}}" name="user_id"
+                                                        id="user_id" class="form-control user_id">
+                                                    <div class="auto-search search2" id="other_surfer_list"></div>
+                                                </div>
 
                                             </div>
                                         </div>

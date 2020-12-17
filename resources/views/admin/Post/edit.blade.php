@@ -237,12 +237,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-4">
                                     <label>Surfer<span class="required">*</span></label>
-                                </div>  
-                                <div class="col-md-3">
+                                </div>
+                                <div class="col-md-8">
                                     <div class="d-flex">
                                         @foreach ($customArray['surfer'] as $key => $value)
                                         <div class="form-check form-check-inline">
@@ -250,41 +250,23 @@
                                             <label for="" class="form-check-label text-primary">{{$value}}</label>
                                         </div>
                                         @endforeach
-                                    </div>
+                                    </div>  
                                     @error('surfer')
                                     <strong class="required">{{ $message }}</strong>
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6 col-sm-3" style="display:none" id="othersSurfer">
-                                <div class="d-flex float-right">
-
-                                        <!-- <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
-                                            placeholder="Search User " class="form-control other_surfer_box"
-                                            id="other_surfer" required>
-
-                                        <input type="hidden" name="user_id" id="user_id" class="form-control">
-
-                                        <div class="auto-search search1" id="other_surfer_list"></div> -->
-
-                                        <select class="form-control" name="other_surfer" id="other_surfer">
-                                            <option value="">-- Select User --</option>
-                                            <option value="0" data-imagesrc="{{ asset("/img/photo.png")}}">Sandeep</option>
-                                            <option value="1" data-imagesrc="{{ asset("/img/video.png")}}">Raja</option>
-                                            <option value="2" data-imagesrc="{{ asset("/img/photo.png")}}">Raman</option>
-                                            <option value="3" data-imagesrc="{{ asset("/img/video.png")}}">Sanoj</option>
-                                        </select>
-
-                                        
+                            <div class="col-md-8 col-sm-4 float-right" style="display:none" id="othersSurfer">
+                                
+                                <div class="selectWrap pos-rel">
+                                    <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
+                                        placeholder="@ Search other user" class="form-control other_surfer" required>
+                                    <input type="hidden" value="{{ old('user_id')}}" name="user_id"
+                                        id="user_id" class="form-control user_id">
+                                    <div class="auto-search search2" id="other_surfer_list"></div>
                                 </div>
                             </div>
-                            @error('surfer')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
                         </div>
-                    </div>
                 </div>
 
                 <hr/>

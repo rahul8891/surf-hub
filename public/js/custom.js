@@ -717,7 +717,7 @@ $(document).ready(function () {
    },100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 	
  
-	 $(document).on('click', 'li', function(){
+	 $(document).on('click', '.search1 li', function(){
 		 var value = $(this).text();
 		 var dataId = $(this).attr("data-id");
 		 $('#country_list').html("");
@@ -754,13 +754,14 @@ $(document).ready(function () {
    },100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
 
-		$(document).on('click','li', function(){
+        $(document).on('click','.search2 li', function(){
 		var value = $(this).text();
 		var dataId = $(this).attr("data-id");
 		$('#other_surfer_list').html("");
-		$(this).parent(".search2").child('.other_surfer').val(value);
-		$(this).parent(".search2").child('.other_surfer').val(dataId);
+		$('.other_surfer').val(value);
+		$('#user_id').val(dataId);
 		$('#other_surfer_list').html("");
+		$('input[name="surfer"]').val(value);
 	});
 
 

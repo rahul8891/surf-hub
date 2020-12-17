@@ -238,7 +238,7 @@
                         <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
                             placeholder="@ Search other user" class="form-control other_surfer" required>
                         <input type="hidden" value="{{ old('user_id')}}" name="user_id"
-                            id="user_id" class="form-control">
+                            id="user_id" class="form-control user_id">
                         <div class="auto-search search2" id="other_surfer_list"></div>
                     </div>
                 </div>

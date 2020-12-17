@@ -224,7 +224,7 @@ class UserController extends Controller
             $returnObject = '';
             if(!$resultData->isEmpty()){
                 
-                $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1; width:90%">';
+                $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1; width:100%">';
                 foreach ($resultData as $key => $value) {
                     $val = $value->user_name;     
                     $img = $value->profile_photo_path;   
