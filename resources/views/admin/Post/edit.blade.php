@@ -42,7 +42,7 @@
                     <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="user_id">By User<span class="required">*</span></label>
+                                <label for="user_id">User<span class="required">*</span></label>
                             </div>
                             <div class="col-md-8">
                                 <div class="selectWrap pos-rel">
@@ -246,7 +246,8 @@
                                     <div class="d-flex">
                                         @foreach ($customArray['surfer'] as $key => $value)
                                         <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="surfer" {{old('surfer',$posts->surfer) == $value ? 'checked' : ''}}  value="{{$value}}" id="{{$value}}" required />
+                                        <input class="form-check-input" type="radio" name="surfer" {{old('surfer',$posts->surfer) == $value ? 'checked' : ''}}
+                                          value="{{$value}}" id="{{$value}}" required />
                                             <label for="" class="form-check-label text-primary">{{$value}}</label>
                                         </div>
                                         @endforeach
@@ -259,7 +260,7 @@
                             <div class="col-md-8 col-sm-4 float-right" style="display:none" id="othersSurfer">
                                 
                                 <div class="selectWrap pos-rel">
-                                    <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
+                                    <input type="text" value="{{ old('other_surfer',$posts->surfer)}}" name="other_surfer"
                                         placeholder="@ Search other user" class="form-control other_surfer" required>
                                         <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id"
                                         id="surfer_id" class="form-control surfer_id">
@@ -273,10 +274,7 @@
                 <div class="formWrap optionalFields">
                     <h2 class="text-primary">Optional Info</h2>
                     <div class="row">
-                        <div class="col-md-3 align-self-end">
-                            <img src="{{ asset("/img/img_4.jpg")}}" alt="" class="img-fluid">
-                        </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 mx-auto">
                             <div class="row">
                                 @foreach($customArray['optional'] as $key => $value)
                                 <div class="col-md-4 pl-1 pr-1 col-6">
@@ -289,9 +287,6 @@
                                 </div>
                                 @endforeach
                             </div>
-                        </div>
-                        <div class="col-md-3 align-self-end">
-                            <img src="{{ asset("/img/filterRightIcon.jpg")}}" alt="" class="img-fluid">
                         </div>
                     </div>
                 </div>

@@ -14,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-use Storage;
+use File;
 use DB;
 use FFMpeg;
 use FFMpeg\Format\Video\X264;
@@ -85,25 +85,25 @@ class PostService {
     }
     
     /**
-     * upload video into directory
+     * upload video into directory and trim
      * @param  object  $video
      * @return object array
      */
     public function getPostVideo($video){
 
-        $destinationPath = 'public/fullVideos/';
+        $destinationPath = 'public/fullVideos';
         $timeDate = strtotime(Carbon::now()->toDateTimeString());
         $filenameWithExt= $video->getClientOriginalName();
         $extension = $video->getClientOriginalExtension();
         $fileNameToStore = $timeDate.'_'.$filenameWithExt;
         $path = $video->storeAs($destinationPath,$fileNameToStore);
-        // dd($path);
+
 
         $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(0);
         $end   = \FFMpeg\Coordinate\TimeCode::fromSeconds(60);
         $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start,$end);
                 
-
+                //**********trimming video********************/
                 FFMpeg::open($path)
                     ->addFilter($clipFilter)
                     ->export()
@@ -111,6 +111,12 @@ class PostService {
                     ->inFormat(new FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))
                     ->save($fileNameToStore);
 
+                    
+        //****removing untrimmed file******//
+        $oldFullVideo = storage_path().'/app/public/fullVideos/'.$fileNameToStore;
+        if(File::exists($oldFullVideo)){
+            unlink($oldFullVideo);
+        }
 
         return $fileNameToStore;
     }
@@ -256,4 +262,5 @@ class PostService {
             return $message;
         }
     }
+
 }

@@ -9,9 +9,9 @@ $(document).ready(function () {
 		}
 	});*/
 	/************** country and phone field onload register ****************************/
-	
-	$('.country option:selected').prop("selected", false);
-	$('.phone').val('');
+
+	// $('.country option:selected').prop("selected", false);
+	// $('.phone').val('');
 
 	/************** spiner code ****************************/
     var stopSpiner = "{{ $spiner}}";
@@ -24,9 +24,9 @@ $(document).ready(function () {
 		spinner.show();
 	});
 
-	$("#next1").click(function (event) {
-		spinner.show();
-	});
+	// $("#next1").click(function (event) {
+	// 	spinner.show();
+	// });
 
 	/**
 	hide spiner
@@ -767,6 +767,19 @@ $(document).ready(function () {
 		$('#other_surfer_list').html("");
 		$('input[name="surfer"]').val(value);
 	});
+
+	
+		var other=$('input[name="other_surfer"]').val();
+		if(other=='Me'){
+			$('input[name="other_surfer"]').val('');
+		}
+		else if(other=='Unknown'){
+			$('input[name="other_surfer"]').val('');
+		}
+		else {
+			$("#othersSurfer").show();
+			$('input[name="surfer"][value="Others"]').prop("checked", true);
+		}
 
 
 
