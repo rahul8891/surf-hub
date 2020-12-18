@@ -223,13 +223,12 @@ class UserController extends Controller
            
             $returnObject = '';
             if(!$resultData->isEmpty()){
-                
                 $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1; width:100%">';
                 foreach ($resultData as $key => $value) {
                     $val = $value->user_name;     
-                    $img = $value->profile_photo_path;   
+                    $img = (!empty($value->profile_photo_path)) ? "/storage/$value->profile_photo_path" : '/img/img_4.jpg';
                     $returnObject .= '<li class="list-group-item" data-id="'.$value->id.'">
-                    <img src="https://picsum.photos/200" width="30px" style="float:right; border-radius: 50%; border: 2px solid #4c8df5;" class="img-fluid">'.$val.'
+                    <img src="'.$img.'" width="30px" style="float:right; border-radius: 50%; border: 1px solid #4c8df5;" class="img-fluid">'.$val.'
                     </li>';
                 }
                 $returnObject .='</ul>';     
