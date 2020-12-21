@@ -58,8 +58,23 @@ class PostService {
      */
     public function getPostsListing(){
 
-        $postArray =  $this->posts->whereNull('deleted_at')                               
-                                  ->orderBy('created_at','ASC')
+        $postArray =  $this->posts->whereNull('posts.deleted_at')                           
+                                  ->orderBy('posts.created_at','ASC')
+                                  ->paginate(10);
+        return $postArray;
+    }
+
+    /**
+     * [getMyHubListing] we are getiing all login user post
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getMyHubListing(){
+
+        $postArray =  $this->posts->whereNull('posts.deleted_at')   
+                                  ->where('user_id',[Auth::user()->id])                        
+                                  ->orderBy('posts.created_at','ASC')
                                   ->paginate(10);
         return $postArray;
     }
@@ -228,6 +243,76 @@ class PostService {
             if($posts->save()){
                 $message = 'Post has been updated successfully.!';
                     return $message;
+                
+            }
+        }
+        catch (\Exception $e){     
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+
+    /**
+     * [deletePost] we are updating the post Details from user section 
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function deletePost($id,&$message=''){
+        
+        $posts=$this->posts->find($id);
+        try{
+            $posts->is_deleted = '1';
+            $posts->deleted_at = Carbon::now();
+            $posts->updated_at = Carbon::now();
+            
+            if($posts->save()){
+                $message = 'Post has been deleted successfully.!';
+                    return $message;                
+            }
+        }
+        catch (\Exception $e){     
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+
+    /**
+     * [updatePost] we are updating the post Details from admin section 
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function saveToMyHub($id,&$message=''){
+        
+        $postSave=$this->posts->find($id);
+        try{
+            $this->posts['post_type'] = $postSave->post_type;
+            $this->posts['user_id'] = Auth::user()->id;
+            $this->posts['post_text'] = $postSave->post_text;
+            $this->posts['country_id'] =$postSave->country_id;
+            $this->posts['surf_start_date'] = $postSave->surf_date;
+            $this->posts['wave_size'] = $postSave->wave_size;
+            $this->posts['board_type'] = $postSave->board_type;
+            $this->posts['state_id'] = $postSave->state_id;
+            $this->posts['local_beach_break_id'] = $postSave->local_beach_break_id;
+            $this->posts['surfer'] = $postSave->surfer;
+            $this->posts['optional_info'] = $postSave->optional_info;
+            $this->posts['parent_id'] = $postSave->user_id;
+            $this->posts['created_at'] = Carbon::now();
+            $this->posts['updated_at'] = Carbon::now();            
+            
+            if($this->posts->save()){
+                $this->upload->post_id = $this->posts->id;
+                $this->upload->image = $postSave->upload->image ? $postSave->upload->image : null;
+                $this->upload->video = $postSave->upload->video ? $postSave->upload->video : null;
+                $this->upload->save();
+                
+                if($this->upload->save()){
+                    $message = 'Post has been saved successfully.!';
+                    return $message;
+                }
                 
             }
         }

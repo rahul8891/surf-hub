@@ -9,6 +9,7 @@ use App\Models\Country;
 use App\Models\BeachBreak;
 use App\Models\State;
 use App\Models\Upload;
+use App\Models\Comment;
 
 class Post extends Model
 {
@@ -72,6 +73,15 @@ class Post extends Model
     public function states()
     {
         return $this->belongsTo(State::class, 'state_id', 'id');
+    }
+
+    /**
+     * Relationship between posts and comments model    
+     * @return object
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'post_id', 'id');
     }
     
 

@@ -7,29 +7,40 @@
             <div class="col-lg-9">
                 <!--include comman upload video and photo layout -->
                 @include('layouts/user/upload_layout')
+                    @if (!empty($postsList))
+                    @foreach ($postsList as $key => $posts)
+                    @if($posts->parent_id == 0)
                 <div class="post">
+                    @if($key==0)
                     <h2>My Feed</h2>
+                    @endif
                     <div class="inner">
                         <div class="post-head">
                             <div class="userDetail">
+                                @if($posts->user->profile_photo_path)
+                                <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
+                                @else
                                 <div class="profileImg no-image">
-                                    EN
+                                    {{ucwords(substr($posts->user->user_profiles->first_name,0,1))}}{{ucwords(substr($posts->user->user_profiles->last_name,0,1))}}
                                 </div>
+                                @endif
                                 <div class="pl-3">
-                                    <h4>Upender</h4>
-                                    <span>8 hrs</span>
+                                    <h4>{{$posts->user->user_profiles->first_name}} {{$posts->user->user_profiles->last_name}}</h4>
+                                    <span>{{ postedDateTime($posts->created_at) }}</span>
                                 </div>
                             </div>
                             <a href="#" class="followBtn">
                                 <img src="img/user.png" alt=""> FOLLOW
                             </a>
                         </div>
-                        <p class="description">Your post message text goes in this area, you can edit it easily
-                            according to your
-                            needs,
-                            enjoy.</p>
+                        <p class="description">{{$posts->post_text}}</p>
                         <div class="imgRatingWrap">
-                            <img src="img/post1.jpg" alt="" class="img-fluid">
+                            @if(!empty($posts->upload->image))
+                            <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
+                            @endif
+                            @if(!empty($posts->upload->video))
+                            <br><video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
+                            @endif
                             <div class="ratingShareWrap">
                                 <div class="rating ">
                                     <ul class="pl-0 mb-0 d-flex align-items-center">
@@ -78,7 +89,7 @@
                                             <span class="divider"></span>
                                         </li>
                                         <li>
-                                            <a href="#"><img src="img/full_screen.png" alt=""></a>
+                                            <a onclick="openFullscreen({{$posts->id}});"><img src="img/full_screen.png" alt=""></a>
                                         </li>
                                         <li>
                                             <span class="divider"></span>
@@ -94,67 +105,68 @@
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                09-10-2020
+                                                                {{date('d-m-Y',strtotime($posts->created_at))}}
                                                             </div>
                                                             <div class="col-5">
                                                                 Surf
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                text
+                                                                {{$posts->surfer}}
                                                             </div>
                                                             <div class="col-5">
                                                                 Username
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                Upender
+                                                                {{$posts->user->user_profiles->first_name}} {{$posts->user->user_profiles->last_name}}
                                                             </div>
                                                             <div class="col-5">
                                                                 Beach/Break
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                text
+                                                                {{$posts->beach_breaks->beach_name}}/{{$posts->beach_breaks->break_name}}
                                                             </div>
                                                             <div class="col-5">
                                                                 Country
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                India
+                                                                {{$posts->countries->name}}
                                                             </div>
                                                             <div class="col-5">
                                                                 State
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                Uttarakhand
+                                                                {{$posts->states->name}}
                                                             </div>
                                                             <div class="col-5">
                                                                 Wave Size
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                22
+                                                                {{$posts->wave_size}}
                                                             </div>
                                                             <div class="col-5">
                                                                 Board Type
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                text
+                                                                {{$posts->board_type}}
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </a>
                                         </li>
+                                        @if(Auth::user()->id != $posts->user_id)
                                         <li>
                                             <span class="divider"></span>
                                         </li>
                                         <li class="pos-rel">
-                                            <a href="javascript:void(0)" class="">SAVE
+                                            <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}" class="">SAVE
                                                 <div class="saveInfo">
                                                     <div class="pos-rel">
                                                         <img src="img/tooltipArrowDown.png" alt="">
@@ -194,637 +206,58 @@
                                                 </div>
                                             </a>
                                         </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>
-                            <div class="WriteComment">
-                                <textarea placeholder="Write a comment.."></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="post">
-                    <div class="inner">
-                        <div class="post-head">
-                            <div class="userDetail">
-                                <div class="profileImg">
-                                    <img src="img/johan.png" class="img-fluid" alt="">
-                                </div>
-                                <div class="pl-3">
-                                    <h4>Johan</h4>
-                                    <span>10 hrs</span>
-                                </div>
-                            </div>
-                            <a href="#" class="followBtn">
-                                <img src="img/user.png" alt=""> FOLLOW
-                            </a>
-                        </div>
-                        <p class="description">Your post message text goes in this area, you can edit it easily
-                            according to your needs,
-                            enjoy.</p>
-                        <div class="imgRatingWrap">
-                            <div class="videoWrap pos-rel">
-                                <img src="img/post2.jpg" alt="" class="img-fluid ">
-                                <a href="#" class="playBtn"><img alt="" src="img/playBtn.png"></a>
-                            </div>
-                            <div class="ratingShareWrap">
-                                <div class="rating ">
-                                    <ul class="pl-0 mb-0 d-flex align-items-center">
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star-grey.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <span>4.0(90)</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <ul class="pl-0 mb-0 d-flex">
-                                        <li>
-                                            <a href="#"><img src="img/instagram.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="img/facebook.png" alt="">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="img/maps-and-flags.png" alt="">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/full_screen.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li class="pos-rel">
-                                            <a href="javascript:void(0)">INFO
-                                                <div class="saveInfo infoHover">
-                                                    <div class="pos-rel">
-                                                        <img src="img/tooltipArrowDown.png" alt="">
-                                                        <div class="row">
-                                                            <div class="col-5">
-                                                                Date
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                09-10-2020
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Surf
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                text
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Username
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                Upender
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Beach/Break
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                text
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Country
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                India
-                                                            </div>
-                                                            <div class="col-5">
-                                                                State
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                Uttarakhand
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Wave Size
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                22
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Board Type
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                text
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li class="pos-rel">
-                                            <a href="javascript:void(0)" class="">SAVE
-                                                <div class="saveInfo">
-                                                    <div class="pos-rel">
-                                                        <img src="img/tooltipArrowDown.png" alt="">
-                                                        Save this video to your personal MyHub library
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)">REPORT
-                                                <div class="saveInfo infoHover reasonHover">
-                                                    <div class="pos-rel">
-                                                        <img src="img/tooltipArrowDown.png" alt="">
-                                                        <div class="text-center reportContentTxt">Report Content</div>
-                                                        <div class="reason">
-                                                            <input type="checkbox" id="Report5" name="Report1"
-                                                                value="Report">
-                                                            <label for="Report5">Report Info as incorrect</label>
-                                                        </div>
-                                                        <div class="reason">
-                                                            <input type="checkbox" id="Report6" name="Report6"
-                                                                value="Report">
-                                                            <label for="Report6">Report content as inappropriate</label>
-                                                        </div>
-                                                        <div class="reason">
-                                                            <input type="checkbox" id="Report7" name="Report7"
-                                                                value="Report">
-                                                            <label for="Report7">Report tolls</label>
-                                                        </div>
-                                                        <div>
-                                                            Additional Comments:
-                                                            <textarea></textarea>
-                                                        </div>
-                                                        <button>REPORT</button>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                            @if (count($posts->comments) > 0)
                             <div class="viewAllComments">
-                                <p class="viewCommentTxt">View all comments</p>
+                                @if (count($posts->comments) > 1)
+                                <div class="modal" id="myModal">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                      <!-- Modal Header -->
+                                      <div class="modal-header">
+                                        <h4 class="modal-title">Comments</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                      </div>
+
+                                      <!-- Modal body -->
+                                      <div class="modal-body">
+                                        @foreach ($posts->comments as $comments)
+                                        <p class="comment ">
+                                            <span>{{$comments->user->user_profiles->first_name}} {{$comments->user->user_profiles->first_name}} :</span> {{$comments->value}}
+                                        </p>
+                                        @endforeach
+                                      </div>
+
+                                      <!-- Modal footer -->
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                </div>
+                                <p class="viewCommentTxt" data-toggle="modal" data-target="#myModal">View all comments</p>
+                                @endif
+                                @foreach ($posts->comments as $comments)
                                 <p class="comment ">
-                                    <span>Upender Rawat :</span> Your post message text goes in this area, you
-                                    can edit it easily..
+                                    <span>{{$comments->user->user_profiles->first_name}} {{$comments->user->user_profiles->first_name}} :</span> {{$comments->value}}
                                 </p>
+                                @endforeach
                             </div>
+                            @endif
                             <div class="WriteComment">
                                 <textarea placeholder="Write a comment.."></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="post">
-                    <div class="inner">
-                        <div class="post-head">
-                            <div class="userDetail">
-                                <div class="profileImg">
-                                    <img src="img/Tom.png" class="img-fluid">
-                                </div>
-                                <div class="pl-3">
-                                    <h4>Tom</h4>
-                                    <span>18 hrs</span>
-                                </div>
-                            </div>
-                            <a href="#" class="followBtn">
-                                <img src="img/user.png" alt=""> FOLLOW
-                            </a>
-                        </div>
-                        <p class="description">Your post message text goes in this area, you can edit it easily
-                            according to your needs,
-                            enjoy.</p>
-                        <div class="imgRatingWrap">
-                            <img src="img/post3.jpg" alt="" class="img-fluid ">
-                            <div class="ratingShareWrap">
-                                <div class="rating ">
-                                    <ul class="pl-0 mb-0 d-flex align-items-center">
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star-grey.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <span>4.0(90)</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <ul class="pl-0 mb-0 d-flex">
-                                        <li>
-                                            <a href="#"><img src="img/instagram.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="img/facebook.png" alt="">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="img/maps-and-flags.png" alt="">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/full_screen.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li class="pos-rel">
-                                            <a href="javascript:void(0)">INFO
-                                                <div class="saveInfo infoHover">
-                                                    <div class="pos-rel">
-                                                        <img src="img/tooltipArrowDown.png" alt="">
-                                                        <div class="row">
-                                                            <div class="col-5">
-                                                                Date
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                09-10-2020
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Surf
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                text
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Username
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                Upender
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Beach/Break
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                text
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Country
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                India
-                                                            </div>
-                                                            <div class="col-5">
-                                                                State
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                Uttarakhand
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Wave Size
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                22
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Board Type
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                text
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li class="pos-rel">
-                                            <a href="javascript:void(0)" class="">SAVE
-                                                <div class="saveInfo">
-                                                    <div class="pos-rel">
-                                                        <img src="img/tooltipArrowDown.png" alt="">
-                                                        Save this video to your personal MyHub library
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)">REPORT
-                                                <div class="saveInfo infoHover reasonHover">
-                                                    <div class="pos-rel">
-                                                        <img src="img/tooltipArrowDown.png" alt="">
-                                                        <div class="text-center reportContentTxt">Report Content</div>
-                                                        <div class="reason">
-                                                            <input type="checkbox" id="Report1" name="Report11"
-                                                                value="Report">
-                                                            <label for="Report11">Report Info as incorrect</label>
-                                                        </div>
-                                                        <div class="reason">
-                                                            <input type="checkbox" id="Report31" name="Report3"
-                                                                value="Report">
-                                                            <label for="Report31">Report content as
-                                                                inappropriate</label>
-                                                        </div>
-                                                        <div class="reason">
-                                                            <input type="checkbox" id="Report2" name="Report21"
-                                                                value="Report">
-                                                            <label for="Report21">Report tolls</label>
-                                                        </div>
-                                                        <div>
-                                                            Additional Comments:
-                                                            <textarea></textarea>
-                                                        </div>
-                                                        <button>REPORT</button>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="viewAllComments">
-                                <p class="viewCommentTxt">View all comments</p>
-                                <p class="comment ">
-                                    <span>Upender Rawat :</span> Your post message text goes in this area, you
-                                    can edit it easily..
-                                </p>
-                                <p class="comment ">
-                                    <span>Johan :</span> Your post message text goes in this area, you can edit
-                                    it easily..
-                                </p>
-                            </div>
-                            <div class="WriteComment">
-                                <textarea placeholder="Write a comment.."></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="post">
-                    <div class="inner">
-                        <div class="post-head">
-                            <div class="userDetail">
-                                <div class="profileImg">
-                                    <img src="img/Tom.png" class="img-fluid">
-                                </div>
-                                <div class="pl-3">
-                                    <h4>Tom</h4>
-                                    <span>18 hrs</span>
-                                </div>
-                            </div>
-                            <a href="#" class="followBtn">
-                                <img src="img/user.png" alt=""> FOLLOW
-                            </a>
-                        </div>
-                        <p class="description">Your post message text goes in this area, you can edit it easily
-                            according to your needs,
-                            enjoy.</p>
-                        <div class="imgRatingWrap">
-                            <img src="img/post4.jpg" alt="" class="img-fluid ">
-                            <div class="ratingShareWrap">
-                                <div class="rating ">
-                                    <ul class="pl-0 mb-0 d-flex align-items-center">
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star-grey.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <span>4.0(90)</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <ul class="pl-0 mb-0 d-flex">
-                                        <li>
-                                            <a href="#"><img src="img/instagram.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="img/facebook.png" alt="">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="img/maps-and-flags.png" alt="">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/full_screen.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li class="pos-rel">
-                                            <a href="javascript:void(0)">INFO
-                                                <div class="saveInfo infoHover">
-                                                    <div class="pos-rel">
-                                                        <img src="img/tooltipArrowDown.png" alt="">
-                                                        <div class="row">
-                                                            <div class="col-5">
-                                                                Date
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                09-10-2020
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Surf
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                text
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Username
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                Upender
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Beach/Break
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                text
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Country
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                India
-                                                            </div>
-                                                            <div class="col-5">
-                                                                State
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                Uttarakhand
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Wave Size
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                22
-                                                            </div>
-                                                            <div class="col-5">
-                                                                Board Type
-                                                            </div>
-                                                            <div class="col-2 text-center">:</div>
-                                                            <div class="col-5">
-                                                                text
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li class="pos-rel">
-                                            <a href="javascript:void(0)" class="">SAVE
-                                                <div class="saveInfo">
-                                                    <div class="pos-rel">
-                                                        <img src="img/tooltipArrowDown.png" alt="">
-                                                        Save this video to your personal MyHub library
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)">REPORT
-                                                <div class="saveInfo infoHover reasonHover">
-                                                    <div class="pos-rel">
-                                                        <img src="img/tooltipArrowDown.png" alt="">
-                                                        <div class="text-center reportContentTxt">Report Content</div>
-                                                        <div class="reason">
-                                                            <input type="checkbox" id="Report01" name="Report1"
-                                                                value="Report">
-                                                            <label for="Report01">Report Info as incorrect</label>
-                                                        </div>
-                                                        <div class="reason">
-                                                            <input type="checkbox" id="Report03" name="Report3"
-                                                                value="Report">
-                                                            <label for="Report03">Report content as
-                                                                inappropriate</label>
-                                                        </div>
-                                                        <div class="reason">
-                                                            <input type="checkbox" id="Report02" name="Report2"
-                                                                value="Report">
-                                                            <label for="Report02">Report tolls</label>
-                                                        </div>
-                                                        <div>
-                                                            Additional Comments:
-                                                            <textarea></textarea>
-                                                        </div>
-                                                        <button>REPORT</button>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="viewAllComments">
-                                <p class="viewCommentTxt">View all comments</p>
-                                <p class="comment ">
-                                    <span>Upender Rawat :</span> Your post message text goes in this area, you
-                                    can edit it easily..
-                                </p>
-                                <p class="comment ">
-                                    <span>Johan :</span> Your post message text goes in this area, you can edit
-                                    it easily..
-                                </p>
-                            </div>
-                            <div class="WriteComment">
-                                <textarea placeholder="Write a comment.."></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    @endif
+                    @endforeach
+                    @endif
             </div>
             <div class="col-lg-3">
                 <div class="adWrap">

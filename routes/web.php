@@ -57,6 +57,11 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
    // Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
     
     Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');   
+
+    Route::post('/delete', [UserPostController::class, 'destroy'])->name('deleteUserPost');
+    Route::get('/delete/{id}', [UserPostController::class, 'destroy'])->name('deleteUserPost');
+
+    Route::get('/saveToMyHub/{id}', [UserPostController::class, 'saveToMyHub'])->name('saveToMyHub');
    
     
 });
