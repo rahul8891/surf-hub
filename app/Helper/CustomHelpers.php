@@ -1,4 +1,5 @@
 <?php
+use Carbon\Carbon;
 
 /**
  *  active child menu
@@ -48,4 +49,12 @@ function userActiveMenu($uri = '') {
         $active = 'active';
     }       
     return $active;
+}
+
+/**
+ * posted date time ago
+ */
+function postedDateTime($dateTime = null) {       
+    $created = Carbon::createFromTimeStamp(strtotime($dateTime))->diffForHumans();
+    return $created;
 }

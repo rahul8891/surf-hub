@@ -11,8 +11,29 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\sendMail;
 
+use App\Services\MasterService;
+use App\Services\UserService;
+use App\Services\PostService;
+
+use Carbon\Carbon;
+
 class WelcomeFeedController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  AdminUserService  $users
+     * @return void
+     */
+    public function __construct(MasterService $masterService,UserService $userService,PostService $postService)
+    {
+            $this->masterService = $masterService;
+            $this->customArray = config('customarray');
+            $this->userService = $userService;
+            $this->postService = $postService;
+    }
+
     /**
      * The home/welcome page for users
      *
@@ -35,7 +56,8 @@ class WelcomeFeedController extends Controller
         }
         
         // non logged in user redirect to home page
-        return view('welcome');
+        $postsList = $this->postService->getPostsListing();
+        return view('welcome',compact('postsList'));
     }
 
     public function privacy(){

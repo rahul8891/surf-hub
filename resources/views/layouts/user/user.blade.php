@@ -29,6 +29,28 @@
         <!-- <div id="loader"></div> -->
         @include('layouts/user/user_header')
         @include('layouts/user/user_banner')
+        @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" id="msg" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            @foreach ($errors->all() as $error)
+            <li>{{ ucfirst($error) }}</li>
+            @endforeach
+        </div>
+        @endif
+        @if ($message = Session::get('error'))
+        <div class="alert alert-danger alert-dismissible" role="alert" id="msg">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            {{ ucfirst($message) }}
+        </div>
+        @elseif ($message = Session::get('success'))
+        <div class="alert alert-success alert-dismissible" role="alert" id="msg">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            {{ ucfirst($message) }}
+        </div>
+        @endif
         @yield('content')
     </main>
     <footer>
@@ -95,6 +117,16 @@
 
 
     });
+    function openFullscreen(id) {
+        var elem = document.getElementById("myImage"+id);
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+          elem.msRequestFullscreen();
+        }
+    }
     </script>
 </body>
 

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Gate;
 
 use App\Services\MasterService;
 use App\Services\UserService;
+use App\Services\PostService;
 
 use Redirect;
 class DashboardController extends Controller
@@ -20,11 +21,12 @@ class DashboardController extends Controller
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct(MasterService $masterService,UserService $userService)
+    public function __construct(MasterService $masterService,UserService $userService,PostService $postService)
     {
             $this->masterService = $masterService;
             $this->customArray = config('customarray');
             $this->userService = $userService;
+            $this->postService = $postService;
     }
     
     public function dashboard(){
@@ -32,8 +34,12 @@ class DashboardController extends Controller
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;      
+        $postsList = $this->postService->getPostsListing();
+        //dd($postsList[0]->beach_breaks);
+        //dd($postsList[3]->upload);
+        //dd($postsList[3]->comments[0]->user->user_profiles->last_name);
         // $usersList = $this->userService->getAllUserForCreatePost();
-        return view('dashboard',compact('customArray','countries','states','currentUserCountryId'));
+        return view('dashboard',compact('customArray','countries','states','currentUserCountryId','postsList'));
     }
 
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\MasterService;
+use App\Services\UserService;
+use App\Services\PostService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
@@ -12,10 +14,12 @@ use Illuminate\Support\Facades\Gate;
 class MyHubController extends Controller
 {
 
-    public function __construct(MasterService $masterService)
+    public function __construct(MasterService $masterService,UserService $userService,PostService $postService)
     {
             $this->masterService = $masterService;
             $this->customArray = config('customarray');
+            $this->userService = $userService;
+            $this->postService = $postService;
     }
 
     
@@ -29,8 +33,10 @@ class MyHubController extends Controller
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
-        $customArray = $this->customArray;      
-        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId'));       
+        $customArray = $this->customArray; 
+        $myHubs = $this->postService->getMyHubListing();
+        //dd($myHubs[1]->upload);     
+        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs'));       
     }
 
     /**
