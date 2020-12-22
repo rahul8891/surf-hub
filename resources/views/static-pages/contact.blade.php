@@ -1,22 +1,5 @@
 @extends('layouts.static_pages')
 @section('content')
-<div class="feedHubNav ">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9">
-                <ul class="mb-0 pl-0">
-                    <li class="hover-no">
-                        <a href="javascript:void(0);">{{ __('Contact Us') }}</a>
-                    </li>
-                    <li class="backBtn">
-                        <a href="javascript:void(0);"><img src="img/backBtnIcon.png" alt="" class="pr-2">Back</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-    </div>
-</div>
 
 @if ($message = Session::get('error'))
 <div class="alert alert-danger alert-dismissible" role="alert" id="msg">

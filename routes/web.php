@@ -57,7 +57,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
    // Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
     
-    Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');   
+    Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');
+    Route::get('/user/myhub/filter', [MyHubController::class, 'filter'])->name('filterIndex');
 
     Route::post('/delete', [UserPostController::class, 'destroy'])->name('deleteUserPost');
     Route::get('/delete/{id}', [UserPostController::class, 'destroy'])->name('deleteUserPost');
@@ -69,7 +70,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
 
 /**
- * Comman Route
+ * Common Route
  */
 
 Route::group(['middleware' => ['auth']], function () {

@@ -8,8 +8,8 @@
             <li class="{{ userActiveMenu('myhub') }}">
                 <a href="{{ route('myhub') }}">My Hub</a>
             </li>
-            <li>
-                <a href="#">Search</a>
+            <li class="{{ userActiveMenu('#') }}">
+                <a href="{{ url('#')}}">Search</a>
             </li>
         </ul>
     </div>

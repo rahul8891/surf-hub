@@ -73,13 +73,117 @@ class PostService {
      * @param  
      * @return dataArray
      */
-    public function getMyHubListing(){
+    public function getMyHubListing($el,$order){
 
-        $postArray =  $this->posts->whereNull('posts.deleted_at')   
-                                  ->where('user_id',[Auth::user()->id])                        
-                                  ->orderBy('posts.created_at','ASC')
-                                  ->paginate(10);
-        return $postArray;
+        if($el=='beach'){
+          $sortedBeach= $this->posts->join('beach_breaks', 'posts.local_beach_break_id', '=', 'beach_breaks.id')
+          ->orderBy('beach_breaks.beach_name', $order)->where('user_id',[Auth::user()->id])->select('posts.*')->paginate(10);
+            return $sortedBeach;
+        }
+
+        else if($el=='star'){
+            //////// code for rating, make above method replica
+        }
+
+        else{
+            $postArray =  $this->posts->with('beach_breaks')
+            ->whereNull('posts.deleted_at')   
+            ->where('user_id',[Auth::user()->id])
+            ->orderBy($el,$order)
+            ->paginate(10);
+
+            return $postArray;
+        }
+    }
+
+    
+    /**
+     * [getFilteredList] we are getiing all login user post with filter
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getFilteredList($params) {
+
+        $postArray =  $this->posts->whereNull('posts.deleted_at')->where('user_id',[Auth::user()->id]);
+
+        if(isset($params['Me'])){
+            if ($params['Me']=='on') {
+                $postArray->where('surfer','Me')->get();
+            }
+        }
+        if(isset($params['Unknown'])){
+            if ($params['Unknown']=='on') {
+                $postArray->where('surfer','Unknown')->get();
+            }
+        }
+        if(isset($params['Others'])){
+            if ($params['Others']=='on') {
+                $postArray->whereNotIn('surfer',['Me','Unknown'])->get();
+            }
+        }
+        if(isset($params['FLOATER'])){
+            if ($params['FLOATER']=='on') {
+                $postArray->where('optional_info','FLOATER')->get();
+            }
+        }
+        if(isset($params['AIR'])){
+            if ($params['AIR']=='on') {
+                $postArray->where('optional_info','AIR')->get();
+            }
+        }
+        if(isset($params['360'])){
+            if ($params['360']=='on') {
+                $postArray->where('optional_info','360')->get();
+            }
+        }
+        if(isset($params['DROP_IN'])){
+            if ($params['DROP_IN']=='on') {
+                $postArray->where('optional_info','Me')->get();
+            }
+        }
+        if(isset($params['BARREL_ROLL'])){
+            if ($params['BARREL_ROLL']=='on') {
+                $postArray->where('optional_info','BARREL_ROLL')->get();
+            }
+        }
+        if(isset($params['WIPEOUT'])){
+            if ($params['WIPEOUT']=='on') {
+                $postArray->where('optional_info','WIPEOUT')->get();
+            }
+        }
+        if(isset($params['CUTBACK'])){
+            if ($params['CUTBACK']=='on') {
+                $postArray->where('optional_info','CUTBACK')->get();
+            }
+        }
+        if(isset($params['SNAP'])){
+            if ($params['SNAP']=='on') {
+                $postArray->where('optional_info','SNAP')->get();
+            }
+        }
+
+
+        if ($params['surf_date']) {
+           $postArray->where('surf_start_date',$params['surf_date'])->get();
+        }
+        if ($params['country_id']) {
+           $postArray->where('country_id',$params['country_id'])->get();
+        }
+        if ($params['local_beach_break_id']) {
+           $postArray->where('local_beach_break_id',$params['local_beach_break_id'])->get();
+        }
+        if ($params['board_type']) {
+           $postArray->where('board_type',$params['board_type'])->get();
+        }
+        if ($params['wave_size']) {
+           $postArray->where('wave_size',$params['wave_size'])->get();
+        }
+        if ($params['state_id']) {
+           $postArray->where('state_id',$params['state_id'])->get();
+        }
+     
+        return $postArray->orderBy('posts.id','DESC')->paginate(10);
     }
 
 
