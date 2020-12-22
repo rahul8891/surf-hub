@@ -61,6 +61,11 @@ class MyHubController extends Controller
         else{
             return $this->postService->getMyHubListing('posts.created_at','DESC');
         }
+
+        $customArray = $this->customArray; 
+        $myHubs = $this->postService->getMyHubListing();   
+        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs'));       
+
     }
 
     /**

@@ -23,7 +23,7 @@
                                 </div>
                                 @endif
                                 <div class="pl-3">
-                                    <h4>{{$myHub->user->user_profiles->first_name}} {{$myHub->user->user_profiles->last_name}}</h4>
+                                    <h4>{{ucfirst($myHub->user->user_profiles->first_name)}} {{ucfirst($myHub->user->user_profiles->last_name)}}</h4>
                                     <span>{{ postedDateTime($myHub->created_at) }}</span>
                                 </div>
                             </div>
@@ -121,7 +121,7 @@
                                                                     </div>
                                                                     <div class="col-2 text-center">:</div>
                                                                     <div class="col-5">
-                                                                        {{$myHub->user->user_profiles->first_name}} {{$myHub->user->user_profiles->last_name}}
+                                                                        {{ucfirst($myHub->user->user_profiles->first_name)}} {{ucfirst($myHub->user->user_profiles->last_name)}}
                                                                     </div>
                                                                     <div class="col-5">
                                                                         Beach/Break
@@ -149,7 +149,11 @@
                                                                     </div>
                                                                     <div class="col-2 text-center">:</div>
                                                                     <div class="col-5">
-                                                                        {{$myHub->wave_size}}
+                                                                        @foreach($customArray['wave_size'] as $key => $value)
+                                                                            @if($key == $myHub->wave_size)
+                                                                                {{$value}}
+                                                                            @endif
+                                                                        @endforeach
                                                                     </div>
                                                                     <div class="col-5">
                                                                         Board Type
@@ -172,8 +176,77 @@
                                                 <li>
                                                     <span class="divider"></span>
                                                 </li>
-                                                <li>
-                                                    <a href="#">TAG</a>
+                                                <li class="pos-rel">
+                                                    @if (count($myHub->tags) >= 1)
+                                                    <div class="modal" id="postTag{{$myHub->id}}">
+                                                      <div class="modal-dialog">
+                                                        <div class="modal-content">
+
+                                                          <!-- Modal Header -->
+                                                          <div class="modal-header">
+                                                            <h4 class="modal-title">Tagged Users</h4>
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                          </div>
+
+                                                          <!-- Modal body -->
+                                                          <div class="modal-body">
+                                                            @foreach ($myHub->tags as $tags)
+                                                            <p class="comment ">
+                                                                <div class="post-head">
+                                                                <div class="userDetail">
+                                                                @if($tags->user->profile_photo_path)
+                                                                <img src="{{ asset('storage/'.$tags->user->profile_photo_path) }}" class="profileImg" alt="">
+                                                                @else
+                                                                <div class="profileImg no-image">
+                                                                    {{ucwords(substr($tags->user->user_profiles->first_name,0,1))}}{{ucwords(substr($tags->user->user_profiles->last_name,0,1))}}
+                                                                </div>
+                                                                @endif
+                                                                <span>{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
+                                                                </div>
+                                                            </div>
+                                                            </p>
+                                                            @endforeach
+                                                          </div>
+
+                                                          <!-- Modal footer -->
+                                                          <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                          </div>
+
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    @endif
+                                                    <!-- <a data-toggle="modal" data-target="#postTag{{$myHub->id}}">TAG -->
+                                                    <a href="javascript:void(0)">TAG
+                                                        @if(count($myHub->tags) >= 1)
+                                                        <div class="saveInfo infoHover">
+                                                            <div class="pos-rel">
+                                                                <img src="img/tooltipArrowDown.png" alt="">
+                                                                <div class="row">
+                                                                    @foreach ($myHub->tags as $tags)
+                                                                    <div class="post-head">
+                                                                        <div class="userDetail">
+                                                                            <div class="col-5">
+                                                                                @if($tags->user->profile_photo_path)
+                                                                                <img src="{{ asset('storage/'.$tags->user->profile_photo_path) }}" class="taggedUserImg" alt="">
+                                                                                @else
+                                                                                <div class="taggedUserImg no-image">
+                                                                                    {{ucwords(substr($tags->user->user_profiles->first_name,0,1))}}{{ucwords(substr($tags->user->user_profiles->last_name,0,1))}}
+                                                                                </div>
+                                                                                @endif
+                                                                            </div>
+                                                                            <div class="col-5">
+                                                                                <span class="userName">{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        @endif
+                                                    </a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -181,17 +254,48 @@
                                     @if (count($myHub->comments) > 0)
                                     <div class="viewAllComments">
                                         @if (count($myHub->comments) > 5)
-                                        <p class="viewCommentTxt">View all comments</p>
+                                        <div class="modal" id="commentPopup">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                              <!-- Modal Header -->
+                                              <div class="modal-header">
+                                                <h4 class="modal-title">Comments</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                              </div>
+
+                                              <!-- Modal body -->
+                                              <div class="modal-body">
+                                                @foreach ($myHub->comments as $comments)
+                                                <p class="comment ">
+                                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                                </p>
+                                                @endforeach
+                                              </div>
+
+                                              <!-- Modal footer -->
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                              </div>
+
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <p class="viewCommentTxt" data-toggle="modal" data-target="#commentPopup">View all comments</p>
                                         @endif
                                         @foreach ($myHub->comments as $comments)
                                         <p class="comment ">
-                                            <span>{{$comments->user->user_profiles->first_name}} {{$comments->user->user_profiles->first_name}} :</span> {{$comments->value}}
+                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
                                         </p>
                                         @endforeach
                                     </div>
                                     @endif
                                     <div class="WriteComment">
-                                        <textarea placeholder="Write a comment.."></textarea>
+                                        <form role="form" method="POST" name="comment{{$myHub->id}}" action="{{ route('comment') }}">
+                                        <input type="hidden" name="post_id" value="{{$myHub->id}}">
+                                        <textarea placeholder="Write a comment.." name="comment"></textarea>
+                                        <!-- <button type="submit" id="next1" class="btn btn-info float-right" style="position: absolute;">Submit</button> -->
+                                        </form>
                                     </div>
                                 </div>
                         </div>

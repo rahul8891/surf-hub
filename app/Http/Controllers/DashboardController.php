@@ -35,7 +35,8 @@ class DashboardController extends Controller
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;      
         $postsList = $this->postService->getPostsListing();
-        //dd($postsList[0]->beach_breaks);
+        $usersList = $this->masterService->getAllUsers();
+        //dd($postsList[4]->tags[0]->user->user_profiles->last_name);
         //dd($postsList[3]->upload);
         //dd($postsList[3]->comments[0]->user->user_profiles->last_name);
         // $usersList = $this->userService->getAllUserForCreatePost();
