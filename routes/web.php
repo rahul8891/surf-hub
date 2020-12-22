@@ -5,9 +5,11 @@ use App\Http\Controllers\admin\AdminDashboard;
 use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\WelcomeFeedController;
 use App\Http\Controllers\admin\AdminPageController;
-use App\Http\Controllers\user\PostController;
+use App\Http\Controllers\user\UserPostController;
+use App\Http\Controllers\admin\PostController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\user\UserController;
+use App\Http\Controllers\user\MyHubController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +32,8 @@ Route::get('/terms-and-conditions', [WelcomeFeedController::class, 'terms'])->na
 Route::get('/help-faq', [WelcomeFeedController::class, 'faq'])->name('faq');
 Route::get('/contact-us', [WelcomeFeedController::class, 'contact'])->name('contact');
 Route::get('/getBeachBreach', [UserController::class, 'getBeachBreach'])->name('getBeachBreach');
+Route::get('/getState', [DashboardController::class, 'getState'])->name('getState');
+Route::get('/getUsers', [UserController::class, 'getUsers'])->name('getUsers');
 
 /*********************************************************************************************
  *                              User Route
@@ -43,7 +47,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');  
      
-    Route::post('/post/store', [PostController::class, 'store'])->name('storeVedioImagePost');
+    Route::post('/create-post', [UserPostController::class, 'store'])->name('storeVideoImagePost');
 
     Route::get('/user/change-password', [UserController::class, 'showChangePassword'])->name('showPassword');
 
@@ -51,12 +55,31 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
     Route::post('/post/profile', [UserController::class, 'storeProfile'])->name('storeProfile');
 
-    Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');    
+   // Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
+    
+    Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');
+    Route::get('/user/myhub/filter', [MyHubController::class, 'filter'])->name('filterIndex');
+
+    Route::post('/delete', [UserPostController::class, 'destroy'])->name('deleteUserPost');
+    Route::get('/delete/{id}', [UserPostController::class, 'destroy'])->name('deleteUserPost');
+
+    Route::get('/saveToMyHub/{id}', [UserPostController::class, 'saveToMyHub'])->name('saveToMyHub');
+
+    Route::post('/comment', [UserPostController::class, 'comment'])->name('comment');
    
     
 });
 
 
+/**
+ * Common Route
+ */
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::post('/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
+});
+
+Route::get('/contact-us/submit',[WelcomeFeedController::class, 'query_submit'])->name('getQuery');
 
 
 /*********************************************************************************************
@@ -82,4 +105,15 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::get('/pages/index', [AdminPageController::class, 'index'])->name('adminPageIndex');
     Route::get('/pages/edit/{id}',  [AdminPageController::class, 'edit'])->name('adminPageEdit');
     Route::post('/pages/update/{id}', [AdminPageController::class, 'update'])->name('adminPageUpdate');
+
+    // post Route
+    Route::get('/post/index', [PostController::class, 'index'])->name('postIndex');
+    Route::get('/post/delete', [PostController::class, 'destroy'])->name('deletePost');
+    Route::get('/post/show/{id}', [PostController::class, 'show'])->name('postDetail');
+    Route::get('/post/create', [PostController::class, 'create'])->name('postCreate');
+    Route::post('/post/store', [PostController::class, 'store'])->name('postStore');
+    Route::get('/post/edit/{id}', [PostController::class, 'edit'])->name('postEdit');
+    Route::post('/post/update/{id}', [PostController::class, 'update'])->name('postUpdate');
+    Route::get('/post/delete/{id}', [PostController::class, 'destroy'])->name('deletePost');
+
 });

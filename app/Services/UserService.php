@@ -97,8 +97,13 @@ class UserService {
      */
     public function updateUserProfileImage($dataRequest,&$message=''){
         
-        $users = $this->users->find(Auth::user()->id);
-
+        $id = Auth::user()->id;
+        
+        if(isset($dataRequest['userId']) && !empty($dataRequest['userId'])){
+            $id = $dataRequest['userId'];
+        }
+        $users = $this->users->find($id);
+        
         if($users){                   
             $userOldProfileImageName = $users->profile_photo_name; 
             $path = public_path() . "/storage/images/";
@@ -116,13 +121,14 @@ class UserService {
                 $message = $this->checkUserType['common']['DEFAULT_ERROR'];                
                 return false;                
             }else{
-                $users->id = Auth::user()->id;
+                $users->id = $id;
                 $users->profile_photo_path = $image_path_forDB;
                 $users->profile_photo_name = $image_name;
                 // update user auth image 
-                Auth::user()->profile_photo_path = $image_path_forDB;
-                Auth::user()->profile_photo_path = $image_name;
-                
+                if(empty($dataRequest['userId'])){
+                    Auth::user()->profile_photo_path = $image_path_forDB;
+                    Auth::user()->profile_photo_path = $image_name;
+                }
                 if($users->save()){
                     // delete old image file 
                     File::delete(public_path("/storage/images/".$userOldProfileImageName));
@@ -134,5 +140,15 @@ class UserService {
             $message = $this->checkUserType['common']['NO_RECORDS'];                
             return false;
         }
+    }
+
+    public function getAllUserForCreatePost(){
+        $users = $this->users->select('id','user_name')->where('email_verified_at','!=',null)   
+                    ->where('status',$this->checkUserType['status']['ACTIVE'])   
+                    ->where('is_deleted','0')
+                    ->where('user_type',$this->checkUserType['userType']['USER']) 
+                    ->whereNotIn('id',[Auth::user()->id])
+                    ->orderBy('id','asc')->get();
+        return $users;
     }
 }

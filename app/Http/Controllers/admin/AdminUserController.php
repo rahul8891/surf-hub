@@ -59,6 +59,7 @@ class AdminUserController extends Controller
     public function index()
     {
         $users = $this->users->getUsersListing();
+        // dd($users[0]->user_profiles->first_name);
         $spiner = ($users) ? true : false;
         return view('admin/admin_user.index', compact('users','spiner'));     
     }
@@ -87,18 +88,20 @@ class AdminUserController extends Controller
         try{
             $data = $request->all();
             $rules = array(
+                'profile_photo_name' => ['nullable','image','mimes:jpeg,jpg,png'],
+                'user_name' => ['required', 'string', 'max:255','unique:users','alpha_dash'],
                 'first_name' => ['required', 'string'],
                 'last_name' => ['nullable','string'],
-                'name' => ['required', 'string', 'max:255','unique:users','alpha_dash'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'phone' => ['nullable','numeric','digits:10'],
-                'account_type'=>['required','string'],
-                'language' => ['required','string'],
+                'phone' => ['required', 'numeric'],
                 'country_id' => ['required','numeric'],
-                'profile_photo_name' => ['nullable','image','mimes:jpeg,jpg,png'],
-                'terms' => ['required'],
+                'language' => ['required','string'],
+                'local_beach_break_id' => ['required', 'string'],
+                'account_type'=>['required','string'],
                 'password' => $this->passwordRules(),
-            );       
+                'terms' => ['required'],
+            );
+            
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
@@ -106,13 +109,12 @@ class AdminUserController extends Controller
             } else {
                 $result = $this->users->saveAdminUser($data,$message);
                 if($result){  
-                    return Redirect::to('admin/users/create')->withSuccess($message);
+                    return Redirect::to('admin/users/index')->withSuccess($message);
                 }else{
-                    return Redirect::to('admin/users/create')->withErrors($message);
+                    return Redirect::to('admin/users/index')->withErrors($message);
                 }
             }
         }catch (\Exception $e){ 
-            
             throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         }
         
@@ -167,35 +169,34 @@ class AdminUserController extends Controller
      */
     public function update(Request $request, $id)
     {           
-        // $id = Crypt::decrypt($id);
-        // return redirect()->route('adminUserEdit', ['id' => $id])->withSuccess('welcoem');       
         try{
             $data = $request->all();
             $rules = array(
+                'profile_photo_name' => ['nullable','image','mimes:jpeg,jpg,png'],            
                 'first_name' => ['required', 'string'],
                 'last_name' => ['nullable','string'],
-                'name' => ['required', 'string','alpha_dash'],
+                'user_name' => ['required', 'string','alpha_dash'],
                 'email' => ['required', 'string', 'email', 'max:255'],
-                'phone' => ['nullable','numeric','digits:10'],
+                'phone' => ['required', 'string'],
                 'account_type'=>['required','string'],
                 'language' => ['required','string'],
+                'local_beach_break' => ['required', 'string'],
                 'country_id' => ['required','numeric'],
-                'profile_photo_name' => ['nullable','image','mimes:jpeg,jpg,png'],               
             );       
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-                $result = $this->users->updateAdminUser($data,$message);
+                $result = $this->users->updateAdminUser($data,Crypt::decrypt($id),$message);
                 if($result){
-                    return redirect()->route('adminUserEdit', ['id' => $id])->withSuccess($message);  
+                    return redirect()->route('adminUserListIndex', ['id' => $id])->withSuccess($message);  
                 }else{
                     return redirect()->route('adminUserEdit', ['id' => $id])->withErrors($message); 
                 }
             }
         }catch (\Exception $e){
-            throw ValidationException::withMessages([$e->getMessage()]);
+            return redirect()->route('adminUserEdit', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage()); 
         }
     }
 

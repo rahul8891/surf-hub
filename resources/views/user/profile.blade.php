@@ -209,6 +209,9 @@
                                             </option>
                                             @endforeach
                                         </select>
+                                        <!-- <span class="arrow">
+                                            <img src="{{ asset("/img/select-downArrow.png")}}" alt="">
+                                        </span> -->
                                         @error('language')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror

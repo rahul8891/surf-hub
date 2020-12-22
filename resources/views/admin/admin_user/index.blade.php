@@ -2,6 +2,9 @@
 @section('content')
 <div class="card">
     <div id="error"></div>
+    <div class="card-header bg-primary">
+        <h3 class="card-title">Users List</h3>
+    </div>
     <div class="card-header">
         <a href="{{ route('adminUserCreate')}}" class="btn btn-primary pull-left">Add New User</a>
     </div>

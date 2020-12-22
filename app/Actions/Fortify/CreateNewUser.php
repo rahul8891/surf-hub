@@ -35,7 +35,7 @@ class CreateNewUser implements CreatesNewUsers
             'last_name' => ['required','min:3','string'],
             'user_name' => ['required', 'string','min:5', 'max:25', 'unique:users', 'alpha_dash'],
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
-            'phone' => ['required', 'numeric'],
+            'phone' => ['required', 'string'],
             'language' => ['required', 'string'],
             'country_id' => ['required', 'numeric'],
             'account_type' => ['required', 'string'],
@@ -75,7 +75,6 @@ class CreateNewUser implements CreatesNewUsers
                 $this->deleteUplodedProfileImage($getImageArray['profile_photo_name']);
                 $this->deletUserRecord($user->id);
             }
-            dd($e);
             throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         }
     }
@@ -108,8 +107,8 @@ class CreateNewUser implements CreatesNewUsers
                 $returnArray['profile_photo_name'] = $image_name;
                 $returnArray['profile_photo_path'] = $image_path_forDB;
             }           
-            return $returnArray;
         }
+        return $returnArray;
         // Form Data without croping
        /* $returnArray = [];
         $path = public_path() . "/storage/images/";

@@ -1,6 +1,9 @@
 <?php
+use Carbon\Carbon;
 
-
+/**
+ *  active child menu
+ */
 function activeMenu($uri = '') {       
     $name = Route::currentRouteName();    
     $active = '';       
@@ -10,7 +13,9 @@ function activeMenu($uri = '') {
     return $active;
 }
 
-
+/**
+ * Active opened menu
+ */
 function menuOpen($routeFor = '') {     
     $selectedMenu = Request::segment(2);
     $menuOpen = '';
@@ -20,7 +25,9 @@ function menuOpen($routeFor = '') {
     return $menuOpen;   
 }
 
-
+/**
+ * Active main menu drop down
+ */
 function activeMainMenu($routeFor = '') {  
     $selectedMenu = Request::segment(2);
     $activeMainMenu = '';    
@@ -31,3 +38,23 @@ function activeMainMenu($routeFor = '') {
     return $activeMainMenu;
 }
 
+
+/**
+ * Active User Feed menu
+ */
+function userActiveMenu($uri = '') {       
+    $name = Route::currentRouteName();    
+    $active = '';       
+    if($name === $uri ){
+        $active = 'active';
+    }       
+    return $active;
+}
+
+/**
+ * posted date time ago
+ */
+function postedDateTime($dateTime = null) {       
+    $created = Carbon::createFromTimeStamp(strtotime($dateTime))->diffForHumans();
+    return $created;
+}

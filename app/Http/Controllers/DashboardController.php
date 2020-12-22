@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 use App\Services\MasterService;
+use App\Services\UserService;
+use App\Services\PostService;
 
 use Redirect;
 class DashboardController extends Controller
@@ -19,10 +21,12 @@ class DashboardController extends Controller
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct(MasterService $masterService)
+    public function __construct(MasterService $masterService,UserService $userService,PostService $postService)
     {
             $this->masterService = $masterService;
             $this->customArray = config('customarray');
+            $this->userService = $userService;
+            $this->postService = $postService;
     }
     
     public function dashboard(){
@@ -30,9 +34,27 @@ class DashboardController extends Controller
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;      
-        return view('dashboard',compact('customArray','countries','states','currentUserCountryId'));
+        $postsList = $this->postService->getPostsListing();
+        $usersList = $this->masterService->getAllUsers();
+        //dd($postsList[4]->tags[0]->user->user_profiles->last_name);
+        //dd($postsList[3]->upload);
+        //dd($postsList[3]->comments[0]->user->user_profiles->last_name);
+        // $usersList = $this->userService->getAllUserForCreatePost();
+        return view('dashboard',compact('customArray','countries','states','currentUserCountryId','postsList'));
     }
 
+
+    public function getState(Request $request){
+        $data = $request->all();   
+
+        $getStateArray = $this->masterService->getStateByCountryId($data['country_id']);       
+        if($getStateArray){
+            echo json_encode(array('status'=>'success', 'message'=>'true','data'=>$getStateArray));
+        }else{
+            echo json_encode(array('status'=>'failure', 'message'=>'false','data'=>null));
+        }
+        die;
+    }
     /**
      * Display a listing of the resource.
      *

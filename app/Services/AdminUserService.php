@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Models\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -34,6 +35,9 @@ class AdminUserService {
         $this->currentUserDetails = Auth::user();
         // User model object
         $this->users = new User();
+
+        // upload model object
+        $this->upload = new Upload();
 
         $this->userProfile = new UserProfile();
 
@@ -84,22 +88,22 @@ class AdminUserService {
         return $userArray;
     }
 
+
     /**
      * [saveAdminUser] we are storing the User Details from admin section 
      * @param  requestInput get all the requested input data
-     * @param  message return message based on the confition 
+     * @param  message return message based on the condition 
      * @return dataArray with message
      */
     public function saveAdminUser($input,&$message=''){
-        
         try{
             $getImageArray = $this->uploadImage($input);
-            $this->users->name = trim(Str::lower($input['name']));
+            $this->users->user_name = trim(Str::lower($input['user_name']));
             $this->users->email = trim(Str::lower($input['email']));
             $this->users->password = Hash::make($input['password']);
             $this->users->account_type = $input['account_type'];
-            $this->users->profile_photo_name = ($getImageArray['status']) ? $getImageArray['profile_photo_name'] :'';
-            $this->users->profile_photo_path = ($getImageArray['status']) ? $getImageArray['profile_photo_path'] :'';
+            $this->users->profile_photo_name = (isset($getImageArray['profile_photo_name']) && !empty($getImageArray['profile_photo_name'])) ? $getImageArray['profile_photo_name'] :'';
+            $this->users->profile_photo_path = (isset($getImageArray['profile_photo_path']) && !empty($getImageArray['profile_photo_path'])) ? $getImageArray['profile_photo_path'] :'';
             $this->users->created_at = Carbon::now();
             $this->users->updated_at = Carbon::now();
             if($this->users->save()){
@@ -110,6 +114,7 @@ class AdminUserService {
                 $this->userProfile->instagram = $input['instagram'];
                 $this->userProfile->language = $input['language'];
                 $this->userProfile->country_id = $input['country_id'];
+                $this->userProfile->local_beach_break_id = $input['local_beach_break_id'];
                 $this->userProfile->phone = trim(Str::lower($input['phone']));
                 $this->userProfile->created_at = Carbon::now();
                 $this->userProfile->updated_at = Carbon::now();
@@ -123,7 +128,9 @@ class AdminUserService {
                 $this->deleteUplodedProfileImage($getImageArray['profile_photo_name']);
                 $this->deletUserRecord($this->users->id);
             }         
-            throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message='"'.$e->getMessage().'"';
+            return false;
         }
     }
 
@@ -134,7 +141,7 @@ class AdminUserService {
      */
     public function uploadImage($input){
         $returnArray = [];
-        $path = public_path()."/storage/images/";
+        $path = public_path()."/storage/uploads/";
         $timeDate = strtotime(Carbon::now()->toDateTimeString()); 
         $returnArray['status'] = false;
         if(isset($input['profile_photo_name']) && !empty($input['profile_photo_name'])){
@@ -143,7 +150,7 @@ class AdminUserService {
             $filename = pathinfo($imageNameWithExt, PATHINFO_FILENAME); 
             $ext = $requestImageName->getClientOriginalExtension();
             $image_name = $timeDate.'_'.rand().'.'.$ext;
-            $image_path = 'images/'.$image_name;
+            $image_path = 'uploads/'.$image_name;
             if(!$requestImageName->move($path,$image_name)){
                 throw ValidationException::withMessages([trans('auth.profile_image')]);
             }else{
@@ -154,6 +161,7 @@ class AdminUserService {
            return $returnArray;
         }
     }
+    
 
      /**
      * Delete profile image if data not stor in db
@@ -197,39 +205,73 @@ class AdminUserService {
     }
 
 
-    public function updateAdminUser($input,&$message=''){
-       /* try{
-            $getImageArray = $this->uploadImage($input);
-            $this->users->name = trim(Str::lower($input['name']));
-            $this->users->email = trim(Str::lower($input['email']));
-            $this->users->password = Hash::make($input['password']);
-            $this->users->account_type = $input['account_type'];
-            $this->users->profile_photo_name = ($getImageArray['status']) ? $getImageArray['profile_photo_name'] :'';
-            $this->users->profile_photo_path = ($getImageArray['status']) ? $getImageArray['profile_photo_path'] :'';
-            $this->users->created_at = Carbon::now();
-            $this->users->updated_at = Carbon::now();
-            if($this->users->save()){
-                $this->userProfile->user_id = $this->users->id;
-                $this->userProfile->first_name =  $input['first_name'];
-                $this->userProfile->last_name = $input['last_name'];
-                $this->userProfile->facebook = $input['facebook'];
-                $this->userProfile->instagram = $input['instagram'];
-                $this->userProfile->language = $input['language'];
-                $this->userProfile->country_id = $input['country_id'];
-                $this->userProfile->phone = trim(Str::lower($input['phone']));
-                $this->userProfile->created_at = Carbon::now();
-                $this->userProfile->updated_at = Carbon::now();
-                if($this->userProfile->save()){
-                    $message = 'User account has been created successfully.!';
-                    return true;
+    public function updateAdminUser($dataRequest,$id,&$message=''){
+      
+        $users = $this->users->find($id); 
+        $userProfiles =  new UserProfile();
+        try {
+            if($users){
+                $user_profiles = $userProfiles->where('user_id',$id)->first(); 
+                if($users->status !== $this->checkUserType['status']['ACTIVE'] || $users->is_deleted == '1'){
+                    $message = $this->checkUserType['common']['BLOCKED_USER'];
+                    return false;
+                }        
+                $users->account_type = $dataRequest['account_type'];
+                $user_profiles->first_name = $dataRequest['first_name'];
+                $user_profiles->last_name = $dataRequest['last_name'];
+                $user_profiles->phone = $dataRequest['phone'];
+                $user_profiles->country_id = $dataRequest['country_id'];
+                $user_profiles->language = $dataRequest['language'];
+                $user_profiles->facebook = $dataRequest['facebook'];
+                $user_profiles->instagram = $dataRequest['instagram'];
+                $user_profiles->local_beach_break_id = $dataRequest['local_beach_break_id'];
+                if($users->save() && $user_profiles->save()){
+                    $message = $this->checkUserType['success']['UPDATE_SUCCESS'];;
+                    return true;  
                 }
-            }
-        }catch (\Exception $e){            
-            if($this->users->id){
-                $this->deleteUplodedProfileImage($getImageArray['profile_photo_name']);
-                $this->deletUserRecord($this->users->id);
-            }         
-            throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
-        }*/
+            }else{
+                $message = $this->checkUserType['common']['NO_RECORDS'];                
+                return false;
+            }    
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+            return false;
+        }  
+        // try{
+        //     $getImageArray = $this->uploadImage($input);
+        //     $this->users->name = trim(Str::lower($input['name']));
+        //     $this->users->email = trim(Str::lower($input['email']));
+        //     $this->users->password = Hash::make($input['password']);
+        //     $this->users->account_type = $input['account_type'];
+        //     $this->users->profile_photo_name = ($getImageArray['status']) ? $getImageArray['profile_photo_name'] :'';
+        //     $this->users->profile_photo_path = ($getImageArray['status']) ? $getImageArray['profile_photo_path'] :'';
+        //     $this->users->created_at = Carbon::now();
+        //     $this->users->updated_at = Carbon::now();
+        //     if($this->users->save()){
+        //         $this->userProfile->user_id = $this->users->id;
+        //         $this->userProfile->first_name =  $input['first_name'];
+        //         $this->userProfile->last_name = $input['last_name'];
+        //         $this->userProfile->facebook = $input['facebook'];
+        //         $this->userProfile->instagram = $input['instagram'];
+        //         $this->userProfile->language = $input['language'];
+        //         $this->userProfile->country_id = $input['country_id'];
+        //         $this->userProfile->phone = trim(Str::lower($input['phone']));
+        //         $this->userProfile->created_at = Carbon::now();
+        //         $this->userProfile->updated_at = Carbon::now();
+        //         if($this->userProfile->save()){
+        //             $message = 'User account has been created successfully.!';
+        //             return true;
+        //         }
+        //     }
+        // }catch (\Exception $e){            
+        //     if($this->users->id){
+        //         $this->deleteUplodedProfileImage($getImageArray['profile_photo_name']);
+        //         $this->deletUserRecord($this->users->id);
+        //     }         
+        //     throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+        // }
     }
+
+
+    
 }

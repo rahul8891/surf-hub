@@ -26,6 +26,12 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/loader.css")}}">
+    <link rel="stylesheet" href="{{ asset("/css/croppie.css") }}" />
+    <link href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
+    
+    
+    <!-- script -->
+    
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -93,6 +99,9 @@
     <!-- REQUIRED SCRIPTS -->
     <!-- jQuery -->
     <script src="{{ asset("/AdminLTE/plugins/jquery/jquery.min.js")}}"></script>
+
+    <!-- ddslick -->
+    <script type="text/javascript" src="https://cdn.rawgit.com/prashantchaudhary/ddslick/master/jquery.ddslick.min.js" ></script>
     <!-- Bootstrap -->
     <script src="{{ asset("/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
     <!-- overlayScrollbars -->
@@ -108,11 +117,14 @@
     <script src="{{ asset("/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")}}"></script>
     <!-- Ekko Lightbox -->
     <script src="{{ asset("/AdminLTE/plugins/ekko-lightbox/ekko-lightbox.min.js")}}"></script>
-    <!-- <script src="{{ asset("/js/custom.js")}}"></script> -->
     <script src="{{ asset("/AdminLTE/plugins/bs-custom-file-input/bs-custom-file-input.min.js")}}"></script>
     <!-- Summernote -->
     <script src="{{ asset("/AdminLTE/plugins/summernote/summernote-bs4.min.js")}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
     <script src="{{ asset("/js/admin_custom.js")}}"></script>
+    <script src="{{ asset("/js/croppie.js")}}"></script>
+    <script src="{{ asset("/js/custom.js")}}"></script>
+    <script src="{{ asset("/js/post.js")}}"></script>
     <script>
     $(document).ready(function() {
 

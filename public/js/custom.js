@@ -8,6 +8,10 @@ $(document).ready(function () {
 			spinner.show();
 		}
 	});*/
+	/************** country and phone field onload register ****************************/
+
+	// $('.country option:selected').prop("selected", false);
+	// $('.phone').val('');
 
 	/************** spiner code ****************************/
     var stopSpiner = "{{ $spiner}}";
@@ -19,6 +23,10 @@ $(document).ready(function () {
 	$("#next").click(function (event) {
 		spinner.show();
 	});
+
+	// $("#next1").click(function (event) {
+	// 	spinner.show();
+	// });
 
 	/**
 	hide spiner
@@ -39,6 +47,9 @@ $(document).ready(function () {
 			// remove phone code to phone input
 		}
 	});
+
+
+
 
 	/**************************************************************************************
 	 *                     set image preview after selection and crop befor update
@@ -168,6 +179,8 @@ $(document).ready(function () {
 			type: 'canvas',
 			size: 'viewport'
 		}).then(function (response) {
+			var id = $("#user-id").data("userid");//$(this).data("userid");
+			console.log(id);
             $('#imagebase64').val(response);
 			$("#category-img-tag").attr("src", response);
 			$("#category-img-tag").attr("width", "auto");
@@ -175,9 +188,10 @@ $(document).ready(function () {
 			spinner.show();
 			$.ajax({
 				type: "POST",
-				url: "updateProfile",
+				url: "/updateProfile",
 				data: {				
 					image: response,
+					userId:id,
 					_token: csrf_token
 				},
 				dataType: "json",
@@ -260,7 +274,7 @@ $(document).ready(function () {
 			},
 
 			last_name: {
-				required: true,
+				required: false,
 				minlength: 3,
 				noSpace: true
 			},
@@ -279,11 +293,11 @@ $(document).ready(function () {
 			},
 
 			phone: {
-				// noSpace: true,
+				noSpace: true,
 				required: true,
 				minlength: 10,
 				maxlength: 15,
-				// spaceNotAllow: true,
+				spaceNotAllow: true,
 				numericOnly: true
 			},
 
@@ -682,7 +696,9 @@ $(document).ready(function () {
 	
 	$('.search-box').keyup(debounce(function(){
 		// the following function will be executed every half second	
-		if($(this).val().length > 2){		
+	
+		if($(this).val().length > 2){
+		
 			$.ajax({
 				type: "GET",
 				url: "/getBeachBreach",
@@ -692,7 +708,7 @@ $(document).ready(function () {
 				},
 				dataType: "json",
 				success: function (jsonResponse) {
-								
+				
 					$('#country_list').html(jsonResponse);
 				}
 			})
@@ -703,18 +719,108 @@ $(document).ready(function () {
 		}
 
    },100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+	
+ 
+	 $(document).on('click', '.search1 li', function(){
+		 var value = $(this).text();
+		 var dataId = $(this).attr("data-id");
+		 $('#country_list').html("");
+		 $('.search-box').val(value);
+		 $('#local_beach_break_id').val(dataId);
+		 $('#country_list').html("");
+	 });
 
 
 
-    $(document).on('click', 'li', function(){
+	
+	$('.other_surfer').keyup(debounce(function(){
+		// the following function will be executed every half second	
+	
+		if($(this).val().length > 1){
+			$.ajax({
+				type: "GET",
+				url: "/getUsers",
+				data: {				
+					searchTerm: $(this).val(),
+					_token: csrf_token
+				},
+				dataType: "json",
+				success: function (jsonResponse) {
+				
+					$('#other_surfer_list').html(jsonResponse);
+				}
+			})
+		}else{
+			$('#surfer_id').val('');
+			$('#other_surfer_list').html("");
+		}
+
+   },100)); // Milliseconds in which the ajax call should be executed (100 = half second)
+
+
+        $(document).on('click','.search2 li', function(){
 		var value = $(this).text();
 		var dataId = $(this).attr("data-id");
-		$('.search-box').val(value);
-		$('#local_beach_break_id').val(dataId);
-		$('#country_list').html("");
+		$('#other_surfer_list').html("");
+		$('.other_surfer').val(value);
+		$('#surfer_id').val(dataId);
+		$('#other_surfer_list').html("");
+		$('input[name="surfer"]').val(value);
 	});
 
+	
+		var other=$('input[name="other_surfer"]').val();
+		if(other=='Me'){
+			$('input[name="other_surfer"]').val('');
+		}
+		else if(other=='Unknown'){
+			$('input[name="other_surfer"]').val('');
+		}
+		else {
+			$("#othersSurfer").show();
+			$('input[name="surfer"][value="Others"]').prop("checked", true);
+		}
+
+
+
+	/**
+	 * State Baded on the selection on country
+	 */
+
+	$(document).on('change', '#country_id', function (e) {    
+        var currentcountryValue = $(this).val();
+        if (currentcountryValue != 0) {
+           $.ajax({
+              type: "GET",
+              url:'/getState',
+              data: {
+				 country_id: currentcountryValue,
+                 _token: csrf_token
+              },
+              dataType: "json",
+              success: function (jsonResponse) {
+                 //console.log(jsonResponse);
+                 if (jsonResponse.status == 'success') {
+                    $("#state_id").empty();
+                    var myJsonData = jsonResponse.data;
+                    $("#state_id").append('<option value="">--Select--</option>');
+                    $.each(myJsonData, function (key, value) {
+                       $("#state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                 } else {
+                    $("#state_id").empty();
+                 }
+              }
+           });
+        } else {
+           $("#state_id").empty();          
+        }
+	 });
+	 
+
+	
 });
+
 //To select country name
 function selectCountry(val) {
 	$("#search-box").val(val);

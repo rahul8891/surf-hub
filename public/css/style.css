@@ -977,6 +977,7 @@ header .dropdown-toggle::after {
 
 .uploadModal .selectWrap span {
     right: 10px;
+    top: 16px;
 }
 
 .uploadModal .modal-body {
@@ -1033,8 +1034,8 @@ header .dropdown-toggle::after {
 
 .uploadModal .formWrap label {
     font-size: 15px;
-    /* line-height: 44px; */
-    color: #333333;
+    /* line-height: 44px; 
+    color: #333333;*/
     font-weight: 400;
     margin-bottom: 15px;
 }
@@ -1877,12 +1878,44 @@ form .error {
 }
 
 .search1 {
-    width: max-content !important;
     position: absolute !important;
 }
 .auto-search ul li {
     background-color: #eef2f8 !important;
     border-color: #4c8df5 !important;
-    height: 39px;
+    /* height: 39px;
     padding: 8px;
+    position: absolute !important; */
+}
+
+.upload-form .id-error label {
+    background-color: white !important;
+    color: #ff0000 !important;
+    padding-left: initial !important;
+    padding: 2px !important;
+}
+
+.postsWrap .post-head .userDetail .userName {
+    color: #ffffff;
+    width: 100%;
+    font-size: 16px;
+}
+
+.postsWrap .post-head .taggedUserImg.no-image {
+    background: #4a2545;
+}
+
+.postsWrap .post-head .taggedUserImg {
+    border-radius: 100%;
+    height: 45px;
+    max-width: 45px;
+    flex: 0 0 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    overflow: hidden;
 }
