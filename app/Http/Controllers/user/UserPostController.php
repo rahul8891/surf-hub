@@ -121,8 +121,7 @@ class UserPostController extends Controller
                     return Redirect::to('dashboard')->withErrors($message);
                 }
             }
-        }catch (\Exception $e){    
-            echo "exception"; 
+        }catch (\Exception $e){
             throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);             
         }
     }

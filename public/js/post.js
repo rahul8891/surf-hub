@@ -6,7 +6,8 @@ $(document).ready(function () {
    * remove image preview on close (pip)
    */
 
-   // ddslick dropdown script
+  //  ddslick dropdown script
+   
   $('#other_surfer').ddslick({
     imagePosition:"right",
     background: "#f5f5f5",
@@ -19,6 +20,21 @@ $(document).ready(function () {
   $("#video_button").click(function(){
     $("input[name='videos[]']").trigger("click");
   });
+
+  $("input[name='files[]']").on("change", function() {
+    if (parseInt($("input[name='files[]']").get(0).files.length) > 10) {
+        alert("You can select only 10 images");
+        $(this).val('');
+      }
+  });
+
+  $("input[name='videos[]']").on("change", function() {
+    if (parseInt($("input[name='videos[]']").get(0).files.length) > 10) {
+        alert("You can select only 10 videos");
+        $(this).val('');
+      }
+  });
+
 
   $(".close").click(function (e) {
     var validator = $("#postForm").validate();

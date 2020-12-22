@@ -27,23 +27,9 @@
                                         <input type="file" accept=".png, .jpg, .jpeg" id="exampleInputFile"
                                                     name="profile_photo_name" value="{{ old('profile_photo_name') }}"/>
 
-                                            <input type="hidden" accept=".png, .jpg, .jpeg" id="imagebase64"
-                                                    name="profile_photo_blob" />
-
                                     {{-- <label class="custom-file-label" for="exampleInputFile">Choose file</label> --}}
                             
                         </div>
-                        {{-- <div class="imgWrap upload-btn-wrapper">
-                            <img src="{{asset("/AdminLTE/dist/img/avatar5.png")}}" alt="Profile Photo" class="img-circle img-fluid" />
-                            <input type="file" accept=".png .jpg .jpeg" id='exampleInputFile' name="profile_photo_name">
-                            <input type="hidden" accept=".png .jpg .jpeg" id='imagebase64' name="profile_photo_blob">
-                        </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <img src="#" id="category-img-tag" class="" width="80px" />
-                                </div>
-                            </div> --}}
-
                     </div>
                     
                     <!-- Row end -->

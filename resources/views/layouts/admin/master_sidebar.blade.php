@@ -41,8 +41,8 @@
                     </ul>
                 </li>
 
-                <li class="nav-item has-treeview {{ menuOpen('posts') }}">
-                    <a href="javascript:void(0);" class="nav-link {{ activeMainMenu('posts') }}">
+                <li class="nav-item has-treeview {{ menuOpen('post') }}">
+                    <a href="javascript:void(0);" class="nav-link {{ activeMainMenu('post') }}">
                         <i class="nav-icon fas fa-bars"></i>
                         <p>
                             Post Management

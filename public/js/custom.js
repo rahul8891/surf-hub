@@ -8,6 +8,10 @@ $(document).ready(function () {
 			spinner.show();
 		}
 	});*/
+	/************** country and phone field onload register ****************************/
+
+	// $('.country option:selected').prop("selected", false);
+	// $('.phone').val('');
 
 	/************** spiner code ****************************/
     var stopSpiner = "{{ $spiner}}";
@@ -19,6 +23,10 @@ $(document).ready(function () {
 	$("#next").click(function (event) {
 		spinner.show();
 	});
+
+	// $("#next1").click(function (event) {
+	// 	spinner.show();
+	// });
 
 	/**
 	hide spiner
@@ -39,6 +47,9 @@ $(document).ready(function () {
 			// remove phone code to phone input
 		}
 	});
+
+
+
 
 	/**************************************************************************************
 	 *                     set image preview after selection and crop befor update
@@ -708,17 +719,68 @@ $(document).ready(function () {
 		}
 
    },100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+	
+ 
+	 $(document).on('click', '.search1 li', function(){
+		 var value = $(this).text();
+		 var dataId = $(this).attr("data-id");
+		 $('#country_list').html("");
+		 $('.search-box').val(value);
+		 $('#local_beach_break_id').val(dataId);
+		 $('#country_list').html("");
+	 });
 
 
 
-    $(document).on('click', 'li', function(){
+	
+	$('.other_surfer').keyup(debounce(function(){
+		// the following function will be executed every half second	
+	
+		if($(this).val().length > 1){
+			$.ajax({
+				type: "GET",
+				url: "/getUsers",
+				data: {				
+					searchTerm: $(this).val(),
+					_token: csrf_token
+				},
+				dataType: "json",
+				success: function (jsonResponse) {
+				
+					$('#other_surfer_list').html(jsonResponse);
+				}
+			})
+		}else{
+			$('#surfer_id').val('');
+			$('#other_surfer_list').html("");
+		}
+
+   },100)); // Milliseconds in which the ajax call should be executed (100 = half second)
+
+
+        $(document).on('click','.search2 li', function(){
 		var value = $(this).text();
 		var dataId = $(this).attr("data-id");
-		$('#country_list').html("");
-		$('.search-box').val(value);
-		$('#local_beach_break_id').val(dataId);
-		$('#country_list').html("");
+		$('#other_surfer_list').html("");
+		$('.other_surfer').val(value);
+		$('#surfer_id').val(dataId);
+		$('#other_surfer_list').html("");
+		$('input[name="surfer"]').val(value);
 	});
+
+	
+		var other=$('input[name="other_surfer"]').val();
+		if(other=='Me'){
+			$('input[name="other_surfer"]').val('');
+		}
+		else if(other=='Unknown'){
+			$('input[name="other_surfer"]').val('');
+		}
+		else {
+			$("#othersSurfer").show();
+			$('input[name="surfer"][value="Others"]').prop("checked", true);
+		}
+
 
 
 	/**

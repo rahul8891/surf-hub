@@ -136,7 +136,7 @@
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                {{$posts->states->name}}
+                                                                {{$posts->states->name??""}}
                                                             </div>
                                                             <div class="col-5">
                                                                 Wave Size

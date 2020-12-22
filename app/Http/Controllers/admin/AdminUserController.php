@@ -102,7 +102,6 @@ class AdminUserController extends Controller
                 'terms' => ['required'],
             );
             
-            // dd($rules);
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
@@ -110,9 +109,9 @@ class AdminUserController extends Controller
             } else {
                 $result = $this->users->saveAdminUser($data,$message);
                 if($result){  
-                    return Redirect::to('admin/users/create')->withSuccess($message);
+                    return Redirect::to('admin/users/index')->withSuccess($message);
                 }else{
-                    return Redirect::to('admin/users/create')->withErrors($message);
+                    return Redirect::to('admin/users/index')->withErrors($message);
                 }
             }
         }catch (\Exception $e){ 
@@ -191,7 +190,7 @@ class AdminUserController extends Controller
             } else {
                 $result = $this->users->updateAdminUser($data,Crypt::decrypt($id),$message);
                 if($result){
-                    return redirect()->route('adminUserEdit', ['id' => $id])->withSuccess($message);  
+                    return redirect()->route('adminUserListIndex', ['id' => $id])->withSuccess($message);  
                 }else{
                     return redirect()->route('adminUserEdit', ['id' => $id])->withErrors($message); 
                 }

@@ -9,7 +9,7 @@
     <!-- <div id="loader"></div> -->
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Create New User</h3>
+            <h3 class="card-title">Edit Post Details</h3>
         </div>
         <!-- /.card-header -->
         <form role="form" id="postForm" name="postForm" method="POST" action="{{ route('postUpdate',Crypt::encrypt($posts->id)) }}" enctype="multipart/form-data">
@@ -32,6 +32,9 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                @error('post_type')
+                                <strong class="required">{{ $message }}</strong>
+                                @enderror
                             </div>
                         </div>
                             
@@ -39,7 +42,7 @@
                     <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="user_id">By User<span class="required">*</span></label>
+                                <label for="user_id">User<span class="required">*</span></label>
                             </div>
                             <div class="col-md-8">
                                 <div class="selectWrap pos-rel">
@@ -60,10 +63,12 @@
                 <h1>Upload Video/Photo</h1>
                 <hr/>
                 <div class="image-wrapper">
-                    @if (!empty($postMedia))
+                    @if (!empty($postMedia[0]['image']))
                         @foreach (explode(' ', json_decode($postMedia, true)[0]['image'] ?? '') as $postImage)
                             <img src="{{ asset('storage/images/'.$postImage) }}" class="img-fluid img-thumbnail rounded mx-auto px-2" width="10%" alt="No photo attached">
                         @endforeach
+                    @endif 
+                    @if (!empty($postMedia[0]['video']))
                         <hr/>
                         @foreach (explode(' ', json_decode($postMedia, true)[0]['video'] ?? '') as $postVideo)
                             <video width="200" height="150" controls="true">
@@ -75,34 +80,24 @@
                 <hr/>
                 <div class="form-group">
                 <textarea placeholder="Share your surf experience....." name="post_text" autofocus required class="form-control" rows="3" >{{ old('post_text',$posts->post_text) }}</textarea>
+                <hr />
                     <div class="videoImageUploader">
                         <div class="upload-btn-wrapper">
-                            <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
-
+                            <button type="button" id="file_button" class="btn"><img alt="" src="{{ asset("/img/photo.png")}}"></button>
                             <input type="file" id="input_multifileSelect" name="files[]" accept=".png, .jpg, .jpeg"
                             multiple />
-
-                            <!-- <input type="hidden" id="imagebase64Multi" name="surf_image_array[]"
-                                accept=".png, .jpg, .jpeg" multiple /> -->
                         </div>
                         <div class="upload-btn-wrapper">
-                            <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
-                            <input type="file" name="videos[]" multiple />
+                            <button type="button" id="video_button" class="btn"><img alt="" src="{{ asset("/img/video.png")}}"></button>
+                            <input type="file" id="input_multifileSelect" name="videos[]" accept=".mp4, wmv, .mkv, .gif, .mpeg4" multiple />
                         </div>
-                        {{-- <div class="upload-btn-wrapper">
-                            <button class=""><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>
-                        </div> --}}
                     </div>
                 </div>
                 <hr/>
                 <div class="formWrap">
-                    {{-- <p>{{$posts->surf_start_date}}</p>
-                    <p>{{date_format(date_create($posts->surf_start_date),"m/d/Y")}}</p>
-                    <p>{{date('m/d/yy', strtotime($posts->surf_start_date))}}</p>
-                    <p>{{ \Carbon\Carbon::parse($posts->surf_start_date)->format('m/d/Y')}}</p> --}}
                     <h2 class="text-primary">Mandatory Info</h2>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 my-3">
                             <div class="row">
                                 <div class="col-md-4">
                                     <label>Surf Date <span class="required">*</span></label>
@@ -110,18 +105,16 @@
                                 <div class="col-md-8">
                                     <div class="selectWrap pos-rel">
                                         <input class="form-control" type="date" name="surf_date" id="datepicker"
-                                            value="{{ old('surf_date'),$posts->surf_start_date }}" required />
+                                            value="{{ $posts->surf_start_date }}" required />
                                     </div>
                                     @error('surf_date')
-                                    <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                    </span>
+                                    <strong class="required">{{ $message }}</strong>
                                     @enderror
                                 </div>
                             </div>
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 my-3">
                             <div class="row">
                                 <div class="col-md-4">
                                     <label>Wave size <span class="required">*</span></label>
@@ -137,17 +130,15 @@
                                             @endforeach
                                         </select>
                                         @error('wave_size')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                         @enderror
+                                        <strong class="required">{{ $message }}</strong>
+                                        @enderror
                                     </div>
                                 </div>
 
                             </div>
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 my-3">
                             <div class="row">
                                 <div class="col-md-4">
                                     <label>Country <span class="required">*</span></label>
@@ -164,16 +155,14 @@
                                 @endforeach
                             </select>
                             @error('country_id')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
+                            <strong class="required">{{ $message }}</strong>
                             @enderror
                                         
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 my-3">
                             <div class="row">
                                 <div class="col-md-4">
                                     <label class="width-102">Beach / Break <span
@@ -181,7 +170,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="selectWrap pos-rel">
-                                        <div class="form-group">
+                                        <div class="">
                                             @php
                                             $bb=$posts->beach_breaks;
                                             $beach_break = $bb->beach_name.','.$bb->break_name
@@ -206,10 +195,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 my-3">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label>State <span class="required">*</span></label>
+                                    <label>State</label>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="selectWrap pos-rel">
@@ -226,10 +215,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 my-3">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label>Board Type</label>
+                                    <label>Board Type<span class="required">*</span></label>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="selectWrap pos-rel">
@@ -241,66 +230,51 @@
                                             </option>
                                             @endforeach
                                         </select>
-                                    </div>
+                                    </div>          
+                                    @error('board_type')
+                                    <strong class="required">{{ $message }}</strong>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-4">
                                     <label>Surfer<span class="required">*</span></label>
-                                </div>  
-                                <div class="col-md-3">
+                                </div>
+                                <div class="col-md-8">
                                     <div class="d-flex">
                                         @foreach ($customArray['surfer'] as $key => $value)
                                         <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="surfer" {{old('surfer',$posts->surfer) == $value ? 'checked' : ''}}  value="{{$value}}" id="{{$value}}" required />
+                                        <input class="form-check-input" type="radio" name="surfer" {{old('surfer',$posts->surfer) == $value ? 'checked' : ''}}
+                                          value="{{$value}}" id="{{$value}}" required />
                                             <label for="" class="form-check-label text-primary">{{$value}}</label>
                                         </div>
                                         @endforeach
-                                        
-                                    </div>
+                                    </div>  
+                                    @error('surfer')
+                                    <strong class="required">{{ $message }}</strong>
+                                    @enderror
                                 </div>
                             </div>
-                                <div class="col-md-4 col-sm-8" style="display:none" id="othersSurfer">
-                                    <div class="selectWrap pos-rel">
-
-                                        <!-- <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
-                                            placeholder="Search User " class="form-control other_surfer_box"
-                                            id="other_surfer" required>
-
-                                        <input type="hidden" name="user_id" id="user_id" class="form-control">
-
-                                        <div class="auto-search search1" id="other_surfer_list"></div> -->
-
-                                        <select class="form-control" name="other_surfer" id="other_surfer">
-                                            <option value="">-- Select User --</option>
-                                            <option value="1">Sandeep</option>
-                                            <option value="2">Raja</option>
-                                            <option value="3">Raman</option>
-                                            <option value="4">Sanoj</option>
-                                        </select>
-
-                                        
+                            <div class="col-md-8 col-sm-4 float-right" style="display:none" id="othersSurfer">
+                                
+                                <div class="selectWrap pos-rel">
+                                    <input type="text" value="{{ old('other_surfer',$posts->surfer)}}" name="other_surfer"
+                                        placeholder="@ Search other user" class="form-control other_surfer" required>
+                                        <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id"
+                                        id="surfer_id" class="form-control surfer_id">
+                                    <div class="auto-search search2" id="other_surfer_list"></div>
                                 </div>
                             </div>
-                            @error('surfer')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
                         </div>
-                    </div>
                 </div>
 
                 <hr/>
                 <div class="formWrap optionalFields">
                     <h2 class="text-primary">Optional Info</h2>
                     <div class="row">
-                        <div class="col-md-3 align-self-end">
-                            <img src="{{ asset("/img/img_4.jpg")}}" alt="" class="img-fluid">
-                        </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 mx-auto">
                             <div class="row">
                                 @foreach($customArray['optional'] as $key => $value)
                                 <div class="col-md-4 pl-1 pr-1 col-6">
@@ -313,9 +287,6 @@
                                 </div>
                                 @endforeach
                             </div>
-                        </div>
-                        <div class="col-md-3 align-self-end">
-                            <img src="{{ asset("/img/filterRightIcon.jpg")}}" alt="" class="img-fluid">
                         </div>
                     </div>
                 </div>

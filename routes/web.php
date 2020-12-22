@@ -33,6 +33,7 @@ Route::get('/help-faq', [WelcomeFeedController::class, 'faq'])->name('faq');
 Route::get('/contact-us', [WelcomeFeedController::class, 'contact'])->name('contact');
 Route::get('/getBeachBreach', [UserController::class, 'getBeachBreach'])->name('getBeachBreach');
 Route::get('/getState', [DashboardController::class, 'getState'])->name('getState');
+Route::get('/getUsers', [UserController::class, 'getUsers'])->name('getUsers');
 
 /*********************************************************************************************
  *                              User Route
@@ -56,7 +57,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
    // Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
     
-    Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');   
+    Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');
+    Route::get('/user/myhub/filter', [MyHubController::class, 'filter'])->name('filterIndex');
 
     Route::post('/delete', [UserPostController::class, 'destroy'])->name('deleteUserPost');
     Route::get('/delete/{id}', [UserPostController::class, 'destroy'])->name('deleteUserPost');
@@ -70,12 +72,14 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
 
 /**
- * Comman Route
+ * Common Route
  */
 
 Route::group(['middleware' => ['auth']], function () {
     Route::post('/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
 });
+
+Route::get('/contact-us/submit',[WelcomeFeedController::class, 'query_submit'])->name('getQuery');
 
 
 /*********************************************************************************************

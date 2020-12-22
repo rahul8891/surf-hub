@@ -1,7 +1,5 @@
 @extends('layouts.admin.master')
 @section('content')
-<?php 
-?>
 <div class="col-md-12">
     <div class="card card-primary">
         <div class="card-header">

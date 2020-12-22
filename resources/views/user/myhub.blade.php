@@ -28,16 +28,19 @@
                                 </div>
                             </div>
                             <a href="#" class="followBtn">
-                                <img src="{{ asset("/img/user.png")}}"" alt=""> FOLLOW
+                                <img src="{{ asset("/img/user.png")}}" alt=""> FOLLOW
                             </a>
                         </div>
                         <p class=" description">{{$myHub->post_text}}</p>
                                 <div class="imgRatingWrap">
                                     @if(!empty($myHub->upload->image))
-                                    <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$myHub->id}}">
+                                    <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
                                     @endif
                                     @if(!empty($myHub->upload->video))
-                                    <br><video width="100%" controls class=" img-fluid" id="myImage{{$myHub->id}}"><source src="{{ asset('storage/videos/'.$myHub->upload->video) }}"></video>
+                                    <br>
+                                    <video width="100%" controls id="myImage{{$myHub->id}}">
+                                        <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
+                                    </video>
                                     @endif
                                     <div class="ratingShareWrap">
                                         <div class="rating ">
@@ -107,7 +110,7 @@
                                                                         {{date('d-m-Y',strtotime($myHub->created_at))}}
                                                                     </div>
                                                                     <div class="col-5">
-                                                                        Surf
+                                                                        Surfer
                                                                     </div>
                                                                     <div class="col-2 text-center">:</div>
                                                                     <div class="col-5">
@@ -139,7 +142,7 @@
                                                                     </div>
                                                                     <div class="col-2 text-center">:</div>
                                                                     <div class="col-5">
-                                                                        {{$myHub->states->name}}
+                                                                        {{$myHub->states->name??""}}
                                                                     </div>
                                                                     <div class="col-5">
                                                                         Wave Size
