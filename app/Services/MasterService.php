@@ -3,6 +3,8 @@ namespace App\Services;
 
 use App\Models\Country;
 use App\Models\State;
+use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -23,6 +25,8 @@ class MasterService {
 
     protected $states;
 
+    protected $users;
+
     public function __construct() {
        
         // Country model object
@@ -31,6 +35,9 @@ class MasterService {
   
         // State model object
         $this->states = new State();
+
+        // User model object
+        $this->users = new User();
        
         // get custom config file
         $this->checkUserType = config('customarray');
@@ -64,5 +71,21 @@ class MasterService {
      */
     public function getStateByCountryId($countryId){
         return $this->states->select('id', 'name')->where('country_id',$countryId)->orderBy('name','asc')->get();
+    }
+
+    /**
+     * [getAllUsers] we are getiing all the users
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getAllUsers(){
+        $users = $this->users->where('status',$this->checkUserType['status']['ACTIVE'])   
+                    ->where('is_deleted','0')
+                    ->where('user_type',$this->checkUserType['userType']['USER']) 
+                    //->whereNotIn('id',[Auth::user()->id])
+                    ->orderBy('id','asc')->get();
+
+        return $users;
     }
 }
