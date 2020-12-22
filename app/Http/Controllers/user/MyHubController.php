@@ -35,7 +35,7 @@ class MyHubController extends Controller
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray; 
         $myHubs = $this->postService->getMyHubListing();
-        //dd($myHubs[1]->upload);     
+        //dd($myHubs[3]->id);     
         return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs'));       
     }
 

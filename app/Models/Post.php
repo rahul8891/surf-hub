@@ -10,6 +10,7 @@ use App\Models\BeachBreak;
 use App\Models\State;
 use App\Models\Upload;
 use App\Models\Comment;
+use App\Models\Tag;
 
 class Post extends Model
 {
@@ -84,5 +85,14 @@ class Post extends Model
         return $this->hasMany(Comment::class, 'post_id', 'id');
     }
     
+
+    /**
+     * Relationship between posts and tags model    
+     * @return object
+     */
+    public function tags()
+    {
+        return $this->hasMany(Tag::class, 'post_id', 'id');
+    }
 
 }

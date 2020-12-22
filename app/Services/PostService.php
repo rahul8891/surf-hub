@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\Post;
 use App\Models\Upload;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -28,6 +29,8 @@ class PostService {
 
     protected $uploads;
 
+    protected $tags;
+
     public function __construct() {
 
         // post model object
@@ -35,6 +38,9 @@ class PostService {
 
         // upload model object
         $this->upload = new Upload();
+
+        // tag model object
+        $this->tag = new Tag();
     }
 
     /**

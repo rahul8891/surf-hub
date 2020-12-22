@@ -1894,3 +1894,28 @@ form .error {
     padding-left: initial !important;
     padding: 2px !important;
 }
+
+.postsWrap .post-head .userDetail .userName {
+    color: #ffffff;
+    width: 100%;
+    font-size: 16px;
+}
+
+.postsWrap .post-head .taggedUserImg.no-image {
+    background: #4a2545;
+}
+
+.postsWrap .post-head .taggedUserImg {
+    border-radius: 100%;
+    height: 45px;
+    max-width: 45px;
+    flex: 0 0 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    overflow: hidden;
+}

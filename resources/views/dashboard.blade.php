@@ -25,7 +25,7 @@
                                 </div>
                                 @endif
                                 <div class="pl-3">
-                                    <h4>{{$posts->user->user_profiles->first_name}} {{$posts->user->user_profiles->last_name}}</h4>
+                                    <h4>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}}</h4>
                                     <span>{{ postedDateTime($posts->created_at) }}</span>
                                 </div>
                             </div>
@@ -119,7 +119,7 @@
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                {{$posts->user->user_profiles->first_name}} {{$posts->user->user_profiles->last_name}}
+                                                                {{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}}
                                                             </div>
                                                             <div class="col-5">
                                                                 Beach/Break
@@ -147,7 +147,11 @@
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                {{$posts->wave_size}}
+                                                                @foreach($customArray['wave_size'] as $key => $value)
+                                                                    @if($key == $posts->wave_size)
+                                                                        {{$value}}
+                                                                    @endif
+                                                                @endforeach
                                                             </div>
                                                             <div class="col-5">
                                                                 Board Type
@@ -212,8 +216,8 @@
                             </div>
                             @if (count($posts->comments) > 0)
                             <div class="viewAllComments">
-                                @if (count($posts->comments) > 1)
-                                <div class="modal" id="myModal">
+                                @if (count($posts->comments) > 5)
+                                <div class="modal" id="commentPopup">
                                   <div class="modal-dialog">
                                     <div class="modal-content">
 
@@ -227,7 +231,7 @@
                                       <div class="modal-body">
                                         @foreach ($posts->comments as $comments)
                                         <p class="comment ">
-                                            <span>{{$comments->user->user_profiles->first_name}} {{$comments->user->user_profiles->first_name}} :</span> {{$comments->value}}
+                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
                                         </p>
                                         @endforeach
                                       </div>
@@ -240,17 +244,21 @@
                                     </div>
                                   </div>
                                 </div>
-                                <p class="viewCommentTxt" data-toggle="modal" data-target="#myModal">View all comments</p>
+                                <p class="viewCommentTxt" data-toggle="modal" data-target="#commentPopup">View all comments</p>
                                 @endif
                                 @foreach ($posts->comments as $comments)
                                 <p class="comment ">
-                                    <span>{{$comments->user->user_profiles->first_name}} {{$comments->user->user_profiles->first_name}} :</span> {{$comments->value}}
+                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
                                 </p>
                                 @endforeach
                             </div>
                             @endif
                             <div class="WriteComment">
-                                <textarea placeholder="Write a comment.."></textarea>
+                                <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
+                                <input type="hidden" name="post_id" value="{{$posts->id}}">
+                                <textarea placeholder="Write a comment.." name="comment"></textarea>
+                                <!-- <button type="submit" id="next1" class="btn btn-info float-right">Submit</button> -->
+                                </form>
                             </div>
                         </div>
                     </div>

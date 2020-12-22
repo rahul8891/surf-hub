@@ -62,6 +62,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/delete/{id}', [UserPostController::class, 'destroy'])->name('deleteUserPost');
 
     Route::get('/saveToMyHub/{id}', [UserPostController::class, 'saveToMyHub'])->name('saveToMyHub');
+
+    Route::post('/comment', [UserPostController::class, 'comment'])->name('comment');
    
     
 });
