@@ -10,8 +10,8 @@ $(document).ready(function () {
 	});*/
 	/************** country and phone field onload register ****************************/
 
-	// $('.country option:selected').prop("selected", false);
-	// $('.phone').val('');
+	$('#register .country option:selected').prop("selected", false);
+	$('#register .phone').val('');
 
 	/************** spiner code ****************************/
     var stopSpiner = "{{ $spiner}}";
