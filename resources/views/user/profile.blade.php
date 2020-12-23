@@ -46,7 +46,7 @@
                             <div class="btnWrap">
                                 <h3>{{__(ucwords($user->user_profiles->first_name .' '. $user->user_profiles->last_name))}}
                                 </h3>
-                                <button>Edit</button>
+                                <button id="myButton">Edit</button>
                             </div>
                         </div>
                         <span id="imageError" class="notDisplayed required">{{ __('Please upload files having
@@ -55,7 +55,7 @@
                             @csrf
                             <div class="innerForm">
                                 <div class="row">
-                                    @if ($errors->any())
+                                    {{-- @if ($errors->any())
                                     <div class="alert alert-danger alert-dismissible" id="msg" role="alert">
                                         <button type="button" class="close" data-dismiss="alert"
                                             aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -70,7 +70,7 @@
                                             aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         {{ ucfirst($message) }}
                                     </div>
-                                    @endif
+                                    @endif --}}
 
                                     <div id="error"></div>
                                 </div>

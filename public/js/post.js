@@ -6,13 +6,6 @@ $(document).ready(function () {
    * remove image preview on close (pip)
    */
 
-  //  ddslick dropdown script
-   
-  $('#other_surfer').ddslick({
-    imagePosition:"right",
-    background: "#f5f5f5",
-  });
-
   $("#file_button").click(function(){
     $("input[name='files[]']").trigger("click");
   });
@@ -142,7 +135,7 @@ $(document).ready(function () {
       },
 
       surf_date: {
-        required: false,
+        required: true,
       },
 
       wave_size: {

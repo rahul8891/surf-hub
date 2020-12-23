@@ -38,7 +38,7 @@
                                     <img src="{{ asset("/img/logo_small.png")}}" alt="">
                                     <h2>Filter</h2>
                                 </div>
-                                <a href="#" class="ml-auto close" id="close" data-toggle="dropdown">Clear</a>
+                                <input type="reset" value="Clear" id="close" class="ml-auto float-right close" >
                             </div>
                             <div class="filterBody">
                                 <div class="row mb-3">

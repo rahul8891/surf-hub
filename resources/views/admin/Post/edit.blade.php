@@ -205,8 +205,8 @@
                                         <select class="form-control" name="state_id" id="state_id">
                                             <option selected="selected" value="">-- State --</option>
                                             @foreach($states as $key => $value)
-                                            <option value="{{ $key }}"
-                                                {{ ( old('state_id',$posts->state_id) == $key) ? 'selected' : '' }}>
+                                            <option value="{{ $value->id }}"
+                                                {{ ( old('state_id',$posts->state_id) == $value->id) ? 'selected' : '' }}>
                                                 {{ $value->name }}</option>
                                             @endforeach
                                         </select>

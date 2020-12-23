@@ -143,9 +143,13 @@ $(document).ready(function () {
 	/**************************************************************************************
 	 *                    Profile Image
 	 ***************************************************************************************/
-	$("#exampleInputProfileFile").change(function () {
+	$("#exampleInputProfileFile #myButton").change(function () {
 		readProfileURL(this);
-    });
+	});
+	
+	$("#myButton").click(function() {
+		$('#exampleInputProfileFile').click();
+	});
 
 	function readProfileURL(input) {
 		var url = input.value;
@@ -312,7 +316,7 @@ $(document).ready(function () {
 				required: true
 			},
 
-			local_beach_break: {
+			local_beach_break_id: {
 				required: true
 			},
 
@@ -380,7 +384,7 @@ $(document).ready(function () {
 				required: "Please select your account type"
 			},
 
-			local_beach_break: {
+			local_beach_break_id: {
 				required: "Please enter beach break"
 			},
 

@@ -32,6 +32,16 @@ form .error {
     color: green;
 }
 
+input.close{
+    color:#4c8df5;
+    border:white;
+    font-size: large;
+    background-color:white;
+    outline: none !important;
+}
+input.close:hover{
+    color:#013a96;
+}
 
 
 .reset-img {
