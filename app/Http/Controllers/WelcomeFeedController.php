@@ -50,10 +50,10 @@ class WelcomeFeedController extends Controller
                 return Redirect::to('/dashboard');
             }
         }
-        
+        $customArray = $this->customArray;
         // non logged in user redirect to home page
         $postsList = $this->postService->getPostsListing();
-        return view('welcome',compact('postsList'));
+        return view('welcome',compact('customArray','postsList'));
     }
 
     public function privacy(){

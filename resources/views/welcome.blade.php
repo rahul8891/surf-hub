@@ -143,7 +143,11 @@
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                {{$posts->wave_size}}
+                                                                @foreach($customArray['wave_size'] as $key => $value)
+                                                                    @if($key == $posts->wave_size)
+                                                                        {{$value}}
+                                                                    @endif
+                                                                @endforeach
                                                             </div>
                                                             <div class="col-5">
                                                                 Board Type
@@ -172,12 +176,41 @@
                                     </ul>
                                 </div>
                             </div>
-                            @if (!empty($posts->comments))
+                            @if (count($posts->comments) > 0)
                             <div class="viewAllComments">
-                                <p class="viewCommentTxt">View all comments</p>
+                                @if (count($posts->comments) > 5)
+                                <div class="modal" id="commentPopup">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                      <!-- Modal Header -->
+                                      <div class="modal-header">
+                                        <h4 class="modal-title">Comments</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                      </div>
+
+                                      <!-- Modal body -->
+                                      <div class="modal-body">
+                                        @foreach ($posts->comments as $comments)
+                                        <p class="comment ">
+                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                        </p>
+                                        @endforeach
+                                      </div>
+
+                                      <!-- Modal footer -->
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                </div>
+                                <p class="viewCommentTxt" data-toggle="modal" data-target="#commentPopup">View all comments</p>
+                                @endif
                                 @foreach ($posts->comments as $comments)
                                 <p class="comment ">
-                                    <span>{{$comments->user->user_profiles->first_name}} {{$comments->user->user_profiles->first_name}} :</span> {{$comments->value}}
+                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
                                 </p>
                                 @endforeach
                             </div>
