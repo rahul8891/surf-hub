@@ -80,6 +80,8 @@
             $(".profileChangePswd").toggleClass("show");
         });
 
+
+
         /* $(document).on('click.bs.dropdown.data-api', '.dropdown.keep-inside-clicks-open', function(e) {
              e.stopPropagation();
          });*/
@@ -96,6 +98,7 @@
             }
         });
 
+        
 
         $('.close').on('click', function(event) {
             // $(this).parents('.dropdown').find('button.dropdown-toggle').dropdown('toggle')
@@ -115,6 +118,14 @@
         $('#msg').delay(4000).fadeOut('slow');
 
 
+        $('.navbar-toggler-icon').click( function(event){
+        event.stopPropagation();
+        $('.navbar-collapse').toggle('fast');
+        });
+
+        $(document).click( function(){
+            $('.navbar-collapse').slideUp('fast');
+        });
 
     });
     function openFullscreen(id) {
