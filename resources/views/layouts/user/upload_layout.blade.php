@@ -200,11 +200,8 @@
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="cstm-check pos-rel">
-<<<<<<< HEAD
                                             <input type="checkbox" id="test8" name="WIPEOUT" />
-=======
-                                            <input type="checkbox" id="test8" />
->>>>>>> shubham_dev_1_bug
+
                                             <label for="test8" class="width-138">Wipeout</label>
                                         </div>
 
@@ -228,11 +225,7 @@
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="cstm-check pos-rel">
-<<<<<<< HEAD
                                             <input type="checkbox" id="test9" name="CUTBACK" />
-=======
-                                            <input type="checkbox" id="test9" />
->>>>>>> shubham_dev_1_bug
                                             <label for="test9" class="width-138">Cutback </label>
                                         </div>
 
