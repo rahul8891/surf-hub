@@ -27,6 +27,7 @@ class CreatePostsTable extends Migration
             $table->date('surf_start_date')->nullable();
             $table->date('surf_end_date')->nullable();
             $table->string('optional_info')->nullable();
+            $table->integer('parent_id')->nullable();
             $table->enum('is_deleted',['1','0'])->default('0')->comment('1=>deleted,0=>Not deleted');   
             $table->softDeletes('deleted_at', 0);
             $table->timestamps();

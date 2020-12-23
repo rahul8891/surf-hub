@@ -18,32 +18,25 @@
                 <div class="row">
                     <!-- Row Start -->
                     <div class="col-sm-4">
-                        <label for="exampleInputFile">{{ __('Profile Photo') }}</label>
+                        <input type="hidden" id="user-id" data-userid="{{ $users->id }}" />
                         <div class="imgWrap upload-btn-wrapper form-group">
-
+                            
+                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            <input type="file" accept=".png, .jpg, .jpeg" class="custom-file-input"
+                            id="exampleInputFile" name="profile_photo_name"
+                            value="{{ old('profile_photo_name') }}" />
+                            
                             @if($users->profile_photo_path)
                             <img src="{{ asset('storage/'.$users->profile_photo_path) }}" width="120px"
                                 alt="Profile Photo" data-userid="{{ $users->id }}" id="category-img-tag"
-                                class="img-fluid" id="category-img-tag">
+                                class="img-fluid mt-2" id="category-img-tag">
                             @else
                             <img src="{{ asset("/img/profile1.jpg")}}" width="120px" alt="Profile Photo"
-                                id="category-img-tag" data-userid="{{ $users->id }}" class="img-fluid">
+                            id="category-img-tag" data-userid="{{ $users->id }}" class="img-fluid mt-2">
                             @endif
 
-                            <input type="file" accept=".png, .jpg, .jpeg" class="custom-file-input"
-                                id="exampleInputFile" name="profile_photo_name"
-                                value="{{ old('profile_photo_name') }}" />
-
-                            <input type="hidden" accept=".png, .jpg, .jpeg" id="imagebase64"
-                                name="profile_photo_blob" />
-
-
-                            <input type="hidden" id="user-id" data-userid="{{ $users->id }}" />
-
-
-                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-
-                        </div>
+                                
+                            </div>
                     </div>
                 </div>
                 <div class="row">

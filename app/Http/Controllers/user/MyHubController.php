@@ -5,6 +5,8 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\MasterService;
+use App\Services\UserService;
+use App\Services\PostService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
@@ -12,10 +14,12 @@ use Illuminate\Support\Facades\Gate;
 class MyHubController extends Controller
 {
 
-    public function __construct(MasterService $masterService)
+    public function __construct(MasterService $masterService,UserService $userService,PostService $postService)
     {
             $this->masterService = $masterService;
             $this->customArray = config('customarray');
+            $this->userService = $userService;
+            $this->postService = $postService;
     }
 
     
@@ -24,23 +28,62 @@ class MyHubController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $el=$request->input('sort');
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
-        $customArray = $this->customArray;      
-        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId'));       
+        $customArray = $this->customArray;
+        $myHubs=$this->sort($el);
+        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs'));      
     }
 
+
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of post with sorting.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function sort($el){
+        if($el=="dateAsc"){
+            return $this->postService->getMyHubListing('posts.created_at','ASC');
+        }
+        else if($el=="dateDesc"){
+            return $this->postService->getMyHubListing('posts.created_at','DESC');
+        }
+        else if($el=="beach"){
+            return $this->postService->getMyHubListing('beach','ASC');
+        }
+        else if($el=="star"){
+            return $this->postService->getMyHubListing('posts.created_at','DESC');
+        }
+        else{
+            return $this->postService->getMyHubListing('posts.created_at','DESC');
+        }
+
+        $customArray = $this->customArray; 
+        $myHubs = $this->postService->getMyHubListing();   
+        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs'));       
+
+    }
+
+    /**
+     * display the post after filter.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(Request $request)
     {
         //
+        $params=$request->all();
+        $order=$request->input('order');
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;      
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $customArray = $this->customArray;
+        $myHubs=$this->postService->getFilteredList($params);
+        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs'));    
     }
 
     /**

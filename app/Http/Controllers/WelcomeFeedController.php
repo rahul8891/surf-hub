@@ -6,9 +6,34 @@ use Redirect;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Page;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\sendMail;
+
+use App\Services\MasterService;
+use App\Services\UserService;
+use App\Services\PostService;
+
+use Carbon\Carbon;
 
 class WelcomeFeedController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  AdminUserService  $users
+     * @return void
+     */
+    public function __construct(MasterService $masterService,UserService $userService,PostService $postService)
+    {
+            $this->masterService = $masterService;
+            $this->customArray = config('customarray');
+            $this->userService = $userService;
+            $this->postService = $postService;
+    }
+
     /**
      * The home/welcome page for users
      *
@@ -29,9 +54,10 @@ class WelcomeFeedController extends Controller
                 return Redirect::to('/dashboard');
             }
         }
-        
+        $customArray = $this->customArray;
         // non logged in user redirect to home page
-        return view('welcome');
+        $postsList = $this->postService->getPostsListing();
+        return view('welcome',compact('customArray','postsList'));
     }
 
     public function privacy(){
@@ -58,4 +84,34 @@ class WelcomeFeedController extends Controller
         return view('static-pages.contact');
     }
     
+    public function query_submit(Request $request){
+        
+        $input= $request->all();
+        $rules = array (
+                'name' => ['required','string','min:3'],
+                'email' => ['required', 'string', 'email:rfc,dns', 'max:255'],
+                'subject' => ['required', 'string', 'max:50'],
+                'description' => ['required', 'string'],
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        
+        if($validator -> passes()){
+            $data=array(
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'subject'=>$request->subject,
+                'description'=>$request->description,
+                );
+
+            Mail::to('Sharma.shubham@evontech.com')
+            ->cc('shubh@yopmail.com')
+            ->send(new sendMail($data));
+
+            return redirect()->back()->with('success','Thanks for Contacting Us, Feedback Submitted!');
+        } else {
+            return redirect()->back()->with('error','Thanks for Contacting Us but for now Feedback is not Submitted!');
+        }
+    }
 }

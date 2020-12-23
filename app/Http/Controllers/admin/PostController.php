@@ -22,8 +22,6 @@ use App\Models\Upload;
 use Closure;
 use Redirect;
 use Session;
-use FFMpeg\FFMpeg;
-// use FFMpeg;
 
 class PostController extends Controller
 {
@@ -126,7 +124,6 @@ class PostController extends Controller
                 }
             }
         }catch (\Exception $e){ 
-            echo "exception";
             throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         }
         
@@ -194,7 +191,7 @@ class PostController extends Controller
                 'post_type' => ['required'],
                 'user_id' => ['required','numeric'],
                 'post_text' => ['nullable', 'string', 'max:255'],
-                'surf_date' => ['nullable', 'string'],
+                'surf_date' => ['required', 'string'],
                 'wave_size' => ['required', 'string'],
                 'state_id' => ['nullable', 'numeric'],
                 'board_type' => ['required', 'string'],
@@ -234,6 +231,5 @@ class PostController extends Controller
         $post->delete();
         return Redirect::to('admin/post/index')->withSuccess("succesfully deleted");
     }
-
+    
 }
-// exec("ffmpeg -ss 00:01:00 -i input.mp4 -to 00:02:00 -c copy output.mp4");

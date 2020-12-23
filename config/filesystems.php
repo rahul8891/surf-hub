@@ -47,6 +47,11 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
+        
+        'trim' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/videos'),
+        ],
 
         'public' => [
             'driver' => 'local',

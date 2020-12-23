@@ -74,6 +74,17 @@ class UserPostController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function comment(Request $request)
+    {
+        $data = $request->all();
+        dd($data);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -110,8 +121,7 @@ class UserPostController extends Controller
                     return Redirect::to('dashboard')->withErrors($message);
                 }
             }
-        }catch (\Exception $e){    
-            echo "exception"; 
+        }catch (\Exception $e){
             throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);             
         }
     }
@@ -158,6 +168,35 @@ class UserPostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $result = $this->posts->deletePost(Crypt::decrypt($id),$message);
+            if($result){
+                return redirect()->route('myhub')->withSuccess($message);  
+            }else{
+                return redirect()->route('myhub')->withErrors($message); 
+            }
+        }catch (\Exception $e){
+            return redirect()->route('myhub', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
+        }
+    }
+
+    /**
+     * Move post to the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function saveToMyHub($id)
+    {
+        try{
+            $result = $this->posts->saveToMyHub(Crypt::decrypt($id),$message);
+            if($result){
+                return redirect()->route('dashboard')->withSuccess($message);  
+            }else{
+                return redirect()->route('dashboard')->withErrors($message); 
+            }
+        }catch (\Exception $e){
+            return redirect()->route('dashboard', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
+        }
     }
 }

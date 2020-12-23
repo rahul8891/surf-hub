@@ -141,7 +141,7 @@ class AdminUserService {
      */
     public function uploadImage($input){
         $returnArray = [];
-        $path = public_path()."/storage/images/";
+        $path = public_path()."/storage/uploads/";
         $timeDate = strtotime(Carbon::now()->toDateTimeString()); 
         $returnArray['status'] = false;
         if(isset($input['profile_photo_name']) && !empty($input['profile_photo_name'])){
@@ -150,7 +150,7 @@ class AdminUserService {
             $filename = pathinfo($imageNameWithExt, PATHINFO_FILENAME); 
             $ext = $requestImageName->getClientOriginalExtension();
             $image_name = $timeDate.'_'.rand().'.'.$ext;
-            $image_path = 'images/'.$image_name;
+            $image_path = 'uploads/'.$image_name;
             if(!$requestImageName->move($path,$image_name)){
                 throw ValidationException::withMessages([trans('auth.profile_image')]);
             }else{
