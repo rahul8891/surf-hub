@@ -268,7 +268,7 @@
                                               <div class="modal-body">
                                                 @foreach ($myHub->comments as $comments)
                                                 <p class="comment ">
-                                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                                 </p>
                                                 @endforeach
                                               </div>
@@ -285,16 +285,18 @@
                                         @endif
                                         @foreach ($myHub->comments as $comments)
                                         <p class="comment ">
-                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                         </p>
                                         @endforeach
                                     </div>
                                     @endif
                                     <div class="WriteComment">
                                         <form role="form" method="POST" name="comment{{$myHub->id}}" action="{{ route('comment') }}">
+                                        @csrf
                                         <input type="hidden" name="post_id" value="{{$myHub->id}}">
+                                        <input type="hidden" name="parent_user_id" value="{{$myHub->user_id}}">
                                         <textarea placeholder="Write a comment.." name="comment"></textarea>
-                                        <!-- <button type="submit" id="next1" class="btn btn-info float-right" style="position: absolute;">Submit</button> -->
+                                        <button type="submit" id="next1" class="btn btn-info float-right" style="position: absolute;">Submit</button>
                                         </form>
                                     </div>
                                 </div>

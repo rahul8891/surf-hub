@@ -231,7 +231,7 @@
                                       <div class="modal-body">
                                         @foreach ($posts->comments as $comments)
                                         <p class="comment ">
-                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                         </p>
                                         @endforeach
                                       </div>
@@ -248,16 +248,18 @@
                                 @endif
                                 @foreach ($posts->comments as $comments)
                                 <p class="comment ">
-                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                 </p>
                                 @endforeach
                             </div>
                             @endif
                             <div class="WriteComment">
                                 <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
+                                @csrf
                                 <input type="hidden" name="post_id" value="{{$posts->id}}">
-                                <textarea placeholder="Write a comment.." name="comment"></textarea>
-                                <!-- <button type="submit" id="next1" class="btn btn-info float-right">Submit</button> -->
+                                <input type="hidden" name="parent_user_id" value="{{$posts->user_id}}">
+                                <textarea placeholder="Write a comment.." name="comment" required></textarea>
+                                <button type="submit" id="next1" class="btn btn-info postComment">Submit</button>
                                 </form>
                             </div>
                         </div>

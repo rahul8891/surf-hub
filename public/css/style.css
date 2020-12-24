@@ -1919,3 +1919,10 @@ form .error {
     letter-spacing: 1.4px;
     overflow: hidden;
 }
+
+.postComment {
+    position: absolute;
+    line-height: 48px;
+    margin-right: 100px;
+    margin-left: -73px;
+}

@@ -74,14 +74,32 @@ class UserPostController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new comment.
      *
      * @return \Illuminate\Http\Response
      */
     public function comment(Request $request)
     {
-        $data = $request->all();
-        dd($data);
+        try{
+            $data = $request->all();   
+            $rules = array(
+                'comment' => ['required', 'string'],
+            );       
+            $validate = Validator::make($data, $rules);          
+            if ($validate->fails()) {
+                // If validation falis redirect back to current page.
+                return response()->json(['error'=>$validate->errors()]);     
+            }else {
+                $result = $this->posts->saveComment($data,$message);
+                if($result){  
+                    return Redirect::to(redirect()->getUrlGenerator()->previous())->withSuccess($message);
+                }else{
+                    return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors($message);
+                }
+            }
+        }catch (\Exception $e){
+            throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);             
+        }
     }
 
     /**

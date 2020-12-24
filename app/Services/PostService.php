@@ -7,6 +7,7 @@ use App\Models\UserProfile;
 use App\Models\Post;
 use App\Models\Upload;
 use App\Models\Tag;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -34,6 +35,8 @@ class PostService {
 
     protected $tags;
 
+    protected $comment;
+
     public function __construct() {
 
         // post model object
@@ -44,6 +47,9 @@ class PostService {
 
         // tag model object
         $this->tag = new Tag();
+
+        // comment model object
+        $this->comment = new Comment();
     }
 
     /**
@@ -455,6 +461,34 @@ class PostService {
         }
         catch (\Exception $e){     
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+
+    /**
+     * [saveComment] we are storing the post comment 
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function saveComment($input,&$message=''){
+        try{
+            $this->comment->parent_user_id = $input['parent_user_id'];
+            $this->comment->user_id = Auth::user()->id;
+            $this->comment->post_id = $input['post_id'];
+            $this->comment->value = $input['comment'];
+            $this->comment->created_at = Carbon::now();
+            $this->comment->updated_at = Carbon::now();
+            //dd($this->comments);
+            if($this->comment->save()){
+                //for store media into upload table
+                $message = 'Comment has been created successfully.!';
+                return $message;                    
+            }
+                
+        }
+        catch (\Exception $e){     
             $message='"'.$e->getMessage().'"';
             return $message;
         }
