@@ -121,9 +121,6 @@
                                                 <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                                             </div>
                                         </div>
-                                        <!-- <div class="id-error" id="id-error">
-                                            <label for="country_id" class="error" generated="true"></label>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="col-md-6">

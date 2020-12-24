@@ -697,7 +697,7 @@ $(document).ready(function () {
 		};
 	};
 	
-	
+	// ajax form field data for post
 	$('.search-box').keyup(debounce(function(){
 		// the following function will be executed every half second	
 	
@@ -723,15 +723,52 @@ $(document).ready(function () {
 		}
 
    },100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+   
+
+	$(document).on('click', '.search1 li', function(){
+		var value = $(this).text();
+		var dataId = $(this).attr("data-id");
+		$('#country_list').html("");
+		$('.search-box').val(value);
+		$('#local_beach_break_id').val(dataId);
+		$('#country_list').html("");
+	});
+
+
+	// ajax form field data for filter
+	$('.search-box2').keyup(debounce(function(){
+		// the following function will be executed every half second	
 	
- 
-	 $(document).on('click', '.search1 li', function(){
+		if($(this).val().length > 2){
+		
+			$.ajax({
+				type: "GET",
+				url: "/getBeachBreach",
+				data: {				
+					searchTerm: $(this).val(),
+					_token: csrf_token
+				},
+				dataType: "json",
+				success: function (jsonResponse) {
+				
+					$('#country_list2').html(jsonResponse);
+				}
+			})
+			
+		}else{
+			$('#local_beach_break_id2').val('');
+			$('#country_list2').html("");
+		}
+
+   },100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+
+	 $(document).on('click', '.searchTwo li', function(){
 		 var value = $(this).text();
 		 var dataId = $(this).attr("data-id");
-		 $('#country_list').html("");
-		 $('.search-box').val(value);
-		 $('#local_beach_break_id').val(dataId);
-		 $('#country_list').html("");
+		 $('#country_list2').html("");
+		 $('.search-box2').val(value);
+		 $('#local_beach_break_id2').val(dataId);
+		 $('#country_list2').html("");
 	 });
 
 

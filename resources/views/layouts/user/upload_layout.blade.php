@@ -49,23 +49,22 @@
                                         <div class="row">
                                             <div class="col-md-4 col-4">
                                                 <div class="cstm-check pos-rel">
-                                                    <input type="checkbox" id="Me" name="Me" />
-                                                    <label for="Me" class="pr-4">Me</label>
-
+                                                    <input type="checkbox" id="test-me" name="Me" />
+                                                    <label for="test-me" class="pr-4">Me</label>
                                                 </div>
 
                                             </div>
                                             <div class="col-md-4 col-4">
                                                 <div class="cstm-check pos-rel">
-                                                    <input type="checkbox" id="Other" name="Others" />
-                                                    <label for="Other" class="pr-4">Other</label>
+                                                    <input type="checkbox" id="test-other" name="Others" />
+                                                    <label for="test-other" class="pr-4">Other</label>
                                                 </div>
 
                                             </div>
                                             <div class="col-md-4 col-4">
                                                 <div class="cstm-check pos-rel">
-                                                    <input type="checkbox" id="Unknown" name="Unknown" />
-                                                    <label for="Unknown" class="pr-4">Unknown</label>
+                                                    <input type="checkbox" id="test-unknown" name="Unknown" />
+                                                    <label for="test-unknown" class="pr-4">Unknown</label>
                                                 </div>
 
                                             </div>
@@ -168,10 +167,10 @@
                                     <div class="col-md-5 col-sm-7">
                                         <div class="selectWrap pos-rel">
                                             <input type="text" value="{{ old('local_beach_break')}}"
-                                placeholder="Search Beach Break" class="form-control search-box">
-                            <input type="hidden" value="{{ old('local_beach_break_id')}}" name="local_beach_break_id"
-                                id="local_beach_break_id" class="form-control">
-                            <div class="auto-search search1" id="country_list"></div>
+                                                placeholder="Search Beach Break" class="form-control search-box2">
+                                            <input type="hidden" value="{{ old('local_beach_break_id')}}" name="local_beach_break_id"
+                                                id="local_beach_break_id2" class="form-control">
+                                            <div class="auto-search searchTwo" id="country_list2"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5">
