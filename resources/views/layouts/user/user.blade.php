@@ -61,8 +61,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.5.1/jquery.nicescroll.min.js"> </script>
     
-     <!-- ddslick -->
-     <script type="text/javascript" src="https://cdn.rawgit.com/prashantchaudhary/ddslick/master/jquery.ddslick.min.js" ></script>
     
     <script src="{{ asset("/js/bootstrap.js")}}"></script>
     <script src="{{ asset("/js/jquery.validate.min.js")}}"></script>

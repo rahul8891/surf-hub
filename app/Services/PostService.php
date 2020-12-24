@@ -88,7 +88,7 @@ class PostService {
         }
 
         else if($el=='star'){
-            //////// code for rating, make above method replica
+            //////// code for rating, make replica of above condition
         }
 
         else{
@@ -224,11 +224,12 @@ class PostService {
         $path = $video->storeAs($destinationPath,$fileNameToStore);
 
 
+        //**********trimming video********************/
+
         $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(0);
         $end   = \FFMpeg\Coordinate\TimeCode::fromSeconds(60);
         $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start,$end);
                 
-                //**********trimming video********************/
                 FFMpeg::open($path)
                     ->addFilter($clipFilter)
                     ->export()
