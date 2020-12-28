@@ -19,14 +19,18 @@
                             </h4>
                             <div class="">
                                 @if (!empty($postMedia))
-                                    @foreach (explode(' ', json_decode($postMedia, true)[0]['image'] ?? '') as $postImage)
-                                    <img src="{{ asset('storage/images/'.$postImage) }}" class="img-fluid img-thumbnail rounded mx-auto px-2" width="20%" alt="No photo attached">
+                                    @foreach ($postMedia as $item)  
+                                        @if (!is_null($item->image))
+                                        <img src="{{ asset('storage/images/'.$item->image) }}" class="img-fluid img-thumbnail rounded mx-auto px-2" width="20%" alt="No photo attached">
+                                        @endif
                                     @endforeach
-                                    <hr/>
-                                    @foreach (explode(' ', json_decode($postMedia, true)[0]['video'] ?? '') as $postVideo)
+                                <hr/>
+                                    @foreach ($postMedia as $item)
+                                        @if (!is_null($item->video))
                                         <video width="200" height="150" controls="true">
-                                        <source src="{{ asset('storage/videos/'.$postVideo) }}" type="" />
+                                        <source src="{{ asset('storage/videos/'.$item->video) }}" type="" />
                                         </video>
+                                        @endif
                                     @endforeach
                                 @endif      
                             </div>

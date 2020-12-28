@@ -315,21 +315,38 @@ class PostService {
             $this->posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
             $this->posts->created_at = Carbon::now();
             $this->posts->updated_at = Carbon::now();
-            
             if($this->posts->save()){
                 //for store media into upload table
                 $post_id=$this->posts->id;
-                $newImageArray = $this->getPostImageArray($imageArray,$post_id);
-                $newVideoArray = $this->getPostVideoArray($videoArray,$post_id);
-                $this->upload->post_id = $this->posts->id;
-                $this->upload->image = ($newImageArray!=[]) ? implode(" ",$newImageArray) : null;
-                $this->upload->video = ($newVideoArray!=[]) ? implode(" ",$newVideoArray) : null;
-                $this->upload->save();
+                if($imageArray){
+                    foreach($imageArray as $image){
+                        $imageName = $this->getPostImage($image);
+                        $upload = new Upload();
+                        $upload->post_id = $post_id;
+                        $upload->image = $imageName;
+                        $upload->video = null;
+                        $upload->save();
+                    }
+                }
+                if($videoArray){
+                    foreach($videoArray as $video){
+                        $videoName = $this->getPostVideo($video);
+                        $upload = new Upload();
+                        $upload->post_id = $post_id;
+                        $upload->image = null;
+                        $upload->video = $videoName;
+                        $upload->save();
+                    }
+                }
+                // $newImageArray = $this->getPostImageArray($imageArray,$post_id);
+                // $newVideoArray = $this->getPostVideoArray($videoArray,$post_id);
+                // $this->upload->post_id = $this->posts->id;
+                // $this->upload->image = ($newImageArray!=[]) ? implode(" ",$newImageArray) : null;
+                // $this->upload->video = ($newVideoArray!=[]) ? implode(" ",$newVideoArray) : null;
+                // $this->upload->save();
                 
-                if($this->upload->save()){
                     $message = 'Post has been created successfully.!';
                     return $message;
-                }
                     
              }
                 
@@ -366,14 +383,35 @@ class PostService {
             $posts->updated_at = Carbon::now();
             
             ///for updating media into upload table
-                $newImageArray = $this->getPostImageArray($imageArray,$id);
-                $newVideoArray = $this->getPostVideoArray($videoArray,$id);
+            $post_id=$posts->id;
+                if($imageArray){
+                    foreach($imageArray as $image){
+                        $imageName = $this->getPostImage($image);
+                        $upload = new Upload();
+                        $upload->post_id = $post_id;
+                        $upload->image = $imageName;
+                        $upload->video = null;
+                        $upload->save();
+                    }
+                }
+                if($videoArray){
+                    foreach($videoArray as $video){
+                        $videoName = $this->getPostVideo($video);
+                        $upload = new Upload();
+                        $upload->post_id = $post_id;
+                        $upload->image = null;
+                        $upload->video = $videoName;
+                        $upload->save();
+                    }
+                }
+                // $newImageArray = $this->getPostImageArray($imageArray,$id);
+                // $newVideoArray = $this->getPostVideoArray($videoArray,$id);
                 
-                    Upload::where('post_id', $posts->id)
-                    ->update([
-                        'image'=>($newImageArray!=[]) ? implode(' ', array_filter($newImageArray)) : null,
-                        'video'=>($newVideoArray!=[]) ? implode(' ', array_filter($newVideoArray)) : null,
-                        ]);
+                //     Upload::where('post_id', $posts->id)
+                //     ->update([
+                //         'image'=>($newImageArray!=[]) ? implode(' ', array_filter($newImageArray)) : null,
+                //         'video'=>($newVideoArray!=[]) ? implode(' ', array_filter($newVideoArray)) : null,
+                //         ]);
             
             
             if($posts->save()){
