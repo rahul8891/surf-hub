@@ -27,9 +27,13 @@
                                     <span>{{ postedDateTime($myHub->created_at) }}</span>
                                 </div>
                             </div>
-                            <a href="#" class="followBtn">
-                                <img src="{{ asset("/img/user.png")}}" alt=""> FOLLOW
-                            </a>
+                            <form role="form" method="POST" name="follow{{$myHub->id}}" action="{{ route('follow') }}">
+                            @csrf
+                            <input type="hidden" class="userID" name="followed_user_id" value="{{$myHub->user_id}}">
+                            <button href="#" class="followBtn">
+                                <img src="img/user.png" alt=""> FOLLOW
+                            </button>
+                            </form>
                         </div>
                         <p class=" description">{{$myHub->post_text}}</p>
                                 <div class="imgRatingWrap">
