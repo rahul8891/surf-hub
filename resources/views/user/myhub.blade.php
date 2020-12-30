@@ -283,7 +283,7 @@
                                         </div>
                                         <p class="viewCommentTxt" data-toggle="modal" data-target="#commentPopup">View all comments</p>
                                         @endif
-                                        @foreach ($myHub->comments as $comments)
+                                        @foreach ($myHub->comments->slice(0, 5) as $comments)
                                         <p class="comment ">
                                             <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                         </p>
@@ -293,10 +293,10 @@
                                     <div class="WriteComment">
                                         <form role="form" method="POST" name="comment{{$myHub->id}}" action="{{ route('comment') }}">
                                         @csrf
-                                        <input type="hidden" name="post_id" value="{{$myHub->id}}">
+                                        <input type="hidden" class="postID" name="post_id" value="{{$myHub->id}}">
                                         <input type="hidden" name="parent_user_id" value="{{$myHub->user_id}}">
-                                        <textarea placeholder="Write a comment.." name="comment"></textarea>
-                                        <button type="submit" id="next1" class="btn btn-info float-right" style="position: absolute;">Submit</button>
+                                        <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$myHub->id}}"></textarea>
+                                        <button type="submit" class="btn btn-info postComment" id="submitPost{{$myHub->id}}">Submit</button>
                                         </form>
                                     </div>
                                 </div>

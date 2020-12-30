@@ -95,4 +95,13 @@ class Post extends Model
         return $this->hasMany(Tag::class, 'post_id', 'id');
     }
 
+    /**
+     * Relationship between posts and reports model    
+     * @return object
+     */
+    public function reports()
+    {
+        return $this->hasMany(Report::class, 'post_id', 'id');
+    }
+
 }

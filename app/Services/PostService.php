@@ -8,6 +8,8 @@ use App\Models\Post;
 use App\Models\Upload;
 use App\Models\Tag;
 use App\Models\Comment;
+use App\Models\Report;
+use App\Models\UserFollow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -37,6 +39,10 @@ class PostService {
 
     protected $comment;
 
+    protected $report;
+
+    protected $userFollow;
+
     public function __construct() {
 
         // post model object
@@ -50,6 +56,12 @@ class PostService {
 
         // comment model object
         $this->comment = new Comment();
+
+        // report model object
+        $this->report = new Report();
+
+        // userFollow model object
+        $this->userFollow = new UserFollow();
     }
 
     /**
@@ -484,6 +496,70 @@ class PostService {
             if($this->comment->save()){
                 //for store media into upload table
                 $message = 'Comment has been created successfully.!';
+                return $message;                    
+            }
+                
+        }
+        catch (\Exception $e){     
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+
+    /**
+     * [saveReport] we are storing the post report 
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function saveReport($input,&$message=''){
+        //dd($input['tolls']);
+        try{
+            $this->report->post_id = $input['post_id'];
+            $this->report->user_id = Auth::user()->id;
+            if(isset($input['incorrect'])){
+                $this->report->incorrect = $input['incorrect'];
+            }
+            if(isset($input['inappropriate'])){
+                $this->report->inappropriate = $input['inappropriate'];
+            }
+            if(isset($input['tolls'])){
+                $this->report->tolls = $input['tolls'];
+            }
+            $this->report->comments = $input['comments'];
+            $this->report->created_at = Carbon::now();
+            $this->report->updated_at = Carbon::now();
+            //dd($this->comments);
+            if($this->report->save()){
+                //for store media into upload table
+                $message = 'Report has been created successfully.!';
+                return $message;                    
+            }
+                
+        }
+        catch (\Exception $e){     
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+
+    /**
+     * [saveFollow] we are storing the follower data 
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function saveFollow($input,&$message=''){
+        
+        try{
+            $this->userFollow->followed_user_id = $input['followed_user_id'];
+            $this->userFollow->follower_user_id = Auth::user()->id;
+            $this->userFollow->created_at = Carbon::now();
+            $this->userFollow->updated_at = Carbon::now();
+            
+            if($this->userFollow->save()){
+                //for store media into upload table
+                $message = 'Follow request has been created successfully.!';
                 return $message;                    
             }
                 

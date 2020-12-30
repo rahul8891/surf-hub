@@ -15,6 +15,7 @@ use App\Services\PostService;
 use App\Traits\PasswordTrait;
 use App\Models\User;
 use App\Models\Post;
+use App\Models\Report;
 use Carbon\Carbon;
 use Closure;
 use Redirect;
@@ -88,7 +89,8 @@ class UserPostController extends Controller
             $validate = Validator::make($data, $rules);          
             if ($validate->fails()) {
                 // If validation falis redirect back to current page.
-                return response()->json(['error'=>$validate->errors()]);     
+                //return response()->json(['error'=>$validate->errors()]); 
+                return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors('The comment field is required.');    
             }else {
                 $result = $this->posts->saveComment($data,$message);
                 if($result){  
@@ -97,6 +99,58 @@ class UserPostController extends Controller
                     return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors($message);
                 }
             }
+        }catch (\Exception $e){
+            throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);             
+        }
+    }
+
+    /**
+     * Show the form for creating a new report.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function report(Request $request)
+    {
+        try{
+            $data = $request->all();   
+            $rules = array(
+                'comments' => ['required', 'string'],
+            );       
+            $validate = Validator::make($data, $rules);          
+            if ($validate->fails()) {
+                // If validation falis redirect back to current page.
+                //return response()->json(['error'=>$validate->errors()]); 
+                return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors('The comment field is required.');    
+            }else {
+                $result = $this->posts->saveReport($data,$message);
+                if($result){  
+                    return Redirect::to(redirect()->getUrlGenerator()->previous())->withSuccess($message);
+                }else{
+                    return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors($message);
+                }
+            }
+        }catch (\Exception $e){
+            throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);             
+        }
+    }
+
+    /**
+     * Show the form for creating a new follow.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function follow(Request $request)
+    {
+        try{
+            $data = $request->all();   
+            
+            $result = $this->posts->saveFollow($data,$message);
+            if($result){  
+                return Redirect::to(redirect()->getUrlGenerator()->previous())->withSuccess($message);
+            }else{
+                return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors($message);
+            }
+            
         }catch (\Exception $e){
             throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);             
         }
