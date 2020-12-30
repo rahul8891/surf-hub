@@ -12,7 +12,7 @@
                     @if($posts->parent_id == 0)
                 <div class="post">
                     @if($key==0)
-                    <h2>My Feed</h2>
+                    <h2>Search Feed</h2>
                     @endif
                     <div class="inner">
                         <div class="post-head">

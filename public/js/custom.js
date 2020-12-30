@@ -143,7 +143,7 @@ $(document).ready(function () {
 	/**************************************************************************************
 	 *                    Profile Image
 	 ***************************************************************************************/
-	$("#exampleInputProfileFile #myButton").change(function () {
+	$("#exampleInputProfileFile").change(function () {
 		readProfileURL(this);
 	});
 	

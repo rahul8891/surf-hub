@@ -11,8 +11,7 @@ use App\Services\PostService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
-
-class MyHubController extends Controller
+class SearchController extends Controller
 {
 
     protected $posts;
@@ -26,24 +25,23 @@ class MyHubController extends Controller
             $this->posts = new Post();
     }
 
-    
     /**
-     * Display a listing of the resource.
+     * search the specified resource from storage.
      *
+     * @param  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function search(Request $request)
     {
         $el=$request->input('sort');
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
-        $myHubs=$this->sort($el);
+        $postsList=$this->sort($el);
         $userDetail=Auth::user()->user_profiles;
-        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail'));      
+        return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail')); 
     }
-
 
     /**
      * Display a listing of post with sorting.
@@ -51,8 +49,8 @@ class MyHubController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function sort($el){
-        $postList=$this->posts->where('user_id',[Auth::user()->id]);
-
+        $postList=$this->posts;
+        
         if($el=="dateAsc"){
             return $this->postService->getMyHubListing($postList,'posts.created_at','ASC');
         }
@@ -68,7 +66,6 @@ class MyHubController extends Controller
         else{
             return $this->postService->getMyHubListing($postList,'posts.created_at','DESC');
         }       
-
     }
 
     /**
@@ -85,65 +82,8 @@ class MyHubController extends Controller
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
-        $myHubs=$this->postService->getFilteredList($params,'myhub');
+        $postsList=$this->postService->getFilteredList($params,'search');
         $userDetail=Auth::user()->user_profiles;
-        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail')); 
+        return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail')); 
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
 }

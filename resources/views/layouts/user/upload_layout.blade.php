@@ -2,22 +2,40 @@
     <div class="uploadWrap">
         <div class="head">
             <div class="row">
+                @if(Auth::user() && (!str_contains(Request::path(),'search')))
                 <div class="col-md-6">
                     <img src="{{ asset("/img/upload.png")}}" alt=""> Upload Video/Photo
                 </div>
-                @if(Auth::user() && (Request::path() == 'user/myhub' || Request::path() == 'user/myhub/filter'))
+                @else
+                <div class="col-md-6">
+                    <img src="{{ asset("/img/phone1.png")}}" alt=""> Search Video/Photo
+                </div>
+                @endif
+                @if(Auth::user() && (str_contains(Request::path(),'myhub') || str_contains(Request::path(),'search')))
                 <div class="col-md-3 col-6">
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src="{{ asset("/img/sort.png")}}" alt=""> Sort
                         </button>
+                        @if(str_contains(Request::path(),'search'))
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'dateDesc'])}}">Date (New to Old)</a>
+                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'dateAsc'])}}">Date (Old to New)</a>
+                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'beach'])}}">Beach / Break</a>
+                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'star'])}}">Star Rating </a>
+                        </div>
+                        @endif
+
+                        @if(str_contains(Request::path(),'myhub'))
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <a class="dropdown-item" href="{{route('myhub',['sort'=>'dateDesc'])}}">Date (New to Old)</a>
                             <a class="dropdown-item" href="{{route('myhub',['sort'=>'dateAsc'])}}">Date (Old to New)</a>
                             <a class="dropdown-item" href="{{route('myhub',['sort'=>'beach'])}}">Beach / Break</a>
                             <a class="dropdown-item" href="{{route('myhub',['sort'=>'star'])}}">Star Rating </a>
                         </div>
+                        @endif
+                        
                     </div>
                 </div>
                 <div class="col-md-3 col-6 text-web-right">
@@ -29,9 +47,13 @@
                         </button>
 
 
-                        <form class="dropdown-menu filterWrap" action="{{route('filterIndex')}}" aria-labelledby="dropdownMenuButton2">
+                        @if(str_contains(Request::path(),'search'))
+                            <form class="dropdown-menu filterWrap" action="{{route('searchFilterIndex')}}" aria-labelledby="dropdownMenuButton2">
+                        @endif
 
-
+                        @if(str_contains(Request::path(),'myhub'))
+                            <form class="dropdown-menu filterWrap" action="{{route('filterIndex')}}" aria-labelledby="dropdownMenuButton2">
+                        @endif
 
                             <div class="filterHeader">
                                 <div class="heading">
@@ -120,7 +142,7 @@
                                             <option value="">-- Country --</option>
                                             @foreach($countries as $key => $value)
                                             <option value="{{ $value->id }}"
-                                                {{ old('country_id') == $value->id ? "selected" : "" }}>
+                                                {{ old('country_id',$userDetail->country_id) == $value->id ? "selected" : "" }}>
                                                 {{ $value->name }}</option>
                                             @endforeach
                                         </select>
@@ -145,7 +167,8 @@
                                             <select class="form-control" name="state_id" id="state_id">
                                                 <option selected="selected" value="">-- State --</option>
                                                 @foreach($states as $key => $value)
-                                                <option value="{{ $value->id }}" {{ old('state_id') == $value->id ? "selected" : "" }}>
+                                                <option value="{{ $value->id }}" 
+                                                    {{ old('state_id',$userDetail->state_id) == $value->id ? "selected" : "" }}>
                                                     {{ $value->name }}</option>
                                                 @endforeach
                                             </select>
@@ -166,9 +189,14 @@
                                     </div>
                                     <div class="col-md-5 col-sm-7">
                                         <div class="selectWrap pos-rel">
-                                            <input type="text" value="{{ old('local_beach_break')}}"
+                                            @php
+                                            $bb=$userDetail->beach_breaks;
+                                            $beach_break = $bb->beach_name.','.$bb->break_name
+                                            .''.$bb->city_region.','.$bb->state.','.$bb->country;
+                                            @endphp
+                                            <input type="text" value="{{ old('local_beach_break',$beach_break)}}"
                                                 placeholder="Search Beach Break" class="form-control search-box2">
-                                            <input type="hidden" value="{{ old('local_beach_break_id')}}" name="local_beach_break_id"
+                                            <input type="hidden" value="{{ old('local_beach_break_id',$userDetail->local_beach_break_id)}}" name="local_beach_break_id"
                                                 id="local_beach_break_id2" class="form-control">
                                             <div class="auto-search searchTwo" id="country_list2"></div>
                                         </div>
@@ -287,6 +315,7 @@
 
             </div>
         </div>
+        @if(Auth::user() && (!str_contains(Request::path(),'search')))
         <div class="post-head">
             <a href="#" data-toggle="modal" data-target="#exampleModal" data-backdrop="static" data-keyboard="false">
                 <div class="userDetail">
@@ -304,5 +333,6 @@
                 </div>
             </a>
         </div>
+        @endif
     </div>
 </div>

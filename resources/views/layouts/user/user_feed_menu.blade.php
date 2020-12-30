@@ -8,10 +8,10 @@
             <li class="{{ userActiveMenu('myhub') }}">
                 <a href="{{ route('myhub') }}">My Hub</a>
             </li>
-            <li class="{{ userActiveMenu('#') }}">
-                <a href="{{ url('#')}}">Search</a>
+            <li class="{{ userActiveMenu('searchPosts') }}">
+                <a href="{{ url('search')}}">Search</a>
             </li>
-        </ul>
+        </ul>   
     </div>
 </div>
 @endif

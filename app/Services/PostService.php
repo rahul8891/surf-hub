@@ -79,11 +79,14 @@ class PostService {
      * @param  
      * @return dataArray
      */
-    public function getMyHubListing($el,$order){
-
+    public function getMyHubListing($postList,$el,$order){
+        
         if($el=='beach'){
-          $sortedBeach= $this->posts->join('beach_breaks', 'posts.local_beach_break_id', '=', 'beach_breaks.id')
-          ->orderBy('beach_breaks.beach_name', $order)->where('user_id',[Auth::user()->id])->select('posts.*')->paginate(10);
+          $sortedBeach= $postList
+          ->join('beach_breaks', 'posts.local_beach_break_id', '=', 'beach_breaks.id')
+          ->orderBy('beach_breaks.beach_name', $order)
+          ->select('posts.*')
+          ->paginate(10);
             return $sortedBeach;
         }
 
@@ -92,9 +95,9 @@ class PostService {
         }
 
         else{
-            $postArray =  $this->posts->with('beach_breaks')
+            $postArray =  $postList
+            ->with('beach_breaks')
             ->whereNull('posts.deleted_at')   
-            ->where('user_id',[Auth::user()->id])
             ->orderBy($el,$order)
             ->paginate(10);
 
@@ -109,10 +112,15 @@ class PostService {
      * @param  
      * @return dataArray
      */
-    public function getFilteredList($params) {
-
-        $postArray =  $this->posts->whereNull('posts.deleted_at')->where('user_id',[Auth::user()->id]);
-
+    public function getFilteredList($params, $for) {
+        
+        if ($for=='search'){
+            $postArray =  $this->posts->whereNull('posts.deleted_at');
+        }
+        if ($for=='myhub'){
+            $postArray =  $this->posts->whereNull('posts.deleted_at')->where('user_id',[Auth::user()->id]);
+        }
+        //************* applying conditions *****************/
         if(isset($params['Me'])){
             if ($params['Me']=='on') {
                 $postArray->where('surfer','Me')->get();
@@ -168,31 +176,31 @@ class PostService {
                 $postArray->where('optional_info','SNAP')->get();
             }
         }
-
-
+        
+        
         if ($params['surf_date']) {
-           $postArray->where('surf_start_date',$params['surf_date'])->get();
+            $postArray->where('surf_start_date',$params['surf_date'])->get();
         }
         if ($params['country_id']) {
-           $postArray->where('country_id',$params['country_id'])->get();
+            $postArray->where('country_id',$params['country_id'])->get();
         }
         if ($params['local_beach_break_id']) {
-           $postArray->where('local_beach_break_id',$params['local_beach_break_id'])->get();
+            $postArray->where('local_beach_break_id',$params['local_beach_break_id'])->get();
         }
         if ($params['board_type']) {
-           $postArray->where('board_type',$params['board_type'])->get();
+            $postArray->where('board_type',$params['board_type'])->get();
         }
         if ($params['wave_size']) {
-           $postArray->where('wave_size',$params['wave_size'])->get();
+            $postArray->where('wave_size',$params['wave_size'])->get();
         }
-        if ($params['state_id']) {
-           $postArray->where('state_id',$params['state_id'])->get();
+        if (isset($params['state_id'])) {
+            $postArray->where('state_id',$params['state_id'])->get();
         }
-     
+        
         return $postArray->orderBy('posts.id','DESC')->paginate(10);
     }
-
-
+    
+    
     /**
      * upload image into directory
      * @param  object  $input
@@ -463,6 +471,10 @@ class PostService {
     public function saveToMyHub($id,&$message=''){
         
         $postSave=$this->posts->find($id);
+
+        foreach($postSave->upload as $media){
+
+        }
         try{
             $this->posts['post_type'] = $postSave->post_type;
             $this->posts['user_id'] = Auth::user()->id;
