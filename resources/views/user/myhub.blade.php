@@ -6,7 +6,13 @@
         <div class="row">
             <div class="col-lg-9">
                 @include('layouts/user/upload_layout')
-                    @if (!empty($myHubs))
+                @if (is_null($myHubs[0]))
+                <div class="alert alert-warning text-center alert-dismissible" role="alert" id="msg">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    {{ ucWords('no data found') }}
+                </div>
+                @elseif (!is_null($myHubs[0]))
                     @foreach ($myHubs as $key => $myHub)
                 <div class="post">
                     @if($key==0)
@@ -33,31 +39,24 @@
                         </div>
                         <p class=" description">{{$myHub->post_text}}</p>
                                 <div class="imgRatingWrap">
-                                    {{-- @php
-                                        $upload[]=$myHub->upload::select('*')->where('post_id',$myHub->id)->get();
+                                    @php
+                                        $postMedia=$myHub->upload->select('*')->where('post_id',$myHub->id)->get();
                                     @endphp
-                                    @if (!empty($upload))   
-                                    @foreach ($upload as $postMedia)
-                                            @foreach ($postMedia as $item)  
-                                            @if (!is_null($item->image))
-                                            <img src="{{ asset('storage/images/'.$item->image) }}"alt="" width="100%" class="img-fluid img-thumbnail" id="myImage{{$myHub->id}}">
+                                    @if (!empty($postMedia))   
+                                    @foreach ($postMedia as $media)  
+                                            @if (!is_null($media->image))
+                                            <img src="{{ asset('storage/images/'.$media->image) }}"alt="" width="100%" class="img-fluid img-thumbnail" id="myImage{{$myHub->id}}">
                                             @endif
-                                            @endforeach
                                 
-                                            @foreach ($postMedia as $item)
-                                            @if (!is_null($item->video))
+                                            @if (!is_null($media->video))
                                             <video width="100%" controls id="myImage{{$myHub->id}}">
-                                                <source src="{{ asset('storage/videos/'.$item->video) }}" >    
+                                                <source src="{{ asset('storage/videos/'.$media->video) }}" >    
                                             </video>
                                             @endif
-                                            @endforeach
                                     @endforeach
                                     @endif
-                                    @php
-                                        unset($upload);
-                                    @endphp --}}
                                             
-                                    @if(!empty($myHub->upload->image))
+                                    {{-- @if(!empty($myHub->upload->image))
                                     <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
                                     @endif
                                     @if(!empty($myHub->upload->video))
@@ -65,7 +64,7 @@
                                     <video width="100%" controls id="myImage{{$myHub->id}}">
                                         <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
                                     </video>
-                                    @endif
+                                    @endif --}}
                                     <div class="ratingShareWrap">
                                         <div class="rating ">
                                             <ul class="pl-0 mb-0 d-flex align-items-center">

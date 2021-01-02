@@ -471,10 +471,7 @@ class PostService {
     public function saveToMyHub($id,&$message=''){
         
         $postSave=$this->posts->find($id);
-
-        foreach($postSave->upload as $media){
-
-        }
+        $postMedia=Upload::select('*')->where('post_id',$id)->get();
         try{
             $this->posts['post_type'] = $postSave->post_type;
             $this->posts['user_id'] = Auth::user()->id;
@@ -492,15 +489,18 @@ class PostService {
             $this->posts['updated_at'] = Carbon::now();            
             
             if($this->posts->save()){
-                $this->upload->post_id = $this->posts->id;
-                $this->upload->image = $postSave->upload->image ? $postSave->upload->image : null;
-                $this->upload->video = $postSave->upload->video ? $postSave->upload->video : null;
-                $this->upload->save();
+                $post_id=$this->posts->id;
+                foreach($postMedia as $media){
+                        $upload = new Upload();
+                        $upload->post_id = $post_id;
+                        $upload->image = $media->image;
+                        $upload->video = $media->video;
+                        $upload->save();
+                       
+                 }
                 
-                if($this->upload->save()){
                     $message = 'Post has been saved successfully.!';
                     return $message;
-                }
                 
             }
         }
