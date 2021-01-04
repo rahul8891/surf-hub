@@ -135,22 +135,25 @@
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
                                             <div class="inputWrap">
-                                                <input type="text" placeholder="Phone No." class="form-control phone"
-                                                    name="phone" value="{{ old('phone') }}" minlength="10"
-                                                    maxlength="15" autocomplete="phone" required>
                                                 <span><img src="{{ asset("/img/phone1.png")}}" alt=""></span>
+                                                <div class="phoneWrap">
+                                                    <input type="text" placeholder="ICC" class="form-control telephone_prefix phone" readonly
+                                                    name="telephone_prefix" value="{{ old('telephone_prefix') }}">
+                                                    <input type="text" placeholder="Phone No." class="form-control phone_number"
+                                                    name="phone" value="{{ old('phone') }}" minlength="8"
+                                                    maxlength="15" autocomplete="phone" required>
+                                                </div>
                                                 @error('phone')
                                                 <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
-
                                         </div>
                                         <!-- <div class="text-danger">
                                             <span id="valid-msg" class="hide">✓
                                                 Valid</span>
-                                            <span id="error-msg" class="hide"></span>
-                                        </div> -->
-                                    </div>
+                                                <span id="error-msg" class="hide"></span>
+                                            </div> -->
+                                        </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group pos-rel">
