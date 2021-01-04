@@ -46,7 +46,7 @@
                             <div class="btnWrap">
                                 <h3>{{__(ucwords($user->user_profiles->first_name .' '. $user->user_profiles->last_name))}}
                                 </h3>
-                                <button>Edit</button>
+                                <button id="myButton">Edit</button>
                             </div>
                         </div>
                         <span id="imageError" class="notDisplayed required">{{ __('Please upload files having
@@ -176,19 +176,18 @@
                                             <span><img src="{{ asset("/img/phone1.png")}}" alt=""></span> Phone
                                             No.</label>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-6 col-lg-5">
                                         <div class="phoneWrap">
-                                        <input type="text" placeholder="ICC" class="form-control telephone_prefix phone" 
-                                            readonly name="telephone_prefix" 
-                                            value="{{ old('telephone_prefix',$user->user_profiles->icc) }}">
+                                        <input type="text" placeholder="ICC" class="form-control telephone_prefix2 phone" readonly
+                                            name="telephone_prefix" value="{{ old('telephone_prefix',$user->user_profiles->icc) }}">
                                         <input type="text" name="phone"
                                             value="{{ old('phone',$user->user_profiles->phone)}}"
                                             class="form-control @error('phone') is-invalid @enderror phone_number"
                                             minlength="8" maxlength="15" required>
+                                        </div>
                                         @error('phone')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
-                                        </div>
                                         <div class="id-error" id="id-error">
                                             <label for="phone" class="error" generated="true"></label>
                                         </div>
