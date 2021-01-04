@@ -145,7 +145,11 @@ $(document).ready(function () {
 	 ***************************************************************************************/
 	$("#exampleInputProfileFile").change(function () {
 		readProfileURL(this);
-    });
+	});
+	
+	$("#myButton").click(function() {
+		$('#exampleInputProfileFile').click();
+	});
 
 	function readProfileURL(input) {
 		var url = input.value;
