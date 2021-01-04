@@ -5,6 +5,7 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Search;
 use App\Services\MasterService;
 use App\Services\UserService;
 use App\Services\PostService;
@@ -15,6 +16,7 @@ class SearchController extends Controller
 {
 
     protected $posts;
+    protected $searches;
 
     public function __construct(MasterService $masterService,UserService $userService,PostService $postService)
     {
@@ -23,6 +25,7 @@ class SearchController extends Controller
             $this->userService = $userService;
             $this->postService = $postService;
             $this->posts = new Post();
+            $this->searches = new Search();
     }
 
     /**
@@ -33,13 +36,19 @@ class SearchController extends Controller
      */
     public function search(Request $request)
     {
+
+        // ***************check user's recent searches******************************
+        
+
+        // *************************************************************************
+
         $el=$request->input('sort');
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
-        $postsList=$this->sort($el);
         $userDetail=Auth::user()->user_profiles;
+        $postsList=$this->sort($el);
         return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail')); 
     }
 
@@ -83,6 +92,13 @@ class SearchController extends Controller
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
         $postsList=$this->postService->getFilteredList($params,'search');
+        
+        // ***********************************adding it to search table***************************************
+        
+
+        // ***************************************************************************************************
+        
+
         $userDetail=Auth::user()->user_profiles;
         return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail')); 
     }

@@ -38,7 +38,7 @@ class Post extends Model
     {
         return $this->hasOne(UserProfile::class, 'user_id', 'id');
     }
-
+    
     /**
      * Relationship between post and upload model    
      * @return object
@@ -47,6 +47,16 @@ class Post extends Model
     public function upload()
     {
         return $this->hasOne(Upload::class, 'post_id', 'id');
+    }
+    
+    /**
+     * Relationship between post and search model    
+     * @return object
+     */
+    
+    public function search()
+    {
+        return $this->hasOne(search::class, 'post_id', 'id');
     }
 
     /**
