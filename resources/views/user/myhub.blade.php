@@ -7,10 +7,8 @@
             <div class="col-lg-9">
                 @include('layouts/user/upload_layout')
                 @if (is_null($myHubs[0]))
-                <div class="alert alert-warning text-center alert-dismissible" role="alert" id="msg">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    {{ ucWords('no data found') }}
+                <div class="post alert text-center alert-dismissible py-5" role="alert" id="msg">
+                    {{ ucWords('no post found') }}
                 </div>
                 @elseif (!is_null($myHubs[0]))
                     @foreach ($myHubs as $key => $myHub)
@@ -123,7 +121,7 @@
                                                     <a href="javascript:void(0)">INFO
                                                         <div class="saveInfo infoHover">
                                                             <div class="pos-rel">
-                                                                <img src="img/tooltipArrowDown.png" alt="">
+                                                                <img src="{{ asset("img/tooltipArrowDown.png")}}" alt="">
                                                                 <div class="row">
                                                                     <div class="col-5">
                                                                         Date

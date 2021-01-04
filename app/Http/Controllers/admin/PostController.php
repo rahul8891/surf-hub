@@ -227,9 +227,16 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post=Post::find(Crypt::decrypt($id));
-        $post->delete();
-        return Redirect::to('admin/post/index')->withSuccess("succesfully deleted");
+        try{
+            $result = $this->posts->deletePost(Crypt::decrypt($id),$message);
+            if($result){
+                return redirect()->route('postIndex')->withSuccess($message);  
+            }else{
+                return redirect()->route('postIndex')->withErrors($message); 
+            }
+        }catch (\Exception $e){
+            return redirect()->route('postIndex', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
+        }
     }
     
 }

@@ -8,10 +8,8 @@
                 <!--include comman upload video and photo layout -->
                 @include('layouts/user/upload_layout')
                 @if (is_null($postsList[0]))
-                <div class="alert alert-warning text-center alert-dismissible" role="alert" id="msg">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    {{ ucWords('no data found') }}
+                <div class="post alert text-center alert-dismissible py-5" role="alert" id="msg">
+                    {{ ucWords('no post available') }}
                 </div>
                 @elseif (!is_null($postsList[0]))
                     @foreach ($postsList as $key => $posts)

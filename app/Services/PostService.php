@@ -67,7 +67,7 @@ class PostService {
      */
     public function getPostsListing(){
 
-        $postArray =  $this->posts->whereNull('posts.deleted_at')                           
+        $postArray =  $this->posts->where('is_deleted','0')                         
                                   ->orderBy('posts.created_at','ASC')
                                   ->paginate(10);
         return $postArray;

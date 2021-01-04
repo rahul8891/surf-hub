@@ -59,7 +59,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
    // Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
     
     Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');
-    Route::get('/user/myhub/filter', [MyHubController::class, 'filter'])->name('filterIndex');
+    Route::get('/user/myhub/filter', [MyHubController::class, 'filter'])->name('myhubFilterIndex');
     
     Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
     Route::get('search/filter', [SearchController::class, 'filter'])->name('searchFilterIndex');

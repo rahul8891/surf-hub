@@ -52,7 +52,7 @@
                         @endif
 
                         @if(str_contains(Request::path(),'myhub'))
-                            <form class="dropdown-menu filterWrap" action="{{route('filterIndex')}}" aria-labelledby="dropdownMenuButton2">
+                            <form class="dropdown-menu filterWrap" action="{{route('myhubFilterIndex')}}" aria-labelledby="dropdownMenuButton2">
                         @endif
 
                             <div class="filterHeader">
@@ -60,7 +60,7 @@
                                     <img src="{{ asset("/img/logo_small.png")}}" alt="">
                                     <h2>Filter</h2>
                                 </div>
-                                <input type="reset" value="Clear" id="close" class="ml-auto float-right close" >
+                                <input type="reset" value="Clear" id="clear" class="ml-auto float-right close" >
                             </div>
                             <div class="filterBody">
                                 <div class="row mb-3">
@@ -100,7 +100,7 @@
                                     </div>
                                     <div class="col-md-5 col-sm-7">
                                         <div class="selectWrap pos-rel">
-                                            <input class="form-control" type="date" name="surf_date" id="datepicker"
+                                            <input class="form-control" type="date" name="surf_date" id="startDatepicker"
                                                 value="{{ old('surf_date') }}" />
                                         </div>
                                     </div>
@@ -118,7 +118,7 @@
                                     </div>
                                     <div class="col-md-5 col-sm-7">
                                         <div class="selectWrap pos-rel">
-                                            <input class="form-control" type="date" name="end_date" id="datepicker"
+                                            <input class="form-control" type="date" name="end_date" id="endDatepicker2"
                                             value="{{ old('surf_date') }}" />
                                         </div>
                                     </div>
@@ -138,7 +138,7 @@
                                     <div class="col-md-5 col-sm-7">
                                         <div class="selectWrap pos-rel">
                                             <select class="form-control select2 select2-hidden-accessible country local_beach_break_id"
-                                            name="country_id" id="country_id">
+                                            name="country_id" id="filter_country_id">
                                             <option value="">-- Country --</option>
                                             @foreach($countries as $key => $value)
                                             <option value="{{ $value->id }}"
@@ -164,7 +164,7 @@
                                     </div>
                                     <div class="col-md-5 col-sm-7">
                                         <div class="selectWrap pos-rel">
-                                            <select class="form-control" name="state_id" id="state_id">
+                                            <select class="form-control" name="state_id" id="filter_state_id">
                                                 <option selected="selected" value="">-- State --</option>
                                                 @foreach($states as $key => $value)
                                                 <option value="{{ $value->id }}" 

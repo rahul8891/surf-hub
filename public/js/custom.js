@@ -857,6 +857,40 @@ $(document).ready(function () {
            $("#state_id").empty();          
         }
 	 });
+
+	/**
+	 * Filter State Baded on the selection on filter country
+	 */
+
+	$(document).on('change', '#filter_country_id', function (e) {    
+        var currentcountryValue = $(this).val();
+        if (currentcountryValue != 0) {
+           $.ajax({
+              type: "GET",
+              url:'/getState',
+              data: {
+				 country_id: currentcountryValue,
+                 _token: csrf_token
+              },
+              dataType: "json",
+              success: function (jsonResponse) {
+                 //console.log(jsonResponse);
+                 if (jsonResponse.status == 'success') {
+                    $("#filter_state_id").empty();
+                    var myJsonData = jsonResponse.data;
+                    $("#filter_state_id").append('<option value="">--Select--</option>');
+                    $.each(myJsonData, function (key, value) {
+                       $("#filter_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                 } else {
+                    $("#filter_state_id").empty();
+                 }
+              }
+           });
+        } else {
+           $("#filter_state_id").empty();          
+        }
+	 });
 	 
 
 	
