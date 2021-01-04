@@ -155,9 +155,13 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label>{{ _('Phone') }}</label>
-                            <input type="text" class="form-control phone @error('phone') is-invalid @enderror"
+                            <div class="phoneWrap">
+                            <input type="text" placeholder="ICC" class="form-control telephone_prefix phone" readonly
+                                 name="telephone_prefix" value="{{ old('telephone_prefix',$users->user_profiles->icc) }}">
+                            <input type="text" class="form-control @error('phone') is-invalid @enderror"
                                 name="phone" required value="{{ old('phone',$users->user_profiles->phone) }}"
-                                placeholder="Phone No." autocomplete="phone" minlength="10" maxlength="15">
+                                placeholder="Phone No." autocomplete="phone" minlength="8" maxlength="15">
+                            </div>
                             @error('phone')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

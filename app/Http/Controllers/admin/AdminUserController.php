@@ -59,7 +59,6 @@ class AdminUserController extends Controller
     public function index()
     {
         $users = $this->users->getUsersListing();
-        // dd($users[0]->user_profiles->first_name);
         $spiner = ($users) ? true : false;
         return view('admin/admin_user.index', compact('users','spiner'));     
     }
@@ -93,7 +92,7 @@ class AdminUserController extends Controller
                 'first_name' => ['required', 'string'],
                 'last_name' => ['nullable','string'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'phone' => ['required', 'numeric'],
+                'phone' => ['required'],
                 'country_id' => ['required','numeric'],
                 'language' => ['required','string'],
                 'local_beach_break_id' => ['required', 'string'],
