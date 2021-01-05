@@ -15,8 +15,18 @@ class UserFollow extends Model
     /**
      * Get the user that owns the profile.
      */
-    public function user()
+    public function follower()
     {
+        //return $this->belongsTo(User::class, 'followed_user_id', 'id');
+        return $this->belongsTo(User::class, 'follower_user_id', 'id');
+    }
+
+    /**
+     * Get the user that owns the profile.
+     */
+    public function followed()
+    {
+        //return $this->belongsTo(User::class, 'followed_user_id', 'id');
         return $this->belongsTo(User::class, 'followed_user_id', 'id');
     }
 }

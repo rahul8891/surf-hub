@@ -7,7 +7,7 @@
             <ul class="pl-0 mb-0 d-flex align-items-center">
                 @auth
                 <li>
-                    <a href="#">Follow Requests
+                    <a href="{{ route('followRequests') }}">Follow Requests
                         <span class="followCount">14</span>
                     </a>
                 </li>

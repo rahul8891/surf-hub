@@ -66,6 +66,14 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/saveToMyHub/{id}', [UserPostController::class, 'saveToMyHub'])->name('saveToMyHub');
 
     Route::post('/comment', [UserPostController::class, 'comment'])->name('comment');
+    Route::get('/followRequests', [UserController::class, 'followRequests'])->name('followRequests');
+    Route::get('/followers', [UserController::class, 'followers'])->name('followers');
+    Route::get('/following', [UserController::class, 'following'])->name('following');
+    Route::post('/unfollow', [UserController::class, 'unfollow'])->name('unfollow');
+    Route::post('/accept', [UserController::class, 'accept'])->name('accept');
+    Route::post('/reject', [UserController::class, 'reject'])->name('reject');
+    Route::post('/remove', [UserController::class, 'remove'])->name('remove');
+    Route::post('/follow', [UserController::class, 'follow'])->name('follow');
    
     
 });

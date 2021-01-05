@@ -11,6 +11,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
 use App\Models\UserProfile;
+use App\Models\UserFollow;
 
 class User extends Authenticatable implements MustVerifyEmail 
 {
@@ -92,7 +93,8 @@ class User extends Authenticatable implements MustVerifyEmail
     
     public function user_follows()
     {
-        return $this->hasMany(UserFollow::class, 'followed_user_id', 'id');
+        //return $this->hasMany(UserFollow::class, 'followed_user_id', 'id');
+        return $this->hasMany(UserFollow::class, 'follower_user_id', 'id');
     }
 
     /**

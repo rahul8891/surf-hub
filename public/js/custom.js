@@ -817,7 +817,168 @@ $(document).ready(function () {
         }
 	 });
 	 
+	$(document).on('click', '.unfollow', function(){
+		 var dataId = $(this).attr("data-id");
+		 $.ajax({
+			type: "POST",
+			url: "unfollow",
+			data: {
+				id: dataId,
+				status: 'UNFOLLOW',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				$('#row-id'+dataId).hide();
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+					if(jsonResponse.count==0){
+						$('#allFollower').hide();
+						$('#followCount').show();
+					}
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-success";
+				} else {
+					spinner.hide();
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-danger";
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
 
+	$(document).on('click', '.accept', function(){
+		 var dataId = $(this).attr("data-id");
+		 $.ajax({
+			type: "POST",
+			url: "accept",
+			data: {
+				id: dataId,
+				follower_request_status: '0',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				$('#row-id'+dataId).hide();
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+					if(jsonResponse.count==0){
+						$('#allFollower').hide();
+						$('#followCount').show();
+					}
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-success";
+				} else {
+					spinner.hide();
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-danger";
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
+
+	$(document).on('click', '.reject', function(){
+		 var dataId = $(this).attr("data-id");
+		 $.ajax({
+			type: "POST",
+			url: "reject",
+			data: {
+				id: dataId,
+				status: 'BLOCK',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				$('#row-id'+dataId).hide();
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+					if(jsonResponse.count==0){
+						$('#allFollower').hide();
+						$('#followCount').show();
+					}
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-success";
+				} else {
+					spinner.hide();
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-danger";
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
+
+	$(document).on('click', '.remove', function(){
+		 var dataId = $(this).attr("data-id");
+		 $.ajax({
+			type: "POST",
+			url: "remove",
+			data: {
+				id: dataId,
+				is_deleted: '1',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				$('#row-id'+dataId).hide();
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+					if(jsonResponse.count==0){
+						$('#allFollower').hide();
+						$('#followCount').show();
+					}
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-success";
+				} else {
+					spinner.hide();
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-danger";
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
+
+	$(document).on('click', '.follow', function(){
+		 var dataId = $(this).attr("data-id");
+		 $.ajax({
+			type: "POST",
+			url: "follow",
+			data: {
+				followed_user_id: dataId,
+				sataus: 'FOLLOW',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+				} else {
+					spinner.hide();
+					alert(jsonResponse.message);
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
 	
 });
 
