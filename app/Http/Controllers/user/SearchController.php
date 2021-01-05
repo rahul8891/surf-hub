@@ -16,7 +16,6 @@ class SearchController extends Controller
 {
 
     protected $posts;
-    protected $searches;
 
     public function __construct(MasterService $masterService,UserService $userService,PostService $postService)
     {
@@ -25,7 +24,6 @@ class SearchController extends Controller
             $this->userService = $userService;
             $this->postService = $postService;
             $this->posts = new Post();
-            $this->searches = new Search();
     }
 
     /**
@@ -36,19 +34,27 @@ class SearchController extends Controller
      */
     public function search(Request $request)
     {
-
-        // ***************check user's recent searches******************************
-        
-
-        // *************************************************************************
-
         $el=$request->input('sort');
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
         $userDetail=Auth::user()->user_profiles;
-        $postsList=$this->sort($el);
+
+        // ***************check user's recent searches******************************
+
+        $searchRecord=Search::select('*')->where('user_id',[Auth::user()->id])->get();
+        if(!empty($searchRecord)){
+            foreach($searchRecord as $post){
+                $postsList[]=$post->post;
+            }
+
+        }
+        // *************************************************************************
+        else{
+            $postsList=$this->sort($el);
+        }
+
         return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail')); 
     }
 
@@ -91,15 +97,20 @@ class SearchController extends Controller
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
+        $userDetail=Auth::user()->user_profiles;
         $postsList=$this->postService->getFilteredList($params,'search');
         
         // ***********************************adding it to search table***************************************
-        
-
+        Search::where('user_id',[Auth::user()->id])->delete();
+        foreach($postsList as $posts){
+            $search = new Search();
+            $search->user_id = Auth::user()->id;
+            $search->post_id = $posts->id;
+            $search->save();
+        }
         // ***************************************************************************************************
         
 
-        $userDetail=Auth::user()->user_profiles;
         return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail')); 
     }
 }
