@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use willvincent\Rateable\Rateable;
 use App\Models\User;
 use App\Models\Country;
 use App\Models\BeachBreak;
@@ -15,6 +16,7 @@ use App\Models\Tag;
 class Post extends Model
 {
     use HasFactory;
+    use Rateable;
 
     /************************************************************************************************************
      *                                          Eloquent: Relationships

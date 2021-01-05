@@ -438,6 +438,28 @@ class PostService {
 
 
     /**
+     * [ratePost] we are updating the post Details from user section 
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function ratePost($id,$value,&$message=''){
+        $posts=$this->posts->find($id);
+        try{
+            //************* saving user's rating *****************/
+            $posts->rateOnce($value);
+
+            $message = 'Thanks For Rating.!';
+            return $message;                
+ 
+        }
+        catch (\Exception $e){     
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+
+    /**
      * [deletePost] we are updating the post Details from user section 
      * @param  message return message based on the condition 
      * @return dataArray with message

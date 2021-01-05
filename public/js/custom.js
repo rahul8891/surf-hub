@@ -13,6 +13,13 @@ $(document).ready(function () {
 	$('#register .country option:selected').prop("selected", false);
 	$('#register .phone').val('');
 
+	/************** rating js ****************************/
+
+    //  $('#rating').rating({
+    //      showClear:false, 
+    //      showCaption:false,
+    // });
+
 	/************** spiner code ****************************/
     var stopSpiner = "{{ $spiner}}";
     

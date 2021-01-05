@@ -69,6 +69,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
     Route::get('/saveToMyHub/{id}', [UserPostController::class, 'saveToMyHub'])->name('saveToMyHub');
 
+    Route::get('/rating', [UserPostController::class, 'rating'])->name('rating');
+
     Route::post('/comment', [UserPostController::class, 'comment'])->name('comment');
    
     

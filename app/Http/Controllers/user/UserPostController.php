@@ -161,6 +161,28 @@ class UserPostController extends Controller
     }
 
     /**
+     * rating the specified post from database.
+     *
+     * @param $id, $value
+     * @return \Illuminate\Http\Response
+     */
+    public function rating(Request $request)
+    {
+        
+        $id=$request->id;
+        $value=$request->value;
+        try{
+            $result = $this->posts->ratePost(Crypt::decrypt($id),$value,$message);
+            if($result){
+                return redirect()->route('dashboard')->withSuccess($message);  
+            }else{
+                return redirect()->route('dashboard')->withErrors($message); 
+            }
+        }catch (\Exception $e){
+            return redirect()->route('dashboard', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
+        }
+    }
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -188,6 +210,7 @@ class UserPostController extends Controller
      */
     public function saveToMyHub($id)
     {
+        dd('got it');
         try{
             $result = $this->posts->saveToMyHub(Crypt::decrypt($id),$message);
             if($result){

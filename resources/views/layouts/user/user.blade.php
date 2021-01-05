@@ -7,7 +7,8 @@
     <link rel="shortcut icon" href="{{ asset('images/logo_small.png') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ config('customarray.siteTitle.user') }}</title>
-
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" />
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet"> --}}
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/bootstrap.min.css")}}">
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/style.css")}}">
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/loader.css")}}">
@@ -69,10 +70,13 @@
     <script src="{{ asset("/js/post.js")}}"></script>
     @endif
 
-
+    
+    
+    
     <script>
-    $(document).ready(function() {
-
+        $(document).ready(function() {
+            
+           
 
         $("#My-Profile").click(function() {
             $(".profileChangePswd").toggleClass("show");
@@ -137,6 +141,10 @@
         }
     }
     </script>
+
+    
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script> --}}
 </body>
 
 </html>

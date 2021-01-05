@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" />
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet">
 @extends('layouts.user.user')
 @section('content')
 @include('layouts/user/user_feed_menu')
@@ -62,28 +64,21 @@
                             <br><video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
                             @endif --}}
                             <div class="ratingShareWrap">
-                                <div class="rating ">
-                                    <ul class="pl-0 mb-0 d-flex align-items-center">
-                                        <li>
-                                            <a href="#"><img src="{{asset('img/star.png')}}" alt=""></a>
+                                <ul class="pl-0 mb-0 d-flex align-items-center">
+                                    <li>
+                                        <input id="rating{{$posts->id}}" name="rating" class="rating" 
+                                        data-min="0" data-max="5" data-step="1" data-size="xs" value="{{intval($posts->averageRating)}}">  
+                                    </li>
+                                    <li>
+                                        <a href="" onclick="this.href='{{route('rating')}}?id={{Crypt::encrypt($posts->id)}}&value='+document.getElementById('rating{{$posts->id}}').value">
+                                            submit 
+                                        </a>    
+
                                         </li>
-                                        <li>
-                                            <a href="#"><img src={{asset("img/star.png")}} alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src={{asset("img/star.png")}} alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src={{asset("img/star.png")}} alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src={{asset("img/star-grey.png")}} alt=""></a>
-                                        </li>
-                                        <li>
-                                            <span>4.0(90)</span>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    <li>
+                                        <span>{{intval($posts->averageRating)}}.0({{intval($posts->usersRated())}})</span>
+                                    </li>
+                                </ul>
                                 <div>
                                     <ul class="pl-0 mb-0 d-flex">
                                         <li>
@@ -298,5 +293,13 @@
         </div>
     </div>
 </section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
+<script type="text/javascript">
+     $('.rating').rating({
+         showClear:false, 
+         showCaption:false,
+    });
+</script>
 @include('layouts/models/upload_video_photo')
 @endsection
