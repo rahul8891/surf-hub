@@ -66,6 +66,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/saveToMyHub/{id}', [UserPostController::class, 'saveToMyHub'])->name('saveToMyHub');
 
     Route::post('/comment', [UserPostController::class, 'comment'])->name('comment');
+
     Route::get('/followRequests', [UserController::class, 'followRequests'])->name('followRequests');
     Route::get('/followers', [UserController::class, 'followers'])->name('followers');
     Route::get('/following', [UserController::class, 'following'])->name('following');
@@ -74,6 +75,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::post('/reject', [UserController::class, 'reject'])->name('reject');
     Route::post('/remove', [UserController::class, 'remove'])->name('remove');
     Route::post('/follow', [UserController::class, 'follow'])->name('follow');
+    Route::post('/report', [UserPostController::class, 'report'])->name('report');
    
     
 });
