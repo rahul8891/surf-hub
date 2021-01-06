@@ -63,19 +63,21 @@
                 <h1>Upload Video/Photo</h1>
                 <hr/>
                 <div class="image-wrapper">
-                    @if (!empty($postMedia[0]['image']))
-                        @foreach (explode(' ', json_decode($postMedia, true)[0]['image'] ?? '') as $postImage)
-                            <img src="{{ asset('storage/images/'.$postImage) }}" class="img-fluid img-thumbnail rounded mx-auto px-2" width="10%" alt="No photo attached">
-                        @endforeach
-                    @endif 
-                    @if (!empty($postMedia[0]['video']))
-                        <hr/>
-                        @foreach (explode(' ', json_decode($postMedia, true)[0]['video'] ?? '') as $postVideo)
-                            <video width="200" height="150" controls="true">
-                            <source src="{{ asset('storage/videos/'.$postVideo) }}" type="" />
-                            </video>
-                        @endforeach
-                   @endif 
+                    @if (!empty($postMedia))
+                                    @foreach ($postMedia as $item)  
+                                        @if (!is_null($item->image))
+                                        <img src="{{ asset('storage/images/'.$item->image) }}" class="img-fluid img-thumbnail rounded mx-auto px-2" width="20%" alt="No photo attached">
+                                        @endif
+                                    @endforeach
+                                <hr/>
+                                    @foreach ($postMedia as $item)
+                                        @if (!is_null($item->video))
+                                        <video width="200" height="150" controls="true">
+                                        <source src="{{ asset('storage/videos/'.$item->video) }}" type="" />
+                                        </video>
+                                        @endif
+                                    @endforeach
+                    @endif
                 </div>
                 <hr/>
                 <div class="form-group">
@@ -205,8 +207,8 @@
                                         <select class="form-control" name="state_id" id="state_id">
                                             <option selected="selected" value="">-- State --</option>
                                             @foreach($states as $key => $value)
-                                            <option value="{{ $key }}"
-                                                {{ ( old('state_id',$posts->state_id) == $key) ? 'selected' : '' }}>
+                                            <option value="{{ $value->id }}"
+                                                {{ ( old('state_id',$posts->state_id) == $value->id) ? 'selected' : '' }}>
                                                 {{ $value->name }}</option>
                                             @endforeach
                                         </select>

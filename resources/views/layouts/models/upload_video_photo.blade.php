@@ -120,9 +120,6 @@
                                                 <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                                             </div>
                                         </div>
-                                        <!-- <div class="id-error" id="id-error">
-                                            <label for="country_id" class="error" generated="true"></label>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -189,7 +186,7 @@
                                             <label>Surfer<span class="mandatory">*</span></label>
                                         </div>
                                         <div class="col-md-8">
-                                            <div class="d-flex">
+                                            {{-- <div class="d-flex">
                                                 <div class="cstm-check pos-rel">
                                                     <input type="radio" name="surfer" value="Me" id="Me" required />
                                                     <label for="Me" class="">Me</label>
@@ -202,7 +199,16 @@
                                                     <input type="radio" name="surfer" id="Unknown" value="Unknown" />
                                                     <label for="Unknown" class="">Unknown</label>
                                                 </div>
-                                            </div>
+                                            </div> --}}
+                                            <div class="d-flex">
+                                                @foreach ($customArray['surfer'] as $key => $value)
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="surfer" value="{{$value}}"
+                                                        id="{{$value}}" required/>
+                                                    <label for="{{$value}}" class="form-check-label text-primary">{{$value}}</label>
+                                                </div>
+                                                @endforeach
+                                            </div>  
                                         </div>
                                     </div>
                                         <div class="col-md-8 col-sm-4 float-right" style="display:none" id="othersSurfer">

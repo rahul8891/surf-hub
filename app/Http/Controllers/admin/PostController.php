@@ -161,9 +161,9 @@ class PostController extends Controller
             $countries = $this->masterService->getCountries();
             $language = $this->language;
             $users = $this->users->getUsersListing();
-            $states = $this->masterService->getStateByCountryId($currentUserCountryId);
             $customArray = $this->customArray;  
             $posts = Post::findOrFail(Crypt::decrypt($id));
+            $states = $this->masterService->getStateByCountryId($posts->country_id);
             $postMedia=Upload::where('post_id',Crypt::decrypt($id))->get();
             $spiner = ($this->posts) ? true : false;
         }catch (\Exception $e){         
