@@ -188,9 +188,9 @@ class UserPostController extends Controller
             }else {
                 $result = $this->posts->savePost($data,$imageArray,$videoArray,$message);
                 if($result){  
-                    return Redirect::to('dashboard')->withSuccess($message);
+                    return Redirect()->route('myhub')->withSuccess($message);
                 }else{
-                    return Redirect::to('dashboard')->withErrors($message);
+                    return Redirect()->route('myhub')->withErrors($message);
                 }
             }
         }catch (\Exception $e){

@@ -40,28 +40,21 @@
                         <p class="description">{{$posts->post_text}}</p>
                         <div class="imgRatingWrap">
                                     {{-- @php
-                                        $upload[]=$posts->upload::select('*')->where('post_id',$posts->id)->get();
+                                        $postMedia=$posts->upload->select('*')->where('post_id',$posts->id)->get();
                                     @endphp
-                                    @if (!empty($upload))   
-                                    @foreach ($upload as $postMedia)
-                                            @foreach ($postMedia as $item)  
-                                            @if (!is_null($item->image))
-                                            <img src="{{ asset('storage/images/'.$item->image) }}"alt="" class="img-fluid img-thumbnail" id="myImage{{$posts->id}}">
+                                    @if (!empty($postMedia))   
+                                    @foreach ($postMedia as $media)  
+                                            @if (!is_null($media->image))
+                                            <img src="{{ asset('storage/images/'.$media->image) }}"alt="" width="100%" class="img-fluid img-thumbnail" id="myImage{{$posts->id}}">
                                             @endif
-                                            @endforeach
                                 
-                                            @foreach ($postMedia as $item)
-                                            @if (!is_null($item->video))
+                                            @if (!is_null($media->video))
                                             <video width="100%" controls id="myImage{{$posts->id}}">
-                                                <source src="{{ asset('storage/videos/'.$item->video) }}" >    
+                                                <source src="{{ asset('storage/videos/'.$media->video) }}" >    
                                             </video>
                                             @endif
-                                            @endforeach
                                     @endforeach
-                                    @endif
-                                    @php
-                                        unset($upload);
-                                    @endphp --}}
+                                    @endif --}}
                             @if(!empty($posts->upload->image))
                             <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
                             @endif

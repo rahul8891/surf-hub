@@ -116,7 +116,7 @@
                                     <div class="col-md-5 col-sm-7">
                                         <div class="selectWrap pos-rel">
                                             <select class="form-control select2 select2-hidden-accessible country local_beach_break_id"
-                                            name="country_id" id="country_id">
+                                            name="country_id" id="filter_country_id">
                                             <option value="">-- Country --</option>
                                             @foreach($countries as $key => $value)
                                             <option value="{{ $value->id }}"
@@ -142,10 +142,11 @@
                                     </div>
                                     <div class="col-md-5 col-sm-7">
                                         <div class="selectWrap pos-rel">
-                                            <select class="form-control" name="state_id" id="state_id">
+                                            <select class="form-control" name="state_id" id="filter_state_id">
                                                 <option selected="selected" value="">-- State --</option>
                                                 @foreach($states as $key => $value)
-                                                <option value="{{ $value->id }}" {{ old('state_id') == $value->id ? "selected" : "" }}>
+                                                <option value="{{ $value->id }}" 
+                                                    {{ old('state_id') == $value->id ? "selected" : "" }}>
                                                     {{ $value->name }}</option>
                                                 @endforeach
                                             </select>

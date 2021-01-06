@@ -139,7 +139,6 @@ class UserController extends Controller
             'last_name' => ['required','min:3','string'],
             'user_name' => ['required', 'string','min:5','alpha_dash'],
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255'],
-            'telephone_prefix' => ['required'],
             'phone' => ['required'],
             'language' => ['required', 'string'],
             'country_id' => ['required', 'numeric'],

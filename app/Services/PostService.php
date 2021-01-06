@@ -72,7 +72,8 @@ class PostService {
      */
     public function getPostTotal(){
 
-        $postArray =  $this->posts->whereNull('deleted_at')                               
+        $postArray =  $this->posts->whereNull('deleted_at')   
+                                  ->where('is_deleted','0')                            
                                   ->orderBy('created_at','ASC')
                                   ->count();
         return $postArray;
@@ -85,7 +86,24 @@ class PostService {
      */
     public function getPostsListing(){
 
-        $postArray =  $this->posts->whereNull('posts.deleted_at')                           
+        $postArray =  $this->posts
+                                  ->where('is_deleted','0')    
+                                  ->where('post_type','PUBLIC')                              
+                                  ->orderBy('posts.created_at','ASC')
+                                  ->paginate(10);
+        return $postArray;
+    }
+
+    /**
+     * [getPostListing] we are getiing all the post
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getAllPostsListing(){
+
+        $postArray =  $this->posts
+                                  ->where('is_deleted','0')                              
                                   ->orderBy('posts.created_at','ASC')
                                   ->paginate(10);
         return $postArray;
@@ -189,10 +207,13 @@ class PostService {
 
 
         if ($params['surf_date']) {
-           $postArray->where('surf_start_date',$params['surf_date'])->get();
+           $postArray->where('surf_start_date','<',$params['surf_date'])->get();
+        }
+        if ($params['end_date']) {
+           $postArray->where('surf_start_date','>',$params['end_date'])->get();
         }
         if ($params['country_id']) {
-           $postArray->where('country_id',$params['country_id'])->get();
+           $postArray->whereDate('country_id',$params['country_id'])->get();
         }
         if ($params['local_beach_break_id']) {
            $postArray->where('local_beach_break_id',$params['local_beach_break_id'])->get();

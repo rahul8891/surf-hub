@@ -64,7 +64,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = $this->posts->getPostsListing();
+        $posts = $this->posts->getAllPostsListing();
         $spiner = ($posts) ? true : false;
         return view('admin/Post/index', compact('posts','spiner'));     
     }
