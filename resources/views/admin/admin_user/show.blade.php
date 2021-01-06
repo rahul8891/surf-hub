@@ -43,7 +43,7 @@
                         </div>
                         <div class="col-3">
                             <h2 class="lead"><b><br /></b></h2>
-                            <p class="text-muted text-md"><b>Phone: </b> {{ __($users->user_profiles->phone)}} </p>
+                            <p class="text-muted text-md"><b>Phone: </b> {{ __($users->user_profiles->icc)}}{{ __($users->user_profiles->phone)}} </p>
                             <p class="text-muted text-md"><b>Gender: </b> {{ __($users->user_profiles->gender)}} </p>
                             <p class="text-muted text-md"><b>Date Of Birth : </b> {{ __($users->user_profiles->dob)}}
                             </p>

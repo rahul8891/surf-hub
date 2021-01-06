@@ -59,7 +59,6 @@ class AdminUserController extends Controller
     public function index()
     {
         $users = $this->users->getUsersListing();
-        // dd($users[0]->user_profiles->first_name);
         $spiner = ($users) ? true : false;
         return view('admin/admin_user.index', compact('users','spiner'));     
     }

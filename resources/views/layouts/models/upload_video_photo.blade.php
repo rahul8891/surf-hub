@@ -47,8 +47,7 @@
                         </div>
                         <div class="row" id="filesInfo"></div>
 
-                        <span id="imageError" class="notDisplayed required">{{ __('Please upload files having
-                                            extensions: jpg, jpeg, png') }}</span>
+                        <span id="imageError" class="notDisplayed required">{{ __('Please upload files having extensions: jpg, jpeg, png') }}</span>
 
                         <!-- <output></output> -->
                         <!-- <span id="imageError">{{ __('Please upload files having
@@ -132,7 +131,7 @@
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
                                                 <input type="text" value="{{ old('local_beach_break')}}"
-                                                    name="local_beach_break" placeholder="Search Beach Break "
+                                                    name="local_beach_break" placeholder="Your Local Beach / Break."
                                                     class="form-control search-box" required>
                                                 <input type="hidden" name="local_beach_break_id"
                                                     id="local_beach_break_id" class="form-control">
