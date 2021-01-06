@@ -27,13 +27,9 @@
                                     <span>{{ postedDateTime($myHub->created_at) }}</span>
                                 </div>
                             </div>
-                            <form role="form" method="POST" name="follow{{$myHub->id}}" action="{{ route('follow') }}">
-                            @csrf
-                            <input type="hidden" class="userID" name="followed_user_id" value="{{$myHub->user_id}}">
-                            <button href="#" class="followBtn">
+                            <!-- <button class="followBtn follow" data-id="{{$myHub->user_id}}">
                                 <img src="img/user.png" alt=""> FOLLOW
-                            </button>
-                            </form>
+                            </button> -->
                         </div>
                         <p class=" description">{{$myHub->post_text}}</p>
                                 <div class="imgRatingWrap">
@@ -78,18 +74,18 @@
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
-                                                    <a href="#">
+                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$myHub->upload->image)); ?>,'sharer'">
                                                         <img src="{{ asset("/img/facebook.png")}}" alt="">
                                                     </a>
                                                 </li>
-                                                <li>
+                                                <!-- <li>
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
                                                     <a href="#">
                                                         <img src="{{ asset("/img/maps-and-flags.png")}}" alt="">
                                                     </a>
-                                                </li>
+                                                </li> -->
                                                 <li>
                                                     <span class="divider"></span>
                                                 </li>

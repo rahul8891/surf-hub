@@ -305,15 +305,23 @@ class UserService {
                     $responseArray['status']='failure';
                     return $responseArray;
                 }else{
-                    $userFollows->followed_user_id = $input['followed_user_id'];
-                    $userFollows->follower_user_id = Auth::user()->id;
-                    $userFollows->status = $input['sataus'];
-                    if($userFollows->save()){
-                        $message='Follow request has been sent!';
-                        return false;
+                    if($input['followed_user_id'] == Auth::user()->id){
+                        $responseArray['message']='You can not follow your self.';
+                        $responseArray['status']='failure';
+                        return $responseArray;
                     }else{
-                        $message='The user details not be updated. Please, try again.';
-                        return false;
+                        $userFollows->followed_user_id = $input['followed_user_id'];
+                        $userFollows->follower_user_id = Auth::user()->id;
+                        $userFollows->status = $input['sataus'];
+                        if($userFollows->save()){
+                            $responseArray['message']='Follow request has been sent!';
+                            $responseArray['status']='success';
+                            return $responseArray;
+                        }else{
+                            $responseArray['message']='Unable to send follow request, Please, try again.';
+                            $responseArray['status']='success';
+                            return $responseArray;
+                        }
                     }
                 }
             }
