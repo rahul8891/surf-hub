@@ -48,6 +48,19 @@
 }
 
 @media only screen and (max-width: 1200px) {
+    .postComment {
+        position: absolute;
+        line-height: 47px;
+        margin-right: 100px;
+        margin-left: -73px;
+        display: none;
+        border-radius: 0px 50px 50px 0px;
+        background-color: #4c8df5;
+    }
+
+    .postComment:hover {
+        background-color: #4c8df5;
+    }
     header .bg-light {
         padding-left: 15px;
         padding-right: 15px;
@@ -91,6 +104,19 @@
 }
 
 @media only screen and (max-width: 991px) {
+    .postComment {
+        position: absolute;
+        line-height: 47px;
+        margin-right: 100px;
+        margin-left: -73px;
+        display: none;
+        border-radius: 0px 50px 50px 0px;
+        background-color: #4c8df5;
+    }
+
+    .postComment:hover {
+        background-color: #4c8df5;
+    }
     header .m-auto {
         margin-top: 20px !important;
     }
@@ -192,6 +218,19 @@
 }
 
 @media only screen and (max-width: 767px) {
+    .postComment {
+        position: absolute;
+        line-height: 47px;
+        margin-right: 100px;
+        margin-left: -73px;
+        display: none;
+        border-radius: 0px 50px 50px 0px;
+        background-color: #4c8df5;
+    }
+
+    .postComment:hover {
+        background-color: #4c8df5;
+    }
     .postsWrap .ratingShareWrap ul {
         flex-wrap: wrap;
         justify-content: center;
@@ -285,6 +324,19 @@
 }
 
 @media only screen and (max-width: 567px) {
+    .postComment {
+        position: absolute;
+        line-height: 41px;
+        margin-right: 100px;
+        margin-left: -73px;
+        display: none;
+        border-radius: 0px 50px 50px 0px;
+        background-color: #4c8df5;
+    }
+
+    .postComment:hover {
+        background-color: #4c8df5;
+    }
     .banner .contentWrap {
         padding: 20px;
         max-width: 100%;

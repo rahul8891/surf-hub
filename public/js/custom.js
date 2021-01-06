@@ -822,7 +822,14 @@ $(document).ready(function () {
 	 });
 	 
 
-	
+	$('.commentOnPost').keyup(function(){
+		var postId = $(this).attr('id');
+		if($(this).val().length > 0){
+			$("#submitPost"+postId).show();
+		}else{
+			$("#submitPost"+postId).hide();
+		}
+	});
 });
 
 //To select country name

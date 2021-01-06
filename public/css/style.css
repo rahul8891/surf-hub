@@ -1919,3 +1919,25 @@ form .error {
     letter-spacing: 1.4px;
     overflow: hidden;
 }
+
+.postComment {
+    position: absolute;
+    line-height: 47px;
+    margin-right: 100px;
+    margin-left: -73px;
+    display: none;
+    border-radius: 0px 50px 50px 0px;
+    background-color: #4c8df5;
+}
+
+.postComment:hover {
+    background-color: #4c8df5;
+}
+
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
