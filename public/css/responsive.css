@@ -67,7 +67,7 @@
         flex-wrap: wrap;
     }
 
-    .postsWrap .ratingShareWrap .rating {
+    .postsWrap .ratingShareWrap .rate {
         margin-right: 0px;
         margin-bottom: 15px;
     }
@@ -197,7 +197,7 @@
         justify-content: center;
     }
 
-    .postsWrap .ratingShareWrap .rating {
+    .postsWrap .ratingShareWrap .rate {
         flex: 0 0 100%;
         max-width: 100%;
     }
@@ -206,7 +206,7 @@
         margin-bottom: 10px;
     }
 
-    .postsWrap .ratingShareWrap .rating li {
+    .postsWrap .ratingShareWrap .rate li {
         margin-bottom: 0px;
     }
 
@@ -353,7 +353,7 @@
         line-height: 22px;
     }
 
-    .postsWrap .ratingShareWrap .rating li span,
+    .postsWrap .ratingShareWrap .rate li span,
     .postsWrap .ratingShareWrap li a {
         font-size: 16px;
     }

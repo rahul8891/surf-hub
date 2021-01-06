@@ -264,7 +264,7 @@
                                     </div>
                                     <div class="col-md-5 col-sm-7">
                                         <div class="selectWrap pos-rel">
-                                            <div class="rating">
+                                            <div class="rate">
                                                 <ul class="mb-0 pl-0">
                                                     <li>
                                                         <label>Star Rating</label>

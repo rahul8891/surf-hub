@@ -169,19 +169,19 @@ class UserPostController extends Controller
     public function rating(Request $request)
     {
         
-        $id=$request->id;
-        $value=$request->value;
+        $data = $request->all();
         try{
-            $result = $this->posts->ratePost(Crypt::decrypt($id),$value,$message);
+            $result = $this->posts->ratePost($data,$message);
             if($result){
-                return redirect()->route('dashboard')->withSuccess($message);  
+                json_encode(array('status'=>$result['status'], 'message'=>$result['message']));
             }else{
-                return redirect()->route('dashboard')->withErrors($message); 
+                json_encode(array('status'=>$result['status'], 'message'=>$result['message']));
             }
         }catch (\Exception $e){
             return redirect()->route('dashboard', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
         }
     }
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -210,7 +210,6 @@ class UserPostController extends Controller
      */
     public function saveToMyHub($id)
     {
-        dd('got it');
         try{
             $result = $this->posts->saveToMyHub(Crypt::decrypt($id),$message);
             if($result){

@@ -442,14 +442,18 @@ class PostService {
      * @param  message return message based on the condition 
      * @return dataArray with message
      */
-    public function ratePost($id,$value,&$message=''){
-        $posts=$this->posts->find($id);
+    public function ratePost($data,&$message=''){
+        // dd($data['value']);
+        $posts=$this->posts->find($data['id']);
         try{
             //************* saving user's rating *****************/
-            $posts->rateOnce($value);
+            $posts->rateOnce($data['value']);
 
-            $message = 'Thanks For Rating.!';
-            return $message;                
+            $responseArray['message']='Thanks For Rating!';
+            $responseArray['status']='success';
+            $responseArray['averageRating']=intval($myHub->averageRating);
+            $responseArray['userRated']=intval($myHub->userRated());
+            return $responseArray;             
  
         }
         catch (\Exception $e){     

@@ -66,7 +66,7 @@
                             <div class="ratingShareWrap">
                                 <ul class="pl-0 mb-0 d-flex align-items-center">
                                     <li>
-                                        <input id="rating{{$posts->id}}" name="rating" class="rating" 
+                                        <input id="rating{{$posts->id}}" name="rating" class="rating"  
                                         data-min="0" data-max="5" data-step="1" data-size="xs" value="{{intval($posts->averageRating)}}">  
                                     </li>
                                     <li>
@@ -300,6 +300,10 @@
          showClear:false, 
          showCaption:false,
     });
+
+    // $('.rating').on('change',function(e){
+    //     alert();
+    // })
 </script>
 @include('layouts/models/upload_video_photo')
 @endsection

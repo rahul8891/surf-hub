@@ -14,11 +14,29 @@ $(document).ready(function () {
 	$('#register .phone').val('');
 
 	/************** rating js ****************************/
+	
+	
+    $('.rating').on('change',function(e){
+        var value=$(this).val();
+		var id=$(this).attr("data-id");
+        var csrf_token = $('meta[name="csrf-token"]').attr("content");
 
-    //  $('#rating').rating({
-    //      showClear:false, 
-    //      showCaption:false,
-    // });
+        $.ajax({
+                type: "POST",
+				url: "/rating", 
+				data: {				
+                    value: value,
+                    id:id,
+					_token: csrf_token
+				},
+				dataType: "json",
+				success: function (jsonResponse) {
+				
+                   
+				}
+        });
+    });
+	
 
 	/************** spiner code ****************************/
     var stopSpiner = "{{ $spiner}}";
