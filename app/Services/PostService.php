@@ -341,55 +341,51 @@ class PostService {
      */
     public function savePost($input,$imageArray,$videoArray,&$message=''){
         try{
-            $this->posts->post_type = $input['post_type'];
-            $this->posts->user_id = $input['user_id'];
-            $this->posts->post_text = $input['post_text'];
-            $this->posts->country_id =$input['country_id'];
-            $this->posts->surf_start_date = $input['surf_date'];
-            $this->posts->wave_size = $input['wave_size'];
-            $this->posts->board_type = $input['board_type'];
-            $this->posts->state_id = $input['state_id'];
-            $this->posts->local_beach_break_id = $input['local_beach_break_id'];
-            $this->posts->surfer = $input['surfer'];
-            $this->posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
-            $this->posts->created_at = Carbon::now();
-            $this->posts->updated_at = Carbon::now();
-            if($this->posts->save()){
+          $postArray = array_merge($imageArray, $videoArray);
+          
+          foreach ($postArray as $key => $value) {
+            $posts = new Post();
+            $fileType = explode('/', $value->getMimeType());
+
+            $posts->post_type = $input['post_type'];
+            $posts->user_id = $input['user_id'];
+            $posts->post_text = $input['post_text'];
+            $posts->country_id =$input['country_id'];
+            $posts->surf_start_date = $input['surf_date'];
+            $posts->wave_size = $input['wave_size'];
+            $posts->board_type = $input['board_type'];
+            $posts->state_id = $input['state_id'];
+            $posts->local_beach_break_id = $input['local_beach_break_id'];
+            $posts->surfer = $input['surfer'];
+            $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
+            $posts->created_at = Carbon::now();
+            $posts->updated_at = Carbon::now();
+            if($posts->save()){
                 //for store media into upload table
-                $post_id=$this->posts->id;
-                if($imageArray){
-                    foreach($imageArray as $image){
-                        $imageName = $this->getPostImage($image);
-                        $upload = new Upload();
-                        $upload->post_id = $post_id;
-                        $upload->image = $imageName;
-                        $upload->video = null;
-                        $upload->save();
-                    }
+                $post_id=$posts->id;
+
+                if($fileType[0] == 'image'){
+                  $imageName = $this->getPostImage($value);
+                  $upload = new Upload();
+                  $upload->post_id = $post_id;
+                  $upload->image = $imageName;
+                  $upload->video = null;
+                  $upload->save();
                 }
-                if($videoArray){
-                    foreach($videoArray as $video){
-                        $videoName = $this->getPostVideo($video);
-                        $upload = new Upload();
-                        $upload->post_id = $post_id;
-                        $upload->image = null;
-                        $upload->video = $videoName;
-                        $upload->save();
-                    }
-                }
-                // $newImageArray = $this->getPostImageArray($imageArray,$post_id);
-                // $newVideoArray = $this->getPostVideoArray($videoArray,$post_id);
-                // $this->upload->post_id = $this->posts->id;
-                // $this->upload->image = ($newImageArray!=[]) ? implode(" ",$newImageArray) : null;
-                // $this->upload->video = ($newVideoArray!=[]) ? implode(" ",$newVideoArray) : null;
-                // $this->upload->save();
+                if($fileType[0] == 'video'){
+                  $videoName = $this->getPostVideo($value);
+                  $upload = new Upload();
+                  $upload->post_id = $post_id;
+                  $upload->image = null;
+                  $upload->video = $videoName;
+                  $upload->save();
+                } 
+              }      
+          }
+          $message = 'Post has been created successfully.!';
+          return $message;
                 
-                    $message = 'Post has been created successfully.!';
-                    return $message;
-                    
-             }
-                
-            }
+        }
         catch (\Exception $e){     
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message='"'.$e->getMessage().'"';
