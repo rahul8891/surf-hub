@@ -350,6 +350,8 @@ class PostService {
           }
           $postArray = array_filter(array_merge($imageArray, $videoArray));
           
+          if(!empty($postArray)){
+            
           foreach ($postArray as $key => $value) {
             $posts = new Post();
             $fileType = explode('/', $value->getMimeType());
@@ -388,6 +390,24 @@ class PostService {
                   $upload->save();
                 } 
               }      
+          }
+          }else{
+            $posts = new Post();
+
+            $posts->post_type = $input['post_type'];
+            $posts->user_id = $input['user_id'];
+            $posts->post_text = $input['post_text'];
+            $posts->country_id =$input['country_id'];
+            $posts->surf_start_date = $input['surf_date'];
+            $posts->wave_size = $input['wave_size'];
+            $posts->board_type = $input['board_type'];
+            $posts->state_id = $input['state_id'];
+            $posts->local_beach_break_id = $input['local_beach_break_id'];
+            $posts->surfer = $input['surfer'];
+            $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
+            $posts->created_at = Carbon::now();
+            $posts->updated_at = Carbon::now();
+            $posts->save();
           }
           $message = 'Post has been created successfully.!';
           return $message;
