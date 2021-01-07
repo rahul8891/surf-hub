@@ -341,7 +341,13 @@ class PostService {
      */
     public function savePost($input,$imageArray,$videoArray,&$message=''){
         try{
-          $postArray = array_merge($imageArray, $videoArray);
+          if(!isset($imageArray)){
+            $imageArray[]='';
+          }
+          if(!isset($videoArray)){
+            $videoArray[]='';
+          }
+          $postArray = array_filter(array_merge($imageArray, $videoArray));
           
           foreach ($postArray as $key => $value) {
             $posts = new Post();
