@@ -7,6 +7,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('customarray.siteTitle.admin') }}</title>
+    <link rel="shortcut icon" href="{{ asset('images/logo_small.png') }}">
     <!-- Font Awesome Icons -->
     <link href="{{ asset("/AdminLTE/plugins/fontawesome-free/css/all.min.css")}}" rel="stylesheet">
     <!-- DataTables -->

@@ -7,6 +7,9 @@ use App\Models\UserProfile;
 use App\Models\Post;
 use App\Models\Upload;
 use App\Models\Tag;
+use App\Models\Comment;
+use App\Models\Report;
+use App\Models\UserFollow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -34,6 +37,12 @@ class PostService {
 
     protected $tags;
 
+    protected $comment;
+
+    protected $report;
+
+    protected $userFollow;
+
     public function __construct() {
 
         // post model object
@@ -44,6 +53,15 @@ class PostService {
 
         // tag model object
         $this->tag = new Tag();
+
+        // comment model object
+        $this->comment = new Comment();
+
+        // report model object
+        $this->report = new Report();
+
+        // userFollow model object
+        $this->userFollow = new UserFollow();
     }
 
     /**
@@ -54,7 +72,8 @@ class PostService {
      */
     public function getPostTotal(){
 
-        $postArray =  $this->posts->whereNull('deleted_at')                               
+        $postArray =  $this->posts->whereNull('deleted_at')   
+                                  ->where('is_deleted','0')                            
                                   ->orderBy('created_at','ASC')
                                   ->count();
         return $postArray;
@@ -67,7 +86,24 @@ class PostService {
      */
     public function getPostsListing(){
 
-        $postArray =  $this->posts->whereNull('posts.deleted_at')                           
+        $postArray =  $this->posts
+                                  ->where('is_deleted','0')    
+                                  ->where('post_type','PUBLIC')                              
+                                  ->orderBy('posts.created_at','ASC')
+                                  ->paginate(10);
+        return $postArray;
+    }
+
+    /**
+     * [getPostListing] we are getiing all the post
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getAllPostsListing(){
+
+        $postArray =  $this->posts
+                                  ->where('is_deleted','0')                              
                                   ->orderBy('posts.created_at','ASC')
                                   ->paginate(10);
         return $postArray;
@@ -88,7 +124,7 @@ class PostService {
         }
 
         else if($el=='star'){
-            //////// code for rating, make above method replica
+            //////// code for rating, make replica of above condition
         }
 
         else{
@@ -110,7 +146,7 @@ class PostService {
      * @return dataArray
      */
     public function getFilteredList($params) {
-
+// dd($params);
         $postArray =  $this->posts->whereNull('posts.deleted_at')->where('user_id',[Auth::user()->id]);
 
         if(isset($params['Me'])){
@@ -171,8 +207,12 @@ class PostService {
 
 
         if ($params['surf_date']) {
-           $postArray->where('surf_start_date',$params['surf_date'])->get();
+           $postArray->whereDate('surf_start_date','>=',$params['surf_date'])->get();
         }
+        if ($params['end_date']) {
+           $postArray->whereDate('surf_start_date','<=',$params['end_date'])->get();
+        }
+
         if ($params['country_id']) {
            $postArray->where('country_id',$params['country_id'])->get();
         }
@@ -224,11 +264,12 @@ class PostService {
         $path = $video->storeAs($destinationPath,$fileNameToStore);
 
 
+        //**********trimming video********************/
+
         $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(0);
         $end   = \FFMpeg\Coordinate\TimeCode::fromSeconds(60);
         $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start,$end);
                 
-                //**********trimming video********************/
                 FFMpeg::open($path)
                     ->addFilter($clipFilter)
                     ->export()
@@ -301,38 +342,77 @@ class PostService {
      */
     public function savePost($input,$imageArray,$videoArray,&$message=''){
         try{
-            $this->posts->post_type = $input['post_type'];
-            $this->posts->user_id = $input['user_id'];
-            $this->posts->post_text = $input['post_text'];
-            $this->posts->country_id =$input['country_id'];
-            $this->posts->surf_start_date = $input['surf_date'];
-            $this->posts->wave_size = $input['wave_size'];
-            $this->posts->board_type = $input['board_type'];
-            $this->posts->state_id = $input['state_id'];
-            $this->posts->local_beach_break_id = $input['local_beach_break_id'];
-            $this->posts->surfer = $input['surfer'];
-            $this->posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
-            $this->posts->created_at = Carbon::now();
-            $this->posts->updated_at = Carbon::now();
+          if(!isset($imageArray)){
+            $imageArray[]='';
+          }
+          if(!isset($videoArray)){
+            $videoArray[]='';
+          }
+          $postArray = array_filter(array_merge($imageArray, $videoArray));
+          
+          if(!empty($postArray)){
             
-            if($this->posts->save()){
+          foreach ($postArray as $key => $value) {
+            $posts = new Post();
+            $fileType = explode('/', $value->getMimeType());
+
+            $posts->post_type = $input['post_type'];
+            $posts->user_id = $input['user_id'];
+            $posts->post_text = $input['post_text'];
+            $posts->country_id =$input['country_id'];
+            $posts->surf_start_date = $input['surf_date'];
+            $posts->wave_size = $input['wave_size'];
+            $posts->board_type = $input['board_type'];
+            $posts->state_id = $input['state_id'];
+            $posts->local_beach_break_id = $input['local_beach_break_id'];
+            $posts->surfer = $input['surfer'];
+            $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
+            $posts->created_at = Carbon::now();
+            $posts->updated_at = Carbon::now();
+            if($posts->save()){
                 //for store media into upload table
-                $post_id=$this->posts->id;
-                $newImageArray = $this->getPostImageArray($imageArray,$post_id);
-                $newVideoArray = $this->getPostVideoArray($videoArray,$post_id);
-                $this->upload->post_id = $this->posts->id;
-                $this->upload->image = ($newImageArray!=[]) ? implode(" ",$newImageArray) : null;
-                $this->upload->video = ($newVideoArray!=[]) ? implode(" ",$newVideoArray) : null;
-                $this->upload->save();
-                
-                if($this->upload->save()){
-                    $message = 'Post has been created successfully.!';
-                    return $message;
+                $post_id=$posts->id;
+
+                if($fileType[0] == 'image'){
+                  $imageName = $this->getPostImage($value);
+                  $upload = new Upload();
+                  $upload->post_id = $post_id;
+                  $upload->image = $imageName;
+                  $upload->video = null;
+                  $upload->save();
                 }
-                    
-             }
+                if($fileType[0] == 'video'){
+                  $videoName = $this->getPostVideo($value);
+                  $upload = new Upload();
+                  $upload->post_id = $post_id;
+                  $upload->image = null;
+                  $upload->video = $videoName;
+                  $upload->save();
+                } 
+              }      
+          }
+          }else{
+            $posts = new Post();
+
+            $posts->post_type = $input['post_type'];
+            $posts->user_id = $input['user_id'];
+            $posts->post_text = $input['post_text'];
+            $posts->country_id =$input['country_id'];
+            $posts->surf_start_date = $input['surf_date'];
+            $posts->wave_size = $input['wave_size'];
+            $posts->board_type = $input['board_type'];
+            $posts->state_id = $input['state_id'];
+            $posts->local_beach_break_id = $input['local_beach_break_id'];
+            $posts->surfer = $input['surfer'];
+            $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
+            $posts->created_at = Carbon::now();
+            $posts->updated_at = Carbon::now();
+            $posts->save();
+          }
+          $message = 'Post has been created successfully.!';
+          return $message;
                 
-            }
+        }
         catch (\Exception $e){     
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message='"'.$e->getMessage().'"';
@@ -365,14 +445,35 @@ class PostService {
             $posts->updated_at = Carbon::now();
             
             ///for updating media into upload table
-                $newImageArray = $this->getPostImageArray($imageArray,$id);
-                $newVideoArray = $this->getPostVideoArray($videoArray,$id);
+            $post_id=$posts->id;
+                if($imageArray){
+                    foreach($imageArray as $image){
+                        $imageName = $this->getPostImage($image);
+                        $upload = new Upload();
+                        $upload->post_id = $post_id;
+                        $upload->image = $imageName;
+                        $upload->video = null;
+                        $upload->save();
+                    }
+                }
+                if($videoArray){
+                    foreach($videoArray as $video){
+                        $videoName = $this->getPostVideo($video);
+                        $upload = new Upload();
+                        $upload->post_id = $post_id;
+                        $upload->image = null;
+                        $upload->video = $videoName;
+                        $upload->save();
+                    }
+                }
+                // $newImageArray = $this->getPostImageArray($imageArray,$id);
+                // $newVideoArray = $this->getPostVideoArray($videoArray,$id);
                 
-                    Upload::where('post_id', $posts->id)
-                    ->update([
-                        'image'=>($newImageArray!=[]) ? implode(' ', array_filter($newImageArray)) : null,
-                        'video'=>($newVideoArray!=[]) ? implode(' ', array_filter($newVideoArray)) : null,
-                        ]);
+                //     Upload::where('post_id', $posts->id)
+                //     ->update([
+                //         'image'=>($newImageArray!=[]) ? implode(' ', array_filter($newImageArray)) : null,
+                //         'video'=>($newVideoArray!=[]) ? implode(' ', array_filter($newVideoArray)) : null,
+                //         ]);
             
             
             if($posts->save()){
@@ -424,12 +525,13 @@ class PostService {
     public function saveToMyHub($id,&$message=''){
         
         $postSave=$this->posts->find($id);
+        
         try{
             $this->posts['post_type'] = $postSave->post_type;
             $this->posts['user_id'] = Auth::user()->id;
             $this->posts['post_text'] = $postSave->post_text;
             $this->posts['country_id'] =$postSave->country_id;
-            $this->posts['surf_start_date'] = $postSave->surf_date;
+            $this->posts['surf_start_date'] = $postSave->surf_start_date;
             $this->posts['wave_size'] = $postSave->wave_size;
             $this->posts['board_type'] = $postSave->board_type;
             $this->posts['state_id'] = $postSave->state_id;
@@ -455,6 +557,98 @@ class PostService {
         }
         catch (\Exception $e){     
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+
+    /**
+     * [saveComment] we are storing the post comment 
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function saveComment($input,&$message=''){
+        try{
+            $this->comment->parent_user_id = $input['parent_user_id'];
+            $this->comment->user_id = Auth::user()->id;
+            $this->comment->post_id = $input['post_id'];
+            $this->comment->value = $input['comment'];
+            $this->comment->created_at = Carbon::now();
+            $this->comment->updated_at = Carbon::now();
+            //dd($this->comments);
+            if($this->comment->save()){
+                //for store media into upload table
+                $message = 'Comment has been created successfully.!';
+                return $message;                    
+            }
+                
+        }
+        catch (\Exception $e){     
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+
+    /**
+     * [saveReport] we are storing the post report 
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function saveReport($input,&$message=''){
+        
+        try{
+            $this->report->post_id = $input['post_id'];
+            $this->report->user_id = Auth::user()->id;
+            if(isset($input['incorrect'])){
+                $this->report->incorrect = $input['incorrect'];
+            }
+            if(isset($input['inappropriate'])){
+                $this->report->inappropriate = $input['inappropriate'];
+            }
+            if(isset($input['tolls'])){
+                $this->report->tolls = $input['tolls'];
+            }
+            $this->report->comments = $input['comments'];
+            $this->report->created_at = Carbon::now();
+            $this->report->updated_at = Carbon::now();
+            //dd($this->comments);
+            if($this->report->save()){
+                //for store media into upload table
+                $message = 'Report has been created successfully.!';
+                return $message;                    
+            }
+                
+        }
+        catch (\Exception $e){     
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+
+    /**
+     * [saveFollow] we are storing the follower data 
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function saveFollow($input,&$message=''){
+        
+        try{
+            $this->userFollow->followed_user_id = $input['followed_user_id'];
+            $this->userFollow->follower_user_id = Auth::user()->id;
+            $this->userFollow->created_at = Carbon::now();
+            $this->userFollow->updated_at = Carbon::now();
+            
+            if($this->userFollow->save()){
+                //for store media into upload table
+                $message = 'Follow request has been created successfully.!';
+                return $message;                    
+            }
+                
+        }
+        catch (\Exception $e){     
             $message='"'.$e->getMessage().'"';
             return $message;
         }

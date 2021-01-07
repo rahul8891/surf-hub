@@ -64,7 +64,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = $this->posts->getPostsListing();
+        $posts = $this->posts->getAllPostsListing();
         $spiner = ($posts) ? true : false;
         return view('admin/Post/index', compact('posts','spiner'));     
     }
@@ -82,7 +82,7 @@ class PostController extends Controller
         $users=User::all();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;   
-        return view('admin/post/create', compact('users','countries','currentUserCountryId','customArray','language','states'));
+        return view('admin/Post/create', compact('users','countries','currentUserCountryId','customArray','language','states'));
     }
 
     /**
@@ -118,9 +118,9 @@ class PostController extends Controller
             } else {
                 $result = $this->posts->savePost($data,$imageArray,$videoArray,$message);
                 if($result){  
-                    return Redirect::to('admin/post/index')->withSuccess($message);
+                    return redirect()->route('postIndex')->withSuccess($message);
                 }else{
-                    return Redirect::to('admin/post/create')->withErrors($message);
+                    return redirect()->route('postCreate')->withErrors($message);
                 }
             }
         }catch (\Exception $e){ 
@@ -144,7 +144,7 @@ class PostController extends Controller
         }catch (\Exception $e){ 
             throw ValidationException::withMessages([$e->getMessage()]);
         }
-        return view('admin/post/show', compact('post','postMedia','spiner'));  
+        return view('admin/Post/show', compact('post','postMedia','spiner'));  
     }
 
     /**
@@ -161,16 +161,16 @@ class PostController extends Controller
             $countries = $this->masterService->getCountries();
             $language = $this->language;
             $users = $this->users->getUsersListing();
-            $states = $this->masterService->getStateByCountryId($currentUserCountryId);
             $customArray = $this->customArray;  
             $posts = Post::findOrFail(Crypt::decrypt($id));
+            $states = $this->masterService->getStateByCountryId($posts->country_id);
             $postMedia=Upload::where('post_id',Crypt::decrypt($id))->get();
             $spiner = ($this->posts) ? true : false;
         }catch (\Exception $e){         
             throw ValidationException::withMessages([$e->getMessage()]);
         }
         
-        return view('admin/post/edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));
+        return view('admin/Post/edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));
     }
 
     /**
@@ -229,7 +229,7 @@ class PostController extends Controller
     {
         $post=Post::find(Crypt::decrypt($id));
         $post->delete();
-        return Redirect::to('admin/post/index')->withSuccess("succesfully deleted");
+        return redirect()->route('postIndex')->withSuccess("succesfully deleted");
     }
     
 }

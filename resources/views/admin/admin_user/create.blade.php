@@ -166,10 +166,10 @@
                             <label>{{ _('Search Beach Break') }}</label>
 
                             <input type="text"
-                                class="form-control @error('local_beach_break') is-invalid @enderror search-box"
+                                class="form-control @error('local_beach_break_id') is-invalid @enderror search-box"
                                 name="local_beach_break_id" placeholder="Search Beach Break "
                                 value="{{ old('local_beach_break')}}">
-                            @error('local_beach_break')
+                            @error('local_beach_break_id')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
