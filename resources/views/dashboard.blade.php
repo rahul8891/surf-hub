@@ -291,6 +291,7 @@
                     @endif
                     @endforeach
                     @endif
+                    <div class="">{{ $postsList->links()}}</div>
             </div>
             <div class="col-lg-3">
                 <div class="adWrap">
