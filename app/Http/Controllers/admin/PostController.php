@@ -82,7 +82,7 @@ class PostController extends Controller
         $users=User::all();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;   
-        return view('admin/post/create', compact('users','countries','currentUserCountryId','customArray','language','states'));
+        return view('admin/Post/create', compact('users','countries','currentUserCountryId','customArray','language','states'));
     }
 
     /**
@@ -118,9 +118,9 @@ class PostController extends Controller
             } else {
                 $result = $this->posts->savePost($data,$imageArray,$videoArray,$message);
                 if($result){  
-                    return Redirect::to('admin/post/index')->withSuccess($message);
+                    return redirect()->route('postIndex')->withSuccess($message);
                 }else{
-                    return Redirect::to('admin/post/create')->withErrors($message);
+                    return redirect()->route('postCreate')->withErrors($message);
                 }
             }
         }catch (\Exception $e){ 
@@ -144,7 +144,7 @@ class PostController extends Controller
         }catch (\Exception $e){ 
             throw ValidationException::withMessages([$e->getMessage()]);
         }
-        return view('admin/post/show', compact('post','postMedia','spiner'));  
+        return view('admin/Post/show', compact('post','postMedia','spiner'));  
     }
 
     /**
@@ -170,7 +170,7 @@ class PostController extends Controller
             throw ValidationException::withMessages([$e->getMessage()]);
         }
         
-        return view('admin/post/edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));
+        return view('admin/Post/edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));
     }
 
     /**
@@ -229,7 +229,7 @@ class PostController extends Controller
     {
         $post=Post::find(Crypt::decrypt($id));
         $post->delete();
-        return Redirect::to('admin/post/index')->withSuccess("succesfully deleted");
+        return redirect()->route('postIndex')->withSuccess("succesfully deleted");
     }
     
 }

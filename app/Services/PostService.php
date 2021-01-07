@@ -146,7 +146,7 @@ class PostService {
      * @return dataArray
      */
     public function getFilteredList($params) {
-
+// dd($params);
         $postArray =  $this->posts->whereNull('posts.deleted_at')->where('user_id',[Auth::user()->id]);
 
         if(isset($params['Me'])){
@@ -207,13 +207,14 @@ class PostService {
 
 
         if ($params['surf_date']) {
-           $postArray->where('surf_start_date','<',$params['surf_date'])->get();
+           $postArray->whereDate('surf_start_date','>=',$params['surf_date'])->get();
         }
         if ($params['end_date']) {
-           $postArray->where('surf_start_date','>',$params['end_date'])->get();
+           $postArray->whereDate('surf_start_date','<=',$params['end_date'])->get();
         }
+
         if ($params['country_id']) {
-           $postArray->whereDate('country_id',$params['country_id'])->get();
+           $postArray->where('country_id',$params['country_id'])->get();
         }
         if ($params['local_beach_break_id']) {
            $postArray->where('local_beach_break_id',$params['local_beach_break_id'])->get();
@@ -502,12 +503,13 @@ class PostService {
     public function saveToMyHub($id,&$message=''){
         
         $postSave=$this->posts->find($id);
+        
         try{
             $this->posts['post_type'] = $postSave->post_type;
             $this->posts['user_id'] = Auth::user()->id;
             $this->posts['post_text'] = $postSave->post_text;
             $this->posts['country_id'] =$postSave->country_id;
-            $this->posts['surf_start_date'] = $postSave->surf_date;
+            $this->posts['surf_start_date'] = $postSave->surf_start_date;
             $this->posts['wave_size'] = $postSave->wave_size;
             $this->posts['board_type'] = $postSave->board_type;
             $this->posts['state_id'] = $postSave->state_id;
@@ -573,7 +575,7 @@ class PostService {
      * @return dataArray with message
      */
     public function saveReport($input,&$message=''){
-        //dd($input['tolls']);
+        
         try{
             $this->report->post_id = $input['post_id'];
             $this->report->user_id = Auth::user()->id;

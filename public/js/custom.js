@@ -800,7 +800,7 @@ $(document).ready(function () {
 
 
         $(document).on('click','.search2 li', function(){
-		var value = $(this).text();
+		var value = $(this).text().trim();
 		var dataId = $(this).attr("data-id");
 		$('#other_surfer_list').html("");
 		$('.other_surfer').val(value);
