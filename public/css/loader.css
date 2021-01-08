@@ -32,6 +32,7 @@ form .error {
     color: green;
 }
 
+
 input.close{
     color:#4c8df5;
     border:white;
@@ -99,3 +100,42 @@ input.close:hover{
     overflow: visible;
     background: rgba(0, 0, 0, 0.9);
 }
+
+
+.auth-btn:hover,.auth-btn:focus{
+    background-color: #4c8df5;
+    border-radius: 5px;
+    padding: 10px 15px;
+    color:#fff !important;
+    transition: 0.3s;
+}
+
+
+.phoneWrap{
+    display: flex;
+}
+
+.telephone_prefix{
+    width: 40% !important;
+    padding: 10px 10px 10px 30px !important;
+
+}
+
+
+.telephone_prefix2{
+    max-width: 30% !important;
+    min-width: 30% !important;
+    padding: 5px 5px 5px 5px !important;
+    text-align: center;
+
+}
+
+.telephone_prefix:read-only {
+    background-color: white !important;
+  }
+
+.phone_number{
+    padding: 10px 10px 10px 10px !important;
+    margin-left: 10px !important;
+}
+

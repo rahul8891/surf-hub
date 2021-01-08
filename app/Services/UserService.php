@@ -69,6 +69,7 @@ class UserService {
                 $users->account_type = $dataRequest['account_type'];
                 $user_profiles->first_name = $dataRequest['first_name'];
                 $user_profiles->last_name = $dataRequest['last_name'];
+                $user_profiles->icc = $dataRequest['telephone_prefix'];
                 $user_profiles->phone = $dataRequest['phone'];
                 $user_profiles->country_id = $dataRequest['country_id'];
                 $user_profiles->language = $dataRequest['language'];

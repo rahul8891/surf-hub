@@ -33,9 +33,13 @@
                                     <span>{{ postedDateTime($posts->created_at) }}</span>
                                 </div>
                             </div>
-                            <a href="#" class="followBtn">
+                            <form role="form" method="POST" name="follow{{$posts->id}}" action="{{ route('follow') }}">
+                            @csrf
+                            <input type="hidden" class="userID" name="followed_user_id" value="{{$posts->user_id}}">
+                            <button href="#" class="followBtn">
                                 <img src="img/user.png" alt=""> FOLLOW
-                            </a>
+                            </button>
+                            </form>
                         </div>
                         <p class="description">{{$posts->post_text}}</p>
                         <div class="imgRatingWrap">
@@ -45,7 +49,8 @@
                                     @if (!empty($postMedia))   
                                     @foreach ($postMedia as $media)  
                                             @if (!is_null($media->image))
-                                            <img src="{{ asset('storage/images/'.$media->image) }}"alt="" class="img-fluid img-thumbnail" id="myImage{{$posts->id}}">
+
+                                            <img src="{{ asset('storage/images/'.$media->image) }}"alt="" width="100%" class="img-fluid img-thumbnail" id="myImage{{$posts->id}}">
                                             @endif
                                 
                                             @if (!is_null($media->video))
@@ -55,7 +60,7 @@
                                             @endif
                                     @endforeach
                                     @endif
-                            {{-- @if(!empty($posts->upload->image))
+                            @if(!empty($posts->upload->image))
                             <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
                             @endif
                             @if(!empty($posts->upload->video))
@@ -204,30 +209,33 @@
                                         </li>
                                         <li>
                                             <a href="javascript:void(0)">REPORT
+                                                <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
+                                                @csrf
+                                                <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
                                                 <div class="saveInfo infoHover reasonHover">
                                                     <div class="pos-rel">
                                                         <img src={{asset("img/tooltipArrowDown.png")}} alt="">
                                                         <div class="text-center reportContentTxt">Report Content</div>
                                                         <div class="reason">
-                                                            <input type="checkbox" id="Report1" name="Report1"
-                                                                value="Report">
+                                                            <input type="checkbox" id="Report1" name="incorrect" value="1">
                                                             <label for="Report1">Report Info as incorrect</label>
                                                         </div>
                                                         <div class="cstm-check pos-rel">
-                                                            <input type="checkbox" id="Report3">
-                                                            <label for="Report3">Report content as inappropriate</label>
+                                                            <input type="checkbox" id="Report2" name="inappropriate" value="1">
+                                                            <label for="Report2">Report content as inappropriate</label>
                                                         </div>
                                                         <div class="cstm-check pos-rel">
-                                                            <input type="checkbox" id="Report4">
-                                                            <label for="Report4">Report tolls</label>
+                                                            <input type="checkbox" id="Report3" name="tolls" value="1">
+                                                            <label for="Report3">Report tolls</label>
                                                         </div>
                                                         <div>
                                                             Additional Comments:
-                                                            <textarea></textarea>
+                                                            <textarea name="comments" class="reportOnPost" id="{{$posts->id}}"></textarea>
                                                         </div>
-                                                        <button>REPORT</button>
+                                                        <button type="submit" class="btn btn-info postReport" id="submitReport{{$posts->id}}">REPORT</button>
                                                     </div>
                                                 </div>
+                                                </form>
                                             </a>
                                         </li>
                                         @endif
@@ -251,7 +259,7 @@
                                       <div class="modal-body">
                                         @foreach ($posts->comments as $comments)
                                         <p class="comment ">
-                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                         </p>
                                         @endforeach
                                       </div>
@@ -266,18 +274,20 @@
                                 </div>
                                 <p class="viewCommentTxt" data-toggle="modal" data-target="#commentPopup">View all comments</p>
                                 @endif
-                                @foreach ($posts->comments as $comments)
+                                @foreach ($posts->comments->slice(0, 5) as $comments)
                                 <p class="comment ">
-                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                 </p>
                                 @endforeach
                             </div>
                             @endif
                             <div class="WriteComment">
                                 <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
-                                <input type="hidden" name="post_id" value="{{$posts->id}}">
-                                <textarea placeholder="Write a comment.." name="comment"></textarea>
-                                <!-- <button type="submit" id="next1" class="btn btn-info float-right">Submit</button> -->
+                                @csrf
+                                <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
+                                <input type="hidden" name="parent_user_id" value="{{$posts->user_id}}">
+                                <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$posts->id}}"></textarea>
+                                <button type="submit" class="btn btn-info postComment" id="submitPost{{$posts->id}}">Submit</button>
                                 </form>
                             </div>
                         </div>
@@ -286,6 +296,7 @@
                     @endif
                     @endforeach
                     @endif
+                    <div class="">{{ $postsList->links()}}</div>
             </div>
             <div class="col-lg-3">
                 <div class="adWrap">

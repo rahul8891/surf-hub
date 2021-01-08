@@ -31,12 +31,17 @@
                                     <span>{{ postedDateTime($myHub->created_at) }}</span>
                                 </div>
                             </div>
-                            <a href="#" class="followBtn">
-                                <img src="{{ asset("/img/user.png")}}" alt=""> FOLLOW
-                            </a>
+                            <form role="form" method="POST" name="follow{{$myHub->id}}" action="{{ route('follow') }}">
+                            @csrf
+                            <input type="hidden" class="userID" name="followed_user_id" value="{{$myHub->user_id}}">
+                            <button href="#" class="followBtn">
+                                <img src="img/user.png" alt=""> FOLLOW
+                            </button>
+                            </form>
                         </div>
                         <p class=" description">{{$myHub->post_text}}</p>
                                 <div class="imgRatingWrap">
+
                                     @php
                                         $postMedia=$myHub->upload->select('*')->where('post_id',$myHub->id)->get();
                                     @endphp
@@ -289,7 +294,7 @@
                                               <div class="modal-body">
                                                 @foreach ($myHub->comments as $comments)
                                                 <p class="comment ">
-                                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                                 </p>
                                                 @endforeach
                                               </div>
@@ -304,18 +309,20 @@
                                         </div>
                                         <p class="viewCommentTxt" data-toggle="modal" data-target="#commentPopup">View all comments</p>
                                         @endif
-                                        @foreach ($myHub->comments as $comments)
+                                        @foreach ($myHub->comments->slice(0, 5) as $comments)
                                         <p class="comment ">
-                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                         </p>
                                         @endforeach
                                     </div>
                                     @endif
                                     <div class="WriteComment">
                                         <form role="form" method="POST" name="comment{{$myHub->id}}" action="{{ route('comment') }}">
-                                        <input type="hidden" name="post_id" value="{{$myHub->id}}">
-                                        <textarea placeholder="Write a comment.." name="comment"></textarea>
-                                        <!-- <button type="submit" id="next1" class="btn btn-info float-right" style="position: absolute;">Submit</button> -->
+                                        @csrf
+                                        <input type="hidden" class="postID" name="post_id" value="{{$myHub->id}}">
+                                        <input type="hidden" name="parent_user_id" value="{{$myHub->user_id}}">
+                                        <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$myHub->id}}"></textarea>
+                                        <button type="submit" class="btn btn-info postComment" id="submitPost{{$myHub->id}}">Submit</button>
                                         </form>
                                     </div>
                                 </div>
@@ -323,6 +330,7 @@
                     </div>
                     @endforeach
                     @endif
+                    <div class="">{{ $myHubs->links()}}</div>
                 </div>
                 <div class="col-lg-3">
                     <div class="adWrap">

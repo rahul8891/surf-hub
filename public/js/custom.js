@@ -299,7 +299,7 @@ $(document).ready(function () {
 			phone: {
 				noSpace: true,
 				required: true,
-				minlength: 10,
+				minlength: 8,
 				maxlength: 15,
 				spaceNotAllow: true,
 				numericOnly: true
@@ -342,7 +342,7 @@ $(document).ready(function () {
 				error.insertAfter(element.parent().parent());
 			} else {
 				// This is the default behavior of the script for all fields
-				error.insertAfter(element);
+				error.insertAfter(element.parent());
 			}
 		},
 		messages: {
@@ -368,7 +368,7 @@ $(document).ready(function () {
 
 			phone: {
 				required: "Please enter your phone number",
-				minlength: "Your phone must be minimun 10 number long.",
+				minlength: "Your phone must be minimun 8 number long.",
 				maxlength: "Your phone must be maximum 15 number long."
 			},
 
@@ -590,7 +590,7 @@ $(document).ready(function () {
 			phone: {
 				// noSpace: true,
 				required: true,
-				minlength: 10,
+				minlength: 8,
 				maxlength: 15,
 				// spaceNotAllow: true,
 				numericOnly: true
@@ -617,7 +617,7 @@ $(document).ready(function () {
 				error.insertAfter(element.parent().parent());
 			} else {
 				// This is the default behavior of the script for all fields
-				error.insertAfter(element);
+				error.insertAfter(element.parent());
 			}
 		},
 		messages: {
@@ -643,7 +643,7 @@ $(document).ready(function () {
 
 			phone: {
 				required: "Please enter your phone number",
-				minlength: "Your phone must be minimun 10 number long.",
+				minlength: "Your phone must be minimun 8 number long.",
 				maxlength: "Your phone must be maximum 15 number long."
 			},
 
@@ -800,7 +800,7 @@ $(document).ready(function () {
 
 
         $(document).on('click','.search2 li', function(){
-		var value = $(this).text();
+		var value = $(this).text().trim();
 		var dataId = $(this).attr("data-id");
 		$('#other_surfer_list').html("");
 		$('.other_surfer').val(value);
@@ -858,7 +858,8 @@ $(document).ready(function () {
         }
 	 });
 
-	/**
+
+	 /**
 	 * Filter State Baded on the selection on filter country
 	 */
 
@@ -893,7 +894,14 @@ $(document).ready(function () {
 	 });
 	 
 
-	
+	$('.commentOnPost').keyup(function(){
+		var postId = $(this).attr('id');
+		if($(this).val().length > 0){
+			$("#submitPost"+postId).show();
+		}else{
+			$("#submitPost"+postId).hide();
+		}
+	});
 });
 
 //To select country name

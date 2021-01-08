@@ -71,21 +71,21 @@
                                         <div class="row">
                                             <div class="col-md-4 col-4">
                                                 <div class="cstm-check pos-rel">
-                                                    <input type="checkbox" id="test-me" name="Me" />
+                                                    <input type="checkbox" id="test-me" {{ Request::get('Me') ? "checked" : "" }} name="Me" />
                                                     <label for="test-me" class="pr-4">Me</label>
                                                 </div>
 
                                             </div>
                                             <div class="col-md-4 col-4">
                                                 <div class="cstm-check pos-rel">
-                                                    <input type="checkbox" id="test-other" name="Others" />
+                                                    <input type="checkbox" id="test-other" {{ Request::get('Others') ? "checked" : "" }} name="Others" />
                                                     <label for="test-other" class="pr-4">Other</label>
                                                 </div>
 
                                             </div>
                                             <div class="col-md-4 col-4">
                                                 <div class="cstm-check pos-rel">
-                                                    <input type="checkbox" id="test-unknown" name="Unknown" />
+                                                    <input type="checkbox" id="test-unknown" {{ Request::get('Unknown') ? "checked" : "" }} name="Unknown" />
                                                     <label for="test-unknown" class="pr-4">Unknown</label>
                                                 </div>
 
@@ -100,13 +100,14 @@
                                     </div>
                                     <div class="col-md-5 col-sm-7">
                                         <div class="selectWrap pos-rel">
-                                            <input class="form-control" type="date" name="surf_date" id="startDatepicker"
-                                                value="{{ old('surf_date') }}" />
+
+                                            <input class="form-control" type="date" name="surf_date" id="datepicker"
+                                                value="{{ Request::get('surf_date') ? Request::get('surf_date') : "" }}" />
                                         </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="cstm-check pos-rel">
-                                            <input type="checkbox" id="test3" name="FLOATER"/>
+                                            <input type="checkbox" id="test3" {{ Request::get('FLOATER') ? "checked" : "" }} name="FLOATER"/>
                                             <label for="test3" class="width-138">Floater</label>
                                         </div>
 
@@ -118,13 +119,13 @@
                                     </div>
                                     <div class="col-md-5 col-sm-7">
                                         <div class="selectWrap pos-rel">
-                                            <input class="form-control" type="date" name="end_date" id="endDatepicker2"
-                                            value="{{ old('surf_date') }}" />
+                                            <input class="form-control" type="date" name="end_date" id="datepicker"
+                                            value="{{ Request::get('end_date') ? Request::get('end_date') : "" }}" />
                                         </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="cstm-check pos-rel">
-                                            <input type="checkbox" id="test4" name="AIR"/>
+                                            <input type="checkbox" id="test4" {{ Request::get('AIR') ? "checked" : "" }} name="AIR"/>
                                             <label for="test4" class="width-138">Air</label>
                                         </div>
 
@@ -142,7 +143,7 @@
                                             <option value="">-- Country --</option>
                                             @foreach($countries as $key => $value)
                                             <option value="{{ $value->id }}"
-                                                {{ old('country_id',$userDetail->country_id) == $value->id ? "selected" : "" }}>
+                                                {{ old('country_id',Request::get('country_id')) == $value->id ? "selected" : "" }}>
                                                 {{ $value->name }}</option>
                                             @endforeach
                                         </select>
@@ -150,7 +151,7 @@
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="cstm-check pos-rel">
-                                            <input type="checkbox" id="test5" name="360"/>
+                                            <input type="checkbox" id="test5" {{ Request::get('360') ? "checked" : "" }} name="360"/>
                                             <label for="test5" class="width-138">360</label>
                                         </div>
 
@@ -168,7 +169,7 @@
                                                 <option selected="selected" value="">-- State --</option>
                                                 @foreach($states as $key => $value)
                                                 <option value="{{ $value->id }}" 
-                                                    {{ old('state_id',$userDetail->state_id) == $value->id ? "selected" : "" }}>
+                                                    {{ old('state_id',Request::get('state_id')) == $value->id ? "selected" : "" }}>
                                                     {{ $value->name }}</option>
                                                 @endforeach
                                             </select>
@@ -176,7 +177,7 @@
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="cstm-check pos-rel">
-                                            <input type="checkbox" id="test6" name="DROP_IN"/>
+                                            <input type="checkbox" id="test6" {{ Request::get('DROP_IN') ? "checked" : "" }} name="DROP_IN"/>
                                             <label for="test6" class="width-138">Drop In</label>
                                         </div>
 
@@ -189,21 +190,16 @@
                                     </div>
                                     <div class="col-md-5 col-sm-7">
                                         <div class="selectWrap pos-rel">
-                                            @php
-                                            $bb=$userDetail->beach_breaks;
-                                            $beach_break = $bb->beach_name.','.$bb->break_name
-                                            .''.$bb->city_region.','.$bb->state.','.$bb->country;
-                                            @endphp
-                                            <input type="text" value="{{ old('local_beach_break',$beach_break)}}"
+                                            <input type="text" value="{{ old('local_beach_break',$beach_name)}}"
                                                 placeholder="Search Beach Break" class="form-control search-box2">
-                                            <input type="hidden" value="{{ old('local_beach_break_id',$userDetail->local_beach_break_id)}}" name="local_beach_break_id"
+                                            <input type="hidden" value="{{ Request::get('local_beach_break_id') ? "selected" : "" }}" name="local_beach_break_id"
                                                 id="local_beach_break_id2" class="form-control">
                                             <div class="auto-search searchTwo" id="country_list2"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="cstm-check pos-rel">
-                                            <input type="checkbox" id="test7" name="BARREL_ROLL"/>
+                                            <input type="checkbox" id="test7" {{ Request::get('BARREL_ROLL') ? "checked" : "" }} name="BARREL_ROLL"/>
                                             <label for="test7" class="width-138">Barrel Roll</label>
                                         </div>
 
@@ -219,7 +215,7 @@
                                             <select class="form-control" name="wave_size">
                                                 <option value="">{{ __('-- Select --')}}</option>
                                                 @foreach($customArray['wave_size'] as $key => $value)
-                                                <option value="{{ $key }}" {{ old('wave_size') == $key ? "selected" : "" }}>{{ $value}}
+                                                <option value="{{ $key }}" {{ old('wave_size',Request::get('wave_size')) == $key ? "selected" : "" }}>{{ $value}}
                                                 </option>
                                                 @endforeach
                                             </select>
@@ -227,7 +223,7 @@
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="cstm-check pos-rel">
-                                            <input type="checkbox" id="test8" name="WIPEOUT" />
+                                            <input type="checkbox" id="test8" {{ Request::get('WIPEOUT') ? "checked" : "" }} name="WIPEOUT" />
 
                                             <label for="test8" class="width-138">Wipeout</label>
                                         </div>
@@ -244,7 +240,7 @@
                                             <select class="form-control" name="board_type">
                                                 <option value="">{{ __('-- Select --')}}</option>
                                                 @foreach($customArray['board_type'] as $key => $value)
-                                                <option value="{{ $key }}" {{ old('board_type') == $key ? "selected" : "" }}>{{ $value}}
+                                                <option value="{{ $key }}" {{ old('board_type',Request::get('board_type')) == $key ? "selected" : "" }}>{{ $value}}
                                                 </option>
                                                 @endforeach
                                             </select>
@@ -252,7 +248,7 @@
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="cstm-check pos-rel">
-                                            <input type="checkbox" id="test9" name="CUTBACK" />
+                                            <input type="checkbox" id="test9" {{ Request::get('CUTBACK') ? "checked" : "" }} name="CUTBACK" />
                                             <label for="test9" class="width-138">Cutback </label>
                                         </div>
 
@@ -290,7 +286,7 @@
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="cstm-check pos-rel">
-                                            <input type="checkbox" id="test10" name="SNAP"/>
+                                            <input type="checkbox" id="test10" {{ Request::get('SNAP') ? "checked" : "" }} name="SNAP"/>
                                             <label for="test10" class="width-138">Snap </label>
                                         </div>
 

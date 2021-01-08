@@ -87,8 +87,6 @@ class PostService {
     public function getPostsListing(){
 
 
-                               
-
         $postArray =  $this->posts
                                   ->where('is_deleted','0')    
                                   ->where('post_type','PUBLIC')                              
@@ -106,12 +104,12 @@ class PostService {
     public function getAllPostsListing(){
 
         $postArray =  $this->posts
-                                  ->where('is_deleted','0')                              
-
+                                  ->where('is_deleted','0')   
                                   ->orderBy('posts.created_at','ASC')
                                   ->paginate(10);
         return $postArray;
     }
+
 
     /**
      * [getMyHubListing] we are getiing all login user post
@@ -153,6 +151,7 @@ class PostService {
      * @return dataArray
      */
 
+
     public function getFilteredList($params, $for) {
         
         if ($for=='search'){
@@ -162,6 +161,7 @@ class PostService {
             $postArray =  $this->posts->whereNull('posts.deleted_at')->where('user_id',[Auth::user()->id]);
         }
         //************* applying conditions *****************/
+
 
         if(isset($params['Me'])){
             if ($params['Me']=='on') {

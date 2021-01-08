@@ -176,11 +176,15 @@
                                             <span><img src="{{ asset("/img/phone1.png")}}" alt=""></span> Phone
                                             No.</label>
                                     </div>
-                                    <div class="col-md-8 col-xl-9">
+                                    <div class="col-md-6 col-lg-5">
+                                        <div class="phoneWrap">
+                                        <input type="text" placeholder="ICC" class="form-control telephone_prefix2 phone" readonly
+                                            name="telephone_prefix" value="{{ old('telephone_prefix',$user->user_profiles->icc) }}">
                                         <input type="text" name="phone"
                                             value="{{ old('phone',$user->user_profiles->phone)}}"
-                                            class="form-control @error('phone') is-invalid @enderror phone"
-                                            minlength="10" maxlength="15" required>
+                                            class="form-control @error('phone') is-invalid @enderror phone_number"
+                                            minlength="8" maxlength="15" required>
+                                        </div>
                                         @error('phone')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror

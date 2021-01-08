@@ -63,7 +63,8 @@ class CreateNewUser implements CreatesNewUsers
                 $userProfile->language = $input['language'];
                 $userProfile->country_id = $input['country_id'];
                 $userProfile->local_beach_break_id = $input['local_beach_break_id'];
-                $userProfile->phone = $input['phone'];
+                $userProfile->icc = $input['telephone_prefix'];
+                $userProfile->phone =$input['phone'];
                 $userProfile->created_at = Carbon::now();
                 $userProfile->updated_at = Carbon::now();
                 if ($userProfile->save()) {

@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Services\MasterService;
 use App\Services\UserService;
 use App\Services\PostService;
+use App\Models\BeachBreak;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
@@ -34,6 +35,7 @@ class MyHubController extends Controller
      */
     public function index(Request $request)
     {
+        $beach_name ="";    
         $el=$request->input('sort');
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
         $countries = $this->masterService->getCountries();
@@ -42,6 +44,7 @@ class MyHubController extends Controller
         $myHubs=$this->sort($el);
         $userDetail=Auth::user()->user_profiles;
         return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail'));      
+
     }
 
 
@@ -79,15 +82,21 @@ class MyHubController extends Controller
     public function filter(Request $request)
     {
         //
+        $beach_name="";
         $params=$request->all();
         $order=$request->input('order');
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
-        $myHubs=$this->postService->getFilteredList($params,'myhub');
         $userDetail=Auth::user()->user_profiles;
-        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail')); 
+        $myHubs=$this->postService->getFilteredList($params);
+        if(!empty($request->input('local_beach_break_id'))){
+            $bb = BeachBreak::where('id',$request->input('local_beach_break_id'))->first(); 
+            $beach_name=$bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;
+        }
+        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','beach_name'));    
+
     }
 
     /**

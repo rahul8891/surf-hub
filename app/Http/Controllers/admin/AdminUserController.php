@@ -59,9 +59,8 @@ class AdminUserController extends Controller
     public function index()
     {
         $users = $this->users->getUsersListing();
-        // dd($users[0]->user_profiles->first_name);
         $spiner = ($users) ? true : false;
-        return view('admin/admin_user.index', compact('users','spiner'));     
+        return view('admin/admin_user/index', compact('users','spiner'));     
     }
 
     /**
@@ -74,7 +73,7 @@ class AdminUserController extends Controller
         $countries = $this->masterService->getCountries();
         $language = $this->language;
         $accountType = $this->accountType;       
-        return view('admin/admin_user.create', compact('countries','language','accountType'));
+        return view('admin/admin_user/create', compact('countries','language','accountType'));
     }
 
     /**
@@ -135,7 +134,7 @@ class AdminUserController extends Controller
         }catch (\Exception $e){ 
             throw ValidationException::withMessages([$e->getMessage()]);
         }
-        return view('admin/admin_user.show', compact('users','spiner'));  
+        return view('admin/admin_user/show', compact('users','spiner'));  
     }
 
     /**
@@ -157,7 +156,7 @@ class AdminUserController extends Controller
             throw ValidationException::withMessages([$e->getMessage()]);
         }
         
-        return view('admin/admin_user.edit', compact('users','countries','language','accountType','spiner'));
+        return view('admin/admin_user/edit', compact('users','countries','language','accountType','spiner'));
     }
 
     /**

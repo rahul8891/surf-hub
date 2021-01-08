@@ -115,6 +115,7 @@ class AdminUserService {
                 $this->userProfile->language = $input['language'];
                 $this->userProfile->country_id = $input['country_id'];
                 $this->userProfile->local_beach_break_id = $input['local_beach_break_id'];
+                $this->userProfile->icc = $input['telephone_prefix'];
                 $this->userProfile->phone = trim(Str::lower($input['phone']));
                 $this->userProfile->created_at = Carbon::now();
                 $this->userProfile->updated_at = Carbon::now();
@@ -219,6 +220,7 @@ class AdminUserService {
                 $users->account_type = $dataRequest['account_type'];
                 $user_profiles->first_name = $dataRequest['first_name'];
                 $user_profiles->last_name = $dataRequest['last_name'];
+                $user_profiles->icc = $dataRequest['telephone_prefix'];
                 $user_profiles->phone = $dataRequest['phone'];
                 $user_profiles->country_id = $dataRequest['country_id'];
                 $user_profiles->language = $dataRequest['language'];
