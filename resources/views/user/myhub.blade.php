@@ -1,4 +1,3 @@
-
 @extends('layouts.user.user')
 @section('content')
 @include('layouts/user/user_feed_menu')
@@ -59,11 +58,13 @@
                                     <div class="ratingShareWrap">
                                         <ul class="pl-0 mb-0 d-flex align-items-center">
                                             <li>
-                                                <input id="rating" name="rating" class="rating rating-loading" data-id="{{$myHub->id}}"
-                                                data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$myHub->averageRating}}">   
+                                                <input id="rating{{$myHub->id}}" name="rating" class="rating rating-loading" data-id="{{$myHub->id}}"
+                                                data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$myHub->userAverageRating}}">   
                                             </li>
                                             <li>
-                                                <span>{{intval($myHub->averageRating)}}.0({{intval($myHub->usersRated())}})</span>
+                                                <span id="average-rating{{$myHub->id}}">{{intval($myHub->usersRated())}}</span>
+                                                (<span id="users-rated{{$myHub->id}}">{{intval($myHub->averageRating)}}</span>)
+                                                
                                             </li>
                                         </ul>
                                         <div>
@@ -315,54 +316,5 @@
             </div>
         </div>
 </section>
-
-
-<script type="text/javascript">
-    
-
-    
-    // $('.rating').on('change',function(e){
-    //     var value=$(this).val();
-    //     var id=$(this).attr("data-id");
-    //     var csrf_token = $('meta[name="csrf-token"]').attr("content");
-
-    //     $.ajax({
-    //             type: "POST",
-	// 			url: "/rating", 
-	// 			data: {				
-    //                 value: value,
-    //                 id:id,
-	// 				_token: csrf_token
-	// 			},
-	// 			dataType: "json",
-	// 			success: function (jsonResponse) {
-				
-    //                 alert('jsonResponse.message');
-	// 			}
-    //     });
-    // });
-
-    // $('.rating').on('change',function(e){
-    //     alert('hi');
-
-    //     var value=$(this).val();
-    //     var id=$(this).attr("data-id");
-	// 		$.ajax({
-    //             type: "POST",
-	// 			url: "/rating", 
-	// 			data: {				
-    //                 value: value,
-    //                 id:id,
-	// 				_token: csrf_token
-	// 			},
-	// 			dataType: "json",
-	// 			success: function (jsonResponse) {
-				
-    //                 console.log('Done: ', jsonResponse);
-	// 			}
-	// 		});
-            
-    //     },100);
- </script>
 @include('layouts/models/upload_video_photo')
 @endsection

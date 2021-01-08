@@ -62,28 +62,16 @@
                             <br><video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
                             @endif --}}
                             <div class="ratingShareWrap">
-                                <div class="rating ">
-                                    <ul class="pl-0 mb-0 d-flex align-items-center">
-                                        <li>
-                                            <a href="#"><img src="{{asset('img/star.png')}}" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src={{asset("img/star.png")}} alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src={{asset("img/star.png")}} alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src={{asset("img/star.png")}} alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src={{asset("img/star-grey.png")}} alt=""></a>
-                                        </li>
-                                        <li>
-                                            <span>4.0(90)</span>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <ul class="pl-0 mb-0 d-flex align-items-center">
+                                    <li>
+                                        <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}"
+                                        data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$posts->userAverageRating}}">   
+                                    </li>
+                                    <li>
+                                        <span id="average-rating{{$posts->id}}">{{intval($posts->usersRated())}}</span>
+                                        (<span id="users-rated{{$posts->id}}">{{intval($posts->averageRating)}}</span>)
+                                    </li>
+                                </ul>
                                 <div>
                                     <ul class="pl-0 mb-0 d-flex">
                                         <li>

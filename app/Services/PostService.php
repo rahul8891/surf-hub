@@ -443,17 +443,26 @@ class PostService {
      * @return dataArray with message
      */
     public function ratePost($data,&$message=''){
-        // dd($data['value']);
-        $posts=$this->posts->find($data['id']);
+        $id=$data['id'];
+        $value=$data['value'];
+        $posts=$this->posts->find($id);
+        
         try{
             //************* saving user's rating *****************/
-            $posts->rateOnce($data['value']);
-
-            $responseArray['message']='Thanks For Rating!';
-            $responseArray['status']='success';
-            $responseArray['averageRating']=intval($myHub->averageRating);
-            $responseArray['userRated']=intval($myHub->userRated());
-            return $responseArray;             
+                if($posts->rateOnce($value)){
+                    $responseArray['status']='success';
+                    $responseArray['message']='Thanks For Rating!';
+                    $responseArray['averageRating']=$posts->averageRating;
+                    $responseArray['usersRated']=$posts->usersRated();
+                    return $responseArray;
+                }
+                else{
+                    $responseArray['status']='failed';
+                    $responseArray['message']='Not Submmited';
+                    $responseArray['averageRating']=$posts->averageRating;
+                    $responseArray['usersRated']=$posts->usersRated();
+                    return $responseArray;
+                }
  
         }
         catch (\Exception $e){     

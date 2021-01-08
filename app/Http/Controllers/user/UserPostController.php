@@ -172,13 +172,16 @@ class UserPostController extends Controller
         $data = $request->all();
         try{
             $result = $this->posts->ratePost($data,$message);
+            
             if($result){
-                json_encode(array('status'=>$result['status'], 'message'=>$result['message']));
+               return json_encode(array('status'=>$result['status'], 'message'=>$result['message'],
+                                 'averageRating'=>$result['averageRating'], 'usersRated'=>$result['usersRated']));
             }else{
-                json_encode(array('status'=>$result['status'], 'message'=>$result['message']));
+              return json_encode(array('status'=>$result['status'], 'message'=>$result['message'],
+                                 'averageRating'=>$result['averageRating'], 'usersRated'=>$result['usersRated']));
             }
         }catch (\Exception $e){
-            return redirect()->route('dashboard', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
+            return redirect()->route('dashboard', ['id' => $data['id']])->withErrors($e->getMessage());
         }
     }
     

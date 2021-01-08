@@ -17,7 +17,7 @@ $(document).ready(function () {
 	
 	
     $('.rating').on('change',function(e){
-        var value=$(this).val();
+		var value=$(this).val();
 		var id=$(this).attr("data-id");
         var csrf_token = $('meta[name="csrf-token"]').attr("content");
 
@@ -32,6 +32,8 @@ $(document).ready(function () {
 				dataType: "json",
 				success: function (jsonResponse) {
 				
+					$(`#average-rating${id}`).html(Math.floor(jsonResponse['averageRating']));
+					$(`#users-rated${id}`).html(Math.floor(jsonResponse['usersRated']));
                    
 				}
         });

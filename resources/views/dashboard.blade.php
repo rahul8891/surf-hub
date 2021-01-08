@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" />
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet">
 @extends('layouts.user.user')
 @section('content')
 @include('layouts/user/user_feed_menu')
@@ -66,17 +64,13 @@
                             <div class="ratingShareWrap">
                                 <ul class="pl-0 mb-0 d-flex align-items-center">
                                     <li>
-                                        <input id="rating{{$posts->id}}" name="rating" class="rating"  
-                                        data-min="0" data-max="5" data-step="1" data-size="xs" value="{{intval($posts->averageRating)}}">  
+                                        <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}"
+                                        data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$posts->userAverageRating}}">   
                                     </li>
                                     <li>
-                                        <a href="" onclick="this.href='{{route('rating')}}?id={{Crypt::encrypt($posts->id)}}&value='+document.getElementById('rating{{$posts->id}}').value">
-                                            submit 
-                                        </a>    
-
-                                        </li>
-                                    <li>
-                                        <span>{{intval($posts->averageRating)}}.0({{intval($posts->usersRated())}})</span>
+                                        <span id="average-rating{{$posts->id}}">{{intval($posts->usersRated())}}</span>
+                                        (<span id="users-rated{{$posts->id}}">{{intval($posts->averageRating)}}</span>)
+                                        
                                     </li>
                                 </ul>
                                 <div>
@@ -293,17 +287,5 @@
         </div>
     </div>
 </section>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
-<script type="text/javascript">
-     $('.rating').rating({
-         showClear:false, 
-         showCaption:false,
-    });
-
-    // $('.rating').on('change',function(e){
-    //     alert();
-    // })
-</script>
 @include('layouts/models/upload_video_photo')
 @endsection
