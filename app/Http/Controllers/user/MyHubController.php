@@ -43,7 +43,7 @@ class MyHubController extends Controller
         $customArray = $this->customArray;
         $myHubs=$this->sort($el);
         $userDetail=Auth::user()->user_profiles;
-        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail'));      
+        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'));      
 
     }
 
@@ -90,7 +90,7 @@ class MyHubController extends Controller
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
         $userDetail=Auth::user()->user_profiles;
-        $myHubs=$this->postService->getFilteredList($params);
+        $myHubs=$this->postService->getFilteredList($params,'myhub');
         if(!empty($request->input('local_beach_break_id'))){
             $bb = BeachBreak::where('id',$request->input('local_beach_break_id'))->first(); 
             $beach_name=$bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;

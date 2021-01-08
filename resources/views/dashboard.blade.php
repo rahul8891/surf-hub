@@ -59,8 +59,8 @@
                                             </video>
                                             @endif
                                     @endforeach
-                                    @endif
-                            @if(!empty($posts->upload->image))
+                                    @endif  
+                            {{-- @if(!empty($posts->upload->image))
                             <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
                             @endif
                             @if(!empty($posts->upload->video))

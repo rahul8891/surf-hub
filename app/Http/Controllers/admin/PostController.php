@@ -155,7 +155,6 @@ class PostController extends Controller
      */
     public function edit($id)
     {         
-
         try{
             $currentUserCountryId = Auth::user()->user_profiles->country_id;    
             $countries = $this->masterService->getCountries();

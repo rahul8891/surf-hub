@@ -5,6 +5,7 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\BeachBreak;
 use App\Models\Search;
 use App\Services\MasterService;
 use App\Services\UserService;
@@ -35,6 +36,7 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         $el=$request->input('sort');
+        $beach_name="";
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
@@ -52,7 +54,7 @@ class SearchController extends Controller
             $postsList=$this->sort($el);
         }
 
-        return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail')); 
+        return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name')); 
     }
 
     /**
@@ -88,6 +90,7 @@ class SearchController extends Controller
     public function filter(Request $request)
     {
         //
+        $beach_name="";
         $params=$request->all();
         $order=$request->input('order');
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
@@ -106,8 +109,11 @@ class SearchController extends Controller
             $search->save();
         }
         // ***************************************************************************************************
-        
+        if(!empty($request->input('local_beach_break_id'))){
+            $bb = BeachBreak::where('id',$request->input('local_beach_break_id'))->first(); 
+            $beach_name=$bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;
+        }
 
-        return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail')); 
+        return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name')); 
     }
 }
