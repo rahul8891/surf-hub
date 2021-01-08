@@ -44,14 +44,11 @@ class SearchController extends Controller
         // ***************check user's recent searches******************************
 
         $searchRecord=Search::select('*')->where('user_id',[Auth::user()->id])->get();
-        if(!empty($searchRecord)){
-            foreach($searchRecord as $post){
-                $postsList[]=$post->post;
-            }
-
+        foreach($searchRecord as $post){
+            $postsList[]=$post->post;
         }
         // *************************************************************************
-        else{
+        if(empty($postsList)){
             $postsList=$this->sort($el);
         }
 

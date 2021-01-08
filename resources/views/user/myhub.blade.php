@@ -1,6 +1,7 @@
 @extends('layouts.user.user')
 @section('content')
 @include('layouts/user/user_feed_menu')
+
 <section class="postsWrap">
     <div class="container">
         <div class="row">
@@ -31,6 +32,7 @@
                                     <span>{{ postedDateTime($myHub->created_at) }}</span>
                                 </div>
                             </div>
+
                             <form role="form" method="POST" name="follow{{$myHub->id}}" action="{{ route('follow') }}">
                             @csrf
                             <input type="hidden" class="userID" name="followed_user_id" value="{{$myHub->user_id}}">
@@ -58,39 +60,19 @@
                                             @endif
                                     @endforeach
                                     @endif
-                                            
-                                    {{-- @if(!empty($myHub->upload->image))
-                                    <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
-                                    @endif
-                                    @if(!empty($myHub->upload->video))
-                                    <br>
-                                    <video width="100%" controls id="myImage{{$myHub->id}}">
-                                        <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
-                                    </video>
-                                    @endif --}}
+
                                     <div class="ratingShareWrap">
-                                        <div class="rating ">
-                                            <ul class="pl-0 mb-0 d-flex align-items-center">
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star-grey.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <span>4.0(90)</span>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        <ul class="pl-0 mb-0 d-flex align-items-center">
+                                            <li>
+                                                <input id="rating{{$myHub->id}}" name="rating" class="rating rating-loading" data-id="{{$myHub->id}}"
+                                                data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$myHub->userAverageRating}}">   
+                                            </li>
+                                            <li>
+                                                <span id="average-rating{{$myHub->id}}">{{intval($myHub->usersRated())}}</span>
+                                                (<span id="users-rated{{$myHub->id}}">{{intval($myHub->averageRating)}}</span>)
+                                                
+                                            </li>
+                                        </ul>
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
                                                 <li>

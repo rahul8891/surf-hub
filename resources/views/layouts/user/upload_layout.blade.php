@@ -212,7 +212,7 @@
                                     </div>
                                     <div class="col-md-5 col-sm-7">
                                         <div class="selectWrap pos-rel">
-                                            <select class="form-control" name="wave_size">
+                                            <select class="form-control" name="wave_size">  
                                                 <option value="">{{ __('-- Select --')}}</option>
                                                 @foreach($customArray['wave_size'] as $key => $value)
                                                 <option value="{{ $key }}" {{ old('wave_size',Request::get('wave_size')) == $key ? "selected" : "" }}>{{ $value}}
@@ -259,29 +259,13 @@
                                         <label class="mb-0">Rating</label>
                                     </div>
                                     <div class="col-md-5 col-sm-7">
-                                        <div class="selectWrap pos-rel">
-                                            <div class="rating">
-                                                <ul class="mb-0 pl-0">
-                                                    <li>
-                                                        <label>Star Rating</label>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#"><img src="{{ asset("/img/star-grey.png")}}" alt=""></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                        <div class="">
+                                            <ul class="pl-0 mb-0 d-flex align-items-center">
+                                                <li>
+                                                    <input id="filter-rating" name="rating" class="rating rating-loading"
+                                                    data-min="0" data-max="5" data-step="1" data-size="xs" value="0">   
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5">

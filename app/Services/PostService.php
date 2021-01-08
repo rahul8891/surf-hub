@@ -507,6 +507,41 @@ class PostService {
 
 
     /**
+     * [ratePost] we are updating the post Details from user section 
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function ratePost($data,&$message=''){
+        $id=$data['id'];
+        $value=$data['value'];
+        $posts=$this->posts->find($id);
+        
+        try{
+            //************* saving user's rating *****************/
+                if($posts->rateOnce($value)){
+                    $responseArray['status']='success';
+                    $responseArray['message']='Thanks For Rating!';
+                    $responseArray['averageRating']=$posts->averageRating;
+                    $responseArray['usersRated']=$posts->usersRated();
+                    return $responseArray;
+                }
+                else{
+                    $responseArray['status']='failed';
+                    $responseArray['message']='Not Submmited';
+                    $responseArray['averageRating']=$posts->averageRating;
+                    $responseArray['usersRated']=$posts->usersRated();
+                    return $responseArray;
+                }
+ 
+        }
+        catch (\Exception $e){     
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+
+    /**
      * [deletePost] we are updating the post Details from user section 
      * @param  message return message based on the condition 
      * @return dataArray with message
