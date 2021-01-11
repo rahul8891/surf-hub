@@ -386,22 +386,22 @@ footer .copyright {
     position: relative;
 }
 
-.postsWrap .ratingShareWrap .rating li {
+.postsWrap .ratingShareWrap .rate li {
     margin-right: 6px;
 }
 
-.postsWrap .ratingShareWrap .rating li:last-child {
+.postsWrap .ratingShareWrap .rate li:last-child {
     margin-right: 0px;
 }
 
-.postsWrap .ratingShareWrap .rating li span {
+.postsWrap .ratingShareWrap .rate li span {
     font-size: 18px;
     line-height: 30px;
     color: #4c8df5;
     font-weight: 700;
 }
 
-.postsWrap .ratingShareWrap .rating {
+.postsWrap .ratingShareWrap .rate {
     margin-right: 40px;
 }
 
@@ -881,16 +881,16 @@ header .dropdown-toggle::after {
     width: 95px;
 }
 
-.postsWrap .post .uploadWrap .head .filterBody .rating ul {
+.postsWrap .post .uploadWrap .head .filterBody .rate ul {
     list-style: none;
     display: flex;
 }
 
-.postsWrap .post .uploadWrap .head .filterBody .rating ul li img {
+.postsWrap .post .uploadWrap .head .filterBody .rate ul li img {
     margin-right: 6px;
 }
 
-.postsWrap .post .uploadWrap .head .filterBody .rating ul li label {
+.postsWrap .post .uploadWrap .head .filterBody .rate ul li label {
     margin-bottom: 0px;
     margin-right: 15px;
 }
@@ -923,7 +923,7 @@ header .dropdown-toggle::after {
     bottom: 20px;
 }
 
-.postsWrap .post .uploadWrap .head .filterBody .rating {
+.postsWrap .post .uploadWrap .head .filterBody .rate {
     margin-bottom: 15px;
 }
 

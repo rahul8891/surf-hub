@@ -18,6 +18,18 @@
     .tab-dis-none {
         display: flex;
     }
+
+    .a_searchPage.postsWrap .post .uploadWrap .head .dropdown-menu.filterWrap {
+        right: auto;
+        left: 0px !important;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .a_searchPage.postsWrap .post .uploadWrap .head .dropdown-menu.filterWrap {
+        right: auto;
+        left: -200px !important;
+    }
 }
 
 @media only screen and (min-width: 767px) {
@@ -88,7 +100,7 @@
         flex-wrap: wrap;
     }
 
-    .postsWrap .ratingShareWrap .rating {
+    .postsWrap .ratingShareWrap .rate {
         margin-right: 0px;
         margin-bottom: 15px;
     }
@@ -224,6 +236,8 @@
     .contactUsWrap .loginWrap .formWrap .loginBtn {
         margin-bottom: 0px;
     }
+
+
 }
 
 @media only screen and (max-width: 767px) {
@@ -246,7 +260,7 @@
         justify-content: center;
     }
 
-    .postsWrap .ratingShareWrap .rating {
+    .postsWrap .ratingShareWrap .rate {
         flex: 0 0 100%;
         max-width: 100%;
     }
@@ -255,7 +269,7 @@
         margin-bottom: 10px;
     }
 
-    .postsWrap .ratingShareWrap .rating li {
+    .postsWrap .ratingShareWrap .rate li {
         margin-bottom: 0px;
     }
 
@@ -273,6 +287,7 @@
 
     .postsWrap .post .uploadWrap .head .dropdown-menu.filterWrap {
         width: 500px;
+        padding-bottom: 56px;
     }
 
     .uploadModal .optionalFields .cstm-check,
@@ -330,6 +345,10 @@
 
     header .notificationWrap {
         width: 450px;
+    }
+
+    .phoneWrap {
+        max-width: 100%;
     }
 }
 
@@ -416,7 +435,7 @@
         line-height: 22px;
     }
 
-    .postsWrap .ratingShareWrap .rating li span,
+    .postsWrap .ratingShareWrap .rate li span,
     .postsWrap .ratingShareWrap li a {
         font-size: 16px;
     }
@@ -660,6 +679,15 @@
         bottom: -27px;
         right: 1px;
         left: auto;
+    }
+    .a_uploadWrap [type="checkbox"]:not(:checked)+label::after,
+    .a_uploadWrap [type="checkbox"]:checked+label::after {
+        top: 4px;
+    }
+
+    .a_uploadWrap [type="checkbox"]:not(:checked)+label::before,
+    .a_uploadWrap [type="checkbox"]:checked+label::before {
+        top: 3px;
     }
 }
 

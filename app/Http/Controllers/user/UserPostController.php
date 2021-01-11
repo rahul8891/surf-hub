@@ -233,6 +233,31 @@ class UserPostController extends Controller
     }
 
     /**
+     * rating the specified post from database.
+     *
+     * @param $id, $value
+     * @return \Illuminate\Http\Response
+     */
+    public function rating(Request $request)
+    {
+        
+        $data = $request->all();
+        try{
+            $result = $this->posts->ratePost($data,$message);
+            
+            if($result){
+               return json_encode(array('status'=>$result['status'], 'message'=>$result['message'],
+                                 'averageRating'=>$result['averageRating'], 'usersRated'=>$result['usersRated']));
+            }else{
+              return json_encode(array('status'=>$result['status'], 'message'=>$result['message'],
+                                 'averageRating'=>$result['averageRating'], 'usersRated'=>$result['usersRated']));
+            }
+        }catch (\Exception $e){
+            return redirect()->route('dashboard', ['id' => $data['id']])->withErrors($e->getMessage());
+        }
+    }
+    
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id

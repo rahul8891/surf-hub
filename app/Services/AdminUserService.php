@@ -181,13 +181,13 @@ class AdminUserService {
      * @return void
      */
     public function deletUserRecord($id){       
-        $user = $this->users::find($id);
+        $user = $this->users->find($id);
         $user->delete();
     }
 
     public function updateUserStatus($input,&$message=''){
         try{
-            $users = $this->users::find($input['id']);
+            $users = $this->users->find($input['id']);
             if($users){
                 $users->id = $input['id'];
                 $users->status = ($input['status'] === 'true') ? $this->checkUserType['status']['ACTIVE'] : $this->checkUserType['status']['DEACTIVATED'];

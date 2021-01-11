@@ -18,6 +18,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use File;
 use DB;
 use FFMpeg;
@@ -86,6 +87,7 @@ class PostService {
      */
     public function getPostsListing(){
 
+
         $postArray =  $this->posts
                                   ->where('is_deleted','0')    
                                   ->where('post_type','PUBLIC')                              
@@ -103,11 +105,12 @@ class PostService {
     public function getAllPostsListing(){
 
         $postArray =  $this->posts
-                                  ->where('is_deleted','0')                              
+                                  ->where('is_deleted','0')   
                                   ->orderBy('posts.created_at','ASC')
                                   ->paginate(10);
         return $postArray;
     }
+
 
     /**
      * [getMyHubListing] we are getiing all login user post
@@ -115,11 +118,14 @@ class PostService {
      * @param  
      * @return dataArray
      */
-    public function getMyHubListing($el,$order){
-
+    public function getMyHubListing($postList,$el,$order){
+        
         if($el=='beach'){
-          $sortedBeach= $this->posts->join('beach_breaks', 'posts.local_beach_break_id', '=', 'beach_breaks.id')
-          ->orderBy('beach_breaks.beach_name', $order)->where('user_id',[Auth::user()->id])->select('posts.*')->paginate(10);
+          $sortedBeach= $postList
+          ->join('beach_breaks', 'posts.local_beach_break_id', '=', 'beach_breaks.id')
+          ->orderBy('beach_breaks.beach_name', $order)
+          ->select('posts.*')
+          ->paginate(10);
             return $sortedBeach;
         }
 
@@ -128,9 +134,9 @@ class PostService {
         }
 
         else{
-            $postArray =  $this->posts->with('beach_breaks')
+            $postArray =  $postList
+            ->with('beach_breaks')
             ->whereNull('posts.deleted_at')   
-            ->where('user_id',[Auth::user()->id])
             ->orderBy($el,$order)
             ->paginate(10);
 
@@ -145,9 +151,18 @@ class PostService {
      * @param  
      * @return dataArray
      */
-    public function getFilteredList($params) {
-// dd($params);
-        $postArray =  $this->posts->whereNull('posts.deleted_at')->where('user_id',[Auth::user()->id]);
+
+
+    public function getFilteredList($params, $for) {
+        
+        if ($for=='search'){
+            $postArray =  $this->posts->whereNull('posts.deleted_at');
+        }
+        if ($for=='myhub'){
+            $postArray =  $this->posts->whereNull('posts.deleted_at')->where('user_id',[Auth::user()->id]);
+        }
+        //************* applying conditions *****************/
+
 
         if(isset($params['Me'])){
             if ($params['Me']=='on') {
@@ -204,9 +219,10 @@ class PostService {
                 $postArray->where('optional_info','SNAP')->get();
             }
         }
-
-
+        
+        
         if ($params['surf_date']) {
+
            $postArray->whereDate('surf_start_date','>=',$params['surf_date'])->get();
         }
         if ($params['end_date']) {
@@ -214,25 +230,25 @@ class PostService {
         }
 
         if ($params['country_id']) {
-           $postArray->where('country_id',$params['country_id'])->get();
+            $postArray->where('country_id',$params['country_id'])->get();
         }
         if ($params['local_beach_break_id']) {
-           $postArray->where('local_beach_break_id',$params['local_beach_break_id'])->get();
+            $postArray->where('local_beach_break_id',$params['local_beach_break_id'])->get();
         }
         if ($params['board_type']) {
-           $postArray->where('board_type',$params['board_type'])->get();
+            $postArray->where('board_type',$params['board_type'])->get();
         }
         if ($params['wave_size']) {
-           $postArray->where('wave_size',$params['wave_size'])->get();
+            $postArray->where('wave_size',$params['wave_size'])->get();
         }
-        if ($params['state_id']) {
-           $postArray->where('state_id',$params['state_id'])->get();
+        if (isset($params['state_id'])) {
+            $postArray->where('state_id',$params['state_id'])->get();
         }
-     
+        
         return $postArray->orderBy('posts.id','DESC')->paginate(10);
     }
-
-
+    
+    
     /**
      * upload image into directory
      * @param  object  $input
@@ -492,6 +508,41 @@ class PostService {
 
 
     /**
+     * [ratePost] we are updating the post Details from user section 
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function ratePost($data,&$message=''){
+        $id=$data['id'];
+        $value=$data['value'];
+        $posts=$this->posts->find($id);
+        
+        try{
+            //************* saving user's rating *****************/
+                if($posts->rateOnce($value)){
+                    $responseArray['status']='success';
+                    $responseArray['message']='Thanks For Rating!';
+                    $responseArray['averageRating']=$posts->averageRating;
+                    $responseArray['usersRated']=$posts->usersRated();
+                    return $responseArray;
+                }
+                else{
+                    $responseArray['status']='failed';
+                    $responseArray['message']='Not Submmited';
+                    $responseArray['averageRating']=$posts->averageRating;
+                    $responseArray['usersRated']=$posts->usersRated();
+                    return $responseArray;
+                }
+ 
+        }
+        catch (\Exception $e){     
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+
+    /**
      * [deletePost] we are updating the post Details from user section 
      * @param  message return message based on the condition 
      * @return dataArray with message
@@ -525,7 +576,8 @@ class PostService {
     public function saveToMyHub($id,&$message=''){
         
         $postSave=$this->posts->find($id);
-        
+        $postMedia=Upload::select('*')->where('post_id',$id)->get();
+
         try{
             $this->posts['post_type'] = $postSave->post_type;
             $this->posts['user_id'] = Auth::user()->id;
@@ -543,15 +595,18 @@ class PostService {
             $this->posts['updated_at'] = Carbon::now();            
             
             if($this->posts->save()){
-                $this->upload->post_id = $this->posts->id;
-                $this->upload->image = $postSave->upload->image ? $postSave->upload->image : null;
-                $this->upload->video = $postSave->upload->video ? $postSave->upload->video : null;
-                $this->upload->save();
+                $post_id=$this->posts->id;
+                foreach($postMedia as $media){
+                        $upload = new Upload();
+                        $upload->post_id = $post_id;
+                        $upload->image = $media->image;
+                        $upload->video = $media->video;
+                        $upload->save();
+                       
+                 }
                 
-                if($this->upload->save()){
                     $message = 'Post has been saved successfully.!';
                     return $message;
-                }
                 
             }
         }
