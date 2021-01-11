@@ -6,10 +6,6 @@
                 <div class="col-md-6">
                     <img src="{{ asset("/img/upload.png")}}" alt=""> Upload Video/Photo
                 </div>
-                @else
-                <div class="col-md-6">
-                    <img src="{{ asset("/img/phone1.png")}}" alt=""> Search Video/Photo
-                </div>
                 @endif
                 @if(Auth::user() && (str_contains(Request::path(),'myhub') || str_contains(Request::path(),'search')))
                 <div class="col-md-3 col-6">

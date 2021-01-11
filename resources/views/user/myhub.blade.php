@@ -44,21 +44,14 @@
                         <p class=" description">{{$myHub->post_text}}</p>
                                 <div class="imgRatingWrap">
 
-                                    @php
-                                        $postMedia=$myHub->upload->select('*')->where('post_id',$myHub->id)->get();
-                                    @endphp
-                                    @if (!empty($postMedia))   
-                                    @foreach ($postMedia as $media)  
-                                            @if (!is_null($media->image))
-                                            <img src="{{ asset('storage/images/'.$media->image) }}"alt="" width="100%" class="img-fluid img-thumbnail" id="myImage{{$myHub->id}}">
-                                            @endif
-                                
-                                            @if (!is_null($media->video))
-                                            <video width="100%" controls id="myImage{{$myHub->id}}">
-                                                <source src="{{ asset('storage/videos/'.$media->video) }}" >    
-                                            </video>
-                                            @endif
-                                    @endforeach
+                                    @if(!empty($myHub->upload->image))
+                                    <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
+                                    @endif
+                                    @if(!empty($myHub->upload->video))
+                                    <br>
+                                    <video width="100%" controls id="myImage{{$myHub->id}}">
+                                        <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
+                                    </video>
                                     @endif
 
                                     <div class="ratingShareWrap">
