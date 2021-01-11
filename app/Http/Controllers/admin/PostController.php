@@ -155,7 +155,6 @@ class PostController extends Controller
      */
     public function edit($id)
     {         
-
         try{
             $currentUserCountryId = Auth::user()->user_profiles->country_id;    
             $countries = $this->masterService->getCountries();
@@ -227,9 +226,17 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post=Post::find(Crypt::decrypt($id));
-        $post->delete();
-        return redirect()->route('postIndex')->withSuccess("succesfully deleted");
+        try{
+            $result = $this->posts->deletePost(Crypt::decrypt($id),$message);
+            if($result){
+                return redirect()->route('postIndex')->withSuccess($message);  
+            }else{
+                return redirect()->route('postIndex')->withErrors($message); 
+            }
+        }catch (\Exception $e){
+            return redirect()->route('postIndex', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
+        }
+
     }
     
 }

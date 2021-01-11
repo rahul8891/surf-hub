@@ -5,15 +5,15 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\BeachBreak;
+use App\Models\Search;
 use App\Services\MasterService;
 use App\Services\UserService;
 use App\Services\PostService;
-use App\Models\BeachBreak;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
-
-class MyHubController extends Controller
+class SearchController extends Controller
 {
 
     protected $posts;
@@ -27,26 +27,35 @@ class MyHubController extends Controller
             $this->posts = new Post();
     }
 
-    
     /**
-     * Display a listing of the resource.
+     * search the specified resource from storage.
      *
+     * @param  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function search(Request $request)
     {
-        $beach_name ="";    
         $el=$request->input('sort');
+        $beach_name="";
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
-        $myHubs=$this->sort($el);
         $userDetail=Auth::user()->user_profiles;
-        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'));      
 
+        // ***************check user's recent searches******************************
+
+        $searchRecord=Search::select('*')->where('user_id',[Auth::user()->id])->get();
+        foreach($searchRecord as $post){
+            $postsList[]=$post->post;
+        }
+        // *************************************************************************
+        if(empty($postsList)){
+            $postsList=$this->sort($el);
+        }
+
+        return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name')); 
     }
-
 
     /**
      * Display a listing of post with sorting.
@@ -54,8 +63,8 @@ class MyHubController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function sort($el){
-        $postList=$this->posts->where('user_id',[Auth::user()->id]);
-
+        $postList=$this->posts;
+        
         if($el=="dateAsc"){
             return $this->postService->getMyHubListing($postList,'posts.created_at','ASC');
         }
@@ -71,7 +80,6 @@ class MyHubController extends Controller
         else{
             return $this->postService->getMyHubListing($postList,'posts.created_at','DESC');
         }       
-
     }
 
     /**
@@ -90,69 +98,22 @@ class MyHubController extends Controller
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
         $userDetail=Auth::user()->user_profiles;
-        $myHubs=$this->postService->getFilteredList($params,'myhub');
+        $postsList=$this->postService->getFilteredList($params,'search');
+        
+        // ***********************************adding it to search table***************************************
+        Search::where('user_id',[Auth::user()->id])->delete();
+        foreach($postsList as $posts){
+            $search = new Search();
+            $search->user_id = Auth::user()->id;
+            $search->post_id = $posts->id;
+            $search->save();
+        }
+        // ***************************************************************************************************
         if(!empty($request->input('local_beach_break_id'))){
             $bb = BeachBreak::where('id',$request->input('local_beach_break_id'))->first(); 
             $beach_name=$bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;
         }
-        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','beach_name'));    
 
+        return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name')); 
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
 }
