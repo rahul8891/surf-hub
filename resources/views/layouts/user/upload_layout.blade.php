@@ -1,5 +1,5 @@
 <div class="post p-0 ">
-    <div class="uploadWrap">
+    <div class="uploadWrap a_uploadWrap">
         <div class="head">
             <div class="row">
                 @if(Auth::user() && (!str_contains(Request::path(),'search')))
@@ -63,23 +63,23 @@
                                     <div class="col-md-2">
                                         <label class="mb-0">Surfer</label>
                                     </div>
-                                    <div class="col-md-5 col-sm-5">
+                                    <div class="col-md-6 col-sm-12">
                                         <div class="row">
-                                            <div class="col-md-4 col-4">
+                                            <div class="col-md-3 col-sm-3 col-6">
                                                 <div class="cstm-check pos-rel">
                                                     <input type="checkbox" id="test-me" {{ Request::get('Me') ? "checked" : "" }} name="Me" />
                                                     <label for="test-me" class="pr-4">Me</label>
                                                 </div>
 
                                             </div>
-                                            <div class="col-md-4 col-4">
+                                            <div class="col-md-4 col-sm-4 col-6">
                                                 <div class="cstm-check pos-rel">
                                                     <input type="checkbox" id="test-other" {{ Request::get('Others') ? "checked" : "" }} name="Others" />
                                                     <label for="test-other" class="pr-4">Other</label>
                                                 </div>
 
                                             </div>
-                                            <div class="col-md-4 col-4">
+                                            <div class="col-md-5 col-sm-5 col-6">
                                                 <div class="cstm-check pos-rel">
                                                     <input type="checkbox" id="test-unknown" {{ Request::get('Unknown') ? "checked" : "" }} name="Unknown" />
                                                     <label for="test-unknown" class="pr-4">Unknown</label>
@@ -99,7 +99,8 @@
 
                                             <input class="form-control" type="date" name="surf_date" id="datepicker"
                                                 value="{{ Request::get('surf_date') ? Request::get('surf_date') : "" }}" />
-                                        </div>
+                                            
+                                            </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="cstm-check pos-rel">
@@ -117,6 +118,7 @@
                                         <div class="selectWrap pos-rel">
                                             <input class="form-control" type="date" name="end_date" id="datepicker"
                                             value="{{ Request::get('end_date') ? Request::get('end_date') : "" }}" />
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5">
@@ -143,6 +145,10 @@
                                                 {{ $value->name }}</option>
                                             @endforeach
                                         </select>
+                                        <span>
+                                              
+                                                <img src="{{ asset("/img/select-downArrow.png")}}" alt="">
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5">
@@ -169,6 +175,10 @@
                                                     {{ $value->name }}</option>
                                                 @endforeach
                                             </select>
+                                            <span>
+                                              
+                                                <img src="{{ asset("/img/select-downArrow.png")}}" alt="">
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5">
@@ -185,12 +195,13 @@
                                         <label class="mb-0 width-95">Beach / Break </label>
                                     </div>
                                     <div class="col-md-5 col-sm-7">
-                                        <div class="selectWrap pos-rel">
+                                        <div class="pos-rel">
                                             <input type="text" value="{{ old('local_beach_break',$beach_name)}}"
                                                 placeholder="Search Beach Break" class="form-control search-box2">
                                             <input type="hidden" value="{{ Request::get('local_beach_break_id') ? "selected" : "" }}" name="local_beach_break_id"
                                                 id="local_beach_break_id2" class="form-control">
                                             <div class="auto-search searchTwo" id="country_list2"></div>
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5">
@@ -215,6 +226,10 @@
                                                 </option>
                                                 @endforeach
                                             </select>
+                                            <span>
+                                              
+                                                <img src="{{ asset("/img/select-downArrow.png")}}" alt="">
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5">
@@ -240,6 +255,10 @@
                                                 </option>
                                                 @endforeach
                                             </select>
+                                            <span>
+                                              
+                                                <img src="{{ asset("/img/select-downArrow.png")}}" alt="">
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5">
@@ -252,11 +271,26 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-2">
-                                        <label class="mb-0">Rating</label>
+                                        
                                     </div>
+                                    <div class="col-md-5"></div>
+                                    <div class="col-md-5 col-sm-5">
+                                        <div class="cstm-check pos-rel">
+                                            <input type="checkbox" id="test10" {{ Request::get('SNAP') ? "checked" : "" }} name="SNAP"/>
+                                            <label for="test10" class="width-138">Snap </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-2">
+                                        
+                                    </div>
+                                    <div class="col-md-5"></div>
                                     <div class="col-md-5 col-sm-7">
-                                        <div class="">
-                                            <ul class="pl-0 mb-0 d-flex align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <label class="mb-0 width-138">Star Rating</label>
+                                            <ul class="pl-0 mb-0 ">                                                
                                                 <li>
                                                     <input id="filter-rating" name="rating" class="rating rating-loading"
                                                     data-min="0" data-max="5" data-step="1" data-size="xs" value="0">   
@@ -264,13 +298,7 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="col-md-5 col-sm-5">
-                                        <div class="cstm-check pos-rel">
-                                            <input type="checkbox" id="test10" {{ Request::get('SNAP') ? "checked" : "" }} name="SNAP"/>
-                                            <label for="test10" class="width-138">Snap </label>
-                                        </div>
-
-                                    </div>
+                                    
                                 </div>
                                
                                 <div class="row">

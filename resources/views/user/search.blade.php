@@ -1,7 +1,7 @@
 @extends('layouts.user.user')
 @section('content')
 @include('layouts/user/user_feed_menu')
-<section class="postsWrap">
+<section class="postsWrap a_searchPage">
     <div class="container">
         <div class="row">
             <div class="col-lg-9">
@@ -52,7 +52,7 @@
                                         <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}"
                                         data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$posts->userAverageRating}}">   
                                     </li>
-                                    <li>
+                                    <li class="ratingCount">
                                         <span id="average-rating{{$posts->id}}">{{intval($posts->usersRated())}}</span>
                                         (<span id="users-rated{{$posts->id}}">{{intval($posts->averageRating)}}</span>)
                                     </li>
