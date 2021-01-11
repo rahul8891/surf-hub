@@ -6,8 +6,7 @@
     right: 0;
     bottom: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.75) url("../images/spiner4.gif") no-repeat
-        center;
+    background: rgba(0, 0, 0, 0.75) url("../images/spiner4.gif") no-repeat center;
     z-index: 10000;
 }
 
@@ -33,15 +32,16 @@ form .error {
 }
 
 
-input.close{
-    color:#4c8df5;
-    border:white;
+input.close {
+    color: #4c8df5;
+    border: white;
     font-size: large;
-    background-color:white;
+    background-color: white;
     outline: none !important;
 }
-input.close:hover{
-    color:#013a96;
+
+input.close:hover {
+    color: #013a96;
 }
 
 
@@ -102,27 +102,28 @@ input.close:hover{
 }
 
 
-.auth-btn:hover,.auth-btn:focus{
+.auth-btn:hover,
+.auth-btn:focus {
     background-color: #4c8df5;
     border-radius: 5px;
     padding: 10px 15px;
-    color:#fff !important;
+    color: #fff !important;
     transition: 0.3s;
 }
 
 
-.phoneWrap{
+.phoneWrap {
     display: flex;
 }
 
-.telephone_prefix{
+.telephone_prefix {
     width: 40% !important;
     padding: 10px 10px 10px 30px !important;
 
 }
 
 
-.telephone_prefix2{
+.telephone_prefix2 {
     max-width: 30% !important;
     min-width: 30% !important;
     padding: 5px 5px 5px 5px !important;
@@ -132,10 +133,33 @@ input.close:hover{
 
 .telephone_prefix:read-only {
     background-color: white !important;
-  }
+}
 
-.phone_number{
+.phone_number {
     padding: 10px 10px 10px 10px !important;
     margin-left: 10px !important;
 }
 
+.card .upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.card .upload-btn-wrapper .btn {
+    border: 2px solid gray;
+    color: gray;
+    background-color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.card .upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
