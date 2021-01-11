@@ -17,18 +17,12 @@
                 <div class="row">
                     <!-- Row Start -->
                     <div class="col-sm-4">
-                     <label for="exampleInputFile">{{ __('Profile Photo') }}</label>
+                     <label for="exampleInputFile" class="d-block">{{ __('Profile Photo') }}</label>
                         <div class="upload-btn-wrapper">
                             <button class="btn"> <img for="exampleInputFile" src="{{asset("/img/profile1.jpg")}}" width="" alt="Profile Photo" id="category-img-tag" class="img-fluid" for="exampleInputFile" /></button>
                              <input type="file" accept=".png, .jpg, .jpeg" id="exampleInputFile"
                                                     name="profile_photo_name" value="{{ old('profile_photo_name') }}"/>
-                        </div>
-                        {{-- <label class="custom-file-label" for="exampleInputFile">Choose file</label> --}}
-                       
-                        
-                       
-
-                        
+                        </div>                        
                     </div>
                     
                     <!-- Row end -->

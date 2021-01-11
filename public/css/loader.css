@@ -150,16 +150,39 @@ input.close:hover {
     border: 2px solid gray;
     color: gray;
     background-color: white;
-    padding: 8px 20px;
-    border-radius: 8px;
-    font-size: 20px;
-    font-weight: bold;
+    padding: 0px;
+    width: 120px;
+    border-radius: 100%;
+    overflow: hidden;
 }
 
-.card .upload-btn-wrapper input[type=file] {
+.card .upload-btn-wrapper input[type="file"] {
     font-size: 100px;
     position: absolute;
     left: 0;
     top: 0;
     opacity: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.card .upload-btn-wrapper .btn img {
+    width: 120px !important;
+}
+
+.a_videoImageUploader .upload-btn-wrapper {
+    display: block;
+    margin-bottom: 15px;
+    width: 32px;
+}
+
+.a_videoImageUploader .upload-btn-wrapper .btn {
+    border: 0px solid gray;
+    width: auto;
+    border-radius: 0px;
+    overflow: unset;
+}
+
+.a_videoImageUploader .upload-btn-wrapper .btn img {
+    width: auto !important;
 }

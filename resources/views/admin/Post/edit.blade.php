@@ -83,7 +83,7 @@
                 <div class="form-group">
                 <textarea placeholder="Share your surf experience....." name="post_text" autofocus required class="form-control" rows="3" >{{ old('post_text',$posts->post_text) }}</textarea>
                 <hr />
-                    <div class="videoImageUploader">
+                    <div class="videoImageUploader a_videoImageUploader">
                         <div class="upload-btn-wrapper">
                             <button type="button" id="file_button" class="btn"><img alt="" src="{{ asset("/img/photo.png")}}"></button>
                             <input type="file" id="input_multifileSelect" name="files[]" accept=".png, .jpg, .jpeg"
