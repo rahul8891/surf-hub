@@ -87,11 +87,20 @@ class PostService {
           ->orderBy('beach_breaks.beach_name', $order)
           ->select('posts.*')
           ->paginate(10);
-            return $sortedBeach;
+          return $sortedBeach;
         }
-
+        
         else if($el=='star'){
             //////// code for rating, make replica of above condition
+            // $rateSorted=$postList
+            // ->leftJoin('ratings', 'ratings.rateable_id  ', '=', 'posts.id')
+            // ->select('posts.*', DB::raw('AVG(rating) as ratings_average' ))
+            // ->groupBy('id')
+            // ->orderBy('ratings_average', 'DESC')
+            // ->get(); 
+
+            // dd($rateSorted);
+            // return $rateSorted;
         }
 
         else{
@@ -115,10 +124,10 @@ class PostService {
     public function getFilteredList($params, $for) {
         
         if ($for=='search'){
-            $postArray =  $this->posts->whereNull('posts.deleted_at');
+            $postArray =  $this->posts->with('ratings')->where('is_deleted','0');
         }
         if ($for=='myhub'){
-            $postArray =  $this->posts->whereNull('posts.deleted_at')->where('user_id',[Auth::user()->id]);
+            $postArray =  $this->posts->with('ratings')->where('user_id',[Auth::user()->id])->where('is_deleted','0');
         }
         //************* applying conditions *****************/
         if(isset($params['Me'])){
@@ -195,6 +204,13 @@ class PostService {
         }
         if (isset($params['state_id'])) {
             $postArray->where('state_id',$params['state_id'])->get();
+        }
+        if ($params['rating']) {
+            $rate=$params['rating'];
+            $postArray
+            ->whereHas('ratings', function($q) use ($rate){
+                $q->havingRaw('AVG(ratings.rating) >= ?', [$rate]);
+            });
         }
         
         return $postArray->orderBy('posts.id','DESC')->paginate(10);

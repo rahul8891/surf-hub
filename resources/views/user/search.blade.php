@@ -39,39 +39,25 @@
                         </div>
                         <p class="description">{{$posts->post_text}}</p>
                         <div class="imgRatingWrap">
-                                    @php
-                                        $postMedia=$posts->upload->select('*')->where('post_id',$posts->id)->get();
-                                    @endphp
-                                    @if (!empty($postMedia))   
-                                    @foreach ($postMedia as $media)  
-                                            @if (!is_null($media->image))
-                                            <img src="{{ asset('storage/images/'.$media->image) }}"alt="" class="img-fluid img-thumbnail" id="myImage{{$posts->id}}">
-                                            @endif
-                                
-                                            @if (!is_null($media->video))
-                                            <video width="100%" controls id="myImage{{$posts->id}}">
-                                                <source src="{{ asset('storage/videos/'.$media->video) }}" >    
-                                            </video>
-                                            @endif
-                                    @endforeach
-                                    @endif
-                            {{-- @if(!empty($posts->upload->image))
+                            @if(!empty($posts->upload->image))
                             <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
                             @endif
                             @if(!empty($posts->upload->video))
                             <br><video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
-                            @endif --}}
+                            @endif
+
                             <div class="ratingShareWrap">
                                 <ul class="pl-0 mb-0 d-flex align-items-center">
-                                    <li>
-                                        <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}"
-                                        data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$posts->userAverageRating}}">   
-                                    </li>
-                                    <li>
-                                        <span id="average-rating{{$posts->id}}">{{intval($posts->usersRated())}}</span>
-                                        (<span id="users-rated{{$posts->id}}">{{intval($posts->averageRating)}}</span>)
-                                    </li>
-                                </ul>
+                                            <li>
+                                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}"
+                                                data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$posts->userAverageRating}}">   
+                                            </li>
+                                            <li>
+                                                <span id="average-rating{{$posts->id}}">{{intval($posts->averageRating)}}</span>
+                                                (<span id="users-rated{{$posts->id}}">{{intval($posts->usersRated())}}</span>)
+                                                
+                                            </li>
+                                        </ul>
                                 <div>
                                     <ul class="pl-0 mb-0 d-flex">
                                         <li>

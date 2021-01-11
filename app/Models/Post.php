@@ -12,6 +12,7 @@ use App\Models\State;
 use App\Models\Upload;
 use App\Models\Comment;
 use App\Models\Tag;
+use App\Models\Rating;
 
 class Post extends Model
 {
@@ -105,6 +106,15 @@ class Post extends Model
     public function tags()
     {
         return $this->hasMany(Tag::class, 'post_id', 'id');
+    }
+
+    /**
+     * Relationship between posts and tags model    
+     * @return object
+     */
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class, 'rateable_id', 'id');
     }
 
 }

@@ -34,6 +34,7 @@ class MyHubController extends Controller
      */
     public function index(Request $request)
     {
+
         $el=$request->input('sort');
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
         $countries = $this->masterService->getCountries();
@@ -51,7 +52,7 @@ class MyHubController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function sort($el){
-        $postList=$this->posts->where('user_id',[Auth::user()->id]);
+        $postList=$this->posts->with('ratings')->where('user_id',[Auth::user()->id])->where('is_deleted','0');
 
         if($el=="dateAsc"){
             return $this->postService->getMyHubListing($postList,'posts.created_at','ASC');
@@ -63,7 +64,7 @@ class MyHubController extends Controller
             return $this->postService->getMyHubListing($postList,'beach','ASC');
         }
         else if($el=="star"){
-            return $this->postService->getMyHubListing($postList,'posts.created_at','DESC');
+            return $this->postService->getMyHubListing($postList,'star','DESC');
         }
         else{
             return $this->postService->getMyHubListing($postList,'posts.created_at','DESC');
