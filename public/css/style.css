@@ -3119,3 +3119,7 @@ form .error {
 .glyphicon-menu-up:before {
     content: "\e260";
 }
+
+textarea:focus,input:focus{
+    outline:0;
+}
