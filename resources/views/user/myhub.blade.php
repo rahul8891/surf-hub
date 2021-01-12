@@ -220,33 +220,77 @@
                                                     @endif
                                                     <!-- <a data-toggle="modal" data-target="#postTag{{$myHub->id}}">TAG -->
                                                     <a href="javascript:void(0)">TAG
-                                                        @if(count($myHub->tags) >= 1)
-                                                        <div class="saveInfo infoHover">
+                                                        
+                                                        <div class="saveInfo infoHover userinfoModal">
                                                             <div class="pos-rel">
-                                                                <img src="img/tooltipArrowDown.png" alt="">
-                                                                <div class="row">
-                                                                    @foreach ($myHub->tags as $tags)
+                                                                <img src="../../../img/tooltipArrowDown.png" alt="">
+                                                                <div class="scrollWrap">
+                                                                    
                                                                     <div class="post-head">
                                                                         <div class="userDetail">
-                                                                            <div class="col-5">
-                                                                                @if($tags->user->profile_photo_path)
-                                                                                <img src="{{ asset('storage/'.$tags->user->profile_photo_path) }}" class="taggedUserImg" alt="">
-                                                                                @else
-                                                                                <div class="taggedUserImg no-image">
-                                                                                    {{ucwords(substr($tags->user->user_profiles->first_name,0,1))}}{{ucwords(substr($tags->user->user_profiles->last_name,0,1))}}
-                                                                                </div>
-                                                                                @endif
+                                                                            <div class="imgWrap">
+                                                                                <img src="../../../img/johan.png" class="" alt="">   
+                                                                                <!-- <div class="taggedUserImg no-image">
+                                                                                  
+                                                                                </div> -->
                                                                             </div>
-                                                                            <div class="col-5">
-                                                                                <span class="userName">{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
-                                                                            </div>
+                                                                            <span class="userName">Rafi Raza</span>
+                                                                            
                                                                         </div>
                                                                     </div>
-                                                                    @endforeach
+                                                                    <div class="post-head">
+                                                                        <div class="userDetail">
+                                                                            <div class="imgWrap">
+                                                                                <!-- <img src="../../../img/johan.png" class="" alt="">    -->
+                                                                                <div class="taggedUserImg no-image">
+                                                                                  RR
+                                                                                </div>
+                                                                            </div>
+                                                                            <span class="userName">Rafi Raza</span>
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="post-head">
+                                                                        <div class="userDetail">
+                                                                            <div class="imgWrap">
+                                                                                <img src="../../../img/johan.png" class="" alt="">   
+                                                                                <!-- <div class="taggedUserImg no-image">
+                                                                                  
+                                                                                </div> -->
+                                                                            </div>
+                                                                            <span class="userName">Rafi Raza</span>
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="post-head">
+                                                                        <div class="userDetail">
+                                                                            <div class="imgWrap">
+                                                                                <!-- <img src="../../../img/johan.png" class="" alt="">    -->
+                                                                                <div class="taggedUserImg no-image">
+                                                                                  RR
+                                                                                </div>
+                                                                            </div>
+                                                                            <span class="userName">Rafi Raza</span>
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="post-head">
+                                                                        <div class="userDetail">
+                                                                            <div class="imgWrap">
+                                                                                <img src="../../../img/johan.png" class="" alt="">   
+                                                                                <!-- <div class="taggedUserImg no-image">
+                                                                                  
+                                                                                </div> -->
+                                                                            </div>
+                                                                            <span class="userName">Rafi Raza</span>
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                  
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        @endif
+                                                        
                                                     </a>
                                                 </li>
                                             </ul>

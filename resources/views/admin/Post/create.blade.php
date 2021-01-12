@@ -70,7 +70,7 @@
                     <textarea placeholder="Share your surf experience....." name="post_text"
                         class="form-control has-success" rows="3"></textarea>
                     <hr />
-                    <div class="videoImageUploader">
+                    <div class="videoImageUploader a_videoImageUploader">
                         <div class="upload-btn-wrapper">
                             <button type="button" id="file_button" class="btn"><img alt="" src="{{ asset("/img/photo.png")}}"></button>
                             <input type="file" id="input_multifileSelect1" name="files[]" accept=".png, .jpg, .jpeg"
@@ -80,9 +80,9 @@
                             <button type="button" id="video_button" class="btn"><img alt="" src="{{ asset("/img/video.png")}}"></button>
                             <input type="file" id="input_multifileSelect2" name="videos[]" accept=".mp4, .wmv, .mkv, .gif, .mpeg4" multiple />
                         </div>
-                    {{-- <div class="upload-btn-wrapper">
-                            <button class=""><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>
-                </div> --}}
+                        <!-- <div class="upload-btn-wrapper">
+                            <button class="btn"><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>
+                        </div>  -->
                     </div>
                 </div>
     <hr />
