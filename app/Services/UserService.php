@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Models\Tag;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -26,6 +28,10 @@ class UserService {
     protected $currentUserDetails;
 
     protected $users;
+
+    protected $tags;
+
+    protected $notification;
     
 
     public function __construct() {
@@ -36,6 +42,10 @@ class UserService {
         // get custom config file
         $this->checkUserType = config('customarray');
         // dd($this->checkUserType['error']['MODEL_ERROR']);
+        // tag model object
+        $this->tag = new Tag();
+        // notification model object
+        $this->notification = new Notification();
     }  
     
      /**
@@ -151,5 +161,36 @@ class UserService {
                     ->whereNotIn('id',[Auth::user()->id])
                     ->orderBy('id','asc')->get();
         return $users;
+    }
+
+    public function checkAlreadyTagged($dataRequest)
+    {
+        $result = $this->tag
+            ->where('post_id',$dataRequest['post_id'])
+            ->where('user_id',$dataRequest['user_id'])
+            ->first();
+        return $result;
+    }
+
+    public function tagUserOnPost($input)
+    {
+        $this->tag->post_id = $input['post_id'];
+        $this->tag->user_id = $input['user_id'];
+        $this->tag->created_at = Carbon::now();
+        $this->tag->updated_at = Carbon::now();
+        if($this->tag->save()){
+            $this->setTagNotification($input);
+        }
+    }
+
+    public function setTagNotification($input)
+    {
+        $this->notification->post_id = $input['post_id'];
+        $this->notification->sender_id = Auth::user()->id;
+        $this->notification->receiver_id = $input['user_id'];
+        $this->notification->notification_type = 'Tag';
+        $this->notification->created_at = Carbon::now();
+        $this->notification->updated_at = Carbon::now();
+        $this->notification->save();
     }
 }

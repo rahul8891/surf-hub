@@ -35,6 +35,8 @@ Route::get('/contact-us', [WelcomeFeedController::class, 'contact'])->name('cont
 Route::get('/getBeachBreach', [UserController::class, 'getBeachBreach'])->name('getBeachBreach');
 Route::get('/getState', [DashboardController::class, 'getState'])->name('getState');
 Route::get('/getUsers', [UserController::class, 'getUsers'])->name('getUsers');
+Route::get('/getTagUsers', [UserController::class, 'getTagUsers'])->name('getTagUsers');
+Route::post('/setTagUsers', [UserController::class, 'setTagUsers'])->name('setTagUsers');
 
 /*********************************************************************************************
  *                              User Route

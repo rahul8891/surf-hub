@@ -825,8 +825,7 @@ $(document).ready(function () {
 
    },100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
-
-        $(document).on('click','.search2 li', function(){
+	$(document).on('click','.search2 li', function(){
 		var value = $(this).text().trim();
 		var dataId = $(this).attr("data-id");
 		$('#other_surfer_list').html("");
@@ -834,6 +833,62 @@ $(document).ready(function () {
 		$('#surfer_id').val(dataId);
 		$('#other_surfer_list').html("");
 		$('input[name="surfer"]').val(value);
+	});
+
+	$('.tag_user').keyup(debounce(function(){
+		// the following function will be executed every half second	
+	
+		var post_id = $(this).attr('data-post_id');
+		if($(this).val().length > 1){
+			$.ajax({
+				type: "GET",
+				url: "/getTagUsers",
+				data: {				
+					post_id: post_id,
+					searchTerm: $(this).val(),
+					_token: csrf_token
+				},
+				dataType: "json",
+				success: function (jsonResponse) {
+					//alert(jsonResponse);
+					$('#tag_user_list'+post_id).html(jsonResponse);
+				}
+			})
+		}else{
+			$('#user_id').val('');
+			$('#tag_user_list'+post_id).html("");
+		}
+
+   	},100)); // Milliseconds in which the ajax call should be executed (100 = half second)
+
+
+    $(document).on('click','.tagSearch li', function(){
+		var value = $(this).text().trim();
+		var dataId = $(this).attr("data-id");
+		var postId = $(this).attr("data-post_id");
+		//ajax call to insert data in tag table and also set notification
+		$.ajax({
+			type: "POST",
+			url: "/setTagUsers",
+			data: {				
+				post_id: postId,
+				user_id: dataId,
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				//alert(jsonResponse);
+				if(jsonResponse.status == 'success'){
+					$('#tag_user_list'+postId).html("");
+					$('.tag_user').val(value);
+					$('#user_id').val(dataId);
+					$('#tag_user_list'+postId).html("");
+				}else{
+					alert(jsonResponse.message);
+				}
+				$('#tag_user_list'+post_id).html(jsonResponse);
+			}
+		})
 	});
 
 	
