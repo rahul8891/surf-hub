@@ -622,6 +622,19 @@ header .userImg .followCount {
     right: -5px;
 }
 
+header .userImg .followCountHead {
+    font-size: 12px;
+    line-height: 18px;
+    color: #ffffff;
+    font-family: "Arial";
+    border-radius: 2px;
+    background-color: #fa3e3e;
+    padding: 0px 1px;
+    position: absolute;
+    top: -3px;
+    right: -5px;
+}
+
 header .userImg .image {
     height: inherit;
     border-radius: inherit;
@@ -1847,8 +1860,8 @@ header .notificationWrap .noti .info p span {
 
 header .notificationWrap .setHeight {
     height: calc(100vh - 300px);
-    overflow-y: auto;
-    overflow-x: hidden !important;
+    /*overflow-y: auto;*/
+    overflow: auto !important;
 }
 
 .nicescroll-rails {
@@ -1919,6 +1932,14 @@ form .error {
     font-weight: 700;
     letter-spacing: 1.4px;
     overflow: hidden;
+}
+
+#followRequestCount{
+    display: none;
+}
+
+#followRequestCountHead{
+    display: block;
 }
 
 .postComment {

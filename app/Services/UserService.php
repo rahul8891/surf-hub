@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\Tag;
+use App\Models\UserFollow;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -31,6 +32,8 @@ class UserService {
 
     protected $tags;
 
+    protected $userFollows;
+
     protected $notification;
     
 
@@ -44,6 +47,8 @@ class UserService {
         // dd($this->checkUserType['error']['MODEL_ERROR']);
         // tag model object
         $this->tag = new Tag();
+        // User model object
+        $this->userFollows = new UserFollow();
         // notification model object
         $this->notification = new Notification();
     }  
@@ -192,5 +197,257 @@ class UserService {
         $this->notification->created_at = Carbon::now();
         $this->notification->updated_at = Carbon::now();
         $this->notification->save();
+    }
+
+    public function getNotificationCount()
+    {
+        $count = $this->userFollows->where('followed_user_id',Auth::user()->id)
+                ->where('status','FOLLOW')   
+                ->where('follower_request_status','1') 
+                ->where('is_deleted','0')
+                ->count();
+        return $count;
+    }
+
+    public function followRequests(){
+        Notification::where(['receiver_id'=> Auth::user()->id, 'notification_type'=> 'Follow'])->update(['status'=>'1','count_status'=>'1','updated_at'=>Carbon::now()]);
+        $followRequests = $this->userFollows->where('followed_user_id',Auth::user()->id)   
+                    ->where('status','FOLLOW')   
+                    ->where('follower_request_status',1) 
+                    ->where('is_deleted','0')
+                    ->orderBy('id','desc')->get();
+        return $followRequests;
+    }
+
+    public function followers(){
+        $followers = $this->userFollows->where('followed_user_id',Auth::user()->id)   
+                    ->where('status','FOLLOW')   
+                    ->where('follower_request_status','0') 
+                    ->where('is_deleted','0')
+                    ->orderBy('id','desc')->get();
+        return $followers;
+    }
+
+    public function following(){
+        Notification::where(['receiver_id'=> Auth::user()->id, 'notification_type'=> 'Accept'])->orWhere(['notification_type' => 'Reject'])->update(['status'=>'1','count_status'=>'1','updated_at'=>Carbon::now()]);
+        $following = $this->userFollows->where('follower_user_id',Auth::user()->id)   
+                    ->where('status','FOLLOW')   
+                    ->where('follower_request_status','0') 
+                    ->where('is_deleted','0')
+                    ->orderBy('id','desc')->get();
+        return $following;
+    }
+
+    public function updateFollowStatus($input,&$message='',$column=null)
+    {
+        try{
+            $userFollows = $this->userFollows::find($input['id']);
+            if($userFollows){
+                $userFollows->id = $input['id'];
+                $userFollows->status = $input['status'];
+                if($userFollows->save()){
+                    $resultArray['message']='Status has been updated!';
+                    $resultArray['status']='success';
+                    $resultArray['count']=$this->getFollowCount($column,'0');
+                    return $resultArray;
+                }else{
+                    $resultArray['message']='The user details not be updated. Please, try again.';
+                    $resultArray['status']='failure';
+                    $resultArray['count']=$this->getFollowCount($column,'0');
+                    return $resultArray;
+                }
+            }
+        }catch(\Exception $e){
+            $message=$e->getPrevious()->getMessage();
+            return false;
+        }  
+    }
+
+    public function updateAcceptStatus($input,&$message='',$column=null)
+    {
+        try{
+            $userFollows = $this->userFollows::find($input['id']);
+            if($userFollows){
+                //dd($userFollows);
+                $userFollows->id = $input['id'];
+                $userFollows->follower_request_status = $input['follower_request_status'];
+                $result = $this->saveFollowRequestAcceptRejectNotification($userFollows,'Accept');
+                //dd($result);
+                if($userFollows->save()){
+                    $resultArray['message']='Status has been updated!';
+                    $resultArray['status']='success';
+                    $resultArray['count']=$this->getFollowCount($column,'1');
+                    return $resultArray;
+                }else{
+                    $resultArray['message']='The user details not be updated. Please, try again.';
+                    $resultArray['status']='failure';
+                    $resultArray['count']=$this->getFollowCount($column,'1');
+                    return $resultArray;
+                }
+            }
+        }catch(\Exception $e){
+            $message=$e->getPrevious()->getMessage();
+            return false;
+        }  
+    }
+
+    public function updateRejectStatus($input,&$message='',$column=null)
+    {
+        try{
+            $userFollows = $this->userFollows::find($input['id']);
+            if($userFollows){
+                $userFollows->id = $input['id'];
+                $userFollows->status = $input['status'];
+                if($userFollows->save()){
+                    $this->saveFollowRequestAcceptRejectNotification($userFollows,'Reject');
+                    $resultArray['message']='Status has been updated!';
+                    $resultArray['status']='success';
+                    $resultArray['count']=$this->getFollowCount($column,'1');
+                    return $resultArray;
+                }else{
+                    $resultArray['message']='The user details not be updated. Please, try again.';
+                    $resultArray['status']='failure';
+                    $resultArray['count']=$this->getFollowCount($column,'1');
+                    return $resultArray;
+                }
+            }
+        }catch(\Exception $e){
+            $message=$e->getPrevious()->getMessage();
+            return false;
+        }  
+    }
+
+    public function getFollowCount($column=null,$status=null)
+    {
+        $count = $this->userFollows->where($column,Auth::user()->id)
+                ->where('status','FOLLOW')   
+                ->where('follower_request_status',$status) 
+                ->where('is_deleted','0')
+                ->count();
+        return $count;
+    }
+
+    public function updateRemoveStatus($input,&$message='',$column=null)
+    {
+        try{
+            $userFollows = $this->userFollows::find($input['id']);
+            if($userFollows){
+                $userFollows->id = $input['id'];
+                $userFollows->is_deleted = $input['is_deleted'];
+                if($userFollows->save()){
+                    $resultArray['message']='Status has been updated!';
+                    $resultArray['status']='success';
+                    $resultArray['count']=$this->getFollowCount($column,'0');
+                    return $resultArray;
+                }else{
+                    $resultArray['message']='The user details not be updated. Please, try again.';
+                    $resultArray['status']='failure';
+                    $resultArray['count']=$this->getFollowCount($column,'0');
+                    return $resultArray;
+                }
+            }
+        }catch(\Exception $e){
+            $message=$e->getPrevious()->getMessage();
+            return false;
+        }  
+    }
+
+    public function followToFollower($input,&$message='')
+    {
+        try{
+            $userFollows =  new UserFollow();
+            if($userFollows){
+                $resultArray = $this->checkFollow($input['followed_user_id']);
+                if($resultArray){
+                    $responseArray['message']='You are already following to '.$resultArray->followed->user_profiles->first_name.' '.$resultArray->followed->user_profiles->last_name;
+                    $responseArray['status']='failure';
+                    return $responseArray;
+                }else{
+                    if($input['followed_user_id'] == Auth::user()->id){
+                        $responseArray['message']='You can not follow your self.';
+                        $responseArray['status']='failure';
+                        return $responseArray;
+                    }else{
+                        $userFollows->followed_user_id = $input['followed_user_id'];
+                        $userFollows->follower_user_id = Auth::user()->id;
+                        $userFollows->status = $input['sataus'];
+                        if($userFollows->save()){
+                            //set follow request notification
+                            $this->saveFollowRequestNotification($input);
+                            $responseArray['message']='Follow request has been sent!';
+                            $responseArray['status']='success';
+                            return $responseArray;
+                        }else{
+                            $responseArray['message']='Unable to send follow request, Please, try again.';
+                            $responseArray['status']='success';
+                            return $responseArray;
+                        }
+                    }
+                }
+            }
+        }catch(\Exception $e){
+            $message=$e->getPrevious()->getMessage();
+            return false;
+        }  
+    }
+
+    public function checkFollow($followed_user_id=null)
+    {
+        $result = $this->userFollows->where('follower_user_id',Auth::user()->id)
+                ->where('followed_user_id',$followed_user_id)
+                ->where('status','FOLLOW')   
+                ->where('follower_request_status','0') 
+                ->where('is_deleted','0')
+                ->first();
+        return $result;
+    }
+
+    /**
+     * [saveFollowRequestNotification] we are storing the follow request notifications
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function saveFollowRequestNotification($input,&$message=''){
+        try{
+            $this->notification->post_id = $input['post_id'];
+            $this->notification->sender_id = Auth::user()->id;
+            $this->notification->receiver_id = $input['followed_user_id'];
+            $this->notification->notification_type = 'Follow';
+            $this->notification->created_at = Carbon::now();
+            $this->notification->updated_at = Carbon::now();
+            //dd($this->comments);
+            $this->notification->save();
+                
+        }
+        catch (\Exception $e){     
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+
+    /**
+     * [saveFollowRequestAcceptRejectNotification] we are storing the accept and reject notifications
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function saveFollowRequestAcceptRejectNotification($input,$notification_type=''){
+        //dd($input);
+        try{
+            $this->notification->post_id = $input['id'];
+            $this->notification->sender_id = Auth::user()->id;
+            $this->notification->receiver_id = $input['follower_user_id'];
+            $this->notification->notification_type = $notification_type;
+            $this->notification->created_at = Carbon::now();
+            $this->notification->updated_at = Carbon::now();
+            //dd($this->comments);
+            $this->notification->save();
+                
+        }
+        catch (\Exception $e){     
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
     }
 }
