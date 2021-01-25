@@ -168,6 +168,21 @@ class UserService {
         return $users;
     }
 
+    public function getUsersForTagging($string, $fieldFirstName, $fieldLastName)
+    {
+        $userProfiles =  new UserProfile();
+        /*$result = $this->users
+            ->join('user_profiles', 'user_profiles.user_id', '=', 'users.id')
+            ->orWhere('user_profiles.'.$fieldFirstName, 'LIKE',  '%' . $string .'%')
+            ->orWhere('user_profiles.'.$fieldLastName, 'LIKE',  '%' . $string .'%')
+            ->get();*/
+        $result = $userProfiles
+            ->orWhere($fieldFirstName, 'LIKE',  '%' . $string .'%')
+            ->orWhere($fieldLastName, 'LIKE',  '%' . $string .'%')
+            ->get();
+        return $result;
+    }
+
     public function checkAlreadyTagged($dataRequest)
     {
         $result = $this->tag

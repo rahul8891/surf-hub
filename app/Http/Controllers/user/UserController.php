@@ -9,6 +9,7 @@ use App\Traits\PasswordTrait;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
+use App\Models\Tag;
 // use App\Http\Controllers\user\Redirect;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -242,26 +243,35 @@ class UserController extends Controller
 
     public function getTagUsers(Request $request){
         $data = $request->all();   
+        dd($data);
         $searchTerm = $data['searchTerm'];      
         if(!empty($searchTerm)){
             $searchTerm = explode(",",$searchTerm);
             $string = $searchTerm['0'];        
-            $field = ['user_name'];
-            $resultData = DB::Table('users')->Where(function ($query) use($string, $field) {
+            $fieldFirstName = 'first_name';
+            $fieldLastName = 'last_name';
+            //get users list for tagging
+            $resultData = $this->users->getUsersForTagging($string, $fieldFirstName, $fieldLastName);
+            /*$resultData = DB::Table('users')->Where(function ($query) use($string, $field) {
                 for ($i = 0; $i < count($field); $i++){             
                     $query->orWhere($field[$i], 'LIKE',  '%' . $string .'%');
                 }      
-            })->get(); 
-           
+            })->get();*/ 
+            //dd($resultData[0]->tags[0]->user_id);
             $returnObject = '';
             if(!$resultData->isEmpty()){
                 $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1; width:100%">';
                 foreach ($resultData as $key => $value) {
-                    $val = $value->user_name;     
-                    $img = (!empty($value->profile_photo_path)) ? "/storage/$value->profile_photo_path" : '/img/img_4.jpg';
-                    $returnObject .= '<li class="list-group-item tagUserInPost" data-id="'.$value->id.'" data-post_id="'.$data['post_id'].'">
-                    <img src="'.$img.'" width="30px" style="float:right; border-radius: 50%; border: 1px solid #4c8df5; bottom: 5px;" class="img-fluid">'.$val.'
-                    </li>';
+                    $val = $value->first_name.' '.$value->last_name;   
+                    //dd($value->tag);
+                    foreach ($value->tags as $key => $tags) {
+                        if($tags->post_id == $data['post_id'] && $tags->user_id != $value->user_id){
+                            $img = (!empty($value->profile_photo_path)) ? "/storage/".$value->profile_photo_path : '/img/img_4.jpg';
+                            $returnObject .= '<li class="list-group-item tagUserInPost" data-id="'.$value->_id.'" data-post_id="'.$data['post_id'].'">
+                            <img src="'.$img.'" width="30px" style="float:right; border-radius: 50%; border: 1px solid #4c8df5; bottom: 5px;" class="img-fluid">'.$val.'
+                            </li>';
+                        }
+                    }
                 }
                 $returnObject .='</ul>';     
                 return response()->json($returnObject);       
@@ -286,7 +296,7 @@ class UserController extends Controller
             return json_encode(array('status'=>'success'));
         }
     }
-    
+
     public function followRequests()
     {
         $followRequests = $this->users->followRequests();

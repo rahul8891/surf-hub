@@ -9,6 +9,7 @@ use App\Models\Country;
 use App\Models\State;
 use App\Models\Beach;
 use App\Models\BeachBreak;
+use App\Models\Tag;
 
 class UserProfile extends Model
 {
@@ -69,5 +70,15 @@ class UserProfile extends Model
     public function beach_breaks()
     {
         return $this->belongsTo(BeachBreak::class, 'local_beach_break_id', 'id');
+    }
+
+    /**
+     * Relationship between user_profiles and tags model    
+     * @return object
+     */
+    
+    public function tags()
+    {
+        return $this->hasMany(Tag::class, 'user_id', 'user_id');
     }
 }
