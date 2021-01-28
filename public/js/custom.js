@@ -850,7 +850,7 @@ $(document).ready(function () {
 				},
 				dataType: "json",
 				success: function (jsonResponse) {
-					//alert(jsonResponse);
+					
 					$('#tag_user_list'+post_id).html(jsonResponse);
 				}
 			})
@@ -877,12 +877,15 @@ $(document).ready(function () {
 			},
 			dataType: "json",
 			success: function (jsonResponse) {
-				//alert(jsonResponse);
+				
 				if(jsonResponse.status == 'success'){
-					$('#tag_user_list'+postId).html("");
+					$('#rowId'+dataId).hide();
+					//$('#tag_user_list'+postId).html("");
 					$('.tag_user').val(value);
 					$('#user_id').val(dataId);
-					$('#tag_user_list'+postId).html("");
+					//$('#tag_user_list'+postId).html("");
+					$( ".scrollWrap" ).empty();
+					$('.scrollWrap').html(jsonResponse.responsData);
 				}else{
 					alert(jsonResponse.message);
 				}
@@ -1147,7 +1150,7 @@ $(document).ready(function () {
 	 });
 	$(document).on('click', '#navbarDropdown', function(){
 		$.ajax({
-			type: "Post",
+			type: "POST",
 			url: "updateNotificationCountStatus",
 			data: {
 				_token: csrf_token
@@ -1169,7 +1172,24 @@ $(document).ready(function () {
 			$("#submitPost"+postId).hide();
 		}
 	});
+	
+	//Auto play videos when view in scroll
+	function isInView(el) {
+	  var rect = el.getBoundingClientRect();// absolute position of video element
+	  return !(rect.top > $(window).height() || rect.bottom < 0);// visible?
+	}
 
+	$(document).on("scroll", function() {
+	  $( "video" ).each(function() {
+	    if (isInView($(this)[0])) {// visible?
+	      if ($(this)[0].paused) $(this)[0].play();// play if not playing
+	    }
+	    else {
+	      if (!$(this)[0].paused) $(this)[0].pause();// pause if not paused
+	    }
+	  });  
+	});
+	//End auto play
 });
 
 //To select country name

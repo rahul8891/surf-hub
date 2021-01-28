@@ -243,7 +243,6 @@ class UserController extends Controller
 
     public function getTagUsers(Request $request){
         $data = $request->all();   
-        dd($data);
         $searchTerm = $data['searchTerm'];      
         if(!empty($searchTerm)){
             $searchTerm = explode(",",$searchTerm);
@@ -252,25 +251,21 @@ class UserController extends Controller
             $fieldLastName = 'last_name';
             //get users list for tagging
             $resultData = $this->users->getUsersForTagging($string, $fieldFirstName, $fieldLastName);
-            /*$resultData = DB::Table('users')->Where(function ($query) use($string, $field) {
-                for ($i = 0; $i < count($field); $i++){             
-                    $query->orWhere($field[$i], 'LIKE',  '%' . $string .'%');
-                }      
-            })->get();*/ 
-            //dd($resultData[0]->tags[0]->user_id);
+            
             $returnObject = '';
             if(!$resultData->isEmpty()){
                 $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1; width:100%">';
                 foreach ($resultData as $key => $value) {
-                    $val = $value->first_name.' '.$value->last_name;   
-                    //dd($value->tag);
-                    foreach ($value->tags as $key => $tags) {
-                        if($tags->post_id == $data['post_id'] && $tags->user_id != $value->user_id){
-                            $img = (!empty($value->profile_photo_path)) ? "/storage/".$value->profile_photo_path : '/img/img_4.jpg';
-                            $returnObject .= '<li class="list-group-item tagUserInPost" data-id="'.$value->_id.'" data-post_id="'.$data['post_id'].'">
-                            <img src="'.$img.'" width="30px" style="float:right; border-radius: 50%; border: 1px solid #4c8df5; bottom: 5px;" class="img-fluid">'.$val.'
-                            </li>';
-                        }
+                    $val = ucfirst($value->first_name).' '.ucfirst($value->last_name);   
+                    
+                    $requestData = ['post_id'=>$data['post_id'], 'user_id'=>$value->user_id];
+                    //Check if already tagged not come in user list
+                    $responceResult = $this->users->checkAlreadyTagged($requestData);
+                    if(!$responceResult){
+                        $img = (!empty($value->user->profile_photo_path)) ? "/storage/".$value->user->profile_photo_path : '/img/img_4.jpg';
+                        $returnObject .= '<li class="list-group-item tagUserInPost" style="color: #4c8df5;" data-id="'.$value->user_id.'" data-post_id="'.$data['post_id'].'" id="rowId'.$value->user_id.'">
+                        <img src="'.$img.'" width="30px" style="float:right; border-radius: 50%; border: 1px solid #4c8df5; bottom: 5px;" class="img-fluid">'.$val.'
+                        </li>';
                     }
                 }
                 $returnObject .='</ul>';     
@@ -293,7 +288,22 @@ class UserController extends Controller
             return json_encode(array('status'=>'failure', 'message'=>$result->user->user_name.' '.'already tagged for this post.' ));
         }else{
             $result = $this->users->tagUserOnPost($data);
-            return json_encode(array('status'=>'success'));
+            $responceResult = $this->users->getAllTaggedUsers($data);
+            // dd($responceResult[0]->user);
+            // dd($responceResult[0]->user->user_profiles);
+            $returnObject = '';
+            foreach ($responceResult as $key => $value) {
+                $val = ucfirst($value->user->user_profiles->first_name).' '.ucfirst($value->user->user_profiles->last_name);
+                $img = (!empty($value->user->profile_photo_path)) ? "/storage/".$value->user->profile_photo_path : '';
+                $returnObject .='<div class="post-head"><div class="userDetail"><div class="imgWrap">';
+                if($value->user->profile_photo_path){
+                    $returnObject .='<img src="'.$img.'" class="taggedUserImg" alt="">';
+                }else{
+                    $returnObject .='<div class="taggedUserImg no-image">'.ucwords(substr($value->user->user_profiles->first_name,0,1)).''.ucwords(substr($value->user->user_profiles->last_name,0,1)).'</div>';
+                }
+                $returnObject .='</div><span class="userName">'.$val.'</span></div></div>';
+            }
+            return json_encode(array('status'=>'success','responsData'=>$returnObject));
         }
     }
 

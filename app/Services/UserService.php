@@ -171,13 +171,10 @@ class UserService {
     public function getUsersForTagging($string, $fieldFirstName, $fieldLastName)
     {
         $userProfiles =  new UserProfile();
-        /*$result = $this->users
-            ->join('user_profiles', 'user_profiles.user_id', '=', 'users.id')
-            ->orWhere('user_profiles.'.$fieldFirstName, 'LIKE',  '%' . $string .'%')
-            ->orWhere('user_profiles.'.$fieldLastName, 'LIKE',  '%' . $string .'%')
-            ->get();*/
+        
         $result = $userProfiles
-            ->orWhere($fieldFirstName, 'LIKE',  '%' . $string .'%')
+            ->where('user_id','!=', Auth::user()->id)
+            ->where($fieldFirstName, 'LIKE',  '%' . $string .'%')
             ->orWhere($fieldLastName, 'LIKE',  '%' . $string .'%')
             ->get();
         return $result;
@@ -212,6 +209,16 @@ class UserService {
         $this->notification->created_at = Carbon::now();
         $this->notification->updated_at = Carbon::now();
         $this->notification->save();
+    }
+
+    public function getAllTaggedUsers($input)
+    {
+        //dd($input);
+        $result = $this->tag
+            ->where('post_id',$input['post_id'])
+            ->where('is_deleted','0')
+            ->orderBy('id','desc')->get();
+        return $result;
     }
 
     public function getNotificationCount()

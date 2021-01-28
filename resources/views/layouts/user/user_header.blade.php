@@ -69,17 +69,17 @@ $borderBtm = Auth::user() ? 'border-btm ' : '';
                                 {{ucwords(substr(Auth::user()->user_profiles->first_name,0,1))}}{{ucwords(substr(Auth::user()->user_profiles->last_name,0,1))}}
                             </div>
                             @endif
-                            @if(FollowNotification::instance()->getPostNotificationsCount() > 0)
-                            <span class="followCountHead" id="followRequestCountHead">{{ FollowNotification::instance()->getPostNotificationsCount() }}</span>
+                            @if(getPostNotificationsCount() > 0)
+                            <span class="followCountHead" id="followRequestCountHead">{{ getPostNotificationsCount() }}</span>
                             @endif
                         </div>
                         {{ucfirst(Auth::user()->user_profiles->first_name)}} {{ucfirst(Auth::user()->user_profiles->last_name)}}
                     </a>
-                    @if(count(FollowNotification::instance()->getPostNotifications()) > 0)
+                    @if(count(getPostNotifications()) > 0)
                     <div class="dropdown-menu notificationWrap" aria-labelledby="navbarDropdown">
                         <h3>Notifications</h3>
                         <div class="setHeight nice-wrapper">
-                            @foreach (FollowNotification::instance()->getPostNotifications() as $key => $requests)
+                            @foreach (getPostNotifications() as $key => $requests)
                             @if($requests['notification_type'] == 'Follow')
                             <a class="dropdown-item" href="{{ route('followRequests')}}">
                             @elseif($requests['notification_type'] == 'Accept')
@@ -115,6 +115,9 @@ $borderBtm = Auth::user() ? 'border-btm ' : '';
                                         @endif
                                         @if($requests['notification_type'] == 'Reject')
                                         </span> reject your following request </p>
+                                        @endif
+                                        @if($requests['notification_type'] == 'Tag')
+                                        </span> tagged you on a post </p>
                                         @endif
                                         <p>{{ postedDateTime($requests['created_at']) }}</p>
                                     </div>

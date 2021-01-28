@@ -234,7 +234,7 @@
                                                             <div class="pos-rel">
                                                                 <img src="../../../img/tooltipArrowDown.png" alt="">
                                                                 <div class="scrollWrap">
-                                                                    @foreach ($myHub->tags as $tags)
+                                                                    @foreach ($myHub->tags->reverse() as $tags)
                                                                     <div class="post-head">
                                                                         <div class="userDetail">
                                                                             <div class="imgWrap">
@@ -252,20 +252,21 @@
                                                                     </div>
                                                                     @endforeach
                                                                 </div>
-                                                            </div>
-
-                                                            <div class="col-md-8 col-sm-4 float-right" id="tagUser">
-                                                                <div class="selectWrap pos-rel">
+                                                                <div class="col-md-12 col-sm-4" id="tagUser">
                                                                     <div class="selectWrap pos-rel">
-                                                                        <input type="text" value="{{ old('tag_user')}}" name="tag_user"
-                                                                            placeholder="@ Search user" class="form-control tag_user" required data-post_id="{{$myHub->id}}">
-                                                                            <input type="hidden" value="{{ old('user_id')}}" name="user_id"
-                                                                            id="user_id" class="form-control user_id">
-                                                                        <div class="auto-search tagSearch" id="tag_user_list{{$myHub->id}}"></div>
+                                                                        <div class="selectWrap pos-rel">
+                                                                            <input type="text" value="{{ old('tag_user')}}" name="tag_user"
+                                                                                placeholder="@ Search user" class="form-control tag_user" required data-post_id="{{$myHub->id}}">
+                                                                                <input type="hidden" value="{{ old('user_id')}}" name="user_id"
+                                                                                id="user_id" class="form-control user_id">
+                                                                            <div class="auto-search tagSearch" id="tag_user_list{{$myHub->id}}"></div>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
+                                                                </div>
                                                             </div>
+
+                                                            
                                                         </div>
                                                         
                                                     </a>
