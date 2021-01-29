@@ -150,7 +150,7 @@ class UserController extends Controller
         
         $result = $this->users->updateUserProfile($data,$message);        
         if($result){
-            return Redirect::to('user/profile')->withSuccess($message);
+            return Redirect::to('dashboard')->withSuccess($message);
         }else{           
            return Redirect::to('user/profile')->withErrors($message);
         }
