@@ -1,6 +1,7 @@
 @extends('layouts.user.user')
 @section('content')
-<div class="feedHubNav ">
+@include('layouts/user/user_feed_menu')
+<!-- <div class="feedHubNav ">
     <div class="container">
         <div class="row">
             <div class="col-lg-9">
@@ -12,10 +13,11 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <section class="loginWrap changePswd registrationWrap">
     <div class="innerWrap">
         <div class="container">
+                        <h2 style="color: #FFFFFF;">My Profile</h2>
             <div class="row">
                 <div class="col-lg-9">
                     <div class="formWrap">
