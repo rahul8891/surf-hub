@@ -1642,7 +1642,7 @@ footer .profileChangePswd li:last-child {
 }
 
 .contactUsWrap .feedHubNav ul {
-    max-width: 100%;
+    /*max-width: 100%;*/
 }
 
 .contactUsWrap .loginWrap .formWrap {
