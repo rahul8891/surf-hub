@@ -149,7 +149,7 @@
                                                                     </div>
                                                                     <div class="col-2 text-center">:</div>
                                                                     <div class="col-5">
-                                                                        {{$myHub->beach_breaks->beach_name}}/{{$myHub->beach_breaks->break_name}}
+                                                                        {{ $myHub->beach_breaks->beach_name ?? '' }}/{{ $myHub->beach_breaks->break_name ?? '' }}
                                                                     </div>
                                                                     <div class="col-5">
                                                                         Country
