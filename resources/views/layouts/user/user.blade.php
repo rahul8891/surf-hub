@@ -127,14 +127,17 @@
 
     });
     function openFullscreen(id) {
-        var elem = document.getElementById("myImage"+id);
-        if (elem.requestFullscreen) {
+        var docEl = document.getElementById("myImage"+id);
+        /* if (elem.requestFullscreen) {
           elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
+        } else if (elem.webkitRequestFullscreen) { /* Safari 
           elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 */
+        } else if (elem.msRequestFullscreen) { /* IE11 
           elem.msRequestFullscreen();
-        }
+        }*/
+        var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullscreen ||                               docEl.msRequestFullscreen;
+        
+        requestFullScreen.call(docEl);
     }
     </script>
 </body>
