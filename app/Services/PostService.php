@@ -267,7 +267,7 @@ class PostService {
         //**********trimming video********************/
 
         $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(0);
-        $end   = \FFMpeg\Coordinate\TimeCode::fromSeconds(60);
+        $end   = \FFMpeg\Coordinate\TimeCode::fromSeconds(120);
         $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start,$end);
                 
                 FFMpeg::open($path)
