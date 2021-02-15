@@ -215,7 +215,7 @@
                                             <div class="selectWrap pos-rel">
                                                 <div class="selectWrap pos-rel">
                                                     <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
-                                                        placeholder="@ Search other user" class="form-control other_surfer" required>
+                                                        placeholder="Search other user" class="form-control other_surfer" required>
                                                         <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id"
                                                         id="surfer_id" class="form-control surfer_id">
                                                     <div class="auto-search search2" id="other_surfer_list"></div>

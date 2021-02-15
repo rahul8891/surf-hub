@@ -194,7 +194,7 @@
                                                 <div class="saveInfo">
                                                     <div class="pos-rel">
                                                         <img src="img/tooltipArrowDown.png" alt="">
-                                                        Save this video to your personal MyHub library
+                                                        Save this photo/video to your personal MyHub library
                                                     </div>
                                                 </div>
                                             </a>
