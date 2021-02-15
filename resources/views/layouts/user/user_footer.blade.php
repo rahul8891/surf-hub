@@ -35,13 +35,13 @@
                     <span class="divider"></span>
                 </li>
                 <li>
-                    <a href="{{ route('terms') }}"> T&Cs</a>
+                    <a href="{{ route('terms') }}"> T&C's</a>
                 </li>
                 <li>
                     <span class="divider"></span>
                 </li>
                 <li>
-                    <a href="{{ route('faq') }}">Help/FAQs</a>
+                    <a href="{{ route('faq') }}">Help/FAQ's</a>
                 </li>
                 <li>
                     <span class="divider"></span>
