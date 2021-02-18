@@ -239,4 +239,16 @@ class UserController extends Controller
         }
     }   
 
+    public function checkUsername(Request $request)
+    {
+
+        $data = $request->all(); // This will get all the request data.
+        $userCount = $this->users->checkUsername($data);
+        if ($userCount > 0) {
+            return 'false';
+        } else {
+            return 'true';
+        }
+    }
+
 }

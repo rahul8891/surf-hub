@@ -281,7 +281,7 @@
                                 @csrf
                                 <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
                                 <input type="hidden" name="parent_user_id" value="{{$posts->user_id}}">
-                                <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$posts->id}}"></textarea>
+                                <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$posts->id}}" style="outline: none;"></textarea>
                                 <button type="submit" class="btn btn-info postComment" id="submitPost{{$posts->id}}">Submit</button>
                                 </form>
                             </div>
