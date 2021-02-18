@@ -24,7 +24,7 @@
                                 @endif
                                 <div class="pl-3">
                                     <h4>{{ucfirst($myHub->user->user_profiles->first_name)}} {{ucfirst($myHub->user->user_profiles->last_name)}}</h4>
-                                    <span>{{ $myHub->beach_breaks->beach_name }}, {{\Carbon\Carbon::parse($myHub->created_at)->format('d-m-Y')}}</span><br>
+                                    <span>{{ $myHub->beach_breaks->beach_name ?? '' }}, {{\Carbon\Carbon::parse($myHub->created_at)->format('d-m-Y')}}</span><br>
                                     <span>{{ postedDateTime($myHub->created_at) }}</span>
                                 </div>
                             </div>
