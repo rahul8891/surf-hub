@@ -298,7 +298,7 @@
                                         </div>
                                         <div class="alreadyAccount">
                                             {{ __('Already have an account?') }} <a
-                                                href="{{ route('login') }}">{{ __('Sign in') }}</a>
+                                                href="{{ route('login') }}">{{ __('Sign In') }}</a>
                                         </div>
                                     </div>
                                     <div class="col-md-6 align-self-end text-center">

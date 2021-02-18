@@ -7,8 +7,11 @@
     <link rel="shortcut icon" href="{{ asset('images/logo_small.png') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ config('customarray.siteTitle.user') }}</title>
-
+    
+    <!-- <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet"> -->    
+    
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/bootstrap.min.css")}}">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" /> -->
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/style.css")}}">
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/loader.css")}}">
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/responsive.css")}}">
@@ -61,7 +64,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.5.1/jquery.nicescroll.min.js"> </script>
     
-    
+    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
     <script src="{{ asset("/js/bootstrap.js")}}"></script>
     <script src="{{ asset("/js/jquery.validate.min.js")}}"></script>
     <script src="{{ asset("/js/custom.js")}}"></script>
@@ -69,10 +73,18 @@
     <script src="{{ asset("/js/post.js")}}"></script>
     @endif
 
-
+    
+    
+    
     <script>
-    $(document).ready(function() {
 
+        $('.rating').rating({
+                showClear:false, 
+                showCaption:false
+            });
+        $(document).ready(function() {
+            
+           
 
         $("#My-Profile").click(function() {
             $(".profileChangePswd").toggleClass("show");
@@ -127,19 +139,22 @@
 
     });
     function openFullscreen(id) {
-        var docEl = document.getElementById("myImage"+id);
-        /* if (elem.requestFullscreen) {
-          elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari 
-          elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 
-          elem.msRequestFullscreen();
-        }*/
-        var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullscreen ||                               docEl.msRequestFullscreen;
-        
-        requestFullScreen.call(docEl);
+        var elem = document.getElementById("myImage"+id);
+        if (elem.requestFullScreen) {
+          elem.requestFullScreen();
+        } else if (elem.webkitRequestFullScreen) { /* Safari */
+          elem.webkitRequestFullScreen();
+        } else if (elem.mozRequestFullScreen) {
+          elem.mozRequestFullScreen();
+        } else if (elem.msRequestFullScreen) { /* IE11 */
+          elem.msRequestFullScreen();
+        }
     }
     </script>
+
+    
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script> --}}
 </body>
 
 </html>

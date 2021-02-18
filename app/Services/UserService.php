@@ -152,4 +152,10 @@ class UserService {
                     ->orderBy('id','asc')->get();
         return $users;
     }
+
+    public function checkUsername($dataRequest)
+    {
+        $usernameExist =  $this->users->where('user_name',$dataRequest['user_name'])->count();
+        return $usernameExist;
+    }
 }

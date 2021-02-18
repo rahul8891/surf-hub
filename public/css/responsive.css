@@ -113,6 +113,9 @@
 }
 
 @media only screen and (max-width: 991px) {
+    .reset-img{
+        top: 54px;
+    }
     .topmenuhideshow{
         display: block !important;
     }
