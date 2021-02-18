@@ -29,7 +29,7 @@
                         </button>
 
 
-                        <form class="dropdown-menu filterWrap" action="{{route('filterIndex')}}" aria-labelledby="dropdownMenuButton2">
+                        <form class="dropdown-menu filterWrap" id="filterForm" action="{{route('filterIndex')}}" aria-labelledby="dropdownMenuButton2">
 
 
 

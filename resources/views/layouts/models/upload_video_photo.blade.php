@@ -163,7 +163,7 @@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label>Board Type <span class="mandatory">*</span></label>
+                                            <label class="width-102">Board Type <span class="mandatory">*</span></label>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
@@ -183,7 +183,7 @@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label>Surfer<span class="mandatory">*</span></label>
+                                            <label>Surfer <span class="mandatory">*</span></label>
                                         </div>
                                         <div class="col-md-8">
                                             {{-- <div class="d-flex">
