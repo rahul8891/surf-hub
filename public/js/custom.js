@@ -602,12 +602,14 @@ $(document).ready(function () {
 			first_name: {
 				required: true,
 				minlength: 3,
+				maxlength: 15,
 				noSpace: true
 			},
 
 			last_name: {
 				required: true,
 				minlength: 3,
+				maxlength: 15,
 				noSpace: true
 			},
 
