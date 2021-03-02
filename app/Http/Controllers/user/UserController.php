@@ -241,7 +241,6 @@ class UserController extends Controller
         }
     }   
 
-
     public function getTagUsers(Request $request){
         $data = $request->all();   
         $searchTerm = $data['searchTerm'];      

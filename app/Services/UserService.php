@@ -168,7 +168,6 @@ class UserService {
         return $users;
     }
 
-
     public function getUsersForTagging($string, $fieldFirstName, $fieldLastName)
     {
         $userProfiles =  new UserProfile();

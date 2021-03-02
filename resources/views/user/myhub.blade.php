@@ -93,7 +93,7 @@
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
-                                                    <a href="#">
+                                                    <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$myHub->beach_breaks->latitude}}" data-long="{{$myHub->beach_breaks->longitude}}" data-id="{{$myHub->id}}" class="locationMap">
                                                         <img src="{{ asset("/img/maps-and-flags.png")}}" alt="">
                                                     </a>
                                                 </li> -->
@@ -341,5 +341,6 @@
             </div>
         </div>
 </section>
+@include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
 @endsection
