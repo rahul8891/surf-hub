@@ -31,7 +31,8 @@ class UserController extends Controller
      */
     public function __construct(UserService $users)
     {
-        $this->users = $users;       
+        $this->users = $users;    
+        $this->common = config('customarray.common');   
     }
     
     /**
@@ -239,6 +240,82 @@ class UserController extends Controller
         }
     }   
 
+
+    public function followRequests()
+    {
+        $followRequests = $this->users->followRequests();
+        $common = $this->common;  
+        return view('user.followRequests',compact('followRequests','common'));
+    }
+
+    public function followers()
+    {
+        $followers = $this->users->followers();   
+        $common = $this->common;    
+        return view('user.followers',compact('followers','common'));
+    }
+
+    public function following()
+    {
+        $following = $this->users->following();   
+        $common = $this->common;    
+        return view('user.following',compact('following','common'));
+    }
+
+    public function unfollow(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->users->updateFollowStatus($data,$message,'follower_user_id');
+        if($result){
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }else{
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }
+    }
+
+    public function accept(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->users->updateAcceptStatus($data,$message,'followed_user_id');
+        if($result){
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }else{
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }
+    }
+
+    public function reject(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->users->updateRejectStatus($data,$message,'followed_user_id');
+        if($result){
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }else{
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }
+    }
+
+    public function remove(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->users->updateRemoveStatus($data,$message,'followed_user_id');
+        if($result){
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }else{
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }
+    }
+
+    public function follow(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->users->followToFollower($data,$message);
+        if($result){
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message']));
+         }else{
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message']));
+         }
+
     public function checkUsername(Request $request)
     {
 
@@ -249,6 +326,7 @@ class UserController extends Controller
         } else {
             return 'true';
         }
+
     }
 
 }

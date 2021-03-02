@@ -10,6 +10,7 @@ use App\Models\Tag;
 use App\Models\Comment;
 use App\Models\Report;
 use App\Models\UserFollow;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -44,6 +45,8 @@ class PostService {
 
     protected $userFollow;
 
+    protected $notification;
+
     public function __construct() {
 
         // post model object
@@ -63,6 +66,9 @@ class PostService {
 
         // userFollow model object
         $this->userFollow = new UserFollow();
+
+        // notification model object
+        $this->notification = new Notification();
     }
 
     /**
@@ -151,8 +157,6 @@ class PostService {
      * @param  
      * @return dataArray
      */
-
-
     public function getFilteredList($params, $for) {
         
         if ($for=='search'){
@@ -405,6 +409,9 @@ class PostService {
                   $upload->video = $videoName;
                   $upload->save();
                 } 
+
+                $this->savePostNotification($post_id);
+
               }      
           }
           }else{
@@ -424,6 +431,10 @@ class PostService {
             $posts->created_at = Carbon::now();
             $posts->updated_at = Carbon::now();
             $posts->save();
+
+            $post_id=$posts->id;
+            $this->savePostNotification($post_id);
+
           }
           $message = 'Post has been created successfully.!';
           return $message;
@@ -709,4 +720,185 @@ class PostService {
         }
     }
 
+    /**
+     * [getPostNotificationsCount] we are getiing unseen post count
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getPostNotificationsCount(){
+
+        /*$postArray =  $this->posts
+                                  //->where('user_id', '!=',Auth::user()->id)
+                                  ->where('post_type', 'PUBLIC')
+                                  ->where('is_deleted','0')                              
+                                  ->orderBy('posts.created_at','ASC')
+                                  ->count();
+        return $postArray;*/
+        $notificationCount =  $this->notification
+                                  ->where('receiver_id', Auth::user()->id)
+                                  ->where('status', '0')
+                                  ->where('count_status', '0')
+                                  ->count();
+        return $notificationCount;
+        /*$postArray =  $this->tag
+                                  //->where('user_id', '!=',Auth::user()->id)
+                                  ->where('user_id', Auth::user()->id)
+                                  ->where('is_seen','0')                              
+                                  ->orderBy('created_at','ASC')
+                                  ->count();
+        return $postArray;*/
+    }
+
+    /**
+     * [getPostNotificationsList] we are getiing all the post
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getPostNotificationsList(){
+
+        $postArray =  $this->tag
+                                  //->where('user_id', '!=',Auth::user()->id)
+                                  ->where('user_id', Auth::user()->id)
+                                  ->where('is_seen','0')                              
+                                  ->orderBy('created_at','ASC')
+                                  ->get();
+        return $postArray;
+    }
+
+    /**
+     * [getFollowedPostList] we are getiing all the post
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getFollowedPostList(){
+
+        $postArray =  $this->userFollow
+                                  //->where('user_id', '!=',Auth::user()->id)
+                                  ->where('follower_user_id', Auth::user()->id)
+                                  ->where('followed_user_id','!=', Auth::user()->id)
+                                  ->where('follower_request_status','0')
+                                  ->where('is_deleted','0') 
+                                  //->where('created_at', '>=', Carbon::today())                             
+                                  ->orderBy('id','ASC')
+                                  ->get();
+        return $postArray;
+    }
+
+    /**
+     * [getCommentOnPost] we are getiing all the post
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getCommentOnPost(){
+
+        $commentArray =  $this->comment
+                                  //->where('user_id', '!=',Auth::user()->id)
+                                  ->where('parent_user_id', Auth::user()->id)
+                                  ->where('user_id','!=',Auth::user()->id)
+                                  ->where('is_deleted','0') 
+                                  //->where('created_at', '>=', Carbon::today())                             
+                                  ->orderBy('created_at','ASC')
+                                  ->get();
+        return $commentArray;
+    }
+
+    /**
+     * [getNotifications] we are getiing all the notification
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getNotifications(){
+
+        $notificationArray =  $this->notification
+                                  ->where('receiver_id', Auth::user()->id)
+                                  ->where('status', '0')                             
+                                  ->orderBy('created_at','DESC')
+                                  ->get();
+        return $notificationArray;
+    }
+
+    /**
+     * [getNotifications] we are getiing all the notification
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getPostDetails($post_id,$notification_id){
+
+        $detailArray =  $this->notification
+                                  ->where('id', $notification_id)
+                                  ->first();
+        return $detailArray;
+    }
+
+    /**
+     * [saveCommentNotification] we are storing the comment notifications
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function saveCommentNotification($input,&$message=''){
+        try{
+            $this->notification->post_id = $input['post_id'];
+            $this->notification->sender_id = Auth::user()->id;
+            $this->notification->receiver_id = $input['parent_user_id'];
+            $this->notification->notification_type = 'Comment';
+            $this->notification->created_at = Carbon::now();
+            $this->notification->updated_at = Carbon::now();
+            //dd($this->comments);
+            $this->notification->save();
+                
+        }
+        catch (\Exception $e){     
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+
+    /**
+     * [savePostNotification] we are storing the post notifications
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function savePostNotification($post_id){
+        try{
+            $userArray = $this->getFollowedPostList();
+            foreach ($userArray as $key => $value) {
+              $notification = new Notification();
+              $notification->post_id = $post_id;
+              $notification->sender_id = Auth::user()->id;
+              $notification->receiver_id = $value['followed_user_id'];
+              $notification->notification_type = 'Post';
+              $notification->created_at = Carbon::now();
+              $notification->updated_at = Carbon::now();
+              //dd($this->comments);
+              $notification->save();
+            }
+                
+        }
+        catch (\Exception $e){     
+            $message='"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+
+    public function updateNotificationStatus($id='')
+    {
+      $notification=$this->notification->find($id);
+      $notification->status = '1';
+      $notification->updated_at = Carbon::now();
+      $notification->save();
+    }
+
+    public function updateNotificationCountStatus($input)
+    {
+      $result = Notification::where('receiver_id', Auth::user()->id)->update(['count_status'=>'1','updated_at'=>Carbon::now()]);
+      return $result;
+    }
 }

@@ -44,7 +44,6 @@
                         </div>
                         <p class=" description">{{$myHub->post_text}}</p>
                                 <div class="imgRatingWrap">
-
                                     @if(!empty($myHub->upload->image))
                                     <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
                                     @endif
@@ -76,18 +75,28 @@
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
-                                                    <a href="#">
+                                                    @if(!empty($myHub->upload->image))
+                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$myHub->upload->image)); ?>,'sharer'">
                                                         <img src="{{ asset("/img/facebook.png")}}" alt="">
                                                     </a>
+                                                    @elseif(!empty($myHub->upload->video))
+                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$myHub->upload->video)); ?>,'sharer'">
+                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
+                                                    </a>
+                                                    @else
+                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>,'sharer'">
+                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
+                                                    </a>
+                                                    @endif
                                                 </li>
-                                                <li>
+                                                <!-- <li>
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
                                                     <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$myHub->beach_breaks->latitude}}" data-long="{{$myHub->beach_breaks->longitude}}" data-id="{{$myHub->id}}" class="locationMap">
                                                         <img src="{{ asset("/img/maps-and-flags.png")}}" alt="">
                                                     </a>
-                                                </li>
+                                                </li> -->
                                                 <li>
                                                     <span class="divider"></span>
                                                 </li>
