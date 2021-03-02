@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminDashboard;
 use App\Http\Controllers\admin\AdminUserController;
+use App\Http\Controllers\admin\ReportController;
 use App\Http\Controllers\WelcomeFeedController;
 use App\Http\Controllers\admin\AdminPageController;
 use App\Http\Controllers\user\UserPostController;
@@ -37,6 +38,7 @@ Route::get('/getState', [DashboardController::class, 'getState'])->name('getStat
 Route::get('/getUsers', [UserController::class, 'getUsers'])->name('getUsers');
 Route::get('/getTagUsers', [UserController::class, 'getTagUsers'])->name('getTagUsers');
 Route::post('/setTagUsers', [UserController::class, 'setTagUsers'])->name('setTagUsers');
+Route::post('/checkUsername', [UserController::class, 'checkUsername'])->name('checkUsername');
 
 /*********************************************************************************************
  *                              User Route
@@ -134,5 +136,8 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::get('/post/edit/{id}', [PostController::class, 'edit'])->name('postEdit');
     Route::post('/post/update/{id}', [PostController::class, 'update'])->name('postUpdate');
     Route::get('/post/delete/{id}', [PostController::class, 'destroy'])->name('deletePost');
+    
+    /************ Report url **********/
+    Route::get('/report/index', [ReportController::class, 'index'])->name('reportIndex');
 
 });

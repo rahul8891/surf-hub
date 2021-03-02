@@ -241,6 +241,7 @@ class UserController extends Controller
         }
     }   
 
+
     public function getTagUsers(Request $request){
         $data = $request->all();   
         $searchTerm = $data['searchTerm'];      
@@ -381,6 +382,18 @@ class UserController extends Controller
          }else{
              echo json_encode(array('status'=>$result['status'], 'message'=>$result['message']));
          }
+
+    public function checkUsername(Request $request)
+    {
+
+        $data = $request->all(); // This will get all the request data.
+        $userCount = $this->users->checkUsername($data);
+        if ($userCount > 0) {
+            return 'false';
+        } else {
+            return 'true';
+        }
+
     }
 
 }

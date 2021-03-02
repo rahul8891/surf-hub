@@ -42,7 +42,6 @@
                             <img src="{{ asset("/img/filter.png")}}" alt=""> Filter
                         </button>
 
-
                         @if(str_contains(Request::path(),'search'))
                             <form class="dropdown-menu filterWrap" action="{{route('searchFilterIndex')}}" aria-labelledby="dropdownMenuButton2">
                         @endif

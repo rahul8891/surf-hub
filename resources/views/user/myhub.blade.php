@@ -29,6 +29,7 @@
                                 @endif
                                 <div class="pl-3">
                                     <h4>{{ucfirst($myHub->user->user_profiles->first_name)}} {{ucfirst($myHub->user->user_profiles->last_name)}}</h4>
+                                    <span>{{ $myHub->beach_breaks->beach_name ?? '' }}, {{\Carbon\Carbon::parse($myHub->created_at)->format('d-m-Y')}}</span><br>
                                     <span>{{ postedDateTime($myHub->created_at) }}</span>
                                 </div>
                             </div>
@@ -37,7 +38,7 @@
                             @csrf
                             <input type="hidden" class="userID" name="followed_user_id" value="{{$myHub->user_id}}">
                             <button href="#" class="followBtn">
-                                <img src="img/user.png" alt=""> FOLLOW
+                                <img src="/img/user.png" alt=""> FOLLOW
                             </button>
                             </form>
                         </div>
@@ -138,8 +139,8 @@
                                                                     </div>
                                                                     <div class="col-2 text-center">:</div>
                                                                     <div class="col-5">
-                                                                        {{$myHub->beach_breaks->beach_name}}/{{$myHub->beach_breaks->break_name}}
-                                                                    </div>
+                                                                        {{ $myHub->beach_breaks->beach_name ?? '' }}/{{ $myHub->beach_breaks->break_name ?? '' }}
+                                                                    </div> 
                                                                     <div class="col-5">
                                                                         Country
                                                                     </div>
@@ -318,7 +319,7 @@
                                         @csrf
                                         <input type="hidden" class="postID" name="post_id" value="{{$myHub->id}}">
                                         <input type="hidden" name="parent_user_id" value="{{$myHub->user_id}}">
-                                        <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$myHub->id}}"></textarea>
+                                        <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$myHub->id}}" style="outline: none;"></textarea>
                                         <button type="submit" class="btn btn-info postComment" id="submitPost{{$myHub->id}}">Submit</button>
                                         </form>
                                     </div>

@@ -282,7 +282,7 @@ $(document).ready(function () {
 			var regexp = /^([A-z0-9!@#$%^&*().,<>{}[\]<>?_=+\-|;:\'\"\/])*[^\s]\1*$/;
 			return regexp.test(value);
 		},
-		"No space are allowed in user name"
+		"No space are allowed"
 	);
 
 	// only number allowed
@@ -296,25 +296,54 @@ $(document).ready(function () {
 		"Please only enter numeric values (0-9) and +-"
 	);
 
+	$.validator.addMethod(
+		"localBeachBreak",
+		function (value) {
+			return value != "";
+		},
+		"Please enter beack break"
+	);
+
+	$.validator.addMethod(
+		"newPwdCurrentPws",
+		function (value) {
+			if(value != $('#current_password').val()){
+				return value;
+			}
+		},
+		"New password can not be same as current password"
+	);
+
 	$("form[name='register']").validate({
 		rules: {
 			first_name: {
 				required: true,
 				minlength: 3,
-				noSpace: true
+				maxlength: 15,
+				noSpace: true,
+				spaceNotAllow: true
 			},
 
 			last_name: {
-				required: false,
+				required: true,
 				minlength: 3,
-				noSpace: true
+				maxlength: 15,
+				noSpace: true,
+				spaceNotAllow: true
 			},
 
 			user_name: {
 				required: true,
 				minlength: 5,
 				noSpace: true,
-				spaceNotAllow: true
+				spaceNotAllow: true,
+				remote: {
+					url: 'checkUsername',
+                    type: "post",
+                    data: {				
+						_token: csrf_token
+					}
+				}
 			},
 
 			email: {
@@ -350,14 +379,20 @@ $(document).ready(function () {
 			password: {
 				minlength: 8,
 				required: true,
-				pwcheck: true
+				pwcheck: true,
+				spaceNotAllow: true
 			},
 
 			password_confirmation: {
 				minlength: 8,
 				required: true,
 				pwcheck: true,
+				spaceNotAllow: true,
 				equalTo: "#password"
+			},
+
+			local_beach_break:{
+				localBeachBreak: true
 			},
 
 			terms: {
@@ -385,7 +420,8 @@ $(document).ready(function () {
 
 			user_name: {
 				required: "Please enter your user name",
-				minlength: "Your user name must be at least 5 characters long."
+				minlength: "Your user name must be at least 5 characters long.",
+				remote: "User name already in use."
 			},
 
 			email: {
@@ -549,7 +585,8 @@ $(document).ready(function () {
 			password: {
 				minlength: 8,
 				required: true,
-				pwcheck: true
+				pwcheck: true,
+				newPwdCurrentPws: true
 			},
 
 			password_confirmation: {
@@ -592,12 +629,14 @@ $(document).ready(function () {
 			first_name: {
 				required: true,
 				minlength: 3,
+				maxlength: 15,
 				noSpace: true
 			},
 
 			last_name: {
 				required: true,
 				minlength: 3,
+				maxlength: 15,
 				noSpace: true
 			},
 
@@ -832,7 +871,7 @@ $(document).ready(function () {
 		$('.other_surfer').val(value);
 		$('#surfer_id').val(dataId);
 		$('#other_surfer_list').html("");
-		$('input[name="surfer"]').val(value);
+		//$('input[name="surfer"]').val(value);
 	});
 
 	$('.tag_user').keyup(debounce(function(){
@@ -1190,12 +1229,14 @@ $(document).ready(function () {
 	  });  
 	});
 	//End auto play
+
 	$(function () {
 	  $('[data-toggle="tooltip"]').tooltip()
 	});
 	$(function () {
 	  $('[data-toggle="modal"]').tooltip()
 	});
+
 });
 
 //To select country name

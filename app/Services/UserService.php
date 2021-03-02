@@ -168,6 +168,7 @@ class UserService {
         return $users;
     }
 
+
     public function getUsersForTagging($string, $fieldFirstName, $fieldLastName)
     {
         $userProfiles =  new UserProfile();
@@ -471,5 +472,11 @@ class UserService {
             $message='"'.$e->getMessage().'"';
             return $message;
         }
+
+    public function checkUsername($dataRequest)
+    {
+        $usernameExist =  $this->users->where('user_name',$dataRequest['user_name'])->count();
+        return $usernameExist;
+
     }
 }

@@ -19,7 +19,7 @@
                             <div class="form">
                                 <h2>Registration</h2>
                                 <div class="row">
-                                    <span id="remove-img" class="reset-img notDisplayed">
+                                    <span id="remove-img" class="reset-img notDisplayed" style="z-index: 1;">
                                         <img src="{{ asset("/img/close.png")}}" id="img-remove" width="14px" alt="">
                                     </span>
                                     <div class="col-md-6">
@@ -298,7 +298,7 @@
                                         </div>
                                         <div class="alreadyAccount">
                                             {{ __('Already have an account?') }} <a
-                                                href="{{ route('login') }}">{{ __('Sign in') }}</a>
+                                                href="{{ route('login') }}">{{ __('Sign In') }}</a>
                                         </div>
                                     </div>
                                     <div class="col-md-6 align-self-end text-center">

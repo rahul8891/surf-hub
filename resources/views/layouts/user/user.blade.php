@@ -140,12 +140,14 @@
     });
     function openFullscreen(id) {
         var elem = document.getElementById("myImage"+id);
-        if (elem.requestFullscreen) {
-          elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
-          elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 */
-          elem.msRequestFullscreen();
+        if (elem.requestFullScreen) {
+          elem.requestFullScreen();
+        } else if (elem.webkitRequestFullScreen) { /* Safari */
+          elem.webkitRequestFullScreen();
+        } else if (elem.mozRequestFullScreen) {
+          elem.mozRequestFullScreen();
+        } else if (elem.msRequestFullScreen) { /* IE11 */
+          elem.msRequestFullScreen();
         }
     }
     </script>
