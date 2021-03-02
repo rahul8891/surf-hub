@@ -163,6 +163,7 @@ class UserService {
         return $users;
     }
 
+
     public function getNotificationCount()
     {
         $count = $this->userFollows->where('followed_user_id',Auth::user()->id)
@@ -413,5 +414,11 @@ class UserService {
             $message='"'.$e->getMessage().'"';
             return $message;
         }
+
+    public function checkUsername($dataRequest)
+    {
+        $usernameExist =  $this->users->where('user_name',$dataRequest['user_name'])->count();
+        return $usernameExist;
+
     }
 }

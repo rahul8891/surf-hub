@@ -170,6 +170,10 @@ class UserPostController extends Controller
     {       
         try{
             $data = $request->all();   
+            if(!empty($data['other_surfer'])){
+                $data['surfer'] = $data['other_surfer'];
+            }
+            
             $imageArray=$request->file('files');
             $videoArray=$request->file('videos');
             $rules = array(

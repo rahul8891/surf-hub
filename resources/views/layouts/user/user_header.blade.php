@@ -126,16 +126,68 @@ $borderBtm = Auth::user() ? 'border-btm ' : '';
                     @endif
                 </li>
             </ul>
+            <ul class="navbar-nav ml-auto tab-dis-none topmenuhideshow">
+                <li class="nav-item dropdown">
+                    <a class="nav-link auth-btn" href="#">Follow Requests</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link auth-btn" href="{{ route('profile') }}">My Profile</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link auth-btn" href="{{ route('showPassword') }}">Change Password</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link auth-btn" href="{{ route('privacy') }}">Privacy Policy</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link auth-btn" href="{{ route('terms') }}"> T&Cs</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link auth-btn" href="{{ route('faq') }}">Help/FAQs</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link auth-btn" href="{{ route('contact') }}">Contact Us</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a class="nav-link auth-btn" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();this.closest('form').submit();">Sign Out</a>
+                    </form>
+                </li>
+            </ul>
             @else
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item ">
+            <ul class="navbar-nav ml-auto tab-dis-none toploginregister">
+                <li class="nav-item dropdown">
                     <a class="nav-link auth-btn" href="{{ route('login') }}">Login </a>
                 </li>
                 @if (Route::has('register'))
-                <li class="nav-item">
+                <li class="nav-item dropdown">
                     <a class="nav-link auth-btn" href="{{ route('register') }}">Signup</a>
                 </li>
                 @endif
+            </ul>
+            <ul class="navbar-nav ml-auto tab-dis-none topmenuhideshow">
+                <li class="nav-item dropdown">
+                    <a class="nav-link auth-btn" href="{{ route('login') }}">Login </a>
+                </li>
+                @if (Route::has('register'))
+                <li class="nav-item dropdown">
+                    <a class="nav-link auth-btn" href="{{ route('register') }}">Signup</a>
+                </li>
+                @endif
+                <li class="nav-item dropdown">
+                    <a class="nav-link auth-btn" href="{{ route('privacy') }}">Privacy Policy</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link auth-btn" href="{{ route('terms') }}"> T&Cs</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link auth-btn" href="{{ route('faq') }}">Help/FAQs</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link auth-btn" href="{{ route('contact') }}">Contact Us</a>
+                </li>
             </ul>
             @endif
         </div>

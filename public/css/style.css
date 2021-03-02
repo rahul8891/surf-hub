@@ -493,6 +493,7 @@ main {
     color: #333333;
     font-weight: 400;
     margin-bottom: 10px;
+    word-break: break-all;
 }
 
 .postsWrap .post .comment span {
@@ -1655,7 +1656,7 @@ footer .profileChangePswd li:last-child {
 }
 
 .contactUsWrap .feedHubNav ul {
-    max-width: 100%;
+    /*max-width: 100%;*/
 }
 
 .contactUsWrap .loginWrap .formWrap {
