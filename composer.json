@@ -18,7 +18,8 @@
         "laravel/tinker": "^2.0",
         "livewire/livewire": "^2.0",
         "pbmedia/laravel-ffmpeg": "^7.4",
-        "php-ffmpeg/php-ffmpeg": "^0.16.0"
+        "php-ffmpeg/php-ffmpeg": "^0.16.0",
+        "willvincent/laravel-rateable": "^2.3"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",

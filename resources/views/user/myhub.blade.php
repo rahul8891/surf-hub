@@ -1,12 +1,17 @@
 @extends('layouts.user.user')
 @section('content')
 @include('layouts/user/user_feed_menu')
+
 <section class="postsWrap">
     <div class="container">
         <div class="row">
             <div class="col-lg-9">
                 @include('layouts/user/upload_layout')
-                    @if (!empty($myHubs))
+                @if (is_null($myHubs[0]))
+                <div class="post alert text-center alert-dismissible py-5" role="alert" id="msg">
+                    {{ ucWords('no post found') }}
+                </div>
+                @elseif (!is_null($myHubs[0]))
                     @foreach ($myHubs as $key => $myHub)
                 <div class="post">
                     @if($key==0)
@@ -28,6 +33,7 @@
                                     <span>{{ postedDateTime($myHub->created_at) }}</span>
                                 </div>
                             </div>
+
                             <form role="form" method="POST" name="follow{{$myHub->id}}" action="{{ route('follow') }}">
                             @csrf
                             <input type="hidden" class="userID" name="followed_user_id" value="{{$myHub->user_id}}">
@@ -38,23 +44,7 @@
                         </div>
                         <p class=" description">{{$myHub->post_text}}</p>
                                 <div class="imgRatingWrap">
-                                    {{-- @php
-                                        $postMedia=$myHub->upload->select('*')->where('post_id',$myHub->id)->get();
-                                    @endphp
-                                    @if (!empty($postMedia))   
-                                    @foreach ($postMedia as $media)  
-                                            @if (!is_null($media->image))
-                                            <img src="{{ asset('storage/images/'.$media->image) }}"alt="" width="100%" class="img-fluid img-thumbnail" id="myImage{{$myHub->id}}">
-                                            @endif
-                                
-                                            @if (!is_null($media->video))
-                                            <video width="100%" controls id="myImage{{$myHub->id}}">
-                                                <source src="{{ asset('storage/videos/'.$media->video) }}" >    
-                                            </video>
-                                            @endif
-                                    @endforeach
-                                    @endif --}}
-                                            
+
                                     @if(!empty($myHub->upload->image))
                                     <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
                                     @endif
@@ -64,29 +54,19 @@
                                         <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
                                     </video>
                                     @endif
+
                                     <div class="ratingShareWrap">
-                                        <div class="rating ">
-                                            <ul class="pl-0 mb-0 d-flex align-items-center">
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star-grey.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <span>4.0(90)</span>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        <ul class="pl-0 mb-0 d-flex align-items-center">
+                                            <li>
+                                                <input id="rating{{$myHub->id}}" name="rating" class="rating rating-loading" data-id="{{$myHub->id}}"
+                                                data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$myHub->userAverageRating}}">   
+                                            </li>
+                                            <li class="ratingCount">
+                                                <span id="average-rating{{$myHub->id}}">{{intval($myHub->usersRated())}}</span>
+                                                (<span id="users-rated{{$myHub->id}}">{{intval($myHub->averageRating)}}</span>)
+                                                
+                                            </li>
+                                        </ul>
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
                                                 <li>
@@ -122,7 +102,7 @@
                                                     <a href="javascript:void(0)">INFO
                                                         <div class="saveInfo infoHover">
                                                             <div class="pos-rel">
-                                                                <img src="img/tooltipArrowDown.png" alt="">
+                                                                <img src="{{ asset("img/tooltipArrowDown.png")}}" alt="">
                                                                 <div class="row">
                                                                     <div class="col-5">
                                                                         Date
@@ -241,33 +221,77 @@
                                                     @endif
                                                     <!-- <a data-toggle="modal" data-target="#postTag{{$myHub->id}}">TAG -->
                                                     <a href="javascript:void(0)">TAG
-                                                        @if(count($myHub->tags) >= 1)
-                                                        <div class="saveInfo infoHover">
+                                                        
+                                                        <div class="saveInfo infoHover userinfoModal">
                                                             <div class="pos-rel">
-                                                                <img src="img/tooltipArrowDown.png" alt="">
-                                                                <div class="row">
-                                                                    @foreach ($myHub->tags as $tags)
+                                                                <img src="../../../img/tooltipArrowDown.png" alt="">
+                                                                <div class="scrollWrap">
+                                                                    
                                                                     <div class="post-head">
                                                                         <div class="userDetail">
-                                                                            <div class="col-5">
-                                                                                @if($tags->user->profile_photo_path)
-                                                                                <img src="{{ asset('storage/'.$tags->user->profile_photo_path) }}" class="taggedUserImg" alt="">
-                                                                                @else
-                                                                                <div class="taggedUserImg no-image">
-                                                                                    {{ucwords(substr($tags->user->user_profiles->first_name,0,1))}}{{ucwords(substr($tags->user->user_profiles->last_name,0,1))}}
-                                                                                </div>
-                                                                                @endif
+                                                                            <div class="imgWrap">
+                                                                                <img src="../../../img/johan.png" class="" alt="">   
+                                                                                <!-- <div class="taggedUserImg no-image">
+                                                                                  
+                                                                                </div> -->
                                                                             </div>
-                                                                            <div class="col-5">
-                                                                                <span class="userName">{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
-                                                                            </div>
+                                                                            <span class="userName">Rafi Raza</span>
+                                                                            
                                                                         </div>
                                                                     </div>
-                                                                    @endforeach
+                                                                    <div class="post-head">
+                                                                        <div class="userDetail">
+                                                                            <div class="imgWrap">
+                                                                                <!-- <img src="../../../img/johan.png" class="" alt="">    -->
+                                                                                <div class="taggedUserImg no-image">
+                                                                                  RR
+                                                                                </div>
+                                                                            </div>
+                                                                            <span class="userName">Rafi Raza</span>
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="post-head">
+                                                                        <div class="userDetail">
+                                                                            <div class="imgWrap">
+                                                                                <img src="../../../img/johan.png" class="" alt="">   
+                                                                                <!-- <div class="taggedUserImg no-image">
+                                                                                  
+                                                                                </div> -->
+                                                                            </div>
+                                                                            <span class="userName">Rafi Raza</span>
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="post-head">
+                                                                        <div class="userDetail">
+                                                                            <div class="imgWrap">
+                                                                                <!-- <img src="../../../img/johan.png" class="" alt="">    -->
+                                                                                <div class="taggedUserImg no-image">
+                                                                                  RR
+                                                                                </div>
+                                                                            </div>
+                                                                            <span class="userName">Rafi Raza</span>
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="post-head">
+                                                                        <div class="userDetail">
+                                                                            <div class="imgWrap">
+                                                                                <img src="../../../img/johan.png" class="" alt="">   
+                                                                                <!-- <div class="taggedUserImg no-image">
+                                                                                  
+                                                                                </div> -->
+                                                                            </div>
+                                                                            <span class="userName">Rafi Raza</span>
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                  
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        @endif
+                                                        
                                                     </a>
                                                 </li>
                                             </ul>

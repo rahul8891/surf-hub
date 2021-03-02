@@ -129,10 +129,10 @@ header .navbar-light .navbar-nav .nav-link {
     text-transform: uppercase;
 }
 
-header .navbar-light .navbar-nav .active > .nav-link,
+header .navbar-light .navbar-nav .active>.nav-link,
 header .navbar-light .navbar-nav .nav-link.active,
 header .navbar-light .navbar-nav .nav-link.show,
-header .navbar-light .navbar-nav .show > .nav-link {
+header .navbar-light .navbar-nav .show>.nav-link {
     color: #424242;
 }
 
@@ -386,22 +386,22 @@ footer .copyright {
     position: relative;
 }
 
-.postsWrap .ratingShareWrap .rating li {
+.postsWrap .ratingShareWrap .rate li {
     margin-right: 6px;
 }
 
-.postsWrap .ratingShareWrap .rating li:last-child {
+.postsWrap .ratingShareWrap .rate li:last-child {
     margin-right: 0px;
 }
 
-.postsWrap .ratingShareWrap .rating li span {
+.postsWrap .ratingShareWrap .rate li span {
     font-size: 18px;
     line-height: 30px;
     color: #4c8df5;
     font-weight: 700;
 }
 
-.postsWrap .ratingShareWrap .rating {
+.postsWrap .ratingShareWrap .rate {
     margin-right: 40px;
 }
 
@@ -804,16 +804,16 @@ header .dropdown-toggle::after {
     left: -9999px;
 }
 
-[type="checkbox"]:not(:checked) + label,
-[type="checkbox"]:checked + label {
+[type="checkbox"]:not(:checked)+label,
+[type="checkbox"]:checked+label {
     position: relative;
     cursor: pointer;
     margin-bottom: 0px;
 }
 
 /* checkbox aspect */
-[type="checkbox"]:not(:checked) + label::before,
-[type="checkbox"]:checked + label::before {
+[type="checkbox"]:not(:checked)+label::before,
+[type="checkbox"]:checked+label::before {
     content: "";
     position: absolute;
     top: 8px;
@@ -826,8 +826,8 @@ header .dropdown-toggle::after {
 }
 
 /* checked mark aspect */
-[type="checkbox"]:not(:checked) + label::after,
-[type="checkbox"]:checked + label::after {
+[type="checkbox"]:not(:checked)+label::after,
+[type="checkbox"]:checked+label::after {
     content: "\2713\0020";
     position: absolute;
     font-size: 1.3em;
@@ -840,29 +840,29 @@ header .dropdown-toggle::after {
 }
 
 /* checked mark aspect changes */
-[type="checkbox"]:not(:checked) + label:after {
+[type="checkbox"]:not(:checked)+label:after {
     opacity: 0;
     transform: scale(0);
 }
 
-[type="checkbox"]:checked + label:after {
+[type="checkbox"]:checked+label:after {
     opacity: 1;
     transform: scale(1);
 }
 
 /* disabled checkbox */
-[type="checkbox"]:disabled:not(:checked) + label:before,
-[type="checkbox"]:disabled:checked + label:before {
+[type="checkbox"]:disabled:not(:checked)+label:before,
+[type="checkbox"]:disabled:checked+label:before {
     box-shadow: none;
     border-color: #bbb;
     background-color: #ddd;
 }
 
-[type="checkbox"]:disabled:checked + label:after {
+[type="checkbox"]:disabled:checked+label:after {
     color: #999;
 }
 
-[type="checkbox"]:disabled + label {
+[type="checkbox"]:disabled+label {
     color: #aaa;
 }
 
@@ -882,16 +882,16 @@ header .dropdown-toggle::after {
     width: 95px;
 }
 
-.postsWrap .post .uploadWrap .head .filterBody .rating ul {
+.postsWrap .post .uploadWrap .head .filterBody .rate ul {
     list-style: none;
     display: flex;
 }
 
-.postsWrap .post .uploadWrap .head .filterBody .rating ul li img {
+.postsWrap .post .uploadWrap .head .filterBody .rate ul li img {
     margin-right: 6px;
 }
 
-.postsWrap .post .uploadWrap .head .filterBody .rating ul li label {
+.postsWrap .post .uploadWrap .head .filterBody .rate ul li label {
     margin-bottom: 0px;
     margin-right: 15px;
 }
@@ -924,7 +924,7 @@ header .dropdown-toggle::after {
     bottom: 20px;
 }
 
-.postsWrap .post .uploadWrap .head .filterBody .rating {
+.postsWrap .post .uploadWrap .head .filterBody .rate {
     margin-bottom: 15px;
 }
 
@@ -1073,21 +1073,21 @@ header .dropdown-toggle::after {
     border-top: 1px solid #cacaca;
 }
 
-.uploadModal [type="checkbox"]:not(:checked) + label::before,
-.uploadModal [type="checkbox"]:checked + label::before {
+.uploadModal [type="checkbox"]:not(:checked)+label::before,
+.uploadModal [type="checkbox"]:checked+label::before {
     left: 0px;
     right: auto;
     top: 3px;
 }
 
-.uploadModal [type="checkbox"]:not(:checked) + label,
-.uploadModal [type="checkbox"]:checked + label {
+.uploadModal [type="checkbox"]:not(:checked)+label,
+.uploadModal [type="checkbox"]:checked+label {
     margin-bottom: 0px;
     padding-left: 30px;
 }
 
-.uploadModal [type="checkbox"]:not(:checked) + label::after,
-.uploadModal [type="checkbox"]:checked + label::after {
+.uploadModal [type="checkbox"]:not(:checked)+label::after,
+.uploadModal [type="checkbox"]:checked+label::after {
     left: 1px;
     top: 4px;
 }
@@ -1164,14 +1164,14 @@ header .dropdown-toggle::after {
     font-weight: 700;
 }
 
-.reasonHover [type="checkbox"]:not(:checked) + label,
-.reasonHover [type="checkbox"]:checked + label {
+.reasonHover [type="checkbox"]:not(:checked)+label,
+.reasonHover [type="checkbox"]:checked+label {
     padding-left: 20px;
     margin-bottom: 6px;
 }
 
-.reasonHover [type="checkbox"]:not(:checked) + label::before,
-.reasonHover [type="checkbox"]:checked + label::before {
+.reasonHover [type="checkbox"]:not(:checked)+label::before,
+.reasonHover [type="checkbox"]:checked+label::before {
     left: 0px;
     right: auto;
     top: 3px;
@@ -1202,8 +1202,8 @@ header .dropdown-toggle::after {
     margin-top: 5px;
 }
 
-.reasonHover [type="checkbox"]:not(:checked) + label::after,
-.reasonHover [type="checkbox"]:checked + label::after {
+.reasonHover [type="checkbox"]:not(:checked)+label::after,
+.reasonHover [type="checkbox"]:checked+label::after {
     font-size: 1em;
     right: auto;
     left: 1px;
@@ -1277,8 +1277,8 @@ header .dropdown-toggle::after {
     top: 8px;
 }
 
-.loginWrap .formWrap [type="checkbox"]:not(:checked) + label,
-.loginWrap .formWrap [type="checkbox"]:checked + label {
+.loginWrap .formWrap [type="checkbox"]:not(:checked)+label,
+.loginWrap .formWrap [type="checkbox"]:checked+label {
     font-size: 14px;
     line-height: 18px;
     color: #000101;
@@ -1286,15 +1286,15 @@ header .dropdown-toggle::after {
     padding-left: 25px;
 }
 
-.loginWrap .formWrap [type="checkbox"]:not(:checked) + label::before,
-.loginWrap .formWrap [type="checkbox"]:checked + label::before {
+.loginWrap .formWrap [type="checkbox"]:not(:checked)+label::before,
+.loginWrap .formWrap [type="checkbox"]:checked+label::before {
     right: auto;
     left: 0px;
     top: 0px;
 }
 
-.loginWrap .formWrap [type="checkbox"]:not(:checked) + label::after,
-.loginWrap .formWrap [type="checkbox"]:checked + label::after {
+.loginWrap .formWrap [type="checkbox"]:not(:checked)+label::after,
+.loginWrap .formWrap [type="checkbox"]:checked+label::after {
     right: auto;
     left: 2px;
     top: 2px;
@@ -1449,8 +1449,8 @@ header .dropdown-toggle::after {
     left: -9999px;
 }
 
-[type="radio"]:checked + label,
-[type="radio"]:not(:checked) + label {
+[type="radio"]:checked+label,
+[type="radio"]:not(:checked)+label {
     position: relative;
     padding-left: 28px;
     cursor: pointer;
@@ -1459,8 +1459,8 @@ header .dropdown-toggle::after {
     color: #666;
 }
 
-[type="radio"]:checked + label:before,
-[type="radio"]:not(:checked) + label:before {
+[type="radio"]:checked+label:before,
+[type="radio"]:not(:checked)+label:before {
     content: "";
     position: absolute;
     left: 0;
@@ -1472,8 +1472,8 @@ header .dropdown-toggle::after {
     background: #fff;
 }
 
-[type="radio"]:checked + label:after,
-[type="radio"]:not(:checked) + label:after {
+[type="radio"]:checked+label:after,
+[type="radio"]:not(:checked)+label:after {
     content: "";
     width: 10px;
     height: 10px;
@@ -1486,13 +1486,13 @@ header .dropdown-toggle::after {
     transition: all 0.2s ease;
 }
 
-[type="radio"]:not(:checked) + label:after {
+[type="radio"]:not(:checked)+label:after {
     opacity: 0;
     -webkit-transform: scale(0);
     transform: scale(0);
 }
 
-[type="radio"]:checked + label:after {
+[type="radio"]:checked+label:after {
     opacity: 1;
     -webkit-transform: scale(1);
     transform: scale(1);
@@ -1512,7 +1512,7 @@ header .dropdown-toggle::after {
     padding: 10px 30px 0px 40px;
 }
 
-.followRequestMainWrap .requests > div {
+.followRequestMainWrap .requests>div {
     padding-top: 30px;
     padding-bottom: 30px;
     border-bottom: 2px solid #dddfe2;
@@ -1520,7 +1520,7 @@ header .dropdown-toggle::after {
     align-items: center;
 }
 
-.followRequestMainWrap .requests > div:last-child {
+.followRequestMainWrap .requests>div:last-child {
     border-bottom: 0px;
 }
 
@@ -1857,7 +1857,7 @@ header .notificationWrap .setHeight {
     border-radius: 10px;
 }
 
-.nicescroll-rails > div {
+.nicescroll-rails>div {
     border: none !important;
     background-color: #4f8cf7 !important;
 }
@@ -1881,6 +1881,7 @@ form .error {
 .search1 {
     position: absolute !important;
 }
+
 .auto-search ul li {
     background-color: #eef2f8 !important;
     border-color: #4c8df5 !important;
@@ -1935,10 +1936,59 @@ form .error {
     background-color: #4c8df5;
 }
 
-.modal-dialog{
+.modal-dialog {
     overflow-y: initial !important
 }
-.modal-body{
+
+.modal-body {
     max-height: calc(100vh - 200px);
     overflow-y: auto;
 }
+
+/* 8-jan-2021 */
+.postsWrap .userinfoModal .post-head {
+    padding: 0px;
+    margin-bottom: 10px;
+}
+
+.postsWrap .userinfoModal .post-head:last-child {
+    margin-bottom: 0px;
+}
+
+.postsWrap .userinfoModal .post-head .userDetail {
+    padding-right: 0px;
+}
+
+.postsWrap .userinfoModal .post-head .userDetail .userName {
+    flex: 1;
+    width: auto;
+    padding-left: 15px;
+}
+
+.postsWrap .userinfoModal .post-head .userDetail .imgWrap {
+    max-width: 50px;
+    flex: 0 0 50px;
+}
+
+.postsWrap .userinfoModal .post-head .userDetail .imgWrap img {
+    width: 100%;
+    position: static;
+    transform: translateX(0%);
+}
+
+.postsWrap .userinfoModal .post-head .taggedUserImg {
+    font-size: 18px;
+}
+
+.postsWrap .userinfoModal .scrollWrap {
+    height: 237px;
+    overflow: auto;
+}
+
+.infoHover.userinfoModal {
+    padding: 15px
+}
+
+
+
+/* end  */

@@ -11,6 +11,7 @@ use App\Http\Controllers\admin\PostController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\user\MyHubController;
+use App\Http\Controllers\user\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,12 +61,17 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
    // Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
     
     Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');
-    Route::get('/user/myhub/filter', [MyHubController::class, 'filter'])->name('filterIndex');
+    Route::get('/user/myhub/filter', [MyHubController::class, 'filter'])->name('myhubFilterIndex');
+    
+    Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
+    Route::get('search/filter', [SearchController::class, 'filter'])->name('searchFilterIndex');
 
     Route::post('/delete', [UserPostController::class, 'destroy'])->name('deleteUserPost');
     Route::get('/delete/{id}', [UserPostController::class, 'destroy'])->name('deleteUserPost');
 
     Route::get('/saveToMyHub/{id}', [UserPostController::class, 'saveToMyHub'])->name('saveToMyHub');
+
+    Route::post('/rating', [UserPostController::class, 'rating'])->name('rating');
 
     Route::post('/comment', [UserPostController::class, 'comment'])->name('comment');
     Route::post('/report', [UserPostController::class, 'report'])->name('report');
