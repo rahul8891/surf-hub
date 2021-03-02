@@ -999,3 +999,42 @@ function myTimerUserMessage() {
 	document.getElementById("error").innerHTML = "";
 	document.getElementById("error").className = "";
 }
+
+/* Beach Break Location Popup */
+function initializeMap(id, lat, long) {
+    var map; 
+    var geocoder;
+    var latlng = new google.maps.LatLng(lat, long);
+    var myOptions =
+    {
+        zoom: 14,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeControl: false,
+        mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
+        },
+        scrollwheel: false,
+        navigationControl: false,
+        scaleControl: false,
+        disableDoubleClickZoom: true,
+        zoomControl: true,
+        zoomControlOptions: {
+          position: google.maps.ControlPosition.RIGHT_TOP,
+        },
+    };
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    new google.maps.Marker({
+        position: latlng,
+        map: map
+    });
+    
+}
+
+//show map on modal
+$(document).on('click shown.bs.modal', '.locationMap', function () {
+    var id = $(this).attr("data-id");
+    var lat = $(this).attr("data-lat");
+    var long = $(this).attr("data-long");
+    initializeMap(id, lat, long);
+});
