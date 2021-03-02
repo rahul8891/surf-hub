@@ -60,7 +60,7 @@ $(document).ready(function () {
           var file = e.target;
           $("<span class=\"pip\">" +
             "<img style=\"width: 50px;\" class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-            "<br/><span class=\"remove\" data-index=\"" + index + "\"><img src=\"" + base_url + "\/img/close.png\" id=\"remove\" style=\"margin: -7px;position: inherit;padding: 0px 0px 10px 0px;top: 148px;cursor: pointer;\" width=\"14px\"></span>" +
+            "<br/><span class=\"remove\" data-index=\"" + index + "\"><img src=\"" + base_url + "\/img/close.png\" id=\"remove\" style=\"margin: 0px;position: inherit;padding: 0px 0px 10px 0px;top: 148px;cursor: pointer;\" width=\"14px\"></span>" +
             "</span>").insertAfter("#filesInfo");
           $(".remove").click(function () {
             var indexRemoved = $(this).data('index');
@@ -120,7 +120,14 @@ $(document).ready(function () {
 
 
 
-
+  // no space allow in text box
+  $.validator.addMethod(
+    "noSpace",
+    function (value, element) {
+      return value == "" || value.trim().length != 0;
+    },
+    "No space please and don't leave it empty"
+  );
   /**
    * Validate post form befor submit
    */
@@ -132,6 +139,7 @@ $(document).ready(function () {
 
       post_text: {
         required: false,
+        noSpace: true
       },
 
       surf_date: {
@@ -293,6 +301,7 @@ $(document).ready(function () {
       case 'Me':
         $("#othersSurfer").hide();
         $("#other_surfer").val("");
+        $('.other_surfer').val('');
         break;
       case 'Others':
         $("#othersSurfer").show();
@@ -301,6 +310,7 @@ $(document).ready(function () {
       case 'Unknown':
         $("#othersSurfer").hide();
         $("#other_surfer").val("");
+        $('.other_surfer').val('');
         break;
       default:
         $("#othersSurfer").hide();

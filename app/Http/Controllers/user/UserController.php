@@ -148,7 +148,7 @@ class UserController extends Controller
         
         $result = $this->users->updateUserProfile($data,$message);        
         if($result){
-            return Redirect::to('user/profile')->withSuccess($message);
+            return Redirect::to('dashboard')->withSuccess($message);
         }else{           
            return Redirect::to('user/profile')->withErrors($message);
         }
@@ -238,5 +238,17 @@ class UserController extends Controller
             }
         }
     }   
+
+    public function checkUsername(Request $request)
+    {
+
+        $data = $request->all(); // This will get all the request data.
+        $userCount = $this->users->checkUsername($data);
+        if ($userCount > 0) {
+            return 'false';
+        } else {
+            return 'true';
+        }
+    }
 
 }

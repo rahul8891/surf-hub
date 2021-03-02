@@ -40,6 +40,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.5.1/jquery.nicescroll.min.js"> </script>
     <script src="{{ asset("/js/bootstrap.js")}}"></script>
+    <script src="{{ asset("/js/jquery.validate.min.js")}}"></script>
     <script>
     $(document).ready(function() {
         $(" #My-Profile").click(function() {
@@ -51,6 +52,83 @@
         });
 
         $('#error').delay(4000).fadeOut('slow');
+
+        // no space allow in text box
+        $.validator.addMethod(
+            "noSpace",
+            function (value, element) {
+                return value == "" || value.trim().length != 0;
+            },
+            "No space please and don't leave it empty"
+        );
+
+        // valid email format
+        $.validator.addMethod(
+            "validEmailFormat",
+            function (email) {
+                var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
+                return testEmail.test(email);
+            },
+            "Please enter valid email with valid format"
+        );
+        //contact us
+        $("form[name='contact_us']").validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 5,
+                    noSpace: true
+                },
+
+                email: {
+                    required: true,
+                    email: true,
+                    validEmailFormat: true
+                },
+
+                subject: {
+                    required: true,
+                    minlength: 5,
+                    noSpace: true
+                },
+
+                description: {
+                    required: true
+                }
+            },
+            errorPlacement: function (error, element) {
+                if (element.is(":radio")) {
+                    error.insertAfter(element.parent().parent());
+                } else {
+                    // This is the default behavior of the script for all fields
+                    error.insertAfter(element);
+                }
+            },
+            messages: {
+                name: {
+                    required: "Please enter your name",
+                    minlength: "Your name must be at least 5 characters long."
+                },
+
+                email: {
+                    required: "Please enter your email",
+                    email: "Please enter valid email address"
+                },
+
+                subject: {
+                    required: "Please enter your subject",
+                    minlength: "Subject must be at least 5 characters long."
+                },
+
+                description: {
+                    required: "Please enter your description"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+                spinner.show();
+            }
+        });
 
     });
     </script>
