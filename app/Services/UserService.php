@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Models\Tag;
 use App\Models\UserFollow;
 use App\Models\Notification;
 use Illuminate\Http\Request;
@@ -29,6 +30,8 @@ class UserService {
 
     protected $users;
 
+    protected $tags;
+
     protected $userFollows;
 
     protected $notification;
@@ -42,6 +45,8 @@ class UserService {
         // get custom config file
         $this->checkUserType = config('customarray');
         // dd($this->checkUserType['error']['MODEL_ERROR']);
+        // tag model object
+        $this->tag = new Tag();
         // User model object
         $this->userFollows = new UserFollow();
         // notification model object
@@ -163,6 +168,58 @@ class UserService {
         return $users;
     }
 
+    public function getUsersForTagging($string, $fieldFirstName, $fieldLastName)
+    {
+        $userProfiles =  new UserProfile();
+        
+        $result = $userProfiles
+            ->where('user_id','!=', Auth::user()->id)
+            ->where($fieldFirstName, 'LIKE',  '%' . $string .'%')
+            ->orWhere($fieldLastName, 'LIKE',  '%' . $string .'%')
+            ->get();
+        return $result;
+    }
+
+    public function checkAlreadyTagged($dataRequest)
+    {
+        $result = $this->tag
+            ->where('post_id',$dataRequest['post_id'])
+            ->where('user_id',$dataRequest['user_id'])
+            ->first();
+        return $result;
+    }
+
+    public function tagUserOnPost($input)
+    {
+        $this->tag->post_id = $input['post_id'];
+        $this->tag->user_id = $input['user_id'];
+        $this->tag->created_at = Carbon::now();
+        $this->tag->updated_at = Carbon::now();
+        if($this->tag->save()){
+            $this->setTagNotification($input);
+        }
+    }
+
+    public function setTagNotification($input)
+    {
+        $this->notification->post_id = $input['post_id'];
+        $this->notification->sender_id = Auth::user()->id;
+        $this->notification->receiver_id = $input['user_id'];
+        $this->notification->notification_type = 'Tag';
+        $this->notification->created_at = Carbon::now();
+        $this->notification->updated_at = Carbon::now();
+        $this->notification->save();
+    }
+
+    public function getAllTaggedUsers($input)
+    {
+        //dd($input);
+        $result = $this->tag
+            ->where('post_id',$input['post_id'])
+            ->where('is_deleted','0')
+            ->orderBy('id','desc')->get();
+        return $result;
+    }
 
     public function getNotificationCount()
     {

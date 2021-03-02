@@ -175,7 +175,7 @@
                                                             <div class="pos-rel">
                                                                 <img src="img/tooltipArrowDown.png" alt="">
                                                                 <div class="row">
-                                                                    @foreach ($detail->post->tags as $tags)
+                                                                    @foreach ($detail->post->tags->reverse() as $tags)
                                                                     <div class="post-head">
                                                                         <div class="userDetail">
                                                                             <div class="col-5">

@@ -864,8 +864,7 @@ $(document).ready(function () {
 
    },100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
-
-        $(document).on('click','.search2 li', function(){
+	$(document).on('click','.search2 li', function(){
 		var value = $(this).text().trim();
 		var dataId = $(this).attr("data-id");
 		$('#other_surfer_list').html("");
@@ -873,6 +872,65 @@ $(document).ready(function () {
 		$('#surfer_id').val(dataId);
 		$('#other_surfer_list').html("");
 		//$('input[name="surfer"]').val(value);
+	});
+
+	$('.tag_user').keyup(debounce(function(){
+		// the following function will be executed every half second	
+	
+		var post_id = $(this).attr('data-post_id');
+		if($(this).val().length > 1){
+			$.ajax({
+				type: "GET",
+				url: "/getTagUsers",
+				data: {				
+					post_id: post_id,
+					searchTerm: $(this).val(),
+					_token: csrf_token
+				},
+				dataType: "json",
+				success: function (jsonResponse) {
+					
+					$('#tag_user_list'+post_id).html(jsonResponse);
+				}
+			})
+		}else{
+			$('#user_id').val('');
+			$('#tag_user_list'+post_id).html("");
+		}
+
+   	},100)); // Milliseconds in which the ajax call should be executed (100 = half second)
+
+
+    $(document).on('click','.tagSearch li', function(){
+		var value = $(this).text().trim();
+		var dataId = $(this).attr("data-id");
+		var postId = $(this).attr("data-post_id");
+		//ajax call to insert data in tag table and also set notification
+		$.ajax({
+			type: "POST",
+			url: "/setTagUsers",
+			data: {				
+				post_id: postId,
+				user_id: dataId,
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				
+				if(jsonResponse.status == 'success'){
+					$('#rowId'+dataId).hide();
+					//$('#tag_user_list'+postId).html("");
+					$('.tag_user').val(value);
+					$('#user_id').val(dataId);
+					//$('#tag_user_list'+postId).html("");
+					$( ".scrollWrap" ).empty();
+					$('.scrollWrap').html(jsonResponse.responsData);
+				}else{
+					alert(jsonResponse.message);
+				}
+				$('#tag_user_list'+post_id).html(jsonResponse);
+			}
+		})
 	});
 
 	
@@ -1131,7 +1189,7 @@ $(document).ready(function () {
 	 });
 	$(document).on('click', '#navbarDropdown', function(){
 		$.ajax({
-			type: "Post",
+			type: "POST",
 			url: "updateNotificationCountStatus",
 			data: {
 				_token: csrf_token
@@ -1154,7 +1212,6 @@ $(document).ready(function () {
 		}
 	});
 
-
 	//Auto play videos when view in scroll
 	function isInView(el) {
 	  var rect = el.getBoundingClientRect();// absolute position of video element
@@ -1173,6 +1230,12 @@ $(document).ready(function () {
 	});
 	//End auto play
 
+	$(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	});
+	$(function () {
+	  $('[data-toggle="modal"]').tooltip()
+	});
 
 });
 

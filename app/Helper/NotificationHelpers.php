@@ -1,7 +1,7 @@
 <?php
 
-namespace App\Helpers;
-use Auth;
+//namespace App\Helpers;
+//use Auth;
 use App\Services\UserService;
 use App\Services\PostService;
 use App\Models\UserFollow;
@@ -9,7 +9,7 @@ use App\Models\Tag;
 use App\Models\Upload;
 use App\Models\Notification;
 
-class FollowNotification {
+//class FollowNotification {
     /*public function __construct(UserService $users)
     {
         $this->users = $users;       
@@ -54,8 +54,8 @@ class FollowNotification {
         return $notificationArray;
     }
 
-     public static function instance()
+     /*public static function instance()
      {
          return new FollowNotification();
      }
-}
+}*/
