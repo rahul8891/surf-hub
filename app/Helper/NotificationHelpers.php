@@ -1,7 +1,7 @@
 <?php
 
-//namespace App\Helpers;
-//use Auth;
+namespace App\Helpers;
+use Auth;
 use App\Services\UserService;
 use App\Services\PostService;
 use App\Models\UserFollow;
@@ -9,7 +9,7 @@ use App\Models\Tag;
 use App\Models\Upload;
 use App\Models\Notification;
 
-//class FollowNotification {
+class FollowNotification {
     /*public function __construct(UserService $users)
     {
         $this->users = $users;       
@@ -41,7 +41,7 @@ use App\Models\Notification;
             $notificationArray[$value->id]['last_name']=$value->sender->user_profiles->last_name;
             $notificationArray[$value->id]['notification_type']=$value->notification_type;
             $notificationArray[$value->id]['created_at']=$value->created_at;
-            if($value->post->upload){
+            if(isset($value->post->upload['image']) || isset($value->post->upload['video'])){
                 if($value->post->upload['image']){
                     $notificationArray[$value->id]['post_type']='photo';
                 }elseif(!$value->post->upload['image'] && $value->post->upload['video']){
@@ -54,8 +54,8 @@ use App\Models\Notification;
         return $notificationArray;
     }
 
-     /*public static function instance()
+     public static function instance()
      {
          return new FollowNotification();
      }
-}*/
+}

@@ -8,8 +8,8 @@
                 @auth
                 <li>
                     <a href="{{ route('followRequests') }}">Follow Requests
-                        @if(getNotificationCount() > 0)
-                            <span class="followCount">{{ getNotificationCount() }}</span>
+                        @if(FollowNotification::instance()->getNotificationCount() > 0)
+                            <span class="followCount">{{ FollowNotification::instance()->getNotificationCount() }}</span>
                         @endif
                     </a>
                 </li>

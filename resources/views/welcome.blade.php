@@ -62,12 +62,12 @@
                                 </div>
                                 <div>
                                     <ul class="pl-0 mb-0 d-flex">
-                                        <li>
+                                        <!-- <li>
                                             <a href="#"><img src="img/instagram.png" alt=""></a>
                                         </li>
                                         <li>
                                             <span class="divider"></span>
-                                        </li>
+                                        </li> -->
                                         <li>
                                             <a href="#">
                                                 <img src="img/facebook.png" alt="">

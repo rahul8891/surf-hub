@@ -1197,7 +1197,7 @@ $(document).ready(function () {
 			dataType: "json",
 			success: function (jsonResponse) {
 				if (jsonResponse.status == "success") {
-					$('#followRequestCountHead').hide();
+					$('.followCountHead').hide();
 				}
 			}
 		});

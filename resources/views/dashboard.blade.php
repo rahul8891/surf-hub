@@ -62,25 +62,25 @@
                                 </ul>
                                 <div>
                                     <ul class="pl-0 mb-0 d-flex">
-                                        <li>
+                                        <!-- <li>
                                             <a href="#"><img src={{asset("img/instagram.png")}} alt=""></a>
                                         </li>
                                         <li>
                                             <span class="divider"></span>
-                                        </li>
+                                        </li> -->
                                         <li>
                                             <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$posts->upload->image)); ?>,'sharer'">
                                                 <img src="img/facebook.png" alt="">
                                             </a>
                                         </li>
-                                        <!-- <li>
+                                        <li>
                                             <span class="divider"></span>
                                         </li>
                                         <li>                                            
                                             <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude}}" data-long="{{$posts->beach_breaks->longitude}}" data-id="{{$posts->id}}" class="locationMap">
                                                 <img src={{asset("img/maps-and-flags.png")}} alt="">
                                             </a>
-                                        </li> -->
+                                        </li>
                                         <li>
                                             <span class="divider"></span>
                                         </li>
