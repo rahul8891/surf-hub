@@ -201,7 +201,7 @@
                                       <div class="modal-body">
                                         @foreach ($posts->comments as $comments)
                                         <p class="comment ">
-                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                         </p>
                                         @endforeach
                                       </div>
@@ -218,7 +218,7 @@
                                 @endif
                                 @foreach ($posts->comments->slice(0, 5) as $comments)
                                 <p class="comment ">
-                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                 </p>
                                 @endforeach
                             </div>
