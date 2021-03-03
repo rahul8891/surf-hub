@@ -63,7 +63,8 @@
     <script src="{{ asset("/js/croppie.js")}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.5.1/jquery.nicescroll.min.js"> </script>
-    
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5JiYXogWVNPfX_L4uA0oWb-qiNSfKfYk"
+  type="text/javascript"></script>
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
     <script src="{{ asset("/js/bootstrap.js")}}"></script>
@@ -140,14 +141,16 @@
     });
     function openFullscreen(id) {
         var elem = document.getElementById("myImage"+id);
-        if (elem.requestFullscreen) {
-          elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
-          elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 */
-          elem.msRequestFullscreen();
+        if (elem.requestFullScreen) {
+          elem.requestFullScreen();
+        } else if (elem.webkitRequestFullScreen) { /* Safari */
+          elem.webkitRequestFullScreen();
+        } else if (elem.mozRequestFullScreen) {
+          elem.mozRequestFullScreen();
+        } else if (elem.msRequestFullScreen) { /* IE11 */
+          elem.msRequestFullScreen();
         }
-    }
+    }    
     </script>
 
     

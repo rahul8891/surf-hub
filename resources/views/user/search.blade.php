@@ -74,7 +74,7 @@
                                             <span class="divider"></span>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude}}" data-long="{{$posts->beach_breaks->longitude}}" data-id="{{$posts->id}}" class="locationMap">
                                                 <img src={{asset("img/maps-and-flags.png")}} alt="">
                                             </a>
                                         </li>
@@ -224,7 +224,7 @@
                                       <div class="modal-body">
                                         @foreach ($posts->comments as $comments)
                                         <p class="comment ">
-                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                         </p>
                                         @endforeach
                                       </div>
@@ -239,18 +239,20 @@
                                 </div>
                                 <p class="viewCommentTxt" data-toggle="modal" data-target="#commentPopup">View all comments</p>
                                 @endif
-                                @foreach ($posts->comments as $comments)
+                                @foreach ($posts->comments->slice(0, 5) as $comments)
                                 <p class="comment ">
-                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                 </p>
                                 @endforeach
                             </div>
                             @endif
                             <div class="WriteComment">
                                 <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
-                                <input type="hidden" name="post_id" value="{{$posts->id}}">
-                                <textarea placeholder="Write a comment.." name="comment"></textarea>
-                                <!-- <button type="submit" id="next1" class="btn btn-info float-right">Submit</button> -->
+                                @csrf
+                                <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
+                                <input type="hidden" name="parent_user_id" value="{{$posts->user_id}}">
+                                <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$posts->id}}"></textarea>
+                                <button type="submit" class="btn btn-info postComment" id="submitPost{{$posts->id}}">Submit</button>
                                 </form>
                             </div>
                         </div>
@@ -271,5 +273,6 @@
         </div>
     </div>
 </section>
+@include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
 @endsection

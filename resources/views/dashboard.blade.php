@@ -33,13 +33,11 @@
                                     <span>{{ postedDateTime($posts->created_at) }}</span>
                                 </div>
                             </div>
-                            <form role="form" method="POST" name="follow{{$posts->id}}" action="{{ route('follow') }}">
-                            @csrf
-                            <input type="hidden" class="userID" name="followed_user_id" value="{{$posts->user_id}}">
-                            <button href="#" class="followBtn">
+                            @if($posts->user_id != Auth::user()->id)
+                            <button class="followBtn follow" data-id="{{$posts->user_id}}" data-post_id="{{$posts->id}}">
                                 <img src="img/user.png" alt=""> FOLLOW
                             </button>
-                            </form>
+                            @endif
                         </div>
                         <p class="description">{{$posts->post_text}}</p>
                         <div class="imgRatingWrap">
@@ -71,18 +69,18 @@
                                             <span class="divider"></span>
                                         </li>
                                         <li>
-                                            <a href="#">
-                                                <img src={{asset("img/facebook.png")}} alt="">
+                                            <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$posts->upload->image)); ?>,'sharer'">
+                                                <img src="img/facebook.png" alt="">
                                             </a>
                                         </li>
-                                        <li>
+                                        <!-- <li>
                                             <span class="divider"></span>
                                         </li>
-                                        <li>
-                                            <a href="#">
+                                        <li>                                            
+                                            <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude}}" data-long="{{$posts->beach_breaks->longitude}}" data-id="{{$posts->id}}" class="locationMap">
                                                 <img src={{asset("img/maps-and-flags.png")}} alt="">
                                             </a>
-                                        </li>
+                                        </li> -->
                                         <li>
                                             <span class="divider"></span>
                                         </li>
@@ -171,8 +169,8 @@
                                             <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}" class="">SAVE
                                                 <div class="saveInfo">
                                                     <div class="pos-rel">
-                                                        <img src={{asset("img/tooltipArrowDown.png")}} alt="">
-                                                        Save this video to your personal MyHub library
+                                                        <img src="img/tooltipArrowDown.png" alt="">
+                                                        Save this photo/video to your personal MyHub library
                                                     </div>
                                                 </div>
                                             </a>
@@ -259,7 +257,7 @@
                                 @csrf
                                 <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
                                 <input type="hidden" name="parent_user_id" value="{{$posts->user_id}}">
-                                <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$posts->id}}"></textarea>
+                                <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$posts->id}}" style="outline: none;"></textarea>
                                 <button type="submit" class="btn btn-info postComment" id="submitPost{{$posts->id}}">Submit</button>
                                 </form>
                             </div>
@@ -282,5 +280,6 @@
         </div>
     </div>
 </section>
+@include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
 @endsection

@@ -29,6 +29,7 @@
                                 @endif
                                 <div class="pl-3">
                                     <h4>{{ucfirst($myHub->user->user_profiles->first_name)}} {{ucfirst($myHub->user->user_profiles->last_name)}}</h4>
+                                    <span>{{ $myHub->beach_breaks->beach_name ?? '' }}, {{\Carbon\Carbon::parse($myHub->created_at)->format('d-m-Y')}}</span><br>
                                     <span>{{ postedDateTime($myHub->created_at) }}</span>
                                 </div>
                             </div>
@@ -37,13 +38,12 @@
                             @csrf
                             <input type="hidden" class="userID" name="followed_user_id" value="{{$myHub->user_id}}">
                             <button href="#" class="followBtn">
-                                <img src="img/user.png" alt=""> FOLLOW
+                                <img src="/img/user.png" alt=""> FOLLOW
                             </button>
                             </form>
                         </div>
                         <p class=" description">{{$myHub->post_text}}</p>
                                 <div class="imgRatingWrap">
-
                                     @if(!empty($myHub->upload->image))
                                     <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
                                     @endif
@@ -75,18 +75,28 @@
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
-                                                    <a href="#">
+                                                    @if(!empty($myHub->upload->image))
+                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$myHub->upload->image)); ?>,'sharer'">
                                                         <img src="{{ asset("/img/facebook.png")}}" alt="">
                                                     </a>
+                                                    @elseif(!empty($myHub->upload->video))
+                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$myHub->upload->video)); ?>,'sharer'">
+                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
+                                                    </a>
+                                                    @else
+                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>,'sharer'">
+                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
+                                                    </a>
+                                                    @endif
                                                 </li>
-                                                <li>
+                                                <!-- <li>
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
-                                                    <a href="#">
+                                                    <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$myHub->beach_breaks->latitude}}" data-long="{{$myHub->beach_breaks->longitude}}" data-id="{{$myHub->id}}" class="locationMap">
                                                         <img src="{{ asset("/img/maps-and-flags.png")}}" alt="">
                                                     </a>
-                                                </li>
+                                                </li> -->
                                                 <li>
                                                     <span class="divider"></span>
                                                 </li>
@@ -129,8 +139,8 @@
                                                                     </div>
                                                                     <div class="col-2 text-center">:</div>
                                                                     <div class="col-5">
-                                                                        {{$myHub->beach_breaks->beach_name}}/{{$myHub->beach_breaks->break_name}}
-                                                                    </div>
+                                                                        {{ $myHub->beach_breaks->beach_name ?? '' }}/{{ $myHub->beach_breaks->break_name ?? '' }}
+                                                                    </div> 
                                                                     <div class="col-5">
                                                                         Country
                                                                     </div>
@@ -220,33 +230,46 @@
                                                     @endif
                                                     <!-- <a data-toggle="modal" data-target="#postTag{{$myHub->id}}">TAG -->
                                                     <a href="javascript:void(0)">TAG
-                                                        @if(count($myHub->tags) >= 1)
-                                                        <div class="saveInfo infoHover">
+                                                        
+                                                        <div class="saveInfo infoHover userinfoModal">
                                                             <div class="pos-rel">
-                                                                <img src="img/tooltipArrowDown.png" alt="">
-                                                                <div class="row">
-                                                                    @foreach ($myHub->tags as $tags)
+                                                                <img src="../../../img/tooltipArrowDown.png" alt="">
+                                                                <div class="scrollWrap">
+                                                                    @foreach ($myHub->tags->reverse() as $tags)
                                                                     <div class="post-head">
                                                                         <div class="userDetail">
-                                                                            <div class="col-5">
-                                                                                @if($tags->user->profile_photo_path)
+                                                                            <div class="imgWrap">
+                                                                            @if($tags->user->profile_photo_path)
                                                                                 <img src="{{ asset('storage/'.$tags->user->profile_photo_path) }}" class="taggedUserImg" alt="">
-                                                                                @else
+                                                                                
+                                                                            @else
                                                                                 <div class="taggedUserImg no-image">
                                                                                     {{ucwords(substr($tags->user->user_profiles->first_name,0,1))}}{{ucwords(substr($tags->user->user_profiles->last_name,0,1))}}
                                                                                 </div>
-                                                                                @endif
+                                                                            @endif
                                                                             </div>
-                                                                            <div class="col-5">
-                                                                                <span class="userName">{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
-                                                                            </div>
+                                                                            <span class="userName">{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>                                                                         
                                                                         </div>
                                                                     </div>
                                                                     @endforeach
                                                                 </div>
+                                                                <div class="col-md-12 col-sm-4" id="tagUser">
+                                                                    <div class="selectWrap pos-rel">
+                                                                        <div class="selectWrap pos-rel">
+                                                                            <input type="text" value="{{ old('tag_user')}}" name="tag_user"
+                                                                                placeholder="@ Search user" class="form-control tag_user" required data-post_id="{{$myHub->id}}">
+                                                                                <input type="hidden" value="{{ old('user_id')}}" name="user_id"
+                                                                                id="user_id" class="form-control user_id">
+                                                                            <div class="auto-search tagSearch" id="tag_user_list{{$myHub->id}}"></div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
                                                             </div>
+
+                                                            
                                                         </div>
-                                                        @endif
+                                                        
                                                     </a>
                                                 </li>
                                             </ul>
@@ -296,7 +319,7 @@
                                         @csrf
                                         <input type="hidden" class="postID" name="post_id" value="{{$myHub->id}}">
                                         <input type="hidden" name="parent_user_id" value="{{$myHub->user_id}}">
-                                        <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$myHub->id}}"></textarea>
+                                        <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$myHub->id}}" style="outline: none;"></textarea>
                                         <button type="submit" class="btn btn-info postComment" id="submitPost{{$myHub->id}}">Submit</button>
                                         </form>
                                     </div>
@@ -318,5 +341,6 @@
             </div>
         </div>
 </section>
+@include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
 @endsection

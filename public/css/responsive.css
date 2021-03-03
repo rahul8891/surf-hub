@@ -32,6 +32,12 @@
     }
 }
 
+@media only screen and (min-width: 768px) {
+    .topmenuhideshow{
+        display: none;
+    }
+}
+
 @media only screen and (min-width: 767px) {
     .text-web-right {
         text-align: right;
@@ -42,6 +48,13 @@
     header .bg-light {
         padding-left: 60px;
         padding-right: 60px;
+    }
+}
+
+@media only screen and (max-width: 1600px) {
+    footer li .divider {
+        margin-left: 40px;
+        margin-right: 40px;
     }
 }
 
@@ -60,6 +73,9 @@
 }
 
 @media only screen and (max-width: 1200px) {
+    .topmenuhideshow{
+        display: none;
+    }
     .postComment {
         position: absolute;
         line-height: 47px;
@@ -117,6 +133,12 @@
 }
 
 @media only screen and (max-width: 991px) {
+    .reset-img{
+        top: 54px;
+    }
+    .topmenuhideshow{
+        display: block !important;
+    }
     .postComment {
         position: absolute;
         line-height: 47px;
@@ -234,6 +256,9 @@
 }
 
 @media only screen and (max-width: 767px) {
+    .topmenuhideshow{
+        display: block !important;
+    }
     .postComment {
         position: absolute;
         line-height: 47px;
@@ -347,6 +372,12 @@
 }
 
 @media only screen and (max-width: 567px) {
+    .topmenuhideshow{
+        display: block !important;
+    }
+    .toploginregister{
+        display: none !important;
+    }
     .postComment {
         position: absolute;
         line-height: 41px;
@@ -669,6 +700,11 @@
         line-height: 20px;
     }
 
+    .infoHover.userinfoModal .pos-rel img {
+        bottom: -27px;
+        right: 1px;
+        left: auto;
+    }
     .a_uploadWrap [type="checkbox"]:not(:checked)+label::after,
     .a_uploadWrap [type="checkbox"]:checked+label::after {
         top: 4px;

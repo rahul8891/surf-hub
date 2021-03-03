@@ -9,6 +9,7 @@ use App\Traits\PasswordTrait;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
+use App\Models\Tag;
 // use App\Http\Controllers\user\Redirect;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,8 @@ class UserController extends Controller
      */
     public function __construct(UserService $users)
     {
-        $this->users = $users;       
+        $this->users = $users;    
+        $this->common = config('customarray.common');   
     }
     
     /**
@@ -148,7 +150,7 @@ class UserController extends Controller
         
         $result = $this->users->updateUserProfile($data,$message);        
         if($result){
-            return Redirect::to('user/profile')->withSuccess($message);
+            return Redirect::to('dashboard')->withSuccess($message);
         }else{           
            return Redirect::to('user/profile')->withErrors($message);
         }
@@ -238,5 +240,159 @@ class UserController extends Controller
             }
         }
     }   
+
+    public function getTagUsers(Request $request){
+        $data = $request->all();   
+        $searchTerm = $data['searchTerm'];      
+        if(!empty($searchTerm)){
+            $searchTerm = explode(",",$searchTerm);
+            $string = $searchTerm['0'];        
+            $fieldFirstName = 'first_name';
+            $fieldLastName = 'last_name';
+            //get users list for tagging
+            $resultData = $this->users->getUsersForTagging($string, $fieldFirstName, $fieldLastName);
+            
+            $returnObject = '';
+            if(!$resultData->isEmpty()){
+                $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1; width:100%">';
+                foreach ($resultData as $key => $value) {
+                    $val = ucfirst($value->first_name).' '.ucfirst($value->last_name);   
+                    
+                    $requestData = ['post_id'=>$data['post_id'], 'user_id'=>$value->user_id];
+                    //Check if already tagged not come in user list
+                    $responceResult = $this->users->checkAlreadyTagged($requestData);
+                    if(!$responceResult){
+                        $img = (!empty($value->user->profile_photo_path)) ? "/storage/".$value->user->profile_photo_path : '/img/img_4.jpg';
+                        $returnObject .= '<li class="list-group-item tagUserInPost" style="color: #4c8df5;" data-id="'.$value->user_id.'" data-post_id="'.$data['post_id'].'" id="rowId'.$value->user_id.'">
+                        <img src="'.$img.'" width="30px" style="float:right; border-radius: 50%; border: 1px solid #4c8df5; bottom: 5px;" class="img-fluid">'.$val.'
+                        </li>';
+                    }
+                }
+                $returnObject .='</ul>';     
+                return response()->json($returnObject);       
+            }else{               
+                return response()->json($returnObject); 
+            }
+        }
+    }
+
+    public function setTagUsers(Request $request)
+    {
+        $data = $request->all();
+        //dd($data);
+        //check if user already tagged
+        $result = $this->users->checkAlreadyTagged($data);
+        //dd($result->user);
+        if($result){
+            //user already tagged
+            return json_encode(array('status'=>'failure', 'message'=>$result->user->user_name.' '.'already tagged for this post.' ));
+        }else{
+            $result = $this->users->tagUserOnPost($data);
+            $responceResult = $this->users->getAllTaggedUsers($data);
+            // dd($responceResult[0]->user);
+            // dd($responceResult[0]->user->user_profiles);
+            $returnObject = '';
+            foreach ($responceResult as $key => $value) {
+                $val = ucfirst($value->user->user_profiles->first_name).' '.ucfirst($value->user->user_profiles->last_name);
+                $img = (!empty($value->user->profile_photo_path)) ? "/storage/".$value->user->profile_photo_path : '';
+                $returnObject .='<div class="post-head"><div class="userDetail"><div class="imgWrap">';
+                if($value->user->profile_photo_path){
+                    $returnObject .='<img src="'.$img.'" class="taggedUserImg" alt="">';
+                }else{
+                    $returnObject .='<div class="taggedUserImg no-image">'.ucwords(substr($value->user->user_profiles->first_name,0,1)).''.ucwords(substr($value->user->user_profiles->last_name,0,1)).'</div>';
+                }
+                $returnObject .='</div><span class="userName">'.$val.'</span></div></div>';
+            }
+            return json_encode(array('status'=>'success','responsData'=>$returnObject));
+        }
+    }
+
+    public function followRequests()
+    {
+        $followRequests = $this->users->followRequests();
+        $common = $this->common;  
+        return view('user.followRequests',compact('followRequests','common'));
+    }
+
+    public function followers()
+    {
+        $followers = $this->users->followers();   
+        $common = $this->common;    
+        return view('user.followers',compact('followers','common'));
+    }
+
+    public function following()
+    {
+        $following = $this->users->following();   
+        $common = $this->common;    
+        return view('user.following',compact('following','common'));
+    }
+
+    public function unfollow(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->users->updateFollowStatus($data,$message,'follower_user_id');
+        if($result){
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }else{
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }
+    }
+
+    public function accept(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->users->updateAcceptStatus($data,$message,'followed_user_id');
+        if($result){
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }else{
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }
+    }
+
+    public function reject(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->users->updateRejectStatus($data,$message,'followed_user_id');
+        if($result){
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }else{
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }
+    }
+
+    public function remove(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->users->updateRemoveStatus($data,$message,'followed_user_id');
+        if($result){
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }else{
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message'], 'count'=>$result['count']));
+         }
+    }
+
+    public function follow(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->users->followToFollower($data,$message);
+        if($result){
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message']));
+         }else{
+             echo json_encode(array('status'=>$result['status'], 'message'=>$result['message']));
+         }
+
+    public function checkUsername(Request $request)
+    {
+
+        $data = $request->all(); // This will get all the request data.
+        $userCount = $this->users->checkUsername($data);
+        if ($userCount > 0) {
+            return 'false';
+        } else {
+            return 'true';
+        }
+
+    }
 
 }

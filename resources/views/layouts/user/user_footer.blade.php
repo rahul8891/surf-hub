@@ -7,8 +7,10 @@
             <ul class="pl-0 mb-0 d-flex align-items-center">
                 @auth
                 <li>
-                    <a href="#">Follow Requests
-                        <span class="followCount">14</span>
+                    <a href="{{ route('followRequests') }}">Follow Requests
+                        @if(getNotificationCount() > 0)
+                            <span class="followCount">{{ getNotificationCount() }}</span>
+                        @endif
                     </a>
                 </li>
                 <li>
@@ -35,13 +37,13 @@
                     <span class="divider"></span>
                 </li>
                 <li>
-                    <a href="{{ route('terms') }}"> T&Cs</a>
+                    <a href="{{ route('terms') }}"> T&C's</a>
                 </li>
                 <li>
                     <span class="divider"></span>
                 </li>
                 <li>
-                    <a href="{{ route('faq') }}">Help/FAQs</a>
+                    <a href="{{ route('faq') }}">Help/FAQ's</a>
                 </li>
                 <li>
                     <span class="divider"></span>
@@ -65,3 +67,25 @@
         </div>
     </div>
 </div>
+<a onclick="topFunction()" id="scrollToTop" title="Scroll to Top" style="display: none;">Top<span></span></a>
+<style>
+#scrollToTop {position:fixed;right:20px;bottom:28px;cursor:pointer;width:40px;height:40px;background-color:#000000;text-indent:-9999px;display:none;-webkit-border-radius:60px;-moz-border-radius:60px;border-radius:60px}
+#scrollToTop span {position:absolute;top:50%;left:50%;margin-left:-8px;margin-top:-12px;height:0;width:0;border:8px solid transparent;border-bottom-color:#ffffff}
+#scrollToTop:hover {background-color:#007bff;opacity:1;filter:"alpha(opacity=100)";-ms-filter:"alpha(opacity=100)";}
+</style>
+<script type='text/javascript' async >
+    mybutton = document.getElementById("scrollToTop");
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        mybutton.style.display = "block";
+      } else {
+        mybutton.style.display = "none";
+      }
+    }
+    function topFunction() {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    } 
+</script>

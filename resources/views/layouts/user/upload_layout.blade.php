@@ -42,7 +42,6 @@
                             <img src="{{ asset("/img/filter.png")}}" alt=""> Filter
                         </button>
 
-
                         @if(str_contains(Request::path(),'search'))
                             <form class="dropdown-menu filterWrap" action="{{route('searchFilterIndex')}}" aria-labelledby="dropdownMenuButton2">
                         @endif
@@ -328,7 +327,7 @@
                     <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}" class="profileImg" alt="">
                     @else
                     <div class="profileImg no-image">
-                        {{ucwords(substr(Auth::user()->user_profiles->first_name,0,1))}}
+                        {{ucwords(substr(Auth::user()->user_profiles->first_name,0,1))}}{{ucwords(substr(Auth::user()->user_profiles->last_name,0,1))}}
                     </div>
                     @endif
                     <div class="pl-3">

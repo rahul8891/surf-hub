@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserFollow extends Model
+class Notification extends Model
 {
     use HasFactory;
 
@@ -15,18 +15,24 @@ class UserFollow extends Model
     /**
      * Get the user that owns the profile.
      */
-    public function follower()
+    public function sender()
     {
-        //return $this->belongsTo(User::class, 'followed_user_id', 'id');
-        return $this->belongsTo(User::class, 'follower_user_id', 'id');
+        return $this->belongsTo(User::class, 'sender_id', 'id');
     }
 
     /**
      * Get the user that owns the profile.
      */
-    public function followed()
+    public function receiver()
     {
-        //return $this->belongsTo(User::class, 'followed_user_id', 'id');
-        return $this->belongsTo(User::class, 'followed_user_id', 'id');
+        return $this->belongsTo(User::class, 'receiver_id', 'id');
+    }
+
+    /**
+     * Get the user that owns the profile.
+     */
+    public function post()
+    {
+        return $this->belongsTo(Post::class, 'post_id', 'id');
     }
 }

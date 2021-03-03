@@ -19,24 +19,27 @@
                     <!-- Row Start -->
                     <div class="col-sm-4">
                         <input type="hidden" id="user-id" data-userid="{{ $users->id }}" />
-                        <div class="imgWrap upload-btn-wrapper form-group">
-                            
-                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+
+                        <label class="d-block">Choose file</label>
+                        <div class="upload-btn-wrapper">
+                            <button class="btn"> <img for="exampleInputFile" src="{{asset("/img/profile1.jpg")}}" width="" alt="Profile Photo" id="category-img-tag" class="img-fluid" for="exampleInputFile" /></button>
                             <input type="file" accept=".png, .jpg, .jpeg" class="custom-file-input"
                             id="exampleInputFile" name="profile_photo_name"
                             value="{{ old('profile_photo_name') }}" />
-                            
+
                             @if($users->profile_photo_path)
                             <img src="{{ asset('storage/'.$users->profile_photo_path) }}" width="120px"
-                                alt="Profile Photo" data-userid="{{ $users->id }}" id="category-img-tag"
+                                alt="" data-userid="{{ $users->id }}" id="category-img-tag"
                                 class="img-fluid mt-2" id="category-img-tag">
                             @else
                             <img src="{{ asset("/img/profile1.jpg")}}" width="120px" alt="Profile Photo"
                             id="category-img-tag" data-userid="{{ $users->id }}" class="img-fluid mt-2">
                             @endif
 
-                                
-                            </div>
+                        </div>
+
+
+                        
                     </div>
                 </div>
                 <div class="row">

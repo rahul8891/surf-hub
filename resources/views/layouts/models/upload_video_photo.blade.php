@@ -41,9 +41,9 @@
                                 <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
                                 <input type="file" id="input_multifileSelect2" name="videos[]" accept=".mp4, .wmv, .mkv, .gif, .mpeg4" multiple />
                             </div>
-                            <div class="upload-btn-wrapper">
+                            <!-- <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="row" id="filesInfo"></div>
 
@@ -163,7 +163,7 @@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label>Board Type <span class="mandatory">*</span></label>
+                                            <label class="width-102">Board Type <span class="mandatory">*</span></label>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
@@ -183,7 +183,7 @@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label>Surfer<span class="mandatory">*</span></label>
+                                            <label>Surfer <span class="mandatory">*</span></label>
                                         </div>
                                         <div class="col-md-8">
                                             {{-- <div class="d-flex">
@@ -215,7 +215,7 @@
                                             <div class="selectWrap pos-rel">
                                                 <div class="selectWrap pos-rel">
                                                     <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
-                                                        placeholder="@ Search other user" class="form-control other_surfer" required>
+                                                        placeholder="Search other user" class="form-control other_surfer" required>
                                                         <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id"
                                                         id="surfer_id" class="form-control surfer_id">
                                                     <div class="auto-search search2" id="other_surfer_list"></div>

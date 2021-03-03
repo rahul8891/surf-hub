@@ -42,6 +42,7 @@ class MyHubController extends Controller
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
         $myHubs=$this->sort($el);
+        //dd($myHubs[0]->upload);
         $userDetail=Auth::user()->user_profiles;
         return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'));      
 

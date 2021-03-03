@@ -282,7 +282,7 @@ $(document).ready(function () {
 			var regexp = /^([A-z0-9!@#$%^&*().,<>{}[\]<>?_=+\-|;:\'\"\/])*[^\s]\1*$/;
 			return regexp.test(value);
 		},
-		"No space are allowed in user name"
+		"No space are allowed"
 	);
 
 	// only number allowed
@@ -296,25 +296,54 @@ $(document).ready(function () {
 		"Please only enter numeric values (0-9) and +-"
 	);
 
+	$.validator.addMethod(
+		"localBeachBreak",
+		function (value) {
+			return value != "";
+		},
+		"Please enter beack break"
+	);
+
+	$.validator.addMethod(
+		"newPwdCurrentPws",
+		function (value) {
+			if(value != $('#current_password').val()){
+				return value;
+			}
+		},
+		"New password can not be same as current password"
+	);
+
 	$("form[name='register']").validate({
 		rules: {
 			first_name: {
 				required: true,
 				minlength: 3,
-				noSpace: true
+				maxlength: 15,
+				noSpace: true,
+				spaceNotAllow: true
 			},
 
 			last_name: {
-				required: false,
+				required: true,
 				minlength: 3,
-				noSpace: true
+				maxlength: 15,
+				noSpace: true,
+				spaceNotAllow: true
 			},
 
 			user_name: {
 				required: true,
 				minlength: 5,
 				noSpace: true,
-				spaceNotAllow: true
+				spaceNotAllow: true,
+				remote: {
+					url: 'checkUsername',
+                    type: "post",
+                    data: {				
+						_token: csrf_token
+					}
+				}
 			},
 
 			email: {
@@ -350,14 +379,20 @@ $(document).ready(function () {
 			password: {
 				minlength: 8,
 				required: true,
-				pwcheck: true
+				pwcheck: true,
+				spaceNotAllow: true
 			},
 
 			password_confirmation: {
 				minlength: 8,
 				required: true,
 				pwcheck: true,
+				spaceNotAllow: true,
 				equalTo: "#password"
+			},
+
+			local_beach_break:{
+				localBeachBreak: true
 			},
 
 			terms: {
@@ -385,7 +420,8 @@ $(document).ready(function () {
 
 			user_name: {
 				required: "Please enter your user name",
-				minlength: "Your user name must be at least 5 characters long."
+				minlength: "Your user name must be at least 5 characters long.",
+				remote: "User name already in use."
 			},
 
 			email: {
@@ -549,7 +585,8 @@ $(document).ready(function () {
 			password: {
 				minlength: 8,
 				required: true,
-				pwcheck: true
+				pwcheck: true,
+				newPwdCurrentPws: true
 			},
 
 			password_confirmation: {
@@ -592,12 +629,14 @@ $(document).ready(function () {
 			first_name: {
 				required: true,
 				minlength: 3,
+				maxlength: 15,
 				noSpace: true
 			},
 
 			last_name: {
 				required: true,
 				minlength: 3,
+				maxlength: 15,
 				noSpace: true
 			},
 
@@ -825,15 +864,73 @@ $(document).ready(function () {
 
    },100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
-
-        $(document).on('click','.search2 li', function(){
+	$(document).on('click','.search2 li', function(){
 		var value = $(this).text().trim();
 		var dataId = $(this).attr("data-id");
 		$('#other_surfer_list').html("");
 		$('.other_surfer').val(value);
 		$('#surfer_id').val(dataId);
 		$('#other_surfer_list').html("");
-		$('input[name="surfer"]').val(value);
+		//$('input[name="surfer"]').val(value);
+	});
+
+	$('.tag_user').keyup(debounce(function(){
+		// the following function will be executed every half second	
+	
+		var post_id = $(this).attr('data-post_id');
+		if($(this).val().length > 1){
+			$.ajax({
+				type: "GET",
+				url: "/getTagUsers",
+				data: {				
+					post_id: post_id,
+					searchTerm: $(this).val(),
+					_token: csrf_token
+				},
+				dataType: "json",
+				success: function (jsonResponse) {
+					
+					$('#tag_user_list'+post_id).html(jsonResponse);
+				}
+			})
+		}else{
+			$('#user_id').val('');
+			$('#tag_user_list'+post_id).html("");
+		}
+
+   	},100)); // Milliseconds in which the ajax call should be executed (100 = half second)
+
+
+    $(document).on('click','.tagSearch li', function(){
+		var value = $(this).text().trim();
+		var dataId = $(this).attr("data-id");
+		var postId = $(this).attr("data-post_id");
+		//ajax call to insert data in tag table and also set notification
+		$.ajax({
+			type: "POST",
+			url: "/setTagUsers",
+			data: {				
+				post_id: postId,
+				user_id: dataId,
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				
+				if(jsonResponse.status == 'success'){
+					$('#rowId'+dataId).hide();
+					//$('#tag_user_list'+postId).html("");
+					$('.tag_user').val(value);
+					$('#user_id').val(dataId);
+					//$('#tag_user_list'+postId).html("");
+					$( ".scrollWrap" ).empty();
+					$('.scrollWrap').html(jsonResponse.responsData);
+				}else{
+					alert(jsonResponse.message);
+				}
+				$('#tag_user_list'+post_id).html(jsonResponse);
+			}
+		})
 	});
 
 	
@@ -920,6 +1017,191 @@ $(document).ready(function () {
         }
 	 });
 	 
+	$(document).on('click', '.unfollow', function(){
+		 var dataId = $(this).attr("data-id");
+		 $.ajax({
+			type: "POST",
+			url: "unfollow",
+			data: {
+				id: dataId,
+				status: 'UNFOLLOW',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				$('#row-id'+dataId).hide();
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+					if(jsonResponse.count==0){
+						$('#allFollower').hide();
+						$('#followRequestCount').show();
+					}
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-success";
+				} else {
+					spinner.hide();
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-danger";
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
+
+	$(document).on('click', '.accept', function(){
+		 var dataId = $(this).attr("data-id");
+		 $.ajax({
+			type: "POST",
+			url: "accept",
+			data: {
+				id: dataId,
+				follower_request_status: '0',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				$('#row-id'+dataId).hide();
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+					if(jsonResponse.count==0){
+						$('#allFollower').hide();
+						$('#followRequestCount').show();
+						$('.followCount').hide();
+					}else{
+						$('.followCount').text(jsonResponse.count);
+					}
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-success";
+				} else {
+					spinner.hide();
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-danger";
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
+
+	$(document).on('click', '.reject', function(){
+		 var dataId = $(this).attr("data-id");
+		 $.ajax({
+			type: "POST",
+			url: "reject",
+			data: {
+				id: dataId,
+				status: 'BLOCK',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				$('#row-id'+dataId).hide();
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+					if(jsonResponse.count==0){
+						$('#allFollower').hide();
+						$('#followRequestCount').show();
+						$('.followCount').hide();
+					}else{
+						$('.followCount').text(jsonResponse.count);
+					}
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-success";
+				} else {
+					spinner.hide();
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-danger";
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
+
+	$(document).on('click', '.remove', function(){
+		 var dataId = $(this).attr("data-id");
+		 $.ajax({
+			type: "POST",
+			url: "remove",
+			data: {
+				id: dataId,
+				is_deleted: '1',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				$('#row-id'+dataId).hide();
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+					if(jsonResponse.count==0){
+						$('#allFollower').hide();
+						$('#followRequestCount').show();
+					}
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-success";
+				} else {
+					spinner.hide();
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-danger";
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
+
+	$(document).on('click', '.follow', function(){
+		 var dataId = $(this).attr("data-id");
+		 var postId = $(this).attr("data-post_id");
+		 $.ajax({
+			type: "POST",
+			url: "follow",
+			data: {
+				followed_user_id: dataId,
+				post_id: postId,
+				sataus: 'FOLLOW',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+				} else {
+					spinner.hide();
+					alert(jsonResponse.message);
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
+	$(document).on('click', '#navbarDropdown', function(){
+		$.ajax({
+			type: "POST",
+			url: "updateNotificationCountStatus",
+			data: {
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				if (jsonResponse.status == "success") {
+					$('#followRequestCountHead').hide();
+				}
+			}
+		});
+	});
 
 	$('.commentOnPost').keyup(function(){
 		var postId = $(this).attr('id');
@@ -929,6 +1211,32 @@ $(document).ready(function () {
 			$("#submitPost"+postId).hide();
 		}
 	});
+
+	//Auto play videos when view in scroll
+	function isInView(el) {
+	  var rect = el.getBoundingClientRect();// absolute position of video element
+	  return !(rect.top > $(window).height() || rect.bottom < 0);// visible?
+	}
+
+	$(document).on("scroll", function() {
+	  $( "video" ).each(function() {
+	    if (isInView($(this)[0])) {// visible?
+	      if ($(this)[0].paused) $(this)[0].play();// play if not playing
+	    }
+	    else {
+	      if (!$(this)[0].paused) $(this)[0].pause();// pause if not paused
+	    }
+	  });  
+	});
+	//End auto play
+
+	$(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	});
+	$(function () {
+	  $('[data-toggle="modal"]').tooltip()
+	});
+
 });
 
 //To select country name
@@ -943,3 +1251,42 @@ function myTimerUserMessage() {
 	document.getElementById("error").innerHTML = "";
 	document.getElementById("error").className = "";
 }
+
+/* Beach Break Location Popup */
+function initializeMap(id, lat, long) {
+    var map; 
+    var geocoder;
+    var latlng = new google.maps.LatLng(lat, long);
+    var myOptions =
+    {
+        zoom: 14,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeControl: false,
+        mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
+        },
+        scrollwheel: false,
+        navigationControl: false,
+        scaleControl: false,
+        disableDoubleClickZoom: true,
+        zoomControl: true,
+        zoomControlOptions: {
+          position: google.maps.ControlPosition.RIGHT_TOP,
+        },
+    };
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    new google.maps.Marker({
+        position: latlng,
+        map: map
+    });
+    
+}
+
+//show map on modal
+$(document).on('click shown.bs.modal', '.locationMap', function () {
+    var id = $(this).attr("data-id");
+    var lat = $(this).attr("data-lat");
+    var long = $(this).attr("data-long");
+    initializeMap(id, lat, long);
+});
