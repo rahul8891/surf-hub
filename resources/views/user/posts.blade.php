@@ -59,12 +59,12 @@
                                         </div>
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
-                                                <li>
+                                                <!-- <li>
                                                     <a href="#"><img src="{{ asset("/img/instagram.png")}}" alt=""></a>
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>
-                                                </li>
+                                                </li> -->
                                                 <li>
                                                     <a href="#">
                                                         <img src="{{ asset("/img/facebook.png")}}" alt="">
@@ -74,7 +74,7 @@
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
-                                                    <a href="#">
+                                                    <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$detail->post->beach_breaks->latitude}}" data-long="{{$detail->post->beach_breaks->longitude}}" data-id="{{$detail->post->id}}" class="locationMap">
                                                         <img src="{{ asset("/img/maps-and-flags.png")}}" alt="">
                                                     </a>
                                                 </li>
@@ -204,8 +204,37 @@
                                     </div>
                                     @if (count($detail->post->comments) > 0)
                                     <div class="viewAllComments" id="Comment">
-                                        
-                                        @foreach ($detail->post->comments as $comments)
+                                        @if (count($detail->post->comments) > 0)
+                                        <div class="modal" id="commentPopup">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                              <!-- Modal Header -->
+                                              <div class="modal-header">
+                                                <h4 class="modal-title">Comments</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                              </div>
+
+                                              <!-- Modal body -->
+                                              <div class="modal-body">
+                                                @foreach ($detail->post->comments as $comments)
+                                                <p class="comment ">
+                                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
+                                                </p>
+                                                @endforeach
+                                              </div>
+
+                                              <!-- Modal footer -->
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                              </div>
+
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <p class="viewCommentTxt" data-toggle="modal" data-target="#commentPopup">View all comments</p>
+                                        @endif
+                                        @foreach ($detail->post->comments->slice(0, 5) as $comments)
                                         <p class="comment">
                                             <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                         </p>
@@ -217,7 +246,7 @@
                                         @csrf
                                         <input type="hidden" class="postID" name="post_id" value="{{$detail->post_id}}">
                                         <input type="hidden" name="parent_user_id" value="{{$detail->receiver_id}}">
-                                        <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$detail->post_id}}"></textarea>
+                                        <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$detail->post_id}}" style="outline: none;"></textarea>
                                         <button type="submit" class="btn btn-info postComment" id="submitPost{{$detail->post_id}}">Submit</button>
                                         </form>
                                     </div>
@@ -236,5 +265,6 @@
             </div>
         </div>
 </section>
+@include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
 @endsection

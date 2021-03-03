@@ -381,6 +381,7 @@ class UserController extends Controller
          }else{
              echo json_encode(array('status'=>$result['status'], 'message'=>$result['message']));
          }
+    }
 
     public function checkUsername(Request $request)
     {

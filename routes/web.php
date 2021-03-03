@@ -88,6 +88,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::post('/report', [UserPostController::class, 'report'])->name('report');
     Route::get('/posts/{post_id}/{notification_id}/{notification_type}', [UserPostController::class, 'posts'])->name('posts');
     Route::post('/user/updateNotificationCountStatus', [UserPostController::class, 'updateNotificationCountStatus'])->name('updateNotificationCountStatus');
+    Route::post('updateNotificationCountStatus', [UserPostController::class, 'updateNotificationCountStatus'])->name('updateNotificationCountStatus');
     
 });
 

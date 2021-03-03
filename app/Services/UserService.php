@@ -471,6 +471,7 @@ class UserService {
             $message='"'.$e->getMessage().'"';
             return $message;
         }
+    }
 
     public function checkUsername($dataRequest)
     {

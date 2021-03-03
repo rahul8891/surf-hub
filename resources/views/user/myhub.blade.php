@@ -68,12 +68,12 @@
                                         </ul>
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
-                                                <li>
+                                                <!-- <li>
                                                     <a href="#"><img src="{{ asset("/img/instagram.png")}}" alt=""></a>
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>
-                                                </li>
+                                                </li> -->
                                                 <li>
                                                     @if(!empty($myHub->upload->image))
                                                     <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$myHub->upload->image)); ?>,'sharer'">
@@ -89,14 +89,14 @@
                                                     </a>
                                                     @endif
                                                 </li>
-                                                <!-- <li>
+                                                <li>
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
                                                     <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$myHub->beach_breaks->latitude}}" data-long="{{$myHub->beach_breaks->longitude}}" data-id="{{$myHub->id}}" class="locationMap">
                                                         <img src="{{ asset("/img/maps-and-flags.png")}}" alt="">
                                                     </a>
-                                                </li> -->
+                                                </li>
                                                 <li>
                                                     <span class="divider"></span>
                                                 </li>
