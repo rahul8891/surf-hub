@@ -38,7 +38,7 @@
                             <br><video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
                             @endif
                             <div class="ratingShareWrap">
-                                <div class="rating ">
+                                <!-- <div class="rating ">
                                     <ul class="pl-0 mb-0 d-flex align-items-center">
                                         <li>
                                             <a href="#"><img src="img/star.png" alt=""></a>
@@ -59,7 +59,15 @@
                                             <span>4.0(90)</span>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> -->
+                                <ul class="pl-0 mb-0 d-flex align-items-center">
+                                    <li>
+                                        <input  name="rating" class="rating rating-loading" 
+                                        data-min="0" data-max="5" data-step="1" data-size="xs" value="4">   
+                                    </li>
+                                    
+                                </ul>
+                                
                                 <div>
                                     <ul class="pl-0 mb-0 d-flex">
                                         <li>
