@@ -61,8 +61,8 @@
                                                 data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$myHub->userAverageRating}}">   
                                             </li>
                                             <li class="ratingCount">
-                                                <span id="average-rating{{$myHub->id}}">{{intval($myHub->usersRated())}}</span>
-                                                (<span id="users-rated{{$myHub->id}}">{{intval($myHub->averageRating)}}</span>)
+                                                <span id="average-rating{{$myHub->id}}">{{intval($myHub->averageRating)}}</span>
+                                                (<span id="users-rated{{$myHub->id}}">{{intval($myHub->usersRated())}}</span>)
                                                 
                                             </li>
                                         </ul>
