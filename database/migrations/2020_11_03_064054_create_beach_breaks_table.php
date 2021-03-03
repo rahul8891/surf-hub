@@ -21,7 +21,9 @@ class CreateBeachBreaksTable extends Migration
             $table->string('state')->nullable();
             $table->string('country')->nullable();
             $table->char('country_code', 4)->nullable();
-            $table->smallInteger('flag')->default('1')->comment('1=>active,0=>deleted'); 
+            $table->smallInteger('flag')->default('1')->comment('1=>active,0=>deleted');
+            $table->decimal('latitude', 17,13)->nullable();
+            $table->decimal('longitude', 17,13)->nullable(); 
             $table->timestamps();
             $table->index(['beach_name','break_name']);
             // ALTER TABLE `beach_breaks` ADD INDEX(`city_region`);
