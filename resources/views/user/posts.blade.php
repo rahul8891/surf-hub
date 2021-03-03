@@ -35,28 +35,17 @@
                                     </video>
                                     @endif
                                     <div class="ratingShareWrap">
-                                        <div class="rating ">
-                                            <ul class="pl-0 mb-0 d-flex align-items-center">
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><img src="{{ asset("/img/star-grey.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <span>4.0(90)</span>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        <ul class="pl-0 mb-0 d-flex align-items-center">
+                                            <li>
+                                                <input id="rating{{$detail->post->id}}" name="rating" class="rating rating-loading" data-id="{{$detail->post->id}}"
+                                                data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$detail->post->userAverageRating}}">   
+                                            </li>
+                                            <li class="ratingCount">
+                                                <span id="average-rating{{$detail->post->id}}">{{intval($detail->post->averageRating)}}</span>
+                                                (<span id="users-rated{{$detail->post->id}}">{{intval($detail->post->usersRated())}}</span>)
+                                                
+                                            </li>
+                                        </ul>
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
                                                 <!-- <li>

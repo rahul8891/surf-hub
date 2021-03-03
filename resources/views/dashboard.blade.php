@@ -55,8 +55,8 @@
                                         data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$posts->userAverageRating}}">   
                                     </li>
                                     <li class="ratingCount">
-                                        <span id="average-rating{{$posts->id}}">{{intval($posts->usersRated())}}</span>
-                                        (<span id="users-rated{{$posts->id}}">{{intval($posts->averageRating)}}</span>)
+                                        <span id="average-rating{{$posts->id}}">{{intval($posts->averageRating)}}</span>
+                                        (<span id="users-rated{{$posts->id}}">{{intval($posts->usersRated())}}</span>)
                                         
                                     </li>
                                 </ul>
