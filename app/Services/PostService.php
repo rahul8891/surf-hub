@@ -264,7 +264,7 @@ class PostService {
         $timeDate = strtotime(Carbon::now()->toDateTimeString());
         $ext = $image->getClientOriginalExtension();
         // $imageNameWithExt = $requestImageName->getClientOriginalName(); 
-        $filename = $timeDate.'_'.rand().'.'.$ext;
+        $filename = $timeDate.'.'.$ext;
         $image->move($destinationPath, $filename);
         return $filename;
     }
@@ -280,7 +280,7 @@ class PostService {
         $timeDate = strtotime(Carbon::now()->toDateTimeString());
         $filenameWithExt= $video->getClientOriginalName();
         $extension = $video->getClientOriginalExtension();
-        $fileNameToStore = $timeDate.'_'.$filenameWithExt;
+        $fileNameToStore = $timeDate.'.'.$extension;
         $path = $video->storeAs($destinationPath,$fileNameToStore);
 
 
