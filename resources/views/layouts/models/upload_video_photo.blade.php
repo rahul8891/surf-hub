@@ -131,7 +131,7 @@
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
                                                 <input type="text" value="{{ old('local_beach_break')}}"
-                                                    name="local_beach_break" placeholder="Your Local Beach / Break."
+                                                    name="local_beach_break" placeholder="Break / Beach Name"
                                                     class="form-control search-box" required>
                                                 <input type="hidden" name="local_beach_break_id"
                                                     id="local_beach_break_id" class="form-control">

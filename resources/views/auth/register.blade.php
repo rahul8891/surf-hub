@@ -244,7 +244,7 @@
                                                 </select> -->
                                                 <input type="text" value="{{ old('local_beach_break')}}"
                                                     name="local_beach_break" data-beachID=""
-                                                    placeholder="Search Beach Break "
+                                                    placeholder="Your Local Break / Beach"
                                                     class="form-control  @error('local_beach_break') is-invalid @enderror search-box">
 
                                                 <input type="hidden" name="local_beach_break_id"
