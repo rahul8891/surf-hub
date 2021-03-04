@@ -193,7 +193,7 @@
                                     </div>
                                     @if (count($detail->post->comments) > 0)
                                     <div class="viewAllComments" id="Comment">
-                                        @if (count($detail->post->comments) > 0)
+                                        @if (count($detail->post->comments) > 5)
                                         <div class="modal" id="commentPopup">
                                           <div class="modal-dialog">
                                             <div class="modal-content">
