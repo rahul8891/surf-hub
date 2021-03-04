@@ -10,6 +10,7 @@ use App\Models\User;
 class Report extends Model
 {
     use HasFactory;
+    
 
     /************************************************************************************************************
      *                                          Eloquent: Relationships

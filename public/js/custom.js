@@ -13,6 +13,33 @@ $(document).ready(function () {
 	$('#register .country option:selected').prop("selected", false);
 	$('#register .phone').val('');
 
+	/************** rating js ****************************/
+	
+	
+    $('.rating').on('change',function(e){
+		var value=$(this).val();
+		var id=$(this).attr("data-id");
+        var csrf_token = $('meta[name="csrf-token"]').attr("content");
+
+        $.ajax({
+                type: "POST",
+				url: "/rating", 
+				data: {				
+                    value: value,
+                    id:id,
+					_token: csrf_token
+				},
+				dataType: "json",
+				success: function (jsonResponse) {
+				
+					$(`#average-rating${id}`).html(Math.floor(jsonResponse['averageRating']));
+					$(`#users-rated${id}`).html(Math.floor(jsonResponse['usersRated']));
+                   
+				}
+        });
+    });
+	
+
 	/************** spiner code ****************************/
     var stopSpiner = "{{ $spiner}}";
     
@@ -837,8 +864,7 @@ $(document).ready(function () {
 
    },100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
-
-        $(document).on('click','.search2 li', function(){
+	$(document).on('click','.search2 li', function(){
 		var value = $(this).text().trim();
 		var dataId = $(this).attr("data-id");
 		$('#other_surfer_list').html("");
@@ -846,6 +872,65 @@ $(document).ready(function () {
 		$('#surfer_id').val(dataId);
 		$('#other_surfer_list').html("");
 		//$('input[name="surfer"]').val(value);
+	});
+
+	$('.tag_user').keyup(debounce(function(){
+		// the following function will be executed every half second	
+	
+		var post_id = $(this).attr('data-post_id');
+		if($(this).val().length > 1){
+			$.ajax({
+				type: "GET",
+				url: "/getTagUsers",
+				data: {				
+					post_id: post_id,
+					searchTerm: $(this).val(),
+					_token: csrf_token
+				},
+				dataType: "json",
+				success: function (jsonResponse) {
+					
+					$('#tag_user_list'+post_id).html(jsonResponse);
+				}
+			})
+		}else{
+			$('#user_id').val('');
+			$('#tag_user_list'+post_id).html("");
+		}
+
+   	},100)); // Milliseconds in which the ajax call should be executed (100 = half second)
+
+
+    $(document).on('click','.tagSearch li', function(){
+		var value = $(this).text().trim();
+		var dataId = $(this).attr("data-id");
+		var postId = $(this).attr("data-post_id");
+		//ajax call to insert data in tag table and also set notification
+		$.ajax({
+			type: "POST",
+			url: "/setTagUsers",
+			data: {				
+				post_id: postId,
+				user_id: dataId,
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				
+				if(jsonResponse.status == 'success'){
+					$('#rowId'+dataId).hide();
+					//$('#tag_user_list'+postId).html("");
+					$('.tag_user').val(value);
+					$('#user_id').val(dataId);
+					//$('#tag_user_list'+postId).html("");
+					$( ".scrollWrap" ).empty();
+					$('.scrollWrap').html(jsonResponse.responsData);
+				}else{
+					alert(jsonResponse.message);
+				}
+				$('#tag_user_list'+post_id).html(jsonResponse);
+			}
+		})
 	});
 
 	
@@ -897,6 +982,7 @@ $(document).ready(function () {
         }
 	 });
 
+
 	 /**
 	 * Filter State Baded on the selection on filter country
 	 */
@@ -931,7 +1017,191 @@ $(document).ready(function () {
         }
 	 });
 	 
-	 
+	$(document).on('click', '.unfollow', function(){
+		 var dataId = $(this).attr("data-id");
+		 $.ajax({
+			type: "POST",
+			url: "unfollow",
+			data: {
+				id: dataId,
+				status: 'UNFOLLOW',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				$('#row-id'+dataId).hide();
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+					if(jsonResponse.count==0){
+						$('#allFollower').hide();
+						$('#followRequestCount').show();
+					}
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-success";
+				} else {
+					spinner.hide();
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-danger";
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
+
+	$(document).on('click', '.accept', function(){
+		 var dataId = $(this).attr("data-id");
+		 $.ajax({
+			type: "POST",
+			url: "accept",
+			data: {
+				id: dataId,
+				follower_request_status: '0',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				$('#row-id'+dataId).hide();
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+					if(jsonResponse.count==0){
+						$('#allFollower').hide();
+						$('#followRequestCount').show();
+						$('.followCount').hide();
+					}else{
+						$('.followCount').text(jsonResponse.count);
+					}
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-success";
+				} else {
+					spinner.hide();
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-danger";
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
+
+	$(document).on('click', '.reject', function(){
+		 var dataId = $(this).attr("data-id");
+		 $.ajax({
+			type: "POST",
+			url: "reject",
+			data: {
+				id: dataId,
+				status: 'BLOCK',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				$('#row-id'+dataId).hide();
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+					if(jsonResponse.count==0){
+						$('#allFollower').hide();
+						$('#followRequestCount').show();
+						$('.followCount').hide();
+					}else{
+						$('.followCount').text(jsonResponse.count);
+					}
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-success";
+				} else {
+					spinner.hide();
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-danger";
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
+
+	$(document).on('click', '.remove', function(){
+		 var dataId = $(this).attr("data-id");
+		 $.ajax({
+			type: "POST",
+			url: "remove",
+			data: {
+				id: dataId,
+				is_deleted: '1',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				$('#row-id'+dataId).hide();
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+					if(jsonResponse.count==0){
+						$('#allFollower').hide();
+						$('#followRequestCount').show();
+					}
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-success";
+				} else {
+					spinner.hide();
+					document.getElementById("error").innerHTML =
+						jsonResponse.message;
+					document.getElementById("error").className =
+						"alert alert-danger";
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
+
+	$(document).on('click', '.follow', function(){
+		 var dataId = $(this).attr("data-id");
+		 var postId = $(this).attr("data-post_id");
+		 $.ajax({
+			type: "POST",
+			url: "follow",
+			data: {
+				followed_user_id: dataId,
+				post_id: postId,
+				sataus: 'FOLLOW',
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				if (jsonResponse.status == "success") {
+					spinner.hide();
+				} else {
+					spinner.hide();
+					alert(jsonResponse.message);
+				}
+				setInterval(myTimerUserMessage, 4000);
+			}
+		});
+	 });
+	$(document).on('click', '#navbarDropdown', function(){
+		$.ajax({
+			type: "POST",
+			url: "updateNotificationCountStatus",
+			data: {
+				_token: csrf_token
+			},
+			dataType: "json",
+			success: function (jsonResponse) {
+				if (jsonResponse.status == "success") {
+					$('.followCountHead').hide();
+				}
+			}
+		});
+	});
 
 	$('.commentOnPost').keyup(function(){
 		var postId = $(this).attr('id');
@@ -960,6 +1230,13 @@ $(document).ready(function () {
 	});
 	//End auto play
 
+	$(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	});
+	$(function () {
+	  $('[data-toggle="modal"]').tooltip()
+	});
+
 });
 
 //To select country name
@@ -974,3 +1251,42 @@ function myTimerUserMessage() {
 	document.getElementById("error").innerHTML = "";
 	document.getElementById("error").className = "";
 }
+
+/* Beach Break Location Popup */
+function initializeMap(id, lat, long) {
+    var map; 
+    var geocoder;
+    var latlng = new google.maps.LatLng(lat, long);
+    var myOptions =
+    {
+        zoom: 14,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeControl: false,
+        mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
+        },
+        scrollwheel: false,
+        navigationControl: false,
+        scaleControl: false,
+        disableDoubleClickZoom: true,
+        zoomControl: true,
+        zoomControlOptions: {
+          position: google.maps.ControlPosition.RIGHT_TOP,
+        },
+    };
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    new google.maps.Marker({
+        position: latlng,
+        map: map
+    });
+    
+}
+
+//show map on modal
+$(document).on('click shown.bs.modal', '.locationMap', function () {
+    var id = $(this).attr("data-id");
+    var lat = $(this).attr("data-lat");
+    var long = $(this).attr("data-long");
+    initializeMap(id, lat, long);
+});

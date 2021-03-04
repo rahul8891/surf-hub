@@ -34,16 +34,16 @@
                         <div class="videoImageUploader">
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
-                                <input type="file" id="input_multifileSelect" name="files[]" accept=".png, .jpg, .jpeg"
+                                <input type="file" id="input_multifileSelect1" name="files[]" accept=".png, .jpg, .jpeg"
                                     multiple />
                             </div>
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
-                                <input type="file" id="input_multifileSelect" name="videos[]" accept=".mp4, .wmv, .mkv, .gif, .mpeg4" multiple />
+                                <input type="file" id="input_multifileSelect2" name="videos[]" accept=".mp4, .wmv, .mkv, .gif, .mpeg4" multiple />
                             </div>
-                            <div class="upload-btn-wrapper">
+                            <!-- <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="row" id="filesInfo"></div>
 

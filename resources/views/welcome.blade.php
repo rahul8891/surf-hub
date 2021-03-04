@@ -38,7 +38,7 @@
                             <br><video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
                             @endif
                             <div class="ratingShareWrap">
-                                <div class="rating ">
+                                <!-- <div class="rating ">
                                     <ul class="pl-0 mb-0 d-flex align-items-center">
                                         <li>
                                             <a href="#"><img src="img/star.png" alt=""></a>
@@ -59,15 +59,23 @@
                                             <span>4.0(90)</span>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> -->
+                                <ul class="pl-0 mb-0 d-flex align-items-center">
+                                    <li>
+                                        <input  name="rating" class="rating rating-loading" 
+                                        data-min="0" data-max="5" data-step="1" data-size="xs" value="4" readonly="readonly" style="pointer-events: none; opacity: 0; cursor: pointer;">   
+                                    </li>
+                                    
+                                </ul>
+                                
                                 <div>
                                     <ul class="pl-0 mb-0 d-flex">
-                                        <li>
+                                        <!-- <li>
                                             <a href="#"><img src="img/instagram.png" alt=""></a>
                                         </li>
                                         <li>
                                             <span class="divider"></span>
-                                        </li>
+                                        </li> -->
                                         <li>
                                             <a href="#">
                                                 <img src="img/facebook.png" alt="">
@@ -77,7 +85,7 @@
                                             <span class="divider"></span>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude}}" data-long="{{$posts->beach_breaks->longitude}}" data-id="{{$posts->id}}" class="locationMap">
                                                 <img src="img/maps-and-flags.png" alt="">
                                             </a>
                                         </li>
@@ -193,7 +201,7 @@
                                       <div class="modal-body">
                                         @foreach ($posts->comments as $comments)
                                         <p class="comment ">
-                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                         </p>
                                         @endforeach
                                       </div>
@@ -208,9 +216,9 @@
                                 </div>
                                 <p class="viewCommentTxt" data-toggle="modal" data-target="#commentPopup">View all comments</p>
                                 @endif
-                                @foreach ($posts->comments as $comments)
+                                @foreach ($posts->comments->slice(0, 5) as $comments)
                                 <p class="comment ">
-                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->first_name)}} :</span> {{$comments->value}}
+                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
                                 </p>
                                 @endforeach
                             </div>
@@ -235,4 +243,5 @@
         </div>
     </div>
 </section>
+@include('elements/location_popup_model')
 @endsection

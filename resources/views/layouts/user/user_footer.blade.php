@@ -7,8 +7,10 @@
             <ul class="pl-0 mb-0 d-flex align-items-center">
                 @auth
                 <li>
-                    <a href="#">Follow Requests
-                        <span class="followCount">14</span>
+                    <a href="{{ route('followRequests') }}">Follow Requests
+                        @if(FollowNotification::instance()->getNotificationCount() > 0)
+                            <span class="followCount">{{ FollowNotification::instance()->getNotificationCount() }}</span>
+                        @endif
                     </a>
                 </li>
                 <li>

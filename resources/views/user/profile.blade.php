@@ -178,14 +178,17 @@
                                             <span><img src="{{ asset("/img/phone1.png")}}" alt=""></span> Phone
                                             No.</label>
                                     </div>
-                                    <div class="col-md-6 col-lg-5">
+                                    <div class="col-md-8 col-xl-9">
                                         <div class="phoneWrap">
                                         <input type="text" placeholder="ICC" class="form-control telephone_prefix2 phone" readonly
                                             name="telephone_prefix" value="{{ old('telephone_prefix',$user->user_profiles->icc) }}">
-                                        <input type="text" name="phone"
-                                            value="{{ old('phone',$user->user_profiles->phone)}}"
-                                            class="form-control @error('phone') is-invalid @enderror phone_number"
-                                            minlength="8" maxlength="15" required>
+                                            <div class="pl-2">
+                                                    <input type="text" name="phone"
+                                                    value="{{ old('phone',$user->user_profiles->phone)}}"
+                                                    class="form-control @error('phone') is-invalid @enderror phone_number"
+                                                    minlength="8" maxlength="15" required>
+                                            </div>
+                                           
                                         </div>
                                         @error('phone')
                                         <div class="text-danger">{{ $message }}</div>
@@ -357,7 +360,7 @@
                 <h5 class="modal-title" id="exampleModalLabel"><img src="{{ asset("/img/logo_small.png")}}"> &nbsp; Crop
                     Image
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="opacity: 1;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <img alt="" src="{{ asset("/img/close.png")}}">
                 </button>
             </div>

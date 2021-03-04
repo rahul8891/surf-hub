@@ -18,6 +18,18 @@
     .tab-dis-none {
         display: flex;
     }
+
+    .a_searchPage.postsWrap .post .uploadWrap .head .dropdown-menu.filterWrap {
+        right: auto;
+        left: 0px !important;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .a_searchPage.postsWrap .post .uploadWrap .head .dropdown-menu.filterWrap {
+        right: auto;
+        left: -200px !important;
+    }
 }
 
 @media only screen and (min-width: 768px) {
@@ -36,6 +48,13 @@
     header .bg-light {
         padding-left: 60px;
         padding-right: 60px;
+    }
+}
+
+@media only screen and (max-width: 1600px) {
+    footer li .divider {
+        margin-left: 40px;
+        margin-right: 40px;
     }
 }
 
@@ -70,6 +89,7 @@
     .postComment:hover {
         background-color: #4c8df5;
     }
+
     header .bg-light {
         padding-left: 15px;
         padding-right: 15px;
@@ -89,7 +109,7 @@
         flex-wrap: wrap;
     }
 
-    .postsWrap .ratingShareWrap .rating {
+    .postsWrap .ratingShareWrap .rate {
         margin-right: 0px;
         margin-bottom: 15px;
     }
@@ -132,6 +152,7 @@
     .postComment:hover {
         background-color: #4c8df5;
     }
+
     header .m-auto {
         margin-top: 20px !important;
     }
@@ -230,6 +251,8 @@
     .contactUsWrap .loginWrap .formWrap .loginBtn {
         margin-bottom: 0px;
     }
+
+
 }
 
 @media only screen and (max-width: 767px) {
@@ -249,12 +272,14 @@
     .postComment:hover {
         background-color: #4c8df5;
     }
+
     .postsWrap .ratingShareWrap ul {
         flex-wrap: wrap;
         justify-content: center;
+        width:100%;
     }
 
-    .postsWrap .ratingShareWrap .rating {
+    .postsWrap .ratingShareWrap .rate {
         flex: 0 0 100%;
         max-width: 100%;
     }
@@ -263,7 +288,7 @@
         margin-bottom: 10px;
     }
 
-    .postsWrap .ratingShareWrap .rating li {
+    .postsWrap .ratingShareWrap .rate li {
         margin-bottom: 0px;
     }
 
@@ -281,6 +306,7 @@
 
     .postsWrap .post .uploadWrap .head .dropdown-menu.filterWrap {
         width: 500px;
+        padding-bottom: 56px;
     }
 
     .uploadModal .optionalFields .cstm-check,
@@ -300,7 +326,7 @@
     }
 
     .feedHubNav.followRequestLinksWrap ul,
-    .followRequestMainWrap .requests > div {
+    .followRequestMainWrap .requests>div {
         flex-wrap: wrap;
     }
 
@@ -339,6 +365,10 @@
     header .notificationWrap {
         width: 450px;
     }
+
+    .phoneWrap {
+        max-width: 100%;
+    }
 }
 
 @media only screen and (max-width: 567px) {
@@ -361,6 +391,7 @@
     .postComment:hover {
         background-color: #4c8df5;
     }
+
     .banner .contentWrap {
         padding: 20px;
         max-width: 100%;
@@ -429,7 +460,7 @@
         line-height: 22px;
     }
 
-    .postsWrap .ratingShareWrap .rating li span,
+    .postsWrap .ratingShareWrap .rate li span,
     .postsWrap .ratingShareWrap li a {
         font-size: 16px;
     }
@@ -603,7 +634,7 @@
         padding: 10px 20px 0px 20px;
     }
 
-    .followRequestMainWrap .requests > div {
+    .followRequestMainWrap .requests>div {
         padding-top: 20px;
         padding-bottom: 20px;
     }
@@ -667,6 +698,21 @@
     header .notificationWrap h3 {
         font-size: 20px;
         line-height: 20px;
+    }
+
+    .infoHover.userinfoModal .pos-rel img {
+        bottom: -27px;
+        right: 1px;
+        left: auto;
+    }
+    .a_uploadWrap [type="checkbox"]:not(:checked)+label::after,
+    .a_uploadWrap [type="checkbox"]:checked+label::after {
+        top: 4px;
+    }
+
+    .a_uploadWrap [type="checkbox"]:not(:checked)+label::before,
+    .a_uploadWrap [type="checkbox"]:checked+label::before {
+        top: 3px;
     }
 }
 

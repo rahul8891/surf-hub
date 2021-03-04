@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use willvincent\Rateable\Rateable;
 use App\Models\User;
 use App\Models\Country;
 use App\Models\BeachBreak;
@@ -15,6 +16,7 @@ use App\Models\Tag;
 class Post extends Model
 {
     use HasFactory;
+    use Rateable;
 
     /************************************************************************************************************
      *                                          Eloquent: Relationships
@@ -38,7 +40,7 @@ class Post extends Model
     {
         return $this->hasOne(UserProfile::class, 'user_id', 'id');
     }
-
+    
     /**
      * Relationship between post and upload model    
      * @return object
@@ -47,6 +49,16 @@ class Post extends Model
     public function upload()
     {
         return $this->hasOne(Upload::class, 'post_id', 'id');
+    }
+    
+    /**
+     * Relationship between post and search model    
+     * @return object
+     */
+    
+    public function search()
+    {
+        return $this->hasOne(search::class, 'post_id', 'id');
     }
 
     /**

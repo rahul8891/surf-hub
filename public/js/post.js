@@ -42,7 +42,7 @@ $(document).ready(function () {
    *************************************************************************************/
   var dataImage = new Array();
 
-  $("#input_multifileSelect").change(function () {
+  $("#input_multifileSelect1").change(function () {
     readImageURL(this);
   });
 

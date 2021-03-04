@@ -7,7 +7,11 @@
             <div class="col-lg-9">
                 <!--include comman upload video and photo layout -->
                 @include('layouts/user/upload_layout')
-                    @if (!empty($postsList))
+                @if (is_null($postsList[0]))
+                <div class="post alert text-center alert-dismissible py-5" role="alert" id="msg">
+                    {{ ucWords('no post available') }}
+                </div>
+                @elseif (!is_null($postsList[0]))
                     @foreach ($postsList as $key => $posts)
                     @if($posts->parent_id == 0)
                 <div class="post">
@@ -29,87 +33,59 @@
                                     <span>{{ postedDateTime($posts->created_at) }}</span>
                                 </div>
                             </div>
-                            <form role="form" method="POST" name="follow{{$posts->id}}" action="{{ route('follow') }}">
-                            @csrf
-                            <input type="hidden" class="userID" name="followed_user_id" value="{{$posts->user_id}}">
-                            <button href="#" class="followBtn">
+                            @if($posts->user_id != Auth::user()->id)
+                            <button class="followBtn follow" data-id="{{$posts->user_id}}" data-post_id="{{$posts->id}}">
                                 <img src="img/user.png" alt=""> FOLLOW
                             </button>
-                            </form>
+                            @endif
                         </div>
                         <p class="description">{{$posts->post_text}}</p>
                         <div class="imgRatingWrap">
-                                    {{-- @php
-                                        $postMedia=$posts->upload->select('*')->where('post_id',$posts->id)->get();
-                                    @endphp
-                                    @if (!empty($postMedia))   
-                                    @foreach ($postMedia as $media)  
-                                            @if (!is_null($media->image))
-                                            <img src="{{ asset('storage/images/'.$media->image) }}"alt="" width="100%" class="img-fluid img-thumbnail" id="myImage{{$posts->id}}">
-                                            @endif
-                                
-                                            @if (!is_null($media->video))
-                                            <video width="100%" controls id="myImage{{$posts->id}}">
-                                                <source src="{{ asset('storage/videos/'.$media->video) }}" >    
-                                            </video>
-                                            @endif
-                                    @endforeach
-                                    @endif --}}
                             @if(!empty($posts->upload->image))
                             <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
                             @endif
                             @if(!empty($posts->upload->video))
                             <br><video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
                             @endif
+                            
                             <div class="ratingShareWrap">
-                                <div class="rating ">
-                                    <ul class="pl-0 mb-0 d-flex align-items-center">
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star-grey.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <span>4.0(90)</span>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <ul class="pl-0 mb-0 d-flex align-items-center">
+                                    <li>
+                                        <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}"
+                                        data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$posts->userAverageRating}}">   
+                                    </li>
+                                    <li class="ratingCount">
+                                        <span id="average-rating{{$posts->id}}">{{intval($posts->averageRating)}}</span>
+                                        (<span id="users-rated{{$posts->id}}">{{intval($posts->usersRated())}}</span>)
+                                        
+                                    </li>
+                                </ul>
                                 <div>
                                     <ul class="pl-0 mb-0 d-flex">
-                                        <li>
-                                            <a href="#"><img src="img/instagram.png" alt=""></a>
+                                        <!-- <li>
+                                            <a href="#"><img src={{asset("img/instagram.png")}} alt=""></a>
                                         </li>
                                         <li>
                                             <span class="divider"></span>
-                                        </li>
+                                        </li> -->
                                         <li>
-                                            <a href="#">
+                                            <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$posts->upload->image)); ?>,'sharer'">
                                                 <img src="img/facebook.png" alt="">
                                             </a>
                                         </li>
                                         <li>
                                             <span class="divider"></span>
                                         </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="img/maps-and-flags.png" alt="">
+                                        <li>                                            
+                                            <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude}}" data-long="{{$posts->beach_breaks->longitude}}" data-id="{{$posts->id}}" class="locationMap">
+                                                <img src={{asset("img/maps-and-flags.png")}} alt="">
                                             </a>
                                         </li>
                                         <li>
                                             <span class="divider"></span>
                                         </li>
                                         <li>
-                                            <a onclick="openFullscreen({{$posts->id}});"><img src="img/full_screen.png" alt=""></a>
+                                            <a onclick="openFullscreen({{$posts->id}});"><img src={{asset("img/full_screen.png")}} alt=""></a>
                                         </li>
                                         <li>
                                             <span class="divider"></span>
@@ -118,7 +94,7 @@
                                             <a href="javascript:void(0)">INFO
                                                 <div class="saveInfo infoHover">
                                                     <div class="pos-rel">
-                                                        <img src="img/tooltipArrowDown.png" alt="">
+                                                        <img src={{asset("img/tooltipArrowDown.png")}} alt="">
                                                         <div class="row">
                                                             <div class="col-5">
                                                                 Date
@@ -209,7 +185,7 @@
                                                 <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
                                                 <div class="saveInfo infoHover reasonHover">
                                                     <div class="pos-rel">
-                                                        <img src="img/tooltipArrowDown.png" alt="">
+                                                        <img src={{asset("img/tooltipArrowDown.png")}} alt="">
                                                         <div class="text-center reportContentTxt">Report Content</div>
                                                         <div class="reason">
                                                             <input type="checkbox" id="Report1" name="incorrect" value="1">
@@ -295,14 +271,15 @@
             </div>
             <div class="col-lg-3">
                 <div class="adWrap">
-                    <img src="img/add1.png" alt="" class="img-fluid">
+                    <img src={{asset("img/add1.png")}} alt="" class="img-fluid">
                 </div>
                 <div class="adWrap">
-                    <img src="img/add2.png" alt="" class="img-fluid">
+                    <img src={{asset("img/add2.png")}} alt="" class="img-fluid">
                 </div>
             </div>
         </div>
     </div>
 </section>
+@include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
 @endsection

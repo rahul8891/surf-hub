@@ -11,6 +11,8 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
 use App\Models\UserProfile;
+use App\Models\UserFollow;
+use App\Models\Tag;
 
 class User extends Authenticatable implements MustVerifyEmail 
 {
@@ -92,7 +94,8 @@ class User extends Authenticatable implements MustVerifyEmail
     
     public function user_follows()
     {
-        return $this->hasMany(UserFollow::class, 'followed_user_id', 'id');
+        //return $this->hasMany(UserFollow::class, 'followed_user_id', 'id');
+        return $this->hasMany(UserFollow::class, 'follower_user_id', 'id');
     }
 
     /**
@@ -103,6 +106,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function comments()
     {
         return $this->hasMany(Comment::class, 'user_id', 'id');
+    }
+
+    /**
+     * Relationship between user and tag model    
+     * @return object
+     */
+    
+    public function tags()
+    {
+        return $this->hasMany(Tag::class, 'user_id', 'id');
     }
 
 }

@@ -16,6 +16,7 @@ use App\Traits\PasswordTrait;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\Report;
+use App\Models\Notification;
 use Carbon\Carbon;
 use Closure;
 use Redirect;
@@ -36,6 +37,8 @@ class UserPostController extends Controller
     public $language;
 
     public $accountType;
+
+    public $notifications;
 
     /**
      * Create a new controller instance.
@@ -94,6 +97,7 @@ class UserPostController extends Controller
             }else {
                 $result = $this->posts->saveComment($data,$message);
                 if($result){  
+                    $this->posts->saveCommentNotification($data,$message);
                     return Redirect::to(redirect()->getUrlGenerator()->previous())->withSuccess($message);
                 }else{
                     return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors($message);
@@ -237,6 +241,31 @@ class UserPostController extends Controller
     }
 
     /**
+     * rating the specified post from database.
+     *
+     * @param $id, $value
+     * @return \Illuminate\Http\Response
+     */
+    public function rating(Request $request)
+    {
+        
+        $data = $request->all();
+        try{
+            $result = $this->posts->ratePost($data,$message);
+            
+            if($result){
+               return json_encode(array('status'=>$result['status'], 'message'=>$result['message'],
+                                 'averageRating'=>$result['averageRating'], 'usersRated'=>$result['usersRated']));
+            }else{
+              return json_encode(array('status'=>$result['status'], 'message'=>$result['message'],
+                                 'averageRating'=>$result['averageRating'], 'usersRated'=>$result['usersRated']));
+            }
+        }catch (\Exception $e){
+            return redirect()->route('dashboard', ['id' => $data['id']])->withErrors($e->getMessage());
+        }
+    }
+    
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -273,6 +302,45 @@ class UserPostController extends Controller
             }
         }catch (\Exception $e){
             return redirect()->route('dashboard', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
+        }
+    }
+
+    /**
+     * show the specified post.
+     *
+     * @param  int  $post_id $notification_id
+     * @return \Illuminate\Http\Response
+     */
+    public function posts($post_id, $notification_id, $notification_type)
+    {
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;      
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $customArray = $this->customArray;
+        $detail = $this->posts->getPostDetails($post_id,$notification_id);
+        $this->posts->updateNotificationStatus($notification_id);
+        //dd($detail->post);
+        return view('user.posts',compact('customArray','countries','states','currentUserCountryId','detail'));
+        /*try{
+            $result = $this->posts->deletePost(Crypt::decrypt($id),$message);
+            if($result){
+                return redirect()->route('myhub')->withSuccess($message);  
+            }else{
+                return redirect()->route('myhub')->withErrors($message); 
+            }
+        }catch (\Exception $e){
+            return redirect()->route('myhub', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
+        }*/
+    }
+
+    public function updateNotificationCountStatus(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->posts->updateNotificationCountStatus($data);
+        if($result){
+         echo json_encode(array('status'=>'success'));
+        }else{
+         echo json_encode(array('status'=>'fails'));
         }
     }
 }
