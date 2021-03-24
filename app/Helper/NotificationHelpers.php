@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Helpers;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Services\UserService;
 use App\Services\PostService;
 use App\Models\UserFollow;

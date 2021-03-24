@@ -39,7 +39,7 @@
                     <div class="formWrap">
                         <div class="row">
                             <div class="col-lg-9">
-                                <h2>Contact US</h2>
+                                <h2>Contact Us</h2>
                                 <p>Submit your detail here with message, We will consider your query shortly</p>
                                 <form class="form" role="form" id="contact_us" name="contact_us" method="get" action="{{ route('getQuery') }}" enctype="multipart/form-data">
                                     @csrf
