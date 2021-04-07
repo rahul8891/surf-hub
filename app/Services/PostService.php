@@ -97,7 +97,7 @@ class PostService {
         $postArray =  $this->posts
                                   ->where('is_deleted','0')    
                                   ->where('post_type','PUBLIC')                              
-                                  ->orderBy('posts.created_at','ASC')
+                                  ->orderBy('posts.created_at','DESC')
                                   ->paginate(10);
         return $postArray;
     }
@@ -126,28 +126,26 @@ class PostService {
      */
     public function getMyHubListing($postList,$el,$order){
         
-        if($el=='beach'){
-          $sortedBeach= $postList
+        if($el=='beach') { 
+          $sortedData = $postList
           ->join('beach_breaks', 'posts.local_beach_break_id', '=', 'beach_breaks.id')
           ->orderBy('beach_breaks.beach_name', $order)
           ->select('posts.*')
-          ->paginate(10);
-            return $sortedBeach;
-        }
-
-        else if($el=='star'){
+          ->get();
+        } else if($el=='star') {
             //////// code for rating, make replica of above condition
-        }
-
-        else{
-            $postArray =  $postList
+            $sortedData = $postList->with('beach_breaks')->withCount(['ratings as average_rating' => function($query) {
+                $query->select(DB::raw('coalesce(avg(rating),0)'));
+            }])->orderByDesc('average_rating')->get();
+        } else {
+            $sortedData =  $postList
             ->with('beach_breaks')
             ->whereNull('posts.deleted_at')   
             ->orderBy($el,$order)
-            ->paginate(10);
-
-            return $postArray;
+            ->get();
         }
+        
+        return $sortedData;
     }
 
     
@@ -158,16 +156,24 @@ class PostService {
      * @return dataArray
      */
     public function getFilteredList($params, $for) {
-        
+//        dd($params);
         if ($for=='search'){
             $postArray =  $this->posts->whereNull('posts.deleted_at');
         }
         if ($for=='myhub'){
             $postArray =  $this->posts->whereNull('posts.deleted_at')->where('user_id',[Auth::user()->id]);
         }
+        
         //************* applying conditions *****************/
-
-
+        if (isset($params['filterUser']) && ($params['filterUser'] == 'me')){
+            $username = Auth::user()->user_name;
+            $postArray->where('surfer', $username);
+        }elseif (isset($params['filterUser']) && ($params['filterUser'] == 'others') && isset($params['other_surfer']) && !empty($params['other_surfer'])) {
+            $postArray->where('surfer', $params['other_surfer']);
+        }elseif (isset($params['filterUser']) && ($params['filterUser'] == 'unknown')) {
+            $postArray->where('surfer', 'Unknown');
+        }
+        /*
         if(isset($params['Me'])){
             if ($params['Me']=='on') {
                 $postArray->where('surfer','Me')->get();
@@ -182,71 +188,61 @@ class PostService {
             if ($params['Others']=='on') {
                 $postArray->whereNotIn('surfer',['Me','Unknown'])->get();
             }
+        } */
+        
+        if(isset($params['FLOATER']) && ($params['FLOATER']=='on')){
+            $postArray->where('optional_info','FLOATER');
         }
-        if(isset($params['FLOATER'])){
-            if ($params['FLOATER']=='on') {
-                $postArray->where('optional_info','FLOATER')->get();
-            }
+        
+        if(isset($params['AIR']) && ($params['AIR']=='on')){
+            $postArray->where('optional_info','AIR');
         }
-        if(isset($params['AIR'])){
-            if ($params['AIR']=='on') {
-                $postArray->where('optional_info','AIR')->get();
-            }
+        
+        if(isset($params['360']) && ($params['360']=='on')) {
+            $postArray->where('optional_info','360');
         }
-        if(isset($params['360'])){
-            if ($params['360']=='on') {
-                $postArray->where('optional_info','360')->get();
-            }
+        
+        if(isset($params['DROP_IN']) && ($params['DROP_IN']=='on')){
+            $postArray->where('optional_info','Me');
         }
-        if(isset($params['DROP_IN'])){
-            if ($params['DROP_IN']=='on') {
-                $postArray->where('optional_info','Me')->get();
-            }
+        
+        if(isset($params['BARREL_ROLL']) && ($params['BARREL_ROLL']=='on')){
+            $postArray->where('optional_info','BARREL_ROLL');
         }
-        if(isset($params['BARREL_ROLL'])){
-            if ($params['BARREL_ROLL']=='on') {
-                $postArray->where('optional_info','BARREL_ROLL')->get();
-            }
+        
+        if(isset($params['WIPEOUT']) && ($params['WIPEOUT']=='on')){
+            $postArray->where('optional_info','WIPEOUT');
         }
-        if(isset($params['WIPEOUT'])){
-            if ($params['WIPEOUT']=='on') {
-                $postArray->where('optional_info','WIPEOUT')->get();
-            }
+        
+        if(isset($params['CUTBACK']) && ($params['CUTBACK']=='on')){
+            $postArray->where('optional_info','CUTBACK');
         }
-        if(isset($params['CUTBACK'])){
-            if ($params['CUTBACK']=='on') {
-                $postArray->where('optional_info','CUTBACK')->get();
-            }
-        }
-        if(isset($params['SNAP'])){
-            if ($params['SNAP']=='on') {
-                $postArray->where('optional_info','SNAP')->get();
-            }
+        if(isset($params['SNAP']) && ($params['SNAP']=='on')){
+            $postArray->where('optional_info','SNAP');
         }
         
         
         if ($params['surf_date']) {
-
-           $postArray->whereDate('surf_start_date','>=',$params['surf_date'])->get();
+           $postArray->whereDate('surf_start_date','>=',$params['surf_date']);
         }
         if ($params['end_date']) {
-           $postArray->whereDate('surf_start_date','<=',$params['end_date'])->get();
+           $postArray->whereDate('surf_start_date','<=',$params['end_date']);
         }
 
         if ($params['country_id']) {
-            $postArray->where('country_id',$params['country_id'])->get();
+            $postArray->where('country_id',$params['country_id']);
         }
         if ($params['local_beach_break_id']) {
-            $postArray->where('local_beach_break_id',$params['local_beach_break_id'])->get();
+            $postArray->where('local_beach_break_id',$params['local_beach_break_id']);
         }
         if ($params['board_type']) {
-            $postArray->where('board_type',$params['board_type'])->get();
+            $postArray->where('board_type',$params['board_type']);
         }
         if ($params['wave_size']) {
-            $postArray->where('wave_size',$params['wave_size'])->get();
+            $postArray->where('wave_size',$params['wave_size']);
         }
         if (isset($params['state_id'])) {
-            $postArray->where('state_id',$params['state_id'])->get();
+            $postArray->where('state_id',$params['state_id']);
         }
         
         return $postArray->orderBy('posts.id','DESC')->paginate(10);
@@ -385,7 +381,7 @@ class PostService {
             $posts->board_type = $input['board_type'];
             $posts->state_id = $input['state_id'];
             $posts->local_beach_break_id = $input['local_beach_break_id'];
-            $posts->surfer = $input['surfer'];
+            $posts->surfer = (isset($input['surfer']) && ($input['surfer'] == 'Me'))?Auth::user()->user_name:$input['surfer'];
             $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
             $posts->created_at = Carbon::now();
             $posts->updated_at = Carbon::now();
@@ -426,7 +422,7 @@ class PostService {
             $posts->board_type = $input['board_type'];
             $posts->state_id = $input['state_id'];
             $posts->local_beach_break_id = $input['local_beach_break_id'];
-            $posts->surfer = $input['surfer'];
+            $posts->surfer = (isset($input['surfer']) && ($input['surfer'] == 'Me'))?Auth::user()->user_name:$input['surfer'];
             $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
             $posts->created_at = Carbon::now();
             $posts->updated_at = Carbon::now();
@@ -466,7 +462,7 @@ class PostService {
             $posts->board_type = $input['board_type'];
             $posts->state_id = $input['state_id'];
             $posts->local_beach_break_id = $input['local_beach_break_id'];
-            $posts->surfer = $input['surfer'];
+            $posts->surfer = (isset($input['surfer']) && ($input['surfer'] == 'Me'))?Auth::user()->user_name:$input['surfer'];
             $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
             $posts->created_at = Carbon::now();
             $posts->updated_at = Carbon::now();
@@ -493,15 +489,6 @@ class PostService {
                         $upload->save();
                     }
                 }
-                // $newImageArray = $this->getPostImageArray($imageArray,$id);
-                // $newVideoArray = $this->getPostVideoArray($videoArray,$id);
-                
-                //     Upload::where('post_id', $posts->id)
-                //     ->update([
-                //         'image'=>($newImageArray!=[]) ? implode(' ', array_filter($newImageArray)) : null,
-                //         'video'=>($newVideoArray!=[]) ? implode(' ', array_filter($newVideoArray)) : null,
-                //         ]);
-            
             
             if($posts->save()){
                 $message = 'Post has been updated successfully.!';

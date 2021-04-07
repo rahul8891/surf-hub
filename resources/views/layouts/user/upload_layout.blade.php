@@ -7,7 +7,7 @@
                     <img src="{{ asset("/img/upload.png")}}" alt=""> Upload Video/Photo
                 </div>
                 @endif
-                @if(Auth::user() && (str_contains(Request::path(),'myhub') || str_contains(Request::path(),'search')))
+                @if((str_contains(Request::path(),'myhub') || str_contains(Request::path(),'search')))
                 <div class="col-md-3 col-6">
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
@@ -16,8 +16,10 @@
                         </button>
                         @if(str_contains(Request::path(),'search'))
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'dateDesc'])}}">Date (New to Old)</a>
-                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'dateAsc'])}}">Date (Old to New)</a>
+                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'dateDesc'])}}">Post Date (New to Old)</a>
+                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'dateAsc'])}}">Post Date (Old to New)</a>
+                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'surfDateDesc'])}}">Surf Date (New to Old)</a>
+                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'surfDateAsc'])}}">Surf Date (Old to New)</a>
                             <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'beach'])}}">Beach / Break</a>
                             <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'star'])}}">Star Rating </a>
                         </div>
@@ -25,8 +27,10 @@
 
                         @if(str_contains(Request::path(),'myhub'))
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <a class="dropdown-item" href="{{route('myhub',['sort'=>'dateDesc'])}}">Date (New to Old)</a>
-                            <a class="dropdown-item" href="{{route('myhub',['sort'=>'dateAsc'])}}">Date (Old to New)</a>
+                            <a class="dropdown-item" href="{{route('myhub',['sort'=>'dateDesc'])}}">Post Date (New to Old)</a>
+                            <a class="dropdown-item" href="{{route('myhub',['sort'=>'dateAsc'])}}">Post Date (Old to New)</a>
+                            <a class="dropdown-item" href="{{route('myhub',['sort'=>'surfDateDesc'])}}">Surf Date (New to Old)</a>
+                            <a class="dropdown-item" href="{{route('myhub',['sort'=>'surfDateAsc'])}}">Surf Date (Old to New)</a>
                             <a class="dropdown-item" href="{{route('myhub',['sort'=>'beach'])}}">Beach / Break</a>
                             <a class="dropdown-item" href="{{route('myhub',['sort'=>'star'])}}">Star Rating </a>
                         </div>
@@ -58,6 +62,7 @@
                                 <input type="reset" value="Clear" id="clear" class="ml-auto float-right close" >
                             </div>
                             <div class="filterBody">
+                                @if(Auth::user())
                                 <div class="row mb-3">
                                     <div class="col-md-2">
                                         <label class="mb-0">Surfer</label>
@@ -66,29 +71,38 @@
                                         <div class="row">
                                             <div class="col-md-3 col-sm-3 col-6">
                                                 <div class="cstm-check pos-rel">
-                                                    <input type="checkbox" id="test-me" {{ Request::get('Me') ? "checked" : "" }} name="Me" />
+                                                    <input type="radio" id="test-me" name="filterUser" value="me" {{ Request::get('me') ? "checked" : "" }} />
                                                     <label for="test-me" class="pr-4">Me</label>
                                                 </div>
 
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-6">
                                                 <div class="cstm-check pos-rel">
-                                                    <input type="checkbox" id="test-other" {{ Request::get('Others') ? "checked" : "" }} name="Others" />
+                                                    <input type="radio" id="test-other" name="filterUser" value="others" {{ Request::get('others') ? "checked" : "" }} />
                                                     <label for="test-other" class="pr-4">Other</label>
                                                 </div>
 
                                             </div>
                                             <div class="col-md-5 col-sm-5 col-6">
                                                 <div class="cstm-check pos-rel">
-                                                    <input type="checkbox" id="test-unknown" {{ Request::get('Unknown') ? "checked" : "" }} name="Unknown" />
+                                                    <input type="radio" id="test-unknown" name="filterUser" value="unknown" {{ Request::get('unknown') ? "checked" : "" }} />
                                                     <label for="test-unknown" class="pr-4">Unknown</label>
                                                 </div>
 
                                             </div>
                                         </div>
+                                        <div class="col-md-8 col-sm-4 float-right" style="display:none" id="othersFilterSurfer">
+                                            <div class="selectWrap pos-rel">
+                                                <div class="selectWrap pos-rel">
+                                                    <input type="text" value="{{ old('other_surfer')}}" name="other_surfer" placeholder="Search other user" class="form-control filter_other_surfer" required>
+                                                        <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id" id="surfer_id_filter" class="form-control surfer_id">
+                                                    <div class="auto-search search2" id="filter_other_surfer_list"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-
                                 </div>
+                                @endif
                                 <div class="row mb-3">
                                     <div class="col-md-2">
                                         <label class="mb-0">Start Date</label>
@@ -339,3 +353,14 @@
         @endif
     </div>
 </div>
+
+<script type="text/javascript">
+    $('#test-other').click(function() {
+        alert($(this).val());
+        if ($(this).val() == "filter_others") {
+            $('#othersFilterSurfer').show();
+        } else {
+            $('#othersFilterSurfer').hide();
+        }
+    });
+</script>

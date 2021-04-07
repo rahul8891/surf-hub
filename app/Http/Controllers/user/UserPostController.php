@@ -123,7 +123,6 @@ class UserPostController extends Controller
             $validate = Validator::make($data, $rules);          
             if ($validate->fails()) {
                 // If validation falis redirect back to current page.
-                //return response()->json(['error'=>$validate->errors()]); 
                 return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors('The comment field is required.');    
             }else {
                 $result = $this->posts->saveReport($data,$message);

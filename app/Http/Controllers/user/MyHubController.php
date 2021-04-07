@@ -20,11 +20,11 @@ class MyHubController extends Controller
 
     public function __construct(MasterService $masterService,UserService $userService,PostService $postService)
     {
-            $this->masterService = $masterService;
-            $this->customArray = config('customarray');
-            $this->userService = $userService;
-            $this->postService = $postService;
-            $this->posts = new Post();
+        $this->masterService = $masterService;
+        $this->customArray = config('customarray');
+        $this->userService = $userService;
+        $this->postService = $postService;
+        $this->posts = new Post();
     }
 
     
@@ -42,8 +42,8 @@ class MyHubController extends Controller
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
         $myHubs=$this->sort($el);
-        //dd($myHubs[0]->upload);
         $userDetail=Auth::user()->user_profiles;
+        
         return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'));      
 
     }
@@ -62,6 +62,12 @@ class MyHubController extends Controller
         }
         else if($el=="dateDesc"){
             return $this->postService->getMyHubListing($postList,'posts.created_at','DESC');
+        }
+        else if($el=="surfDateAsc"){
+            return $this->postService->getMyHubListing($postList,'posts.surf_start_date','ASC');
+        }
+        else if($el=="surfDateDesc"){
+            return $this->postService->getMyHubListing($postList,'posts.surf_start_date','DESC');
         }
         else if($el=="beach"){
             return $this->postService->getMyHubListing($postList,'beach','ASC');

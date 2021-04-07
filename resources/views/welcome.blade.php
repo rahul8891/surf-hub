@@ -38,28 +38,6 @@
                             <br><video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
                             @endif
                             <div class="ratingShareWrap">
-                                <!-- <div class="rating ">
-                                    <ul class="pl-0 mb-0 d-flex align-items-center">
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="img/star-grey.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <span>4.0(90)</span>
-                                        </li>
-                                    </ul>
-                                </div> -->
                                 <ul class="pl-0 mb-0 d-flex align-items-center">
                                     <li>
                                         <input  name="rating" class="rating rating-loading" 
@@ -70,12 +48,6 @@
                                 
                                 <div>
                                     <ul class="pl-0 mb-0 d-flex">
-                                        <!-- <li>
-                                            <a href="#"><img src="img/instagram.png" alt=""></a>
-                                        </li>
-                                        <li>
-                                            <span class="divider"></span>
-                                        </li> -->
                                         <li>
                                             <a href="#">
                                                 <img src="img/facebook.png" alt="">
