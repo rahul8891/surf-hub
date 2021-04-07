@@ -7,8 +7,7 @@
 <div class="modal fade uploadModal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form id="postForm" method="POST" name="postForm" action="{{ route('storeVideoImagePost') }}" class="upload-form"
-            accept-charset="utf-8" enctype="multipart/form-data">
+        <form id="postForm" method="POST" name="postForm" action="{{ route('storeVideoImagePost') }}" class="upload-form" accept-charset="utf-8" enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
@@ -29,7 +28,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="">
-                        <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
+                        <input type="hidden" name="user_id" value="{{auth()->user()->id ?? ''}}">
                         <textarea placeholder="Share your surf experience....." name="post_text" required></textarea>
                         <div class="videoImageUploader">
                             <div class="upload-btn-wrapper">

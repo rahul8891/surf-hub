@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Http\Controllers\admin;
+<?php namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -9,10 +7,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Page;
-
 use Carbon\Carbon;
 use Redirect;
-
 
 class AdminPageController extends Controller
 {
@@ -98,7 +94,7 @@ class AdminPageController extends Controller
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-                $pages = $this->pages::findOrFail($id);
+                $pages = $this->pages->findOrFail($id);
                 if($pages){
                     $pages->id = $id;
                     $pages->title = $data['title'];

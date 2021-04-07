@@ -9,7 +9,7 @@
                         <a href="javascript:void(0);">Contact Us</a>
                     </li>
                     <li class="backBtn pull-right">
-                        <a href="javascript: history.go(-1)"><img src="img/backBtnIcon.png" alt="" class="pr-2">Back</a>
+                        <a href="/"><img src="img/backBtnIcon.png" alt="" class="pr-2">Back</a>
                     </li>
                 </ul>
             </div>

@@ -67,6 +67,8 @@ return [
         'SNAP'=>'Snap',
         '360'=>'360',
         'WIPEOUT'=>'Wipeout',
+        'SKIMBOARD'=>'Skimboard',
+        'SUP'=>'SUP',
     ],
     
     'surfer'=>[

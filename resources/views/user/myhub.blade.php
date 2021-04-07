@@ -93,7 +93,7 @@
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
-                                                    <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$myHub->beach_breaks->latitude}}" data-long="{{$myHub->beach_breaks->longitude}}" data-id="{{$myHub->id}}" class="locationMap">
+                                                    <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$myHub->beach_breaks->latitude ?? ''}}" data-long="{{$myHub->beach_breaks->longitude ?? ''}}" data-id="{{$myHub->id}}" class="locationMap">
                                                         <img src="{{ asset("/img/maps-and-flags.png")}}" alt="">
                                                     </a>
                                                 </li>
@@ -182,7 +182,7 @@
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
-                                                    <a href="{{route('deleteUserPost', Crypt::encrypt($myHub->id))}}">DELETE</a>
+                                                    <a href="{{route('deleteUserPost', Crypt::encrypt($myHub->id))}}"  onclick="return confirm('Do you really want to delete this footage?')">DELETE</a>
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>
@@ -328,7 +328,7 @@
                     </div>
                     @endforeach
                     @endif
-                    <div class="">{{ $myHubs->links()}}</div>
+                    <div class=""></div>
                 </div>
                 <div class="col-lg-3">
                     <div class="adWrap">

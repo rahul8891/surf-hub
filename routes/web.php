@@ -40,6 +40,9 @@ Route::get('/getTagUsers', [UserController::class, 'getTagUsers'])->name('getTag
 Route::post('/setTagUsers', [UserController::class, 'setTagUsers'])->name('setTagUsers');
 Route::post('/checkUsername', [UserController::class, 'checkUsername'])->name('checkUsername');
 
+Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
+Route::get('search/filter', [SearchController::class, 'filter'])->name('searchFilterIndex');
+
 /*********************************************************************************************
  *                              User Route
  * ********************************************************************************************/
@@ -65,8 +68,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');
     Route::get('/user/myhub/filter', [MyHubController::class, 'filter'])->name('myhubFilterIndex');
     
-    Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
-    Route::get('search/filter', [SearchController::class, 'filter'])->name('searchFilterIndex');
+//    Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
+//    Route::get('search/filter', [SearchController::class, 'filter'])->name('searchFilterIndex');
 
     Route::post('/delete', [UserPostController::class, 'destroy'])->name('deleteUserPost');
     Route::get('/delete/{id}', [UserPostController::class, 'destroy'])->name('deleteUserPost');

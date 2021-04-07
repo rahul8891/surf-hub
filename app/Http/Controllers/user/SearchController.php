@@ -37,23 +37,27 @@ class SearchController extends Controller
     {
         $el=$request->input('sort');
         $beach_name="";
-        $currentUserCountryId = Auth::user()->user_profiles->country_id;      
+        $currentUserCountryId = (isset(Auth::user()->user_profiles->country_id) && !empty(Auth::user()->user_profiles->country_id))?Auth::user()->user_profiles->country_id:'';      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
-        $userDetail=Auth::user()->user_profiles;
+        $userDetail = (isset(Auth::user()->user_profiles) && !empty(Auth::user()->user_profiles))?Auth::user()->user_profiles:'';
 
         // ***************check user's recent searches******************************
 
-        $searchRecord=Search::select('*')->where('user_id',[Auth::user()->id])->get();
-        foreach($searchRecord as $post){
-            $postsList[]=$post->post;
+        if(isset(Auth::user()->id)) {
+            $searchRecord = Search::select('*')->where('user_id', [Auth::user()->id])->get();
+            foreach($searchRecord as $post) {
+                $postsList[] = $post->post;
+            }
+            // *************************************************************************
+            if(empty($postsList)) {
+                $postsList = $this->sort($el);
+            }
+        } else {
+            $postsList = $this->sort($el);
         }
-        // *************************************************************************
-        if(empty($postsList)){
-            $postsList=$this->sort($el);
-        }
-
+        
         return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name')); 
     }
 
@@ -63,13 +67,19 @@ class SearchController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function sort($el){
-        $postList=$this->posts;
+        $postList = $this->posts;
         
         if($el=="dateAsc"){
             return $this->postService->getMyHubListing($postList,'posts.created_at','ASC');
         }
         else if($el=="dateDesc"){
             return $this->postService->getMyHubListing($postList,'posts.created_at','DESC');
+        }
+        else if($el=="surfDateAsc"){
+            return $this->postService->getMyHubListing($postList,'posts.surf_start_date','ASC');
+        }
+        else if($el=="surfDateDesc"){
+            return $this->postService->getMyHubListing($postList,'posts.surf_start_date','DESC');
         }
         else if($el=="beach"){
             return $this->postService->getMyHubListing($postList,'beach','ASC');
@@ -93,20 +103,22 @@ class SearchController extends Controller
         $beach_name="";
         $params=$request->all();
         $order=$request->input('order');
-        $currentUserCountryId = Auth::user()->user_profiles->country_id;      
+        $currentUserCountryId = (isset(Auth::user()->user_profiles->country_id) && !empty(Auth::user()->user_profiles->country_id))?Auth::user()->user_profiles->country_id:'';      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
-        $userDetail=Auth::user()->user_profiles;
+        $userDetail= (isset(Auth::user()->user_profiles) && !empty(Auth::user()->user_profiles))?Auth::user()->user_profiles:'';
         $postsList=$this->postService->getFilteredList($params,'search');
         
         // ***********************************adding it to search table***************************************
-        Search::where('user_id',[Auth::user()->id])->delete();
-        foreach($postsList as $posts){
-            $search = new Search();
-            $search->user_id = Auth::user()->id;
-            $search->post_id = $posts->id;
-            $search->save();
+        if(isset(Auth::user()->id)) {
+            Search::where('user_id',[Auth::user()->id])->delete();
+            foreach($postsList as $posts){
+                $search = new Search();
+                $search->user_id = Auth::user()->id;
+                $search->post_id = $posts->id;
+                $search->save();
+            }
         }
         // ***************************************************************************************************
         if(!empty($request->input('local_beach_break_id'))){
