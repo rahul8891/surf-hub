@@ -70,7 +70,11 @@ class MasterService {
      * @return dataArray
      */
     public function getStateByCountryId($countryId){
-        return $this->states->select('id', 'name')->where('country_id',$countryId)->orderBy('name','asc')->get();
+        if(isset($countryId) && !empty($countryId)) {
+            return $this->states->select('id', 'name')->where('country_id',$countryId)->orderBy('name','asc')->get();
+        } else {
+            return $this->states->select('id', 'name')->orderBy('name','asc')->get();
+        }
     }
 
     /**

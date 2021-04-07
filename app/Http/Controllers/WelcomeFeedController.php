@@ -10,11 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\sendMail;
-
 use App\Services\MasterService;
 use App\Services\UserService;
 use App\Services\PostService;
-
 use Carbon\Carbon;
 
 class WelcomeFeedController extends Controller
@@ -57,6 +55,7 @@ class WelcomeFeedController extends Controller
         $customArray = $this->customArray;
         // non logged in user redirect to home page
         $postsList = $this->postService->getPostsListing();
+        
         return view('welcome',compact('customArray','postsList'));
     }
 

@@ -14,7 +14,7 @@
                         <a href="{{ route('following') }}">Following</a>
                     </li>
                     <li class="backBtn">
-                        <a href="javascript: history.go(-1)"><img src="img/backBtnIcon.png" alt="" class="pr-2">Back</a>
+                        <a href="/"><img src="img/backBtnIcon.png" alt="" class="pr-2">Back</a>
                     </li>
                 </ul>
             </div>

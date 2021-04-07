@@ -36,10 +36,7 @@ class DashboardController extends Controller
         $customArray = $this->customArray;      
         $postsList = $this->postService->getPostsListing();
         $usersList = $this->masterService->getAllUsers();
-        //dd($postsList[4]->tags[0]->user->user_profiles->last_name);
-        //dd($postsList[3]->upload);
-        //dd($postsList[3]->comments[0]->user->user_profiles->last_name);
-        // $usersList = $this->userService->getAllUserForCreatePost();
+        
         return view('dashboard',compact('customArray','countries','states','currentUserCountryId','postsList'));
     }
 

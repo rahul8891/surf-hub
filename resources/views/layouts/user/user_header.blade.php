@@ -89,7 +89,7 @@ $borderBtm = Auth::user() ? 'border-btm ' : '';
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="m-auto d-flex align-items-center">
-                <a href="#">Search</a>
+                <a href="/search">Search</a>
                 <span>Search here for video and photos from any surf break around the world!!</span>
             </div>
             @auth
