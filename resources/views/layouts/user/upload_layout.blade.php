@@ -353,14 +353,3 @@
         @endif
     </div>
 </div>
-
-<script type="text/javascript">
-    $('#test-other').click(function() {
-        alert($(this).val());
-        if ($(this).val() == "filter_others") {
-            $('#othersFilterSurfer').show();
-        } else {
-            $('#othersFilterSurfer').hide();
-        }
-    });
-</script>
