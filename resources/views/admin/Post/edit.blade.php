@@ -205,7 +205,7 @@
                                 <div class="col-md-8">
                                     <div class="selectWrap pos-rel">
                                         <select class="form-control" name="state_id" id="state_id">
-                                            <option selected="selected" value="">-- State --</option>
+                                            <option value="">-- State --</option>
                                             @foreach($states as $key => $value)
                                             <option value="{{ $value->id }}"
                                                 {{ ( old('state_id',$posts->state_id) == $value->id) ? 'selected' : '' }}>

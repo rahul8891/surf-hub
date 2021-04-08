@@ -246,21 +246,22 @@ class UserPostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function rating(Request $request)
-    {
-        
+    {        
         $data = $request->all();
-        try{
-            $result = $this->posts->ratePost($data,$message);
-            
-            if($result){
-               return json_encode(array('status'=>$result['status'], 'message'=>$result['message'],
-                                 'averageRating'=>$result['averageRating'], 'usersRated'=>$result['usersRated']));
-            }else{
-              return json_encode(array('status'=>$result['status'], 'message'=>$result['message'],
-                                 'averageRating'=>$result['averageRating'], 'usersRated'=>$result['usersRated']));
+        if (isset($data['id']) && !empty($data['id'])) {
+            try{
+                $result = $this->posts->ratePost($data,$message);
+
+                if($result){
+                   return json_encode(array('status'=>$result['status'], 'message'=>$result['message'],
+                                     'averageRating'=>$result['averageRating'], 'usersRated'=>$result['usersRated']));
+                }else{
+                  return json_encode(array('status'=>$result['status'], 'message'=>$result['message'],
+                                     'averageRating'=>$result['averageRating'], 'usersRated'=>$result['usersRated']));
+                }
+            }catch (\Exception $e){
+                return redirect()->route('dashboard', ['id' => $data['id']])->withErrors($e->getMessage());
             }
-        }catch (\Exception $e){
-            return redirect()->route('dashboard', ['id' => $data['id']])->withErrors($e->getMessage());
         }
     }
     

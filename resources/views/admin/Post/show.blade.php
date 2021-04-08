@@ -37,7 +37,7 @@
                             <p class="text-muted text-md"><b>Post Type : </b> {{ __($post->post_type)}} </p>
                             <p class="text-muted text-md"><b>Country : </b> {{ __($post->countries->name)}} </p>
                             <p class="text-muted text-md"><b>state : </b> {{ __($post->states ? $post->states->name : 'NA')}} </p>
-                            <p class="text-muted text-md"><b>Beach Break : </b> {{ __($post->beach_breaks->beach_name)}}</p>
+                            <p class="text-muted text-md"><b>Beach Break : </b> {{ __($post->beach_breaks->beach_name ?? '')}}</p>
                             <p class="text-muted text-md"><b>Board Type : </b> {{ __($post->board_type)}}</p>
                             <p class="text-muted text-md"><b>wave size : </b> {{ __($post->wave_size)}}</p>
                             <p class="text-muted text-md"><b>Surfer : </b> {{ __($post->surfer)}}</p>

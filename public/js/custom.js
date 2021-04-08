@@ -17,24 +17,29 @@ $(document).ready(function () {
 	
 	
     $('.rating').on('change',function(e){
-		var value=$(this).val();
-		var id=$(this).attr("data-id");
-        var csrf_token = $('meta[name="csrf-token"]').attr("content");
+        var value = $(this).val();
+        var id = $(this).attr("data-id");
+        
+        if(id != '') {
+            var csrf_token = $('meta[name="csrf-token"]').attr("content");
 
-        $.ajax({
-            type: "POST",
-            url: "/rating", 
-            data: {				
-                value: value,
-                id:id,
-                _token: csrf_token
-            },
-            dataType: "json",
-            success: function (jsonResponse) {
-                $('#average-rating${id}').html(Math.floor(jsonResponse['averageRating']));
-                $('#users-rated${id}').html(Math.floor(jsonResponse['usersRated']));
-            }
-        });
+            $.ajax({
+                type: "POST",
+                url: "/rating", 
+                data: {				
+                    value: value,
+                    id:id,
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    $('#average-rating'+id).html(Math.floor(jsonResponse['averageRating']));
+                    $('#users-rated'+id).html(Math.floor(jsonResponse['usersRated']));
+                }
+            });
+        }else {
+            $(this).val(value);
+        }
     });
 	
 
