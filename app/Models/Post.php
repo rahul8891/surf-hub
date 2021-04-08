@@ -115,5 +115,13 @@ class Post extends Model
     {
         return $this->hasMany(Report::class, 'post_id', 'id');
     }
+    
+    /**
+     * Relationship between posts and reports model    
+     * @return object
+     */
+    public function ratingPost() {
+        return $this->hasMany(Rating::class, 'rateable_id', 'id');
+    }
 
 }

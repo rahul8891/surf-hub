@@ -25,6 +25,7 @@ use DB;
 use FFMpeg;
 use FFMpeg\Format\Video\X264;
 use FFMpeg\Filters\Video\VideoFilters;
+use willvincent\Rateable\Tests\models\Rating;
 
 class PostService {
     /**
@@ -156,12 +157,12 @@ class PostService {
      * @return dataArray
      */
     public function getFilteredList($params, $for) {
-//        dd($params);
         if ($for=='search'){
-            $postArray =  $this->posts->whereNull('posts.deleted_at');
+            $postArray =  $this->posts->with(['ratingPost'])->whereNull('posts.deleted_at');
         }
+        
         if ($for=='myhub'){
-            $postArray =  $this->posts->whereNull('posts.deleted_at')->where('user_id',[Auth::user()->id]);
+            $postArray =  $this->posts->with(['ratingPost'])->whereNull('posts.deleted_at')->where('user_id',[Auth::user()->id]);
         }
         
         //************* applying conditions *****************/
@@ -173,54 +174,44 @@ class PostService {
         }elseif (isset($params['filterUser']) && ($params['filterUser'] == 'unknown')) {
             $postArray->where('surfer', 'Unknown');
         }
-        /*
-        if(isset($params['Me'])){
-            if ($params['Me']=='on') {
-                $postArray->where('surfer','Me')->get();
-            }
-        }
-        if(isset($params['Unknown'])){
-            if ($params['Unknown']=='on') {
-                $postArray->where('surfer','Unknown')->get();
-            }
-        }
-        if(isset($params['Others'])){
-            if ($params['Others']=='on') {
-                $postArray->whereNotIn('surfer',['Me','Unknown'])->get();
-            }
-        } */
+        
+        $optionalInfo = [];
         
         if(isset($params['FLOATER']) && ($params['FLOATER']=='on')){
-            $postArray->where('optional_info','FLOATER');
+            $optionalInfo[] = 'FLOATER';
         }
         
         if(isset($params['AIR']) && ($params['AIR']=='on')){
-            $postArray->where('optional_info','AIR');
+            $optionalInfo[] = 'AIR';
         }
         
         if(isset($params['360']) && ($params['360']=='on')) {
-            $postArray->where('optional_info','360');
+            $optionalInfo[] = '360';
         }
         
         if(isset($params['DROP_IN']) && ($params['DROP_IN']=='on')){
-            $postArray->where('optional_info','Me');
+            $optionalInfo[] = 'DROP_IN';
         }
         
         if(isset($params['BARREL_ROLL']) && ($params['BARREL_ROLL']=='on')){
-            $postArray->where('optional_info','BARREL_ROLL');
+            $optionalInfo[] = 'BARREL_ROLL';
         }
         
         if(isset($params['WIPEOUT']) && ($params['WIPEOUT']=='on')){
-            $postArray->where('optional_info','WIPEOUT');
+            $optionalInfo[] = 'WIPEOUT';
         }
         
         if(isset($params['CUTBACK']) && ($params['CUTBACK']=='on')){
-            $postArray->where('optional_info','CUTBACK');
+            $optionalInfo[] = 'CUTBACK';
         }
         if(isset($params['SNAP']) && ($params['SNAP']=='on')){
+            $optionalInfo[] = 'SNAP';
             $postArray->where('optional_info','SNAP');
         }
         
+        if(isset($optionalInfo[0]) && !empty($optionalInfo[0])) {
+            $postArray->whereIn('optional_info', $optionalInfo);
+        }        
         
         if ($params['surf_date']) {
            $postArray->whereDate('surf_start_date','>=',$params['surf_date']);
@@ -241,8 +232,16 @@ class PostService {
         if ($params['wave_size']) {
             $postArray->where('wave_size',$params['wave_size']);
         }
+        
         if (isset($params['state_id'])) {
             $postArray->where('state_id',$params['state_id']);
+        }
+        
+        if (isset($params['rating'])) {
+            $rate = $params['rating'];
+            $postArray->whereHas('ratingPost', function($query) use ($rate){ 
+                $query->where('rating', $rate);
+            });
         }
         
         return $postArray->orderBy('posts.id','DESC')->paginate(10);
@@ -511,8 +510,8 @@ class PostService {
      * @return dataArray with message
      */
     public function ratePost($data,&$message=''){
-        $id=$data['id'];
-        $value=$data['value'];
+        $id = $data['id'];
+        $value = $data['value'];
         $posts=$this->posts->find($id);
         
         try{
