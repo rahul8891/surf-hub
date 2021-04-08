@@ -1,3 +1,12 @@
+<style>
+    .rating-box {
+        height: 80px;
+    }
+    .rating-box ul {
+        text-decoration: none;
+        list-style: none;
+    }
+</style>
 <div class="post p-0 ">
     <div class="uploadWrap a_uploadWrap">
         <div class="head">
@@ -94,8 +103,8 @@
                                         <div class="col-md-8 col-sm-4 float-right" style="display:none" id="othersFilterSurfer">
                                             <div class="selectWrap pos-rel">
                                                 <div class="selectWrap pos-rel">
-                                                    <input type="text" value="{{ old('other_surfer')}}" name="other_surfer" placeholder="Search other user" class="form-control filter_other_surfer" required>
-                                                        <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id" id="surfer_id_filter" class="form-control surfer_id">
+                                                    <input type="text" value="{{ old('other_surfer')}}" name="other_surfer" placeholder="Search other user" class="form-control filter_other_surfer" />
+                                                        <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id" id="surfer_id_filter" class="form-control surfer_id" />
                                                     <div class="auto-search search2" id="filter_other_surfer_list"></div>
                                                 </div>
                                             </div>
@@ -282,36 +291,23 @@
 
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-2">
-                                        
+                                <div class="row mb-3 rating-box">
+                                    <div class="col-md-3">
+                                        <label class="mb-0">Star Rating </label>
                                     </div>
-                                    <div class="col-md-5"></div>
+                                    <div class="col-md-4">
+                                        <ul class="pl-0 mb-0 ">                                                
+                                            <li>
+                                                <input id="filter-rating" name="rating" class="rating rating-loading" data-min="0" data-max="5" data-step="1" data-size="xs" value="0" />
+                                            </li>
+                                        </ul>
+                                    </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="cstm-check pos-rel">
                                             <input type="checkbox" id="test10" {{ Request::get('SNAP') ? "checked" : "" }} name="SNAP"/>
                                             <label for="test10" class="width-138">Snap </label>
                                         </div>
                                     </div>
-
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-2">
-                                        
-                                    </div>
-                                    <div class="col-md-5"></div>
-                                    <div class="col-md-5 col-sm-7">
-                                        <div class="d-flex align-items-center">
-                                            <label class="mb-0 width-138">Star Rating</label>
-                                            <ul class="pl-0 mb-0 ">                                                
-                                                <li>
-                                                    <input id="filter-rating" name="rating" class="rating rating-loading"
-                                                    data-min="0" data-max="5" data-step="1" data-size="xs" value="0">   
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    
                                 </div>
                                
                                 <div class="row">
