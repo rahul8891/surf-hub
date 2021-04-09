@@ -125,8 +125,7 @@ class PostService {
      * @param  
      * @return dataArray
      */
-    public function getMyHubListing($postList,$el,$order){
-        
+    public function getMyHubListing($postList, $el, $order){
         if($el=='beach') { 
           $sortedData = $postList
           ->join('beach_breaks', 'posts.local_beach_break_id', '=', 'beach_breaks.id')
@@ -138,6 +137,8 @@ class PostService {
             $sortedData = $postList->with('beach_breaks')->withCount(['ratings as average_rating' => function($query) {
                 $query->select(DB::raw('coalesce(avg(rating),0)'));
             }])->orderByDesc('average_rating')->get();
+            
+            
         } else {
             $sortedData =  $postList
             ->with('beach_breaks')
@@ -145,7 +146,7 @@ class PostService {
             ->orderBy($el,$order)
             ->get();
         }
-        
+        //dd($sortedData);
         return $sortedData;
     }
 
