@@ -36,14 +36,14 @@ class MyHubController extends Controller
     public function index(Request $request)
     {
         $beach_name ="";    
-        $el=$request->input('sort');
+        $el = $request->input('sort');
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
-        $myHubs=$this->sort($el);
+        $myHubs = $this->sort($el);
         $userDetail=Auth::user()->user_profiles;
-        
+//        dd($myHubs);
         return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'));      
 
     }
@@ -55,7 +55,7 @@ class MyHubController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function sort($el){
-        $postList=$this->posts->where('user_id',[Auth::user()->id]);
+        $postList = $this->posts->where('user_id',[Auth::user()->id]);
 
         if($el=="dateAsc"){
             return $this->postService->getMyHubListing($postList,'posts.created_at','ASC');
@@ -73,7 +73,7 @@ class MyHubController extends Controller
             return $this->postService->getMyHubListing($postList,'beach','ASC');
         }
         else if($el=="star"){
-            return $this->postService->getMyHubListing($postList,'posts.created_at','DESC');
+            return $this->postService->getMyHubListing($postList,'star','DESC');
         }
         else{
             return $this->postService->getMyHubListing($postList,'posts.created_at','DESC');

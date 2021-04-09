@@ -35,7 +35,7 @@ class SearchController extends Controller
      */
     public function search(Request $request)
     {
-        $el=$request->input('sort');
+        $el = $request->input('sort');
         $beach_name="";
         $currentUserCountryId = (isset(Auth::user()->user_profiles->country_id) && !empty(Auth::user()->user_profiles->country_id))?Auth::user()->user_profiles->country_id:'';      
         $countries = $this->masterService->getCountries();
@@ -85,7 +85,7 @@ class SearchController extends Controller
             return $this->postService->getMyHubListing($postList,'beach','ASC');
         }
         else if($el=="star"){
-            return $this->postService->getMyHubListing($postList,'posts.created_at','DESC');
+            return $this->postService->getMyHubListing($postList,'star','DESC');
         }
         else{
             return $this->postService->getMyHubListing($postList,'posts.created_at','DESC');
