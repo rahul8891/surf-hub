@@ -1,21 +1,19 @@
 $(document).ready(function () {
-	var csrf_token = $('meta[name="csrf-token"]').attr("content");
+    var csrf_token = $('meta[name="csrf-token"]').attr("content");
 
-	/*$('#login').click(function (event) {		
-		var email = $('#email').val();
-		var password = $('#password').val();
-		if(email && password){
-			spinner.show();
-		}
-	});*/
-	/************** country and phone field onload register ****************************/
+    /*$('#login').click(function (event) {		
+            var email = $('#email').val();
+            var password = $('#password').val();
+            if(email && password){
+                    spinner.show();
+            }
+    });*/
+    /************** country and phone field onload register ****************************/
 
-	$('#register .country option:selected').prop("selected", false);
-	$('#register .phone').val('');
+    $('#register .country option:selected').prop("selected", false);
+    $('#register .phone').val('');
 
-	/************** rating js ****************************/
-	
-	
+    /************** rating js ****************************/	
     $('.rating').on('change',function(e){
         var value = $(this).val();
         var id = $(this).attr("data-id");
@@ -1194,29 +1192,30 @@ $(document).on('click','#filter_other_surfer_list li', function(){
 	 });
 
 	$(document).on('click', '.follow', function(){
-		 var dataId = $(this).attr("data-id");
-		 var postId = $(this).attr("data-post_id");
-		 $.ajax({
-			type: "POST",
-			url: "follow",
-			data: {
-				followed_user_id: dataId,
-				post_id: postId,
-				sataus: 'FOLLOW',
-				_token: csrf_token
-			},
-			dataType: "json",
-			success: function (jsonResponse) {
-				if (jsonResponse.status == "success") {
-					spinner.hide();
-				} else {
-					spinner.hide();
-					alert(jsonResponse.message);
-				}
-				setInterval(myTimerUserMessage, 4000);
-			}
-		});
-	 });
+            var dataId = $(this).attr("data-id");
+            var postId = $(this).attr("data-post_id");
+            $.ajax({
+                type: "POST",
+                url: "follow",
+                data: {
+                        followed_user_id: dataId,
+                        post_id: postId,
+                        sataus: 'FOLLOW',
+                        _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    if (jsonResponse.status == "success") {
+                            spinner.hide();
+                    } else {
+                            spinner.hide();
+                            alert(jsonResponse.message);
+                    }
+                    setInterval(myTimerUserMessage, 4000);
+                }
+            });
+        });
+        
 	$(document).on('click', '#navbarDropdown', function(){
 		$.ajax({
 			type: "POST",

@@ -140,6 +140,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::get('/post/edit/{id}', [PostController::class, 'edit'])->name('postEdit');
     Route::post('/post/update/{id}', [PostController::class, 'update'])->name('postUpdate');
     Route::get('/post/delete/{id}', [PostController::class, 'destroy'])->name('deletePost');
+    Route::get('/post/status', [PostController::class, 'statusUpdate'])->name('statusUpdate');
     
     /************ Report url **********/
     Route::get('/report/index', [ReportController::class, 'index'])->name('reportIndex');
