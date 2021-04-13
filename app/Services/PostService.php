@@ -134,9 +134,7 @@ class PostService {
           ->get();
         } else if($el=='star') {
             //////// code for rating, make replica of above condition
-            $sortedData = $postList->with('beach_breaks')->withCount(['ratings as average_rating' => function($query) {
-                $query->select(DB::raw('coalesce(avg(rating),0)'));
-            }])->orderByDesc('average_rating')->get();
+            $sortedData = $postList->with(['beach_breaks', 'ratingPost'])->whereHas()->orderByDesc('average_rating')->get();
             
             
         } else {
@@ -241,7 +239,7 @@ class PostService {
         if (isset($params['rating'])) {
             $rate = $params['rating'];
             $postArray->whereHas('ratingPost', function($query) use ($rate){ 
-                $query->where('rating', $rate);
+                $query->where('rating', $rate)->groupBy('rateable_id');
             });
         }
         

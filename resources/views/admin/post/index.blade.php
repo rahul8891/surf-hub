@@ -18,6 +18,7 @@
                     <th>Post</th>
                     <th class="no-sort">By User</th>
                     <th class="no-sort">Uploaded On</th>
+                    <th class="no-sort">Add to Feed</th>
                     <th class="no-sort">Action</th>
                 </tr>
             </thead>
@@ -28,6 +29,8 @@
                     <td>{{ __(ucwords($value->post_text)) }}</td>
                     <td>{{ __(ucwords($value->user->user_profiles->first_name .' '.$value->user->user_profiles->last_name)) }}</td> 
                     <td>{{ __((date('d-m-Y', strtotime($value->created_at)))) }}</td>
+                    <td>
+                        <input type="checkbox" data-id="{{ $value->id }}" name="status" class="js-switch" {{ $value->is_feed == 1 ? 'checked' : '' }}></td>
                     <td>
                         <a class="btn btn-primary btn-sm"
                             href="{{route('postDetail', Crypt::encrypt($value->id))}}"><i
@@ -60,3 +63,37 @@
             <!-- /.card-body -->
         </div>
         @endsection
+        
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        let elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+
+        elems.forEach(function(html) {
+            let switchery = new Switchery(html,  { size: 'small' });
+        });
+        
+        $('.js-switch').change(function () { 
+            let status = $(this).prop('checked') === true ? 1 : 0;
+            let postId = $(this).data('id');
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: '{{ route('statusUpdate') }}',
+                data: {'status': status, 'post_id': postId},
+                success: function (data) {
+                    if(data.statuscode == 200) {
+                        $("#errorSuccessmsg").removeClass('alert-danger');
+                        $("#errorSuccessmsg").addClass('alert-success');
+                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                    } else {
+                        $("#errorSuccessmsg").removeClass('alert-success');
+                        $("#errorSuccessmsg").addClass('alert-danger');
+                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>'); 
+                    }
+                    console.log(data.message);
+                }
+            });
+        });
+    });
+</script>    

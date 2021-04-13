@@ -66,7 +66,7 @@ class PostController extends Controller
     {
         $posts = $this->posts->getAllPostsListing();
         $spiner = ($posts) ? true : false;
-        return view('admin/Post/index', compact('posts','spiner'));     
+        return view('admin/post/index', compact('posts','spiner'));     
     }
 
     /**
@@ -82,7 +82,7 @@ class PostController extends Controller
         $users=User::all();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;   
-        return view('admin/Post/create', compact('users','countries','currentUserCountryId','customArray','language','states'));
+        return view('admin/post/create', compact('users','countries','currentUserCountryId','customArray','language','states'));
     }
 
     /**
@@ -144,7 +144,7 @@ class PostController extends Controller
         }catch (\Exception $e){ 
             throw ValidationException::withMessages([$e->getMessage()]);
         }
-        return view('admin/Post/show', compact('post','postMedia','spiner'));  
+        return view('admin/post/show', compact('post','postMedia','spiner'));  
     }
 
     /**
@@ -169,7 +169,7 @@ class PostController extends Controller
             throw ValidationException::withMessages([$e->getMessage()]);
         }
         
-        return view('admin/Post/edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));
+        return view('admin/post/edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));
     }
 
     /**
@@ -237,6 +237,23 @@ class PostController extends Controller
             return redirect()->route('postIndex', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
         }
 
+    }
+    
+    /**
+     * Update feed status of the post.
+     *
+     * @param  int  $id & $status
+     * @return \Illuminate\Http\Response
+     */
+    public function statusUpdate(Request $request)
+    {
+        $post = Post::findOrFail($request->post_id);
+        $post->is_feed = $request->status;
+        if ($post->save()) {
+            return response()->json(['statuscode' => 200, 'status' => true, 'message' =>  "Feed status updated successfully.", 'data' => $post], 200);
+        } else {
+            return response()->json(['statuscode' => 400, 'status' => false, 'message' =>  "Something went wrong. Please try later."], 400);
+        }
     }
     
 }

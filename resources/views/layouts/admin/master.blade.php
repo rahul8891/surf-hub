@@ -30,9 +30,12 @@
     <link rel="stylesheet" href="{{ asset("/css/croppie.css") }}" />
     <link href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.css">
+    
     
     <!-- script -->
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -64,7 +67,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-
+                    <div class="alert alert-dismissible" id="errorSuccessmsg" role="alert"></div>
                     @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible" id="msg" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
@@ -110,8 +113,8 @@
     <script src="{{ asset("/AdminLTE/plugins/bootstrap-switch/js/bootstrap-switch.min.js")}}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset("/AdminLTE/dist/js/adminlte.js")}}"></script>
-    <!-- PAGE SCRIPTS -->
-    <script src="{{ asset("/AdminLTE/dist/js/pages/dashboard2.js")}}"></script>
+    <!-- PAGE SCRIPTS 
+    <script src="{{ asset("/AdminLTE/dist/js/pages/dashboard2.js")}}"></script>-->
     <script src="{{ asset("/AdminLTE/plugins/datatables/jquery.dataTables.min.js")}}"></script>
     <script src="{{ asset("/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js")}}"></script>
     <script src="{{ asset("/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js")}}"></script>
