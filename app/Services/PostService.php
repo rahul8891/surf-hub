@@ -109,12 +109,20 @@ class PostService {
      * @param  
      * @return dataArray
      */
-    public function getAllPostsListing(){
-
-        $postArray =  $this->posts
+    public function getAllPostsListing($input){
+        if(isset($input['search']) && !empty($input['search'])) {
+            $postArray =  $this->posts->orWhere('post_text', 'like', '%'.$input['search'].'%')
+                                ->orWhere('surfer', $input['search'])
+                                ->where('is_deleted','0')
+                                ->orderBy('posts.created_at','ASC')
+                                ->paginate(10);
+        } else {
+            $postArray =  $this->posts
                                   ->where('is_deleted','0')   
                                   ->orderBy('posts.created_at','ASC')
                                   ->paginate(10);
+        }
+        
         return $postArray;
     }
 
