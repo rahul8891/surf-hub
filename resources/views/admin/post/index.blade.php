@@ -9,9 +9,17 @@
         <a href="{{ route('postCreate')}}" class="btn btn-primary pull-left">Add New Post</a>
     </div>
     <!-- /.card-header -->
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <form id="example3_filter" action="{{ route('postIndex') }}" method="GET">
+                <label>Search:</label>
+                <input type="text" name="search" class="form-control form-control-sm" placeholder="" aria-controls="example3" />
+            </form>
+        </div>
+    </div>
     <div id="loader"></div>
     <div class="card-body">
-        <table id="example3" class="table table-bordered">
+        <table id="" class="table table-bordered">
             <thead>
                 <tr>
                     <th>Sr.No</th>
@@ -51,7 +59,11 @@
                 <div class="col-md-8"></div>
                 <div class="col-md-4" id="next">
                     <div class="d-flex justify-content-end">
-                        {!! $posts->links() !!}
+                        @if(isset($input['search']) && !empty($input['search']))
+                            {!! $posts->appends(['search' => $input['search']])->links()  !!}
+                        @else 
+                            {!! $posts->links()  !!}
+                        @endif
                     </div>
                 </div>
             </div>

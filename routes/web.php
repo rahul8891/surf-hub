@@ -42,6 +42,7 @@ Route::post('/checkUsername', [UserController::class, 'checkUsername'])->name('c
 
 Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
 Route::get('search/filter', [SearchController::class, 'filter'])->name('searchFilterIndex');
+Route::post('upload/file', [UserPostController::class, 'uploadFiles'])->name('uploadFiles');
 
 /*********************************************************************************************
  *                              User Route
