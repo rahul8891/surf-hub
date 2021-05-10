@@ -18,9 +18,16 @@ use App\Models\Post;
 use App\Models\Report;
 use App\Models\Notification;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 use Closure;
 use Redirect;
 use Session;
+use File;
+use DB;
+use FFMpeg;
+use FFMpeg\Format\Video\X264;
+use FFMpeg\Filters\Video\VideoFilters;
 
 class UserPostController extends Controller
 {
@@ -173,8 +180,8 @@ class UserPostController extends Controller
                 $data['surfer'] = $data['other_surfer'];
             }
             
-            $imageArray=$request->file('files');
-            $videoArray=$request->file('videos');
+            // $imageArray = $request->file('files');
+            // $videoArray = $request->file('videos');
             $rules = array(
                 'post_type' => ['required'],
                 'user_id' => ['required','numeric'],
@@ -193,7 +200,7 @@ class UserPostController extends Controller
                 // If validation falis redirect back to register.
                 return response()->json(['error'=>$validate->errors()]);     
             }else {
-                $result = $this->posts->savePost($data,$imageArray,$videoArray,$message);
+                $result = $this->posts->savePost($data, $message);
                 if($result){  
                     return Redirect()->route('myhub')->withSuccess($message);
                 }else{
@@ -201,7 +208,7 @@ class UserPostController extends Controller
                 }
             }
         }catch (\Exception $e){
-            throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);             
+            throw ValidationException::withMessages([$e->getMessage()]);             
         }
     }
 
@@ -342,5 +349,49 @@ class UserPostController extends Controller
         }else{
          echo json_encode(array('status'=>'fails'));
         }
+    }
+    
+    public function uploadFiles(Request $request, PostService $postService)
+    {
+        $fileArray = [];
+        
+        $data = $request->all();
+        $timeDate = strtotime(Carbon::now()->toDateTimeString());        
+        
+        if (isset($data['photos'])) { 
+            $file = $request->file('photos');
+            $filename = $timeDate.'.'.$file[0]->extension();
+            
+            $file[0]->move(public_path('storage/images/'), $filename);
+        } elseif (isset($data['videos'])) {
+            $destinationPath = storage_path().'/app/public/fullVideos/';
+            $file = $request->file('videos');
+            $filename = $timeDate.'.'.$file[0]->extension();
+            
+            $file[0]->move($destinationPath, $filename);
+            // $path = 'public/fullVideos/' . $filename;
+            //$path = $file>storeAs($destinationPath, $filename);
+            $fileArray[] = $filename;
+            // dd($path);
+            //**********trimming video********************//
+            $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(0);
+            $end   = \FFMpeg\Coordinate\TimeCode::fromSeconds(120);
+            $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start,$end);
+            //dd($path);
+            FFMpeg::open('public/fullVideos/' . $filename)
+                ->addFilter($clipFilter)
+                ->export()
+                ->toDisk('trim')
+                ->inFormat(new FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))
+                ->save($filename); 
+            
+            //****removing untrimmed file******//
+            $oldFullVideo = $destinationPath . $filename;
+            if(File::exists($oldFullVideo)){
+                unlink($oldFullVideo);
+            }
+        }
+    
+        return response()->json(['success' => $filename]);
     }
 }

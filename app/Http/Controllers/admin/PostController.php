@@ -62,11 +62,13 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = $this->posts->getAllPostsListing();
+        $input = $request->all();
+        
+        $posts = $this->posts->getAllPostsListing($input);
         $spiner = ($posts) ? true : false;
-        return view('admin/post/index', compact('posts','spiner'));     
+        return view('admin/post/index', compact('posts','spiner', 'input'));     
     }
 
     /**

@@ -4,6 +4,7 @@
     margin: 10px 10px 0 0;
 }
 </style>
+    
 <div class="modal fade uploadModal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -32,19 +33,27 @@
                         <textarea placeholder="Share your surf experience....." name="post_text" required></textarea>
                         <div class="videoImageUploader">
                             <div class="upload-btn-wrapper">
-                                <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
-                                <input type="file" id="input_multifileSelect1" name="files[]" accept=".png, .jpg, .jpeg"
-                                    multiple />
+                                <a data-toggle="modal" data-target="#imageUploadModal"><img alt="" src="{{ asset("/img/photo.png")}}"></a>
+                                <!-- <input type="file" id="input_multifileSelect1" name="files[]" accept=".png, .jpg, .jpeg"
+                                    multiple /> -->
+                                <div class="uploadImageFiles"></div>
                             </div>
+                            <!-- <div class="upload-btn-wrapper">
+                                <h3 id="imageUploads" class="form-horizontal dropzone">Upload here</h3>
+                                
+                            </div> -->
                             <div class="upload-btn-wrapper">
-                                <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
-                                <input type="file" id="input_multifileSelect2" name="videos[]" accept=".mp4, .wmv, .mkv, .gif, .mpeg4" multiple />
+                                <a data-toggle="modal" data-target="#videoUploadModal"><img alt="" src="{{ asset("/img/video.png")}}"></a>
+                                <!-- <input type="file" id="input_multifileSelect2" name="videos[]" accept=".mp4, .wmv, .mkv, .gif, .mpeg4" multiple /> -->
+                                <div class="uploadVideoFiles"></div>
                             </div>
                             <!-- <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>
                             </div> -->
                         </div>
-                        <div class="row" id="filesInfo"></div>
+                        <div class="row" id="filesInfo">
+                            
+                        </div>
 
                         <span id="imageError" class="notDisplayed required">{{ __('Please upload files having extensions: jpg, jpeg, png') }}</span>
 
@@ -259,3 +268,5 @@
         </form>
     </div>
 </div>
+
+@include('elements/fileUpload_popup_model')
