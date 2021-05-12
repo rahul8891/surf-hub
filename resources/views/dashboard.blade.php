@@ -69,7 +69,7 @@
                                             <span class="divider"></span>
                                         </li> -->
                                         <li>
-                                            <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$posts->upload->image)); ?>,'sharer'">
+                                            <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'. (isset($posts->upload->image) && !empty($posts->upload->image))?$posts->upload->image:'')); ?>,'sharer'">
                                                 <img src="img/facebook.png" alt="">
                                             </a>
                                         </li>
