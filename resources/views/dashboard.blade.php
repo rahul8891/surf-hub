@@ -70,7 +70,9 @@
                                             <span class="divider"></span>
                                         </li> -->
                                         <li>
-                                            
+                                            <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'. (isset($posts->upload->image) && !empty($posts->upload->image))?$posts->upload->image:'')); ?>,'share'">
+                                                <img src="img/facebook.png" alt="">
+                                            </a>
                                         </li>
                                         <li>
                                             <span class="divider"></span>
