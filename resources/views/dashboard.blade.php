@@ -41,7 +41,6 @@
                         </div>
                         <p class="description">{{$posts->post_text}}</p>
                         <div class="imgRatingWrap">
-                            {{ dd($posts->upload) }}
                             @if(!empty($posts->upload->image))
                             <img src="{{ asset('storage/images/'.(isset($posts->upload->image) && !empty($posts->upload->image))?$posts->upload->image:'') }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
                             @endif
