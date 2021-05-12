@@ -69,9 +69,19 @@
                                             <span class="divider"></span>
                                         </li> -->
                                         <li>
-                                            <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'. (isset($posts->upload->image) && !empty($posts->upload->image))?$posts->upload->image:'')); ?>,'share'">
-                                                <img src="img/facebook.png" alt="">
-                                            </a>
+                                           @if(!empty($posts->upload->image))
+                                                <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$posts->upload->image)); ?>,'sharer'">
+                                                    <img src="{{ asset("/img/facebook.png")}}" alt="">
+                                                </a>
+                                            @elseif(!empty($posts->upload->video))
+                                                <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$posts->upload->video)); ?>,'sharer'">
+                                                    <img src="{{ asset("/img/facebook.png")}}" alt="">
+                                                </a>
+                                            @else
+                                                <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>,'sharer'">
+                                                    <img src="{{ asset("/img/facebook.png")}}" alt="">
+                                                </a>
+                                            @endif
                                         </li>
                                         <li>
                                             <span class="divider"></span>
