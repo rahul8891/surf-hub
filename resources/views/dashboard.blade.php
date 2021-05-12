@@ -42,7 +42,7 @@
                         <p class="description">{{$posts->post_text}}</p>
                         <div class="imgRatingWrap">
                             @if(!empty($posts->upload->image))
-                            <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
+                            <img src="{{ asset('storage/images/'.(isset($posts->upload->image) && !empty($posts->upload->image))?$posts->upload->image:'') }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
                             @endif
                             @if(!empty($posts->upload->video))
                             <br><video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
