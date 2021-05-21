@@ -40,10 +40,19 @@
                         <p class="description">{{$posts->post_text}}</p>
                         <div class="imgRatingWrap">
                             @if(!empty($posts->upload->image))
-                            <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
+                            <div class="pos-rel editBtnWrap">
+                                <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
+                                <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
+                            </div>
+                            
                             @endif
                             @if(!empty($posts->upload->video))
-                            <br><video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
+                            <br>
+                            <div class="pos-rel editBtnWrap">
+                                <video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
+                                <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
+                            </div>
+                            
                             @endif
                             
                             <div class="ratingShareWrap">
