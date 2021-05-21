@@ -24,15 +24,22 @@
                         </div>
                         <p class=" description">{{$detail->post->post_text}}</p>
                                 <div class="imgRatingWrap">
-                                                                                
+                                                                              
                                     @if(!empty($detail->post->upload->image))
-                                    <img src="{{ asset('storage/images/'.$detail->post->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$detail->post->id}}">
+                                    <div class="pos-rel editBtnWrap">
+                                        <img src="{{ asset('storage/images/'.$detail->post->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$detail->post->id}}">
+                                        <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
+                                    </div>
                                     @endif
                                     @if(!empty($detail->post->upload->video))
                                     <br>
-                                    <video width="100%" controls id="myImage{{$detail->post->id}}">
-                                        <source src="{{ asset('storage/videos/'.$detail->post->upload->video) }}" >    
-                                    </video>
+                                    <div class="pos-rel editBtnWrap">
+                                        <video width="100%" controls id="myImage{{$detail->post->id}}">
+                                            <source src="{{ asset('storage/videos/'.$detail->post->upload->video) }}" >    
+                                        </video>
+                                        <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
+                                    </div>
+                                    
                                     @endif
                                     <div class="ratingShareWrap">
                                         <ul class="pl-0 mb-0 d-flex align-items-center">

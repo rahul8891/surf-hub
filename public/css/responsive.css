@@ -369,6 +369,28 @@
     .phoneWrap {
         max-width: 100%;
     }
+
+    .postsWrap{
+        overflow-x: hidden;
+    }
+    
+    .postsWrap .container{
+        width: 100%;
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .postsWrap .row{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    .postsWrap .col-lg-9{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
 }
 
 @media only screen and (max-width: 567px) {
