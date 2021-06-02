@@ -51,34 +51,28 @@
                             <form role="form" method="POST" name="follow{{$myHub->id}}" action="{{ route('follow') }}">
                             @csrf
                             <input type="hidden" class="userID" name="followed_user_id" value="{{$myHub->user_id}}">
-                            <button href="#" class="followBtn">
+                            <button href="#" class="followBtn clicked">
                                 <img src="/img/user.png" alt=""> FOLLOW
                             </button>
                             </form>
                         </div>
                         <p class=" description">{{$myHub->post_text}}</p>
                                 <div class="imgRatingWrap">
-                                    <div class="imageWrap">
-                                        @if(!empty($myHub->upload->image) || !empty($myHub->upload->video))
-                                        <div class="overlay">
-                                            <a href="">
-                                                <button type="button" class="btn btn-default edit-image-btn pull-right">
-                                                    <span class="glyphicon glyphicon-pencil"></span>
-                                                </button>
-                                            </a>
-                                        </div>
-                                        @endif
-                                        
-                                        @if(!empty($myHub->upload->image))
+                                    @if(!empty($myHub->upload->image)) 
+                                    <div class="pos-rel editBtnWrap">
                                         <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
-                                        @endif
-                                        @if(!empty($myHub->upload->video))
-                                        <br>
+                                        <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>                                       
+                                    </div>
+                                    @endif
+                                    @if(!empty($myHub->upload->video))
+                                    <br>
+                                    <div class="pos-rel editBtnWrap">
                                         <video width="100%" controls id="myImage{{$myHub->id}}">
                                             <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
                                         </video>
-                                        @endif
+                                        <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button> 
                                     </div>
+                                    @endif
 
                                     <div class="ratingShareWrap">
                                         <ul class="pl-0 mb-0 d-flex align-items-center">

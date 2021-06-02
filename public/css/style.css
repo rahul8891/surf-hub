@@ -3085,3 +3085,27 @@ form .error {
 textarea:focus,input:focus{
     outline:0;
 }
+
+.editBtnWrap .editBtn {
+	background: transparent;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	border: none;
+	background: #4c8df5;
+	width: 41px;
+	padding: 3px 10px 6px 10px;
+	border-radius: 5px;
+    border: 2px solid #033381;
+}
+
+.videoImageUploader .upload-btn-wrapper{
+    margin-right: 5px;
+}
+
+.postsWrap .post-head .followBtn.clicked{
+    opacity:.5
+}
+.uploadModal input{
+    height: 32px;
+}
