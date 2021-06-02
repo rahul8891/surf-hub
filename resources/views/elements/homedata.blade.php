@@ -1,22 +1,6 @@
-@extends('layouts.user.user')
-@section('content')
-@include('layouts/user/user_feed_menu')
-<section class="postsWrap">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9" id="post-data">
-                <!--include comman upload video and photo layout -->
-                @include('layouts/user/upload_layout')
-                @if (is_null($postsList[0]))
-                    <div class="post alert text-center alert-dismissible py-5" role="alert" id="msg">
-                        {{ ucWords('no post available') }}
-                    </div>
-                @elseif (!is_null($postsList[0]))
-                    @foreach ($postsList as $key => $posts)
+@foreach ($postsList as $key => $posts)
+                    @if($posts->parent_id == 0)
                 <div class="post">
-                    @if($key==0)
-                    <h2>My Feed</h2>
-                    @endif
                     <div class="inner">
                         <div class="post-head">
                             <div class="userDetail">
@@ -273,54 +257,5 @@
                         </div>
                     </div>
                 </div>
-                    @endforeach
                     @endif
-                    
-                    <div class="ajax-load" style="display:none">
-                        <p>Loading More post</p>
-                    </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="adWrap">
-                    <img src={{asset("img/add1.png")}} alt="" class="img-fluid">
-                </div>
-                <div class="adWrap">
-                    <img src={{asset("img/add2.png")}} alt="" class="img-fluid">
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-@include('elements/location_popup_model')
-@include('layouts/models/upload_video_photo')
-
-<script type="text/javascript">
-	var page = 1;
-        
-	$(window).scroll(function() {
-	    if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-	        page++;
-	        loadMoreData(page);
-	    }
-	});
-
-	function loadMoreData(page) {
-            $.ajax({
-                url: '?page=' + page,
-                type: "get",
-                beforeSend: function() {
-                    $('.ajax-load').show();
-                }
-            })
-            .done(function(data) {
-                if(data.html == " ")
-                    $('.ajax-load').html("No more records found");
-                    return;
-                }
-                
-                $('.ajax-load').hide();
-                $("#post-data").append(data.html);
-            });
-	}
-</script>
-@endsection
+                    @endforeach

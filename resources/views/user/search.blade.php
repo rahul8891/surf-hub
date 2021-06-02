@@ -4,16 +4,15 @@
 <section class="postsWrap a_searchPage">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9">
+            <div class="col-lg-9" id="search-data">
                 <!--include comman upload video and photo layout -->
                 @include('layouts/user/upload_layout')
                     @if (is_null($postsList[0]))
                     <div class="post alert text-center alert-dismissible py-5" role="alert">
                         {{ ucWords('no matches found') }}
                     </div>
-                    @elseif (!is_null($postsList[0]))
+                    @else
                     @foreach ($postsList as $key => $posts)
-                    @if($posts->parent_id == 0)
                 <div class="post">
                     @if($key==0)
                     <h2>Search Feed</h2>
@@ -98,7 +97,7 @@
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                {{date('d-m-Y',strtotime($posts->created_at))}}
+                                                                {{date('d-m-Y',strtotime($posts->surf_start_date))}}
                                                             </div>
                                                             <div class="col-5">
                                                                 Surfer
@@ -258,9 +257,11 @@
                         </div>
                     </div>
                 </div>
-                    @endif
                     @endforeach
                     @endif
+                    <div class="ajax-load" style="display:none">
+                        <p>Loading More post</p>
+                    </div>
             </div>
             <div class="col-lg-3">
                 <div class="adWrap">
@@ -275,4 +276,34 @@
 </section>
 @include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
+
+<script type="text/javascript">
+	var page = 1;
+        
+	$(window).scroll(function() {
+	    if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+	        page++;
+	        loadMoreData(page);
+	    }
+	});
+
+	function loadMoreData(page) {
+            $.ajax({
+                url: '?page=' + page,
+                type: "get",
+                beforeSend: function() {
+                    $('.ajax-load').show();
+                }
+            })
+            .done(function(data) {
+                if(data.html == " ") {
+                    $('.ajax-load').html("No more records found");
+                    return;
+                }
+                
+                $('.ajax-load').hide();
+                $("#search-data").append(data.html);
+            });
+	}
+</script>
 @endsection

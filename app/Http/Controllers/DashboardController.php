@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-
 use App\Services\MasterService;
 use App\Services\UserService;
 use App\Services\PostService;
-
+use App\Models\Post;
 use Redirect;
+
 class DashboardController extends Controller
 {
 
@@ -29,13 +28,22 @@ class DashboardController extends Controller
             $this->postService = $postService;
     }
     
-    public function dashboard(){
+    public function dashboard(Request $request){
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;      
-        $postsList = $this->postService->getPostsListing();
+        $postsList = Post::where('is_deleted','0')    
+                            ->where('parent_id','0')    
+                            ->where('post_type','PUBLIC')                              
+                            ->orderBy('posts.created_at','DESC')
+                            ->paginate(5);
         $usersList = $this->masterService->getAllUsers();
+        
+        if ($request->ajax()) {
+            $view = view('elements/homedata',compact('customArray','countries','states','currentUserCountryId','postsList'))->render();
+            return response()->json(['html' => $view]);
+        }
         
         return view('dashboard',compact('customArray','countries','states','currentUserCountryId','postsList'));
     }
