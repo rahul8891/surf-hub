@@ -1,22 +1,7 @@
-@extends('layouts.user.user')
-@section('content')
-@include('layouts/user/user_feed_menu')
-<section class="postsWrap">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9" id="post-data">
-                <!--include comman upload video and photo layout -->
-                @include('layouts/user/upload_layout')
-                @if (is_null($postsList[0]))
-                    <div class="post alert text-center alert-dismissible py-5" role="alert" id="msg">
-                        {{ ucWords('no post available') }}
-                    </div>
-                @elseif (!is_null($postsList[0]))
-                    @foreach ($postsList as $key => $posts)
+@foreach ($postsList as $key => $posts)
+                    @if($posts->parent_id == 0)
                 <div class="post">
-                    @if($key==0)
-                    <h2>My Feed</h2>
-                    @endif
+                    
                     <div class="inner">
                         <div class="post-head">
                             <div class="userDetail">
@@ -32,26 +17,17 @@
                                     <span>{{ postedDateTime($posts->created_at) }}</span>
                                 </div>
                             </div>
-                            @if($posts->user_id != Auth::user()->id)
-                            <button class="followBtn follow clicked" data-id="{{$posts->user_id}}" data-post_id="{{$posts->id}}">
+                            <a href="#" class="followBtn">
                                 <img src="img/user.png" alt=""> FOLLOW
-                            </button>
-                            @endif
+                            </a>
                         </div>
                         <p class="description">{{$posts->post_text}}</p>
                         <div class="imgRatingWrap">
                             @if(!empty($posts->upload->image))
-                            <div class="pos-rel editBtnWrap">
-                                <img src="{{ asset('storage/images/'.(isset($posts->upload->image) && !empty($posts->upload->image))?$posts->upload->image:'') }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
-                                <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
-                            </div>                            
+                            <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
                             @endif
                             @if(!empty($posts->upload->video))
-                            <br>
-                            <div class="pos-rel editBtnWrap">
-                                <video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
-                                <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
-                            </div>                            
+                            <br><video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
                             @endif
                             
                             <div class="ratingShareWrap">
@@ -63,7 +39,6 @@
                                     <li class="ratingCount">
                                         <span id="average-rating{{$posts->id}}">{{intval($posts->averageRating)}}</span>
                                         (<span id="users-rated{{$posts->id}}">{{intval($posts->usersRated())}}</span>)
-                                        
                                     </li>
                                 </ul>
                                 <div>
@@ -75,25 +50,15 @@
                                             <span class="divider"></span>
                                         </li> -->
                                         <li>
-                                           @if(!empty($posts->upload->image))
-                                                <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$posts->upload->image)); ?>,'sharer'">
-                                                    <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                </a>
-                                            @elseif(!empty($posts->upload->video))
-                                                <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$posts->upload->video)); ?>,'sharer'">
-                                                    <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                </a>
-                                            @else
-                                                <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>,'sharer'">
-                                                    <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                </a>
-                                            @endif
+                                            <a href="#">
+                                                <img src={{asset("img/facebook.png")}} alt="">
+                                            </a>
                                         </li>
                                         <li>
                                             <span class="divider"></span>
                                         </li>
-                                        <li>                                            
-                                            <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude}}" data-long="{{$posts->beach_breaks->longitude}}" data-id="{{$posts->id}}" class="locationMap">
+                                        <li>
+                                            <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                                                 <img src={{asset("img/maps-and-flags.png")}} alt="">
                                             </a>
                                         </li>
@@ -138,7 +103,7 @@
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                {{$posts->beach_breaks->beach_name}}/{{$posts->beach_breaks->break_name}}
+                                                                {{$posts->beach_breaks->beach_name ?? ''}}/{{$posts->beach_breaks->break_name ?? ''}}
                                                             </div>
                                                             <div class="col-5">
                                                                 Country
@@ -177,7 +142,7 @@
                                                 </div>
                                             </a>
                                         </li>
-                                        @if(Auth::user()->id != $posts->user_id)
+                                        @if(isset(Auth::user()->id) && (Auth::user()->id != $posts->user_id))
                                         <li>
                                             <span class="divider"></span>
                                         </li>
@@ -185,8 +150,8 @@
                                             <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}" class="">SAVE
                                                 <div class="saveInfo">
                                                     <div class="pos-rel">
-                                                        <img src="img/tooltipArrowDown.png" alt="">
-                                                        Save this photo/video to your personal MyHub library
+                                                        <img src={{asset("img/tooltipArrowDown.png")}} alt="">
+                                                        Save this video to your personal MyHub library
                                                     </div>
                                                 </div>
                                             </a>
@@ -196,33 +161,30 @@
                                         </li>
                                         <li>
                                             <a href="javascript:void(0)">REPORT
-                                                <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
-                                                @csrf
-                                                <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
                                                 <div class="saveInfo infoHover reasonHover">
                                                     <div class="pos-rel">
                                                         <img src={{asset("img/tooltipArrowDown.png")}} alt="">
                                                         <div class="text-center reportContentTxt">Report Content</div>
                                                         <div class="reason">
-                                                            <input type="checkbox" id="Report1" name="incorrect" value="1">
+                                                            <input type="checkbox" id="Report1" name="Report1"
+                                                                value="Report">
                                                             <label for="Report1">Report Info as incorrect</label>
                                                         </div>
                                                         <div class="cstm-check pos-rel">
-                                                            <input type="checkbox" id="Report2" name="inappropriate" value="1">
-                                                            <label for="Report2">Report content as inappropriate</label>
+                                                            <input type="checkbox" id="Report3">
+                                                            <label for="Report3">Report content as inappropriate</label>
                                                         </div>
                                                         <div class="cstm-check pos-rel">
-                                                            <input type="checkbox" id="Report3" name="tolls" value="1">
-                                                            <label for="Report3">Report tolls</label>
+                                                            <input type="checkbox" id="Report4">
+                                                            <label for="Report4">Report tolls</label>
                                                         </div>
                                                         <div>
                                                             Additional Comments:
-                                                            <textarea name="comments" class="reportOnPost" id="{{$posts->id}}"></textarea>
+                                                            <textarea></textarea>
                                                         </div>
-                                                        <button type="submit" class="btn btn-info postReport" id="submitReport{{$posts->id}}">REPORT</button>
+                                                        <button>REPORT</button>
                                                     </div>
                                                 </div>
-                                                </form>
                                             </a>
                                         </li>
                                         @endif
@@ -280,54 +242,5 @@
                         </div>
                     </div>
                 </div>
-                    @endforeach
                     @endif
-                    
-                    <div class="ajax-load" style="display:none">
-                        <p>Loading More post</p>
-                    </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="adWrap">
-                    <img src={{asset("img/add1.png")}} alt="" class="img-fluid">
-                </div>
-                <div class="adWrap">
-                    <img src={{asset("img/add2.png")}} alt="" class="img-fluid">
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-@include('elements/location_popup_model')
-@include('layouts/models/upload_video_photo')
-
-<script type="text/javascript">
-	var page = 1;
-        
-	$(window).scroll(function() {
-	    if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-	        page++;
-	        loadMoreData(page);
-	    }
-	});
-
-	function loadMoreData(page) {
-            $.ajax({
-                url: '?page=' + page,
-                type: "get",
-                beforeSend: function() {
-                    $('.ajax-load').show();
-                }
-            })
-            .done(function(data) {
-                if(data.html == " ")
-                    $('.ajax-load').html("No more records found");
-                    return;
-                }
-                
-                $('.ajax-load').hide();
-                $("#post-data").append(data.html);
-            });
-	}
-</script>
-@endsection
+                    @endforeach

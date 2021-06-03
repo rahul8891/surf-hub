@@ -1,36 +1,6 @@
-@extends('layouts.user.user')
-@section('content')
-@include('layouts/user/user_feed_menu')
-<style>
-    .imageWrap {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-    }
-
-    .imageWrap .overlay {
-        position: absolute;
-        right: 0;
-        z-index: 5;
-        background-color: lightgrey;
-        border-radius: 5px; 
-    }
-</style>
-<section class="postsWrap">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9" id="myhub-data">
-                @include('layouts/user/upload_layout')
-                @if (is_null($myHubs[0]))
-                <div class="post alert text-center alert-dismissible py-5" role="alert" id="msg">
-                    {{ ucWords('no post found') }}
-                </div>
-                @elseif (!is_null($myHubs[0]))
-                    @foreach ($myHubs as $key => $myHub)
+@foreach ($myHubs as $key => $myHub)
                 <div class="post">
-                    @if($key==0)
-                    <h2>My Hub</h2>
-                    @endif
+                    
                     <div class="inner">
                         <div class="post-head">
                             <div class="userDetail">
@@ -51,7 +21,7 @@
                             <form role="form" method="POST" name="follow{{$myHub->id}}" action="{{ route('follow') }}">
                             @csrf
                             <input type="hidden" class="userID" name="followed_user_id" value="{{$myHub->user_id}}">
-                            <button href="#" class="followBtn clicked">
+                            <button href="#" class="followBtn">
                                 <img src="/img/user.png" alt=""> FOLLOW
                             </button>
                             </form>
@@ -347,53 +317,3 @@
                         </div>
                     </div>
                     @endforeach
-                    @endif
-                    <div class="ajax-load" style="display:none">
-                        <p>Loading More post</p>
-                    </div>
-                    <div class=""></div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="adWrap">
-                        <img src="{{ asset("/img/add1.png")}}" alt="" class="img-fluid">
-                    </div>
-                    <div class="adWrap">
-                        <img src="{{ asset("/img/add2.png")}}" alt="" class="img-fluid">
-                    </div>
-                </div>
-            </div>
-        </div>
-</section>
-@include('elements/location_popup_model')
-@include('layouts/models/upload_video_photo')
-
-<script type="text/javascript">
-	var page = 1;
-        
-	$(window).scroll(function() {
-	    if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-	        page++;
-	        loadMoreData(page);
-	    }
-	});
-
-	function loadMoreData(page) { 
-            $.ajax({
-                url: '?page=' + page,
-                type: "get",
-                beforeSend: function() {
-                    $('.ajax-load').show();
-                }
-            })
-            .done(function(data) {
-                if(data.html == " ") {
-                    $('.ajax-load').html("No more records found");
-                    return;
-                }
-                
-                $('.ajax-load').hide();
-                $("#myhub-data").append(data.html);
-            });
-	}
-</script>
-@endsection

@@ -58,6 +58,11 @@ class SearchController extends Controller
             $postsList = $this->sort($el);
         }
         
+        if ($request->ajax()) {
+            $view = view('elements/searchdata',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name'))->render();
+            return response()->json(['html' => $view]);
+        }
+        
         return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name')); 
     }
 

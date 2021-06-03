@@ -374,22 +374,22 @@ class UserPostController extends Controller
             $fileArray[] = $filename;
             // dd($path);
             //**********trimming video********************//
-            $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(0);
+            /*$start = \FFMpeg\Coordinate\TimeCode::fromSeconds(0);
             $end   = \FFMpeg\Coordinate\TimeCode::fromSeconds(120);
-            $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start,$end);
+            $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start,$end);*/
             //dd($path);
-            FFMpeg::open('public/fullVideos/' . $filename)
+            /*FFMpeg::open('public/fullVideos/' . $filename)
                 ->addFilter($clipFilter)
                 ->export()
                 ->toDisk('trim')
                 ->inFormat(new FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))
-                ->save($filename); 
+                ->save($filename); */
             
             //****removing untrimmed file******//
-            $oldFullVideo = $destinationPath . $filename;
-            if(File::exists($oldFullVideo)){
+            /*$oldFullVideo = $destinationPath . $filename;
+            /if(File::exists($oldFullVideo)){
                 unlink($oldFullVideo);
-            }
+            }*/
         }
     
         return response()->json(['success' => $filename]);
