@@ -44,8 +44,12 @@ class MyHubController extends Controller
         $myHubs = $this->sort($el);
         $userDetail=Auth::user()->user_profiles;
 //        dd($myHubs);
-        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'));      
-
+        if ($request->ajax()) {
+            $view = view('elements/myhubdata',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'))->render();
+            return response()->json(['html' => $view]);
+        }
+        
+        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'));
     }
 
 

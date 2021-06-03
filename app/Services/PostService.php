@@ -92,14 +92,9 @@ class PostService {
      * @param  
      * @return dataArray
      */
-    public function getPostsListing(){
-
-
-        $postArray =  $this->posts
-                                  ->where('is_deleted','0')    
-                                  ->where('post_type','PUBLIC')                              
-                                  ->orderBy('posts.created_at','DESC')
-                                  ->paginate(10);
+    public function getPostsListing() {
+        
+        
         return $postArray;
     }
 
@@ -115,12 +110,12 @@ class PostService {
                                 ->orWhere('surfer', $input['search'])
                                 ->where('is_deleted','0')
                                 ->orderBy('posts.created_at','ASC')
-                                ->paginate(10);
+                                ->paginate(2);
         } else {
             $postArray =  $this->posts
                                   ->where('is_deleted','0')   
                                   ->orderBy('posts.created_at','ASC')
-                                  ->paginate(10);
+                                  ->paginate(2);
         }
         
         return $postArray;
@@ -139,10 +134,10 @@ class PostService {
           ->join('beach_breaks', 'posts.local_beach_break_id', '=', 'beach_breaks.id')
           ->orderBy('beach_breaks.beach_name', $order)
           ->select('posts.*')
-          ->get();
+          ->paginate(2);
         } else if($el=='star') {
             //////// code for rating, make replica of above condition
-            $sortedData = $postList->with(['beach_breaks', 'ratingPost'])->whereHas()->orderByDesc('average_rating')->get();
+            $sortedData = $postList->with(['beach_breaks', 'ratingPost'])->orderByDesc('average_rating')->paginate(2);
             
             
         } else {
@@ -150,7 +145,7 @@ class PostService {
             ->with('beach_breaks')
             ->whereNull('posts.deleted_at')   
             ->orderBy($el,$order)
-            ->get();
+            ->paginate(2);
         }
         //dd($sortedData);
         return $sortedData;
