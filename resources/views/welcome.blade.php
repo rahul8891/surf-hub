@@ -64,7 +64,7 @@
                                             <span class="divider"></span>
                                         </li>
                                         <li>
-                                            <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude}}" data-long="{{$posts->beach_breaks->longitude}}" data-id="{{$posts->id}}" class="locationMap">
+                                            <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                                                 <img src="img/maps-and-flags.png" alt="">
                                             </a>
                                         </li>
@@ -109,7 +109,7 @@
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                {{$posts->beach_breaks->beach_name}}/{{$posts->beach_breaks->break_name}}
+                                                                {{$posts->beach_breaks->beach_name ?? ''}}/{{$posts->beach_breaks->break_name ?? ''}}
                                                             </div>
                                                             <div class="col-5">
                                                                 Country
