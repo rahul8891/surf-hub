@@ -253,6 +253,49 @@
     }
 
 
+    .postsWrap{
+        overflow-x: hidden;
+    }
+    
+    .postsWrap .container{
+        width: 100%;
+        max-width: 100%;
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .postsWrap .row{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    .postsWrap .col-lg-9{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .postsWrap .post h2 {
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 10px;
+    }
+
+    .postsWrap .post{
+        padding: 0px;
+        margin-bottom: 10px;
+    }
+
+    .postsWrap .post .inner{
+        border: 0px;
+    }
+
+    .postsWrap{
+        padding-top: 20px;
+    }
+
+
 }
 
 @media only screen and (max-width: 767px) {
@@ -369,28 +412,6 @@
     .phoneWrap {
         max-width: 100%;
     }
-
-    .postsWrap{
-        overflow-x: hidden;
-    }
-    
-    .postsWrap .container{
-        width: 100%;
-        padding-right: 0px;
-        padding-left: 0px;
-        margin-right: 0px;
-        margin-left: 0px;
-    }
-
-    .postsWrap .row{
-        margin-left: 0px;
-        margin-right: 0px;
-    }
-
-    .postsWrap .col-lg-9{
-        padding-left: 0px;
-        padding-right: 0px;
-    }
 }
 
 @media only screen and (max-width: 567px) {
@@ -441,13 +462,11 @@
         max-width: 100%;
     }
 
-    .postsWrap .post {
-        padding: 15px;
-    }
-
     .postsWrap .post h2 {
         font-size: 20px;
         margin-bottom: 15px;
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
     .postsWrap .post-head h4 {
@@ -556,7 +575,7 @@
     }
 
     .postsWrap .post .uploadWrap .head {
-        padding: 15px 30px;
+        padding: 15px 15px;
     }
 
     .feedHubNav li a {

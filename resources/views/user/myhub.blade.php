@@ -20,7 +20,7 @@
 <section class="postsWrap">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9" id="myhub-data">
+            <div class="col-lg-9 pos-rel" id="myhub-data">
                 @include('layouts/user/upload_layout')
                 @if (is_null($myHubs[0]))
                 <div class="post alert text-center alert-dismissible py-5" role="alert" id="msg">
@@ -345,11 +345,27 @@
                     </div>
                     @endforeach
                     @endif
-                    <div class="ajax-load" style="display:none">
-                        <p>Loading More post</p>
-                    </div>
+                    
                     <div class=""></div>
-                </div>
+                    <div class="ajax-load ajax-loadBtm" style="display:none">
+                        <div class="letter-holder">
+                            <div class="load-6">
+                                <div class="letter-holder">
+                                <div class="l-1 letter">L</div>
+                                <div class="l-2 letter">o</div>
+                                <div class="l-3 letter">a</div>
+                                <div class="l-4 letter">d</div>
+                                <div class="l-5 letter">i</div>
+                                <div class="l-6 letter">n</div>
+                                <div class="l-7 letter">g</div>
+                                <div class="l-8 letter">.</div>
+                                <div class="l-9 letter">.</div>
+                                <div class="l-10 letter">.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
                 <div class="col-lg-3">
                     <div class="adWrap">
                         <img src="{{ asset("/img/add1.png")}}" alt="" class="img-fluid">
@@ -382,7 +398,7 @@
                 url: '?page=' + page,
                 type: "get",
                 beforeSend: function() {
-                    $('.ajax-load').show();
+                    $('.ajax-load').delay(1500).show();
                 }
             })
             .done(function(data) {
@@ -391,7 +407,7 @@
                     return;
                 }
                 
-                $('.ajax-load').hide();
+                //$('.ajax-load').hide();
                 $("#myhub-data").append(data.html);
             });
 	}
