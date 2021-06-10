@@ -140,7 +140,7 @@ class MyHubController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::where('id', $id)->get();
     }
 
     /**

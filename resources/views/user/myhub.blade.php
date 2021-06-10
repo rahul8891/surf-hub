@@ -16,6 +16,7 @@
         border-radius: 5px; 
     }
 </style>
+<link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
 <section class="postsWrap">
     <div class="container">
         <div class="row">
@@ -61,16 +62,18 @@
                                     @if(!empty($myHub->upload->image)) 
                                     <div class="pos-rel editBtnWrap">
                                         <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
-                                        <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>                                       
+                                        <button class="editBtn editBtnImage" data-id="{{ $myHub->id }}">
+                                            <img src="/img/edit.png" class="img-fluid">
+                                        </button>               
                                     </div>
                                     @endif
                                     @if(!empty($myHub->upload->video))
                                     <br>
                                     <div class="pos-rel editBtnWrap">
-                                        <video width="100%" controls id="myImage{{$myHub->id}}">
+                                        <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}} video-js">
                                             <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
                                         </video>
-                                        <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button> 
+                                        <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button> 
                                     </div>
                                     @endif
 
@@ -88,12 +91,6 @@
                                         </ul>
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
-                                                <!-- <li>
-                                                    <a href="#"><img src="{{ asset("/img/instagram.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <span class="divider"></span>
-                                                </li> -->
                                                 <li>
                                                     @if(!empty($myHub->upload->image))
                                                     <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$myHub->upload->image)); ?>,'sharer'">
@@ -366,7 +363,10 @@
 </section>
 @include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
+@include('layouts/models/edit_image_upload')
+@include('layouts/models/edit_video_upload')
 
+<script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
 <script type="text/javascript">
 	var page = 1;
         
@@ -395,5 +395,27 @@
                 $("#myhub-data").append(data.html);
             });
 	}
+        
+        $(".editBtnImage").click(function() {
+            
+        });
+        
+        $(".editBtnVideo").click(function() {
+            var id = $(this).data('id');
+            
+             $.ajax({
+                url: '/getPostData/'+id,
+                type: "get",
+            })
+            .done(function(data) {
+                if(data.html == " ") {
+                    $('.ajax-load').html("No more records found");
+                    return;
+                }
+                
+                $('.ajax-load').hide();
+                $("#myhub-data").append(data.html);
+            });
+        });
 </script>
 @endsection
