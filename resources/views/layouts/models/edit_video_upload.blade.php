@@ -5,7 +5,7 @@
 }
 </style>
     
-<div class="modal fade uploadModal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade uploadModal" id="edit_video_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form id="postForm" method="POST" name="postForm" action="{{ route('storeVideoImagePost') }}" class="upload-form" accept-charset="utf-8" enctype="multipart/form-data">
@@ -13,7 +13,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"><img src="{{ asset("/img/logo_small.png")}}">Upload
-                        Video/Photo</h5>
+                        Video</h5>
                     <div class="selectWrap pos-rel">
                         <select class="form-control" name="post_type" required>
                             @foreach($customArray['post_type'] as $key => $value)
@@ -46,8 +46,6 @@
                         </div>
 
                         <span id="imageError" class="notDisplayed required">{{ __('Please upload files having extensions: jpg, jpeg, png') }}</span>
-
-                        
                         <div class="formWrap">
                             <h2>Mandatory Info</h2>
                             <div class="row">
@@ -63,7 +61,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="col-md-6">
                                     <div class="row">
@@ -83,7 +80,6 @@
                                                 <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                                             </div>
                                         </div>
-
                                     </div>
 
                                 </div>
@@ -171,7 +167,21 @@
                                         <div class="col-md-4">
                                             <label>Surfer <span class="mandatory">*</span></label>
                                         </div>
-                                        <div class="col-md-8">                                            
+                                        <div class="col-md-8">
+                                            {{-- <div class="d-flex">
+                                                <div class="cstm-check pos-rel">
+                                                    <input type="radio" name="surfer" value="Me" id="Me" required />
+                                                    <label for="Me" class="">Me</label>
+                                                </div>
+                                                <div class="cstm-check pos-rel">
+                                                    <input type="radio" name="surfer" value="Others" id="Others" />
+                                                    <label for="Others" class="">Others</label>
+                                                </div>
+                                                <div class="cstm-check pos-rel">
+                                                    <input type="radio" name="surfer" id="Unknown" value="Unknown" />
+                                                    <label for="Unknown" class="">Unknown</label>
+                                                </div>
+                                            </div> --}}
                                             <div class="d-flex">
                                                 @foreach ($customArray['surfer'] as $key => $value)
                                                 <div class="form-check form-check-inline">
