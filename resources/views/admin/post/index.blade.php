@@ -6,17 +6,22 @@
     </div>
     <div id="error"></div>
     <div class="card-header text-right">
-        <a href="{{ route('postCreate')}}" class="btn btn-primary pull-left">Add New Post</a>
+       
     </div>
     <!-- /.card-header -->
-    <div class="row">
+    <div class="row align-item-center">
         <div class="col-sm-12 col-md-6">
-            <form id="example3_filter" action="{{ route('postIndex') }}" method="GET" class="mb-0">
-                <div class="searchHeaderWrap d-flex card-body pb-0">
-                    <label class="mb-0 pr-2">Search:</label>
-                    <input type="text" name="search" class="form-control form-control-sm" placeholder="" aria-controls="example3" />
+            <form id="example3_filter" action="{{ route('postIndex') }}" method="GET" class="mb-0">                
+                <div class="searchHeaderWrap d-flex card-body pb-0">                   
+                 <label class="mb-0 pr-2">Search:</label>
+                 <input type="text" name="search" class="form-control form-control-sm" placeholder="" aria-controls="example3" />                    
                 </div>                
             </form>
+        </div>
+        <div class="col-sm-12 col-md-6 card-body pb-0">
+            <div class="text-right pr-4">
+                <a href="{{ route('postCreate')}}" class="btn btn-primary ml-auto">Add New Post</a>
+            </div>            
         </div>
     </div>
     <div id="loader"></div>
