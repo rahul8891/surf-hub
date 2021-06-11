@@ -3099,6 +3099,10 @@ textarea:focus,input:focus{
     border: 2px solid #033381;
 }
 
+.editBtnWrap .editBtn img{
+    height: auto!important;
+}
+
 .videoImageUploader .upload-btn-wrapper{
     margin-right: 5px;
 }
@@ -3123,6 +3127,7 @@ textarea:focus,input:focus{
 .post .editBtnWrap video{
     width:100%;
     height:100%;
+    background:#000;
 }
 
 
@@ -3188,4 +3193,8 @@ textarea:focus,input:focus{
   100% {
     opacity: 1;
   }
+}
+
+.searchHeaderWrap{
+    display: flex;
 }
