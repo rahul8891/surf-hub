@@ -31,16 +31,16 @@
                                     @if(!empty($myHub->upload->image)) 
                                     <div class="pos-rel editBtnWrap">
                                         <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
-                                        <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>                                       
+                                        <!-- <button class="editBtn editBtnImage"><img src="/img/edit.png" class="img-fluid"></button> -->
                                     </div>
                                     @endif
                                     @if(!empty($myHub->upload->video))
                                     <br>
                                     <div class="pos-rel editBtnWrap">
-                                        <video width="100%" controls id="myImage{{$myHub->id}}">
+                                        <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}} video-js">
                                             <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
                                         </video>
-                                        <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button> 
+                                        <!-- <button class="editBtn editBtnVideo"><img src="/img/edit.png" class="img-fluid"></button> -->
                                     </div>
                                     @endif
 
@@ -58,12 +58,6 @@
                                         </ul>
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
-                                                <!-- <li>
-                                                    <a href="#"><img src="{{ asset("/img/instagram.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <span class="divider"></span>
-                                                </li> -->
                                                 <li>
                                                     @if(!empty($myHub->upload->image))
                                                     <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$myHub->upload->image)); ?>,'sharer'">
@@ -218,7 +212,7 @@
                                                       </div>
                                                     </div>
                                                     @endif
-                                                    <!-- <a data-toggle="modal" data-target="#postTag{{$myHub->id}}">TAG -->
+                                                    
                                                     <a href="javascript:void(0)">TAG
                                                         
                                                         <div class="saveInfo infoHover userinfoModal">

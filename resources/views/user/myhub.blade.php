@@ -1,6 +1,8 @@
 @extends('layouts.user.user')
 @section('content')
 @include('layouts/user/user_feed_menu')
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
 <style>
     .imageWrap {
         position: relative;
@@ -16,10 +18,11 @@
         border-radius: 5px; 
     }
 </style>
+<link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
 <section class="postsWrap">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9" id="myhub-data">
+            <div class="col-lg-9 pos-rel" id="myhub-data">
                 @include('layouts/user/upload_layout')
                 @if (is_null($myHubs[0]))
                 <div class="post alert text-center alert-dismissible py-5" role="alert" id="msg">
@@ -61,16 +64,16 @@
                                     @if(!empty($myHub->upload->image)) 
                                     <div class="pos-rel editBtnWrap">
                                         <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
-                                        <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>                                       
+                                        <!-- <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button> -->
                                     </div>
                                     @endif
                                     @if(!empty($myHub->upload->video))
                                     <br>
                                     <div class="pos-rel editBtnWrap">
-                                        <video width="100%" controls id="myImage{{$myHub->id}}">
+                                        <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}} video-js">
                                             <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
                                         </video>
-                                        <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button> 
+                                        <!-- <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button> -->
                                     </div>
                                     @endif
 
@@ -88,12 +91,6 @@
                                         </ul>
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
-                                                <!-- <li>
-                                                    <a href="#"><img src="{{ asset("/img/instagram.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <span class="divider"></span>
-                                                </li> -->
                                                 <li>
                                                     @if(!empty($myHub->upload->image))
                                                     <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$myHub->upload->image)); ?>,'sharer'">
@@ -348,11 +345,27 @@
                     </div>
                     @endforeach
                     @endif
-                    <div class="ajax-load" style="display:none">
-                        <p>Loading More post</p>
-                    </div>
+                    
                     <div class=""></div>
-                </div>
+                    <div class="ajax-load ajax-loadBtm" style="display:none">
+                        <div class="letter-holder">
+                            <div class="load-6">
+                                <div class="letter-holder">
+                                <div class="l-1 letter">L</div>
+                                <div class="l-2 letter">o</div>
+                                <div class="l-3 letter">a</div>
+                                <div class="l-4 letter">d</div>
+                                <div class="l-5 letter">i</div>
+                                <div class="l-6 letter">n</div>
+                                <div class="l-7 letter">g</div>
+                                <div class="l-8 letter">.</div>
+                                <div class="l-9 letter">.</div>
+                                <div class="l-10 letter">.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
                 <div class="col-lg-3">
                     <div class="adWrap">
                         <img src="{{ asset("/img/add1.png")}}" alt="" class="img-fluid">
@@ -366,7 +379,13 @@
 </section>
 @include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
+@include('layouts/models/edit_image_upload')
+@include('layouts/models/edit_video_upload')
 
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
 <script type="text/javascript">
 	var page = 1;
         
@@ -382,7 +401,7 @@
                 url: '?page=' + page,
                 type: "get",
                 beforeSend: function() {
-                    $('.ajax-load').show();
+                    $('.ajax-load').delay(1500).show();
                 }
             })
             .done(function(data) {
@@ -391,9 +410,110 @@
                     return;
                 }
                 
-                $('.ajax-load').hide();
                 $("#myhub-data").append(data.html);
             });
 	}
+        
+        $(".editBtnImage").click(function() {
+            var id = $(this).data('id');
+            
+             $.ajax({
+                url: '/getPostData/'+id+'/image',
+                type: "get",
+            })
+            .done(function(data) {
+                $("#edit_video_upload").html("");
+                $("#edit_image_upload").append(data.html);
+                $("#edit_image_upload").modal('toggle');
+            });
+        });
+        
+        $(".editBtnVideo").click(function() {
+            var id = $(this).data('id');
+            
+             $.ajax({
+                url: '/getPostData/'+id+'/video',
+                type: "get",
+            })
+            .done(function(data) {
+                $("#edit_video_upload").html("");
+                $("#edit_video_upload").append(data.html);
+                $("#edit_video_upload").modal('toggle');
+            });
+        });
+        
+        Dropzone.autoDiscover = false;
+        
+        $('#imageUploads').dropzone({
+            paramName: 'photos',
+            url: '{{ route("uploadFiles") }}',
+            dictDefaultMessage: "Drag your images",
+            acceptedFiles: ".png, .jpg, .jpeg",
+            clickable: true,
+            enqueueForUpload: true,
+            maxFilesize: 100,
+            uploadMultiple: true,
+            addRemoveLinks: false,
+            success: function (file, response) {
+                $(".uploadImageFiles").append('<input type="hidden" id="" name="files[]" value="'+response.success+'" />');
+            },
+            error: function (file, response) {
+                console.log("something goes wrong");
+            }
+        });
+
+        $('#videoUploads').dropzone({
+            paramName: 'videos',
+            url: '{{ route("uploadFiles") }}',
+            dictDefaultMessage: "Drag your videos",
+            clickable: true,
+            acceptedFiles: ".mp4, .wmv, .mkv, .gif, .mpeg4, .mov",
+            enqueueForUpload: true,
+            maxFilesize: 1000,
+            uploadMultiple: true,
+            addRemoveLinks: false,
+            success: function (file, response) {
+                $(".uploadVideoFiles").append('<input type="hidden" id="" name="videos[]" value="'+response.success+'" />');
+            },
+            error: function (file, response) {
+                console.log("something goes wrong");
+            }
+        });
+        
+        $('#editImageUploads').dropzone({
+        paramName: 'photos',
+        url: '{{ route("uploadFiles") }}',
+        dictDefaultMessage: "Drag your images",
+        acceptedFiles: ".png, .jpg, .jpeg",
+        clickable: true,
+        enqueueForUpload: true,
+        maxFilesize: 1,
+        uploadMultiple: true,
+        addRemoveLinks: false,
+        success: function (file, response) {
+            $(".editUploadImageFiles").append('<input type="hidden" id="" name="files[]" value="'+response.success+'" />');
+        },
+        error: function (file, response) {
+            console.log("something goes wrong");
+        }
+    });
+
+    $('#editVideoUploads').dropzone({
+        paramName: 'videos',
+        url: '{{ route("uploadFiles") }}',
+        dictDefaultMessage: "Drag your videos",
+        clickable: true,
+        acceptedFiles: ".mp4, .wmv, .mkv, .gif, .mpeg4, .mov",
+        enqueueForUpload: true,
+        maxFilesize: 1,
+        uploadMultiple: true,
+        addRemoveLinks: false,
+        success: function (file, response) {
+            $(".editUploadVideoFiles").append('<input type="hidden" id="" name="videos[]" value="'+response.success+'" />');
+        },
+        error: function (file, response) {
+            console.log("something goes wrong");
+        }
+    });
 </script>
 @endsection

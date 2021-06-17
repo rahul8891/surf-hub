@@ -11,20 +11,28 @@ use App\Services\PostService;
 use App\Models\BeachBreak;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Crypt;
+use App\Services\AdminUserService;
+use App\Models\Upload;
 
 class MyHubController extends Controller
 {
 
     protected $posts;
+    
+    public $language;
 
-    public function __construct(MasterService $masterService,UserService $userService,PostService $postService)
+    public function __construct(MasterService $masterService,UserService $userService,PostService $postService, AdminUserService $users)
     {
         $this->masterService = $masterService;
         $this->customArray = config('customarray');
         $this->userService = $userService;
         $this->postService = $postService;
         $this->posts = new Post();
+        $this->language = config('customarray.language');
+        $this->users = $users;
     }
 
     
@@ -138,9 +146,32 @@ class MyHubController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, $type, Request $request)
     {
-        //
+        try{
+            $currentUserCountryId = Auth::user()->user_profiles->country_id;    
+            $countries = $this->masterService->getCountries();
+            $language = $this->language;
+            $users = $this->users->getUsersListing();
+            $customArray = $this->customArray;  
+            $myHubs = Post::findOrFail($id);
+            $states = $this->masterService->getStateByCountryId($myHubs->country_id);
+            $postMedia = Upload::where('post_id', $id)->get();
+            $spiner = ($this->posts) ? true : false;
+            
+            if(!empty($myHubs->local_beach_break_id)){
+                $bb = BeachBreak::where('id',$myHubs->local_beach_break_id)->first(); 
+                $beach_name=$bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;
+            }
+        }catch (\Exception $e){         
+            throw ValidationException::withMessages([$e->getMessage()]);
+        }
+        
+        if ($request->ajax()) {
+            $view = view('elements/edit_'.$type.'_upload',compact('customArray','countries','states','currentUserCountryId','myHubs','users','beach_name'))->render();
+            return response()->json(['html' => $view]);
+        }
+        // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));    
     }
 
     /**
@@ -150,9 +181,43 @@ class MyHubController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        try{
+            $data = $request->all();
+            if(!empty($data['other_surfer'])){
+                $data['surfer'] = $data['other_surfer'];
+            }
+            
+            $rules = array(
+                'post_type' => ['required'],
+                'user_id' => ['required','numeric'],
+                'post_text' => ['nullable', 'string', 'max:255'],
+                'surf_date' => ['required', 'string'],
+                'wave_size' => ['required', 'string'],
+                'state_id' => ['nullable', 'numeric'],
+                'board_type' => ['required', 'string'],
+                'surfer' => ['required'],
+                'country_id' => ['required','numeric'],
+                'local_beach_break_id' => ['nullable', 'string'],
+                'optional_info'=>['nullable'],
+            );
+            $validate = Validator::make($data, $rules);
+            if ($validate->fails()) {
+                // If validation falis redirect back to register.
+                return redirect()->back()->withErrors($validate)->withInput();
+            } else {
+                $result = $this->postService->updatePostData($data, $message);
+                if($result['status'] === TRUE){
+                    return Redirect()->route('myhub')->withSuccess($message);
+                }else{
+                    return Redirect()->route('myhub')->withErrors($message);
+                }
+            }
+        }catch (\Exception $e){
+                
+            return redirect()->route('postEdit', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage()); 
+        }
     }
 
     /**
