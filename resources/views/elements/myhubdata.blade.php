@@ -31,7 +31,7 @@
                                     @if(!empty($myHub->upload->image)) 
                                     <div class="pos-rel editBtnWrap">
                                         <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
-                                        <button class="editBtn editBtnImage"><img src="/img/edit.png" class="img-fluid"></button>                                       
+                                        <!-- <button class="editBtn editBtnImage"><img src="/img/edit.png" class="img-fluid"></button> -->
                                     </div>
                                     @endif
                                     @if(!empty($myHub->upload->video))
@@ -40,7 +40,7 @@
                                         <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}} video-js">
                                             <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
                                         </video>
-                                        <button class="editBtn editBtnVideo"><img src="/img/edit.png" class="img-fluid"></button> 
+                                        <!-- <button class="editBtn editBtnVideo"><img src="/img/edit.png" class="img-fluid"></button> -->
                                     </div>
                                     @endif
 

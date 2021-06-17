@@ -5,18 +5,20 @@
         <h3 class="card-title">Post List</h3>
     </div>
     <div id="error"></div>
-    <div class="card-header text-right">
-        <a href="{{ route('postCreate')}}" class="btn btn-primary pull-left">Add New Post</a>
-    </div>
-    <!-- /.card-header -->
-    <div class="row">
-        <div class="col-sm-12 col-md-6">
-            <form id="example3_filter" action="{{ route('postIndex') }}" method="GET" class="mb-0">
-                <div class="searchHeaderWrap d-flex card-body pb-0">
-                    <label class="mb-0 pr-2">Search:</label>
-                    <input type="text" name="search" class="form-control form-control-sm" placeholder="" aria-controls="example3" />
-                </div>                
-            </form>
+    <div class="card-header">
+        <div class="text-right">
+            <a href="{{ route('postCreate')}}" class="btn btn-primary pull-left">Add New Post</a>
+        </div>
+        <!-- /.card-header -->
+        <div class="">
+            <div class="col-sm-12 col-md-6">
+                <form id="example3_filter" action="{{ route('postIndex') }}" method="GET" class="mb-0">
+                    <div class="searchHeaderWrap d-flex card-body pb-0">
+                        <label class="mb-0 pr-2">Search:</label>
+                        <input type="text" name="search" class="form-control form-control-sm" placeholder="" aria-controls="example3" />
+                    </div>                
+                </form>
+            </div>
         </div>
     </div>
     <div id="loader"></div>

@@ -366,6 +366,7 @@ class UserPostController extends Controller
         } elseif (isset($data['videos'])) {
             $destinationPath = storage_path().'/app/public/fullVideos/';
             $file = $request->file('videos');
+            
             $filename = $timeDate.'.'.$file[0]->extension();
             
             $file[0]->move($destinationPath, $filename);

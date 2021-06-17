@@ -1,5 +1,6 @@
-@extends('layouts.admin.master')
+@extends('layouts.user.user')
 @section('content')
+@include('layouts/user/user_feed_menu')
 <!--/. container-fluid -->
 
 <!-- right column -->
@@ -282,7 +283,7 @@
                                 <div class="col-md-4 pl-1 pr-1 col-6">
                                     <div class="cstm-check pos-rel">
                                         <input type="checkbox" name="optional_info[]" 
-                                        {{ (in_array($key, old('optional_info[]', explode(" ",$posts->optional_info))))? 'checked' : '' }}  value="{{ __($key) }}"
+                                        {{(in_array($key, old('optional_info[]', explode(" ",$posts->optional_info))))? 'checked' : ''}}  value="{{ __($key) }}"
                                             id="{{ __($key) }}" />
                                         <label for="{{ __($key) }}" class="">{{ __($value) }}</label>
                                     </div>
