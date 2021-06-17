@@ -1,6 +1,10 @@
 @extends('layouts.user.user')
 @section('content')
 @include('layouts/user/user_feed_menu')
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" crossorigin="anonymous"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
 <section class="postsWrap">
     <div class="container">
         <div class="row">
@@ -42,15 +46,15 @@
                         <div class="imgRatingWrap">
                             @if(!empty($posts->upload->image))
                             <div class="pos-rel editBtnWrap">
-                                <img src="{{ asset('storage/images/'.(isset($posts->upload->image) && !empty($posts->upload->image))?$posts->upload->image:'') }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
-                                <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
+                                <img src="/storage/images/{{ (isset($posts->upload->image) && !empty($posts->upload->image))?$posts->upload->image:'' }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
+                                
                             </div>                            
                             @endif
                             @if(!empty($posts->upload->video))
                             <br>
                             <div class="pos-rel editBtnWrap">
                                 <video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
-                                <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
+                                
                             </div>                            
                             @endif
                             
@@ -301,6 +305,7 @@
 @include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
 
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" crossorigin="anonymous"></script>
 <script type="text/javascript">
 	var page = 1;
         
@@ -320,7 +325,7 @@
                 }
             })
             .done(function(data) {
-                if(data.html == " ")
+                if(data.html == " ") {
                     $('.ajax-load').html("No more records found");
                     return;
                 }

@@ -113,12 +113,12 @@ class PostService {
                                 ->orWhere('surfer', $input['search'])
                                 ->where('is_deleted','0')
                                 ->orderBy('posts.created_at','ASC')
-                                ->paginate(2);
+                                ->paginate(20);
         } else {
             $postArray =  $this->posts
                                   ->where('is_deleted','0')   
                                   ->orderBy('posts.created_at','ASC')
-                                  ->paginate(2);
+                                  ->paginate(20);
         }
         
         return $postArray;
@@ -354,7 +354,7 @@ class PostService {
     }
 
 
-     /**
+    /**
      * [savePost] we are storing the post Details from admin section 
      * @param  requestInput get all the requested input data
      * @param  message return message based on the condition 
@@ -404,6 +404,62 @@ class PostService {
             $message = "Data save successfully.";
         } else {
             $message = "Something went wrong. Please try again later.";
+        }    
+
+        return $message;
+    }
+    
+    
+    /**
+     * [updatePostData] we are storing the post Details from admin section 
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function updatePostData($input, &$message = '') {        
+        $posts = Post::findOrFail($input['id']);
+
+        $posts->post_type = $input['post_type'];
+        $posts->user_id = $input['user_id'];
+        $posts->post_text = $input['post_text'];
+        $posts->country_id =$input['country_id'];
+        $posts->surf_start_date = $input['surf_date'];
+        $posts->wave_size = $input['wave_size'];
+        $posts->board_type = $input['board_type'];
+        $posts->state_id = $input['state_id'];
+        $posts->local_beach_break_id = $input['local_beach_break_id'];
+        $posts->surfer = (isset($input['surfer']) && ($input['surfer'] == 'Me'))?Auth::user()->user_name:$input['surfer'];
+        $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
+        $posts->created_at = Carbon::now();
+        $posts->updated_at = Carbon::now();
+        if($posts->save()){
+            //for store media into upload table
+            $post_id=$posts->id;
+
+            if(isset($input['files'])) {
+                foreach ($input['files'] as $file) {
+                    $upload = new Upload();
+                    $upload->post_id = $post_id;
+                    $upload->image = $file;
+                    $upload->video = null;
+                    $upload->save();
+                }
+            }
+            
+            if(isset($input['videos'])){
+                foreach ($input['videos'] as $video) {
+                    $upload = new Upload();
+                    $upload->post_id = $post_id;
+                    $upload->image = null;
+                    $upload->video = $video;
+                    $upload->save();
+                }
+            } 
+
+            $this->savePostNotification($post_id);
+            $message = ['status' => TRUE, 'message' => "Data updated successfully."];
+        } else {
+            $message = ['status' => TRUE, 'message' => "Something went wrong. Please try again later."];
         }    
 
         return $message;

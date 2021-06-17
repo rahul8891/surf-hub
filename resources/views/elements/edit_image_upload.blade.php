@@ -1,19 +1,10 @@
-<style>
-.pip {
-    display: inline-block;
-    margin: 10px 10px 0 0;
-}
-</style>
-    
-<div class="modal fade uploadModal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form id="postForm" method="POST" name="postForm" action="{{ route('storeVideoImagePost') }}" class="upload-form" accept-charset="utf-8" enctype="multipart/form-data">
+        <form id="editImagePostForm" method="POST" name="editPostForm" action="{{ route('updatePostData') }}" class="upload-form" accept-charset="utf-8" enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"><img src="{{ asset("/img/logo_small.png")}}">Upload
-                        Video/Photo</h5>
+                        Photo</h5>
                     <div class="selectWrap pos-rel">
                         <select class="form-control" name="post_type" required>
                             @foreach($customArray['post_type'] as $key => $value)
@@ -33,12 +24,8 @@
                         <textarea placeholder="Share your surf experience....." name="post_text" required></textarea>
                         <div class="videoImageUploader">
                             <div class="upload-btn-wrapper">
-                                <a data-toggle="modal" data-target="#imageUploadModal"><img alt="" src="{{ asset("/img/photo.png")}}"></a>
+                                <a data-toggle="modal" data-target="#editImageModal"><img alt="" src="{{ asset("/img/photo.png")}}"></a>
                                 <div class="uploadImageFiles"></div>
-                            </div>
-                            <div class="upload-btn-wrapper">
-                                <a data-toggle="modal" data-target="#videoUploadModal"><img alt="" src="{{ asset("/img/video.png")}}"></a>
-                                <div class="uploadVideoFiles"></div>
                             </div>
                         </div>
                         <div class="row" id="filesInfo">
@@ -46,8 +33,6 @@
                         </div>
 
                         <span id="imageError" class="notDisplayed required">{{ __('Please upload files having extensions: jpg, jpeg, png') }}</span>
-
-                        
                         <div class="formWrap">
                             <h2>Mandatory Info</h2>
                             <div class="row">
@@ -171,7 +156,21 @@
                                         <div class="col-md-4">
                                             <label>Surfer <span class="mandatory">*</span></label>
                                         </div>
-                                        <div class="col-md-8">                                            
+                                        <div class="col-md-8">
+                                            {{-- <div class="d-flex">
+                                                <div class="cstm-check pos-rel">
+                                                    <input type="radio" name="surfer" value="Me" id="Me" required />
+                                                    <label for="Me" class="">Me</label>
+                                                </div>
+                                                <div class="cstm-check pos-rel">
+                                                    <input type="radio" name="surfer" value="Others" id="Others" />
+                                                    <label for="Others" class="">Others</label>
+                                                </div>
+                                                <div class="cstm-check pos-rel">
+                                                    <input type="radio" name="surfer" id="Unknown" value="Unknown" />
+                                                    <label for="Unknown" class="">Unknown</label>
+                                                </div>
+                                            </div> --}}
                                             <div class="d-flex">
                                                 @foreach ($customArray['surfer'] as $key => $value)
                                                 <div class="form-check form-check-inline">
@@ -231,6 +230,5 @@
             </div>
         </form>
     </div>
-</div>
 
-@include('elements/fileUpload_popup_model')
+@include('elements/edit_popup_upload')
