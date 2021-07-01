@@ -32,7 +32,8 @@
                                 </div>
                                 @endif
                                 <div class="pl-3">
-                                    <h4>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}}</h4>
+                                    <h4>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ ucfirst($posts->user->user_name) }} )</h4>
+                                    <span>{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->created_at)->format('d-m-Y')}}</span><br>
                                     <span>{{ postedDateTime($posts->created_at) }}</span>
                                 </div>
                             </div>
@@ -133,11 +134,11 @@
                                                                 {{$posts->surfer}}
                                                             </div>
                                                             <div class="col-5">
-                                                                Username
+                                                                Posted By
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                {{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}}
+                                                                {{ucfirst($posts->user->user_name)}}
                                                             </div>
                                                             <div class="col-5">
                                                                 Beach/Break
