@@ -2,9 +2,9 @@
 @section('content')
 @include('layouts/user/user_feed_menu')
 
-<script src="https://code.jquery.com/jquery-1.12.4.min.js" crossorigin="anonymous"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
+<link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
+
 <section class="postsWrap">
     <div class="container">
         <div class="row">
@@ -32,12 +32,13 @@
                                 </div>
                                 @endif
                                 <div class="pl-3">
-                                    <h4>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}}</h4>
+                                    <h4>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ ucfirst($posts->user->user_name) }} )</h4>
+                                    <span>{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->created_at)->format('d-m-Y')}}</span><br>
                                     <span>{{ postedDateTime($posts->created_at) }}</span>
                                 </div>
                             </div>
                             @if($posts->user_id != Auth::user()->id)
-                            <button class="followBtn follow clicked" data-id="{{$posts->user_id}}" data-post_id="{{$posts->id}}">
+                            <button class="followBtn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id))?((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0'))?'clicked':'clicked Follow'):'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
                                 <img src="img/user.png" alt=""> FOLLOW
                             </button>
                             @endif
@@ -80,15 +81,17 @@
                                         </li> -->
                                         <li>
                                            @if(!empty($posts->upload->image))
-                                                <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$posts->upload->image)); ?>,'sharer'">
+                                                
+                                                <a target="_blank" href="http://www.facebook.com/dialog/feed?app_id=911205526142894&amp;link={{ asset('') }}&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[picture]={{ asset('storage/images/'.$posts->upload->image) }},'sharer'">
+                                                
                                                     <img src="{{ asset("/img/facebook.png")}}" alt="">
                                                 </a>
                                             @elseif(!empty($posts->upload->video))
-                                                <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$posts->upload->video)); ?>,'sharer'">
+                                                <a target="_blank" href="https://www.facebook.com/dialog/feed?app_id=911205526142894&amp;link={{ asset('') }}&amp;picture={{ asset('storage/images/'.$posts->upload->image) }}&amp;description={{ $posts->post_text }}&amp;name=SurfHUb&amp;redirect_uri={{ $url }}"/>
                                                     <img src="{{ asset("/img/facebook.png")}}" alt="">
                                                 </a>
                                             @else
-                                                <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>,'sharer'">
+                                                <a target="_blank" href="https://www.facebook.com/dialog/feed?app_id=911205526142894&amp;link={{ asset('') }}&amp;picture={{ asset('storage/images/'.$posts->upload->image) }}&amp;description={{ $posts->post_text }}&amp;name=SurfHUb&amp;redirect_uri={{ $url }}"/>
                                                     <img src="{{ asset("/img/facebook.png")}}" alt="">
                                                 </a>
                                             @endif
@@ -131,11 +134,11 @@
                                                                 {{$posts->surfer}}
                                                             </div>
                                                             <div class="col-5">
-                                                                Username
+                                                                Posted By
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                {{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}}
+                                                                {{ucfirst($posts->user->user_name)}}
                                                             </div>
                                                             <div class="col-5">
                                                                 Beach/Break
@@ -287,8 +290,24 @@
                     @endforeach
                     @endif
                     
-                    <div class="ajax-load" style="display:none">
-                        <p>Loading More post</p>
+                    <div class=""></div>
+                    <div class="ajax-load ajax-loadBtm" style="display:none">
+                        <div class="letter-holder">
+                            <div class="load-6">
+                                <div class="letter-holder">
+                                <div class="l-1 letter">L</div>
+                                <div class="l-2 letter">o</div>
+                                <div class="l-3 letter">a</div>
+                                <div class="l-4 letter">d</div>
+                                <div class="l-5 letter">i</div>
+                                <div class="l-6 letter">n</div>
+                                <div class="l-7 letter">g</div>
+                                <div class="l-8 letter">.</div>
+                                <div class="l-9 letter">.</div>
+                                <div class="l-10 letter">.</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
             </div>
             <div class="col-lg-3">
@@ -305,34 +324,139 @@
 @include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
 
-<script src="https://code.jquery.com/jquery-1.12.4.min.js" crossorigin="anonymous"></script>
-<script type="text/javascript">
-	var page = 1;
-        
-	$(window).scroll(function() {
-	    if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-	        page++;
-	        loadMoreData(page);
-	    }
-	});
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js" type="text/javascript"></script>
+<script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
 
-	function loadMoreData(page) {
-            $.ajax({
-                url: '?page=' + page,
-                type: "get",
-                beforeSend: function() {
-                    $('.ajax-load').show();
-                }
-            })
-            .done(function(data) {
-                if(data.html == " ") {
-                    $('.ajax-load').html("No more records found");
-                    return;
-                }
-                
-                $('.ajax-load').hide();
-                $("#post-data").append(data.html);
-            });
-	}
+<script type="text/javascript">
+    /************** spiner code ****************************/
+    var spinner = $(".loaderWrap");
+    
+    var page = 1;
+
+    $(window).scroll(function() {
+        if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+            page++;
+            loadMoreData(page);
+        }
+    });
+
+    function loadMoreData(page) {
+        $.ajax({
+            url: '?page=' + page,
+            type: "get",
+            beforeSend: function() {
+                $('.ajax-load').show();
+            }
+        })
+        .done(function(data) {
+            if(data.html == "") {
+                $('.ajax-load').addClass('requests');
+                $('.ajax-load').html("No more records found");
+                return;
+            }
+
+            $('.ajax-load').removeClass('requests');
+            $('.ajax-load').hide();
+            $("#post-data").append(data.html);
+        });
+    }
+        
+    Dropzone.autoDiscover = false;
+
+    $('#imageUploads').dropzone({
+        paramName: 'photos',
+        url: '{{ route("uploadFiles") }}',
+        dictDefaultMessage: "Drag your images",
+        acceptedFiles: ".png, .jpg, .jpeg",
+        clickable: true,
+        enqueueForUpload: true,
+        maxFilesize: 100,
+        uploadMultiple: true,
+        addRemoveLinks: false,
+        success: function (file, response) {
+            $(".uploadPost").attr("disabled", "false");
+            $(".uploadPost").text("Upload");
+            $(".uploadImageFiles").append('<input type="hidden" id="" name="files[]" value="'+response.success+'" />');
+        },
+        error: function (file, response) {
+            console.log("something goes wrong");
+        },
+        sending: function(file, response, formData){
+            $(".uploadPost").attr("disabled", "true");
+            $(".uploadPost").text("Loading Files....");
+        }
+    });
+
+    $('#videoUploads').dropzone({
+        paramName: 'videos',
+        url: '{{ route("uploadFiles") }}',
+        dictDefaultMessage: "Drag your videos",
+        clickable: true,
+        acceptedFiles: ".mp4, .wmv, .mkv, .gif, .mpeg4, .mov",
+        enqueueForUpload: true,
+        maxFilesize: 1000,
+        uploadMultiple: true,
+        addRemoveLinks: false,
+        success: function (file, response) {
+            $(".uploadPost").attr("disabled", "false");
+            $(".uploadPost").text("Upload");
+            $(".uploadVideoFiles").append('<input type="hidden" id="" name="videos[]" value="'+response.success+'" />');
+        },
+        error: function (file, response) {
+            console.log("something goes wrong");
+        },
+        sending: function(file, response, formData){
+            $(".uploadPost").attr("disabled", "true");
+            $(".uploadPost").text("Loading Files....");
+            
+        }
+    });
+        
+    $('#editImageUploads').dropzone({
+        paramName: 'photos',
+        url: '{{ route("uploadFiles") }}',
+        dictDefaultMessage: "Drag your images",
+        acceptedFiles: ".png, .jpg, .jpeg",
+        clickable: true,
+        enqueueForUpload: true,
+        maxFilesize: 1,
+        uploadMultiple: true,
+        addRemoveLinks: false,
+        success: function (file, response) {
+            spinner.hide();
+            $(".editUploadImageFiles").append('<input type="hidden" id="" name="files[]" value="'+response.success+'" />');
+        },
+        error: function (file, response) {
+            console.log("something goes wrong");
+        },
+        sending: function(file, response, formData){
+            spinner.show();
+        }
+    });
+
+    $('#editVideoUploads').dropzone({
+        paramName: 'videos',
+        url: '{{ route("uploadFiles") }}',
+        dictDefaultMessage: "Drag your videos",
+        clickable: true,
+        acceptedFiles: ".mp4, .wmv, .mkv, .gif, .mpeg4, .mov",
+        enqueueForUpload: true,
+        maxFilesize: 1,
+        uploadMultiple: true,
+        addRemoveLinks: false,
+        success: function (file, response) {
+            spinner.hide();
+            $(".editUploadVideoFiles").append('<input type="hidden" id="" name="videos[]" value="'+response.success+'" />');
+        },
+        error: function (file, response) {
+            console.log("something goes wrong");
+        },
+        sending: function(file, response, formData){
+            spinner.show();
+        }
+    });
 </script>
 @endsection

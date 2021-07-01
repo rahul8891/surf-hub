@@ -9,6 +9,7 @@ use App\Services\MasterService;
 use App\Services\UserService;
 use App\Services\PostService;
 use App\Models\Post;
+use App\Models\UserFollow;
 use Redirect;
 
 class DashboardController extends Controller
@@ -33,19 +34,21 @@ class DashboardController extends Controller
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;      
-        $postsList = Post::where('is_deleted','0')    
+        $postsList = Post::with('followPost')->where('is_deleted','0')    
                             ->where('parent_id','0')    
                             ->where('post_type','PUBLIC')                              
                             ->orderBy('posts.created_at','DESC')
                             ->paginate(5);
+        
+        $url = url()->current();
         $usersList = $this->masterService->getAllUsers();
         
         if ($request->ajax()) {
-            $view = view('elements/homedata',compact('customArray','countries','states','currentUserCountryId','postsList'))->render();
+            $view = view('elements/homedata',compact('customArray','countries','states','currentUserCountryId','postsList', 'url'))->render();
             return response()->json(['html' => $view]);
         }
         
-        return view('dashboard',compact('customArray','countries','states','currentUserCountryId','postsList'));
+        return view('dashboard',compact('customArray','countries','states','currentUserCountryId','postsList', 'url'));
     }
 
 

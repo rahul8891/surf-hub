@@ -46,7 +46,7 @@ class SearchController extends Controller
         // ***************check user's recent searches******************************
 
         if(isset(Auth::user()->id)) {
-            $searchRecord = Search::select('*')->where('user_id', [Auth::user()->id])->get();
+            $searchRecord = Search::select('*')->where('user_id', Auth::user()->id)->get();
             foreach($searchRecord as $post) {
                 $postsList[] = $post->post;
             }
@@ -57,7 +57,7 @@ class SearchController extends Controller
         } else {
             $postsList = $this->sort($el);
         }
-        
+        // dd($postsList);
         if ($request->ajax()) {
             $view = view('elements/searchdata',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name'))->render();
             return response()->json(['html' => $view]);
@@ -72,7 +72,7 @@ class SearchController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function sort($el){
-        $postList = $this->posts;
+        $postList = $this->posts->with(['followPost', 'beach_breaks']);
         
         if($el=="dateAsc"){
             return $this->postService->getMyHubListing($postList,'posts.created_at','ASC');
