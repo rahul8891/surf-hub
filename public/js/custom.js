@@ -1059,15 +1059,13 @@ $(document).on('click','#filter_other_surfer_list li', function(){
 			success: function (jsonResponse) {
 				$('#row-id'+dataId).hide();
 				if (jsonResponse.status == "success") {
-					spinner.hide();
-					if(jsonResponse.count==0){
-						$('#allFollower').hide();
-						$('#followRequestCount').show();
-					}
-					document.getElementById("error").innerHTML =
-						jsonResponse.message;
-					document.getElementById("error").className =
-						"alert alert-success";
+                                    spinner.hide();
+                                    if(jsonResponse.count==0){
+                                        $('#allFollower').hide();
+                                        $('#followRequestCount').show();
+                                    }
+                                    document.getElementById("error").innerHTML = jsonResponse.message;
+                                    document.getElementById("error").className = "alert alert-success";
 				} else {
 					spinner.hide();
 					document.getElementById("error").innerHTML =
@@ -1081,79 +1079,71 @@ $(document).on('click','#filter_other_surfer_list li', function(){
 	 });
 
 	$(document).on('click', '.accept', function(){
-		 var dataId = $(this).attr("data-id");
-		 $.ajax({
-			type: "POST",
-			url: "accept",
-			data: {
-				id: dataId,
-				follower_request_status: '0',
-				_token: csrf_token
-			},
-			dataType: "json",
-			success: function (jsonResponse) {
-				$('#row-id'+dataId).hide();
-				if (jsonResponse.status == "success") {
-					spinner.hide();
-					if(jsonResponse.count==0){
-						$('#allFollower').hide();
-						$('#followRequestCount').show();
-						$('.followCount').hide();
-					}else{
-						$('.followCount').text(jsonResponse.count);
-					}
-					document.getElementById("error").innerHTML =
-						jsonResponse.message;
-					document.getElementById("error").className =
-						"alert alert-success";
-				} else {
-					spinner.hide();
-					document.getElementById("error").innerHTML =
-						jsonResponse.message;
-					document.getElementById("error").className =
-						"alert alert-danger";
-				}
-				setInterval(myTimerUserMessage, 4000);
-			}
-		});
-	 });
+            var $this = $(this); 
+            var dataId = $(this).attr("data-id");
+            $.ajax({
+                type: "POST",
+                url: "accept",
+                data: {
+                    id: dataId,
+                    follower_request_status: '0',
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    $('#row-id'+dataId).hide();
+                    if (jsonResponse.status == "success") {
+                        spinner.hide();
+                        if(jsonResponse.count==0){
+                            $this.parent('div').hide();
+                            $('.followCount').hide();
+                        }else{
+                            $('.followCount').text(jsonResponse.count);
+                        }
+                        document.getElementById("error").innerHTML = jsonResponse.message;
+                        document.getElementById("error").className = "alert alert-success";
+                    } else {
+                        spinner.hide();
+                        document.getElementById("error").innerHTML = jsonResponse.message;
+                        document.getElementById("error").className = "alert alert-danger";
+                    }
+                    setInterval(myTimerUserMessage, 4000);
+                }
+            });
+        });
 
 	$(document).on('click', '.reject', function(){
-		 var dataId = $(this).attr("data-id");
-		 $.ajax({
-			type: "POST",
-			url: "reject",
-			data: {
-				id: dataId,
-				status: 'BLOCK',
-				_token: csrf_token
-			},
-			dataType: "json",
-			success: function (jsonResponse) {
-				$('#row-id'+dataId).hide();
-				if (jsonResponse.status == "success") {
-					spinner.hide();
-					if(jsonResponse.count==0){
-						$('#allFollower').hide();
-						$('#followRequestCount').show();
-						$('.followCount').hide();
-					}else{
-						$('.followCount').text(jsonResponse.count);
-					}
-					document.getElementById("error").innerHTML =
-						jsonResponse.message;
-					document.getElementById("error").className =
-						"alert alert-success";
-				} else {
-					spinner.hide();
-					document.getElementById("error").innerHTML =
-						jsonResponse.message;
-					document.getElementById("error").className =
-						"alert alert-danger";
-				}
-				setInterval(myTimerUserMessage, 4000);
-			}
-		});
+            var $this = $(this);
+            var dataId = $(this).attr("data-id");
+            $.ajax({
+                type: "POST",
+                url: "reject",
+                data: {
+                    id: dataId,
+                    status: 'BLOCK',
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    $('#row-id'+dataId).hide();
+                    if (jsonResponse.status == "success") {
+                        spinner.hide();
+                        if(jsonResponse.count==0){
+                            $this.parent('div').hide();
+                            $('.followCount').hide();
+                        }else{
+                            $('.followCount').text(jsonResponse.count);
+                        }
+                        document.getElementById("error").innerHTML = jsonResponse.message;
+                        document.getElementById("error").className = "alert alert-success";
+                    } else {
+                        spinner.hide();
+                        document.getElementById("error").innerHTML = jsonResponse.message;
+                        document.getElementById("error").className = "alert alert-danger";
+                    }
+                    setInterval(myTimerUserMessage, 4000);
+                }
+            });
 	 });
 
 	$(document).on('click', '.remove', function(){
@@ -1191,12 +1181,15 @@ $(document).on('click','#filter_other_surfer_list li', function(){
 		});
 	 });
 
-	$(document).on('click', '.follow', function(){
-            var dataId = $(this).attr("data-id");
+	$(document).on('click', '.followPost', function(){
+            var $this = $(this);
+            var dataId = $(this).data("id");
             var postId = $(this).attr("data-post_id");
+            
+            spinner.show();
             $.ajax({
                 type: "POST",
-                url: "follow",
+                url: "/follow",
                 data: {
                         followed_user_id: dataId,
                         post_id: postId,
@@ -1206,10 +1199,13 @@ $(document).on('click','#filter_other_surfer_list li', function(){
                 dataType: "json",
                 success: function (jsonResponse) {
                     if (jsonResponse.status == "success") {
-                            spinner.hide();
+                        $this.addClass('clicked');
+                        $this.removeClass('followPost');
+                        
+                        spinner.hide();
                     } else {
-                            spinner.hide();
-                            alert(jsonResponse.message);
+                        spinner.hide();
+                        alert(jsonResponse.message);
                     }
                     setInterval(myTimerUserMessage, 4000);
                 }

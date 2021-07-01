@@ -43,7 +43,10 @@ return [
         '1'=>'1-2 FT',
         '2'=>'3-4 FT',
         '3'=>'5-6 FT',
-        '4'=>'7 FT+',
+        '4'=>'7-9 FT',
+        '5'=>'10-12 FT',
+        '6'=>'13-16 FT',
+        '7'=>'17 FT+',
     ],
     
     // BOARD TYPE drop down menu
@@ -53,7 +56,9 @@ return [
         'LONGBOARD'=>'Longboard', 
         'BODYBOARD'=>'Bodyboard', 
         'KNEEBOARD'=>'Kneeboard', 
-        'BODYSURF'=>'Bodysurf'
+        'BODYSURF'=>'Bodysurf',
+        'SKIMBOARD'=>'Skimboard',
+        'SUP'=>'SUP',
     ],
 
 
@@ -67,8 +72,6 @@ return [
         'SNAP'=>'Snap',
         '360'=>'360',
         'WIPEOUT'=>'Wipeout',
-        'SKIMBOARD'=>'Skimboard',
-        'SUP'=>'SUP',
     ],
     
     'surfer'=>[

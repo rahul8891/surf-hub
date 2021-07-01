@@ -12,6 +12,7 @@ use App\Models\State;
 use App\Models\Upload;
 use App\Models\Comment;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
@@ -124,4 +125,11 @@ class Post extends Model
         return $this->hasMany(Rating::class, 'rateable_id', 'id');
     }
 
+    /**
+     * Relationship between posts and reports model    
+     * @return object
+     */
+    public function followPost() {
+        return $this->hasOne(UserFollow::class, 'followed_user_id', 'user_id')->where('follower_user_id', Auth::user()->id)->where('is_deleted', '0');
+    }
 }

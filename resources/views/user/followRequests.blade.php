@@ -8,19 +8,20 @@
                 @if (count($followRequests) > 0)
                 <div class="requests" id="allFollower">
                     @foreach ($followRequests as $key => $requests)
+                    
                     <div class="" id="row-id{{$requests->id}}">
                         <div class="userInfo">
-                            @if($requests->follower->profile_photo_path)
+                            @if($requests->followed->profile_photo_path)
                             <div class="imgWrap">
-                                <img src="{{ asset('storage/'.$requests->follower->profile_photo_path) }}" class="profileImg" alt="">
+                                <img src="{{ asset('storage/'.$requests->followed->profile_photo_path) }}" class="profileImg" alt="">
                             </div>
                             @else
                             <div class="imgWrap no-img">
-                                {{ucwords(substr($requests->follower->user_profiles->first_name,0,1))}}{{ucwords(substr($requests->follower->user_profiles->last_name,0,1))}}
+                                {{ucwords(substr($requests->followed->user_profiles->first_name,0,1))}}{{ucwords(substr($requests->followed->user_profiles->last_name,0,1))}}
                             </div>
                             @endif
                             <div class="pl-3">
-                                <h4>{{ucfirst($requests->follower->user_profiles->first_name)}} {{ucfirst($requests->follower->user_profiles->last_name)}}</h4>
+                                <h4>{{ucfirst($requests->followed->user_profiles->first_name)}} {{ucfirst($requests->followed->user_profiles->last_name)}}</h4>
                             </div>
                         </div>
                         <button class="acceptBtn accept mr-3 ml-auto" data-id="{{$requests->id}}">ACCEPT</button>

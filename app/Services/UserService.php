@@ -233,6 +233,7 @@ class UserService {
 
     public function followRequests(){
         Notification::where(['receiver_id'=> Auth::user()->id, 'notification_type'=> 'Follow'])->update(['status'=>'1','count_status'=>'1','updated_at'=>Carbon::now()]);
+        
         $followRequests = $this->userFollows->where('followed_user_id',Auth::user()->id)   
                     ->where('status','FOLLOW')   
                     ->where('follower_request_status',1) 
@@ -260,10 +261,10 @@ class UserService {
         return $following;
     }
 
-    public function updateFollowStatus($input,&$message='',$column=null)
+    public function updateFollowStatus($input, &$message='', $column=null)
     {
         try{
-            $userFollows = $this->userFollows::find($input['id']);
+            $userFollows = $this->userFollows->find($input['id']);
             if($userFollows){
                 $userFollows->id = $input['id'];
                 $userFollows->status = $input['status'];
@@ -288,7 +289,7 @@ class UserService {
     public function updateAcceptStatus($input,&$message='',$column=null)
     {
         try{
-            $userFollows = $this->userFollows::find($input['id']);
+            $userFollows = $this->userFollows->find($input['id']);
             if($userFollows){
                 //dd($userFollows);
                 $userFollows->id = $input['id'];
@@ -316,10 +317,10 @@ class UserService {
     public function updateRejectStatus($input,&$message='',$column=null)
     {
         try{
-            $userFollows = $this->userFollows::find($input['id']);
+            $userFollows = $this->userFollows->find($input['id']);
             if($userFollows){
-                $userFollows->id = $input['id'];
-                $userFollows->status = $input['status'];
+                //$userFollows->status = $input['status'];
+                $userFollows->is_deleted = '1';
                 if($userFollows->save()){
                     $this->saveFollowRequestAcceptRejectNotification($userFollows,'Reject');
                     $resultArray['message']='Status has been updated!';
@@ -352,7 +353,7 @@ class UserService {
     public function updateRemoveStatus($input,&$message='',$column=null)
     {
         try{
-            $userFollows = $this->userFollows::find($input['id']);
+            $userFollows = $this->userFollows->find($input['id']);
             if($userFollows){
                 $userFollows->id = $input['id'];
                 $userFollows->is_deleted = $input['is_deleted'];
@@ -417,10 +418,10 @@ class UserService {
     {
         $result = $this->userFollows->where('follower_user_id',Auth::user()->id)
                 ->where('followed_user_id',$followed_user_id)
-                ->where('status','FOLLOW')   
-                ->where('follower_request_status','0') 
+                ->where('status','FOLLOW')
                 ->where('is_deleted','0')
                 ->first();
+        
         return $result;
     }
 
@@ -439,8 +440,7 @@ class UserService {
             $this->notification->created_at = Carbon::now();
             $this->notification->updated_at = Carbon::now();
             //dd($this->comments);
-            $this->notification->save();
-                
+            $this->notification->save();                
         }
         catch (\Exception $e){     
             $message='"'.$e->getMessage().'"';
@@ -459,7 +459,7 @@ class UserService {
         try{
             $this->notification->post_id = $input['id'];
             $this->notification->sender_id = Auth::user()->id;
-            $this->notification->receiver_id = $input['follower_user_id'];
+            $this->notification->receiver_id = $input['followed_user_id'];
             $this->notification->notification_type = $notification_type;
             $this->notification->created_at = Carbon::now();
             $this->notification->updated_at = Carbon::now();

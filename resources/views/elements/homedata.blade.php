@@ -12,12 +12,13 @@
                                 </div>
                                 @endif
                                 <div class="pl-3">
-                                    <h4>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}}</h4>
+                                    <h4>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ ucfirst($posts->user->user_name) }} )</h4>
+                                    <span>{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->created_at)->format('d-m-Y')}}</span><br>
                                     <span>{{ postedDateTime($posts->created_at) }}</span>
                                 </div>
                             </div>
                             @if($posts->user_id != Auth::user()->id)
-                            <button class="followBtn follow" data-id="{{$posts->user_id}}" data-post_id="{{$posts->id}}">
+                            <button class="followBtn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id))?((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0'))?'clicked':'clicked Follow'):'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
                                 <img src="img/user.png" alt=""> FOLLOW
                             </button>
                             @endif
@@ -104,11 +105,11 @@
                                                                 {{$posts->surfer}}
                                                             </div>
                                                             <div class="col-5">
-                                                                Username
+                                                                Posted By
                                                             </div>
                                                             <div class="col-2 text-center">:</div>
                                                             <div class="col-5">
-                                                                {{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}}
+                                                                {{ucfirst($posts->user->user_name)}}
                                                             </div>
                                                             <div class="col-5">
                                                                 Beach/Break
@@ -259,3 +260,10 @@
                 </div>
                     @endif
                     @endforeach
+
+<script type="text/javascript">
+    $('.rating').rating({
+         showClear:false, 
+         showCaption:false
+     });
+</script>

@@ -26,10 +26,10 @@
     $profileClass = (Auth::user() && Request::path() == 'user/profile') ? 'contactUsWrap profileWrap' : '';
     @endphp
     <main class="{{ $profileClass }}">
-        <!-- <div class="loaderWrap">
+        <div class="loaderWrap">
             <div class="lds-hourglass"></div>
-        </div> -->
-        <!-- <div id="loader"></div> -->
+        </div>
+        <!--<div id="loader"></div> -->
         @include('layouts/user/user_header')
         @include('layouts/user/user_banner')
         @if ($errors->any())
@@ -67,9 +67,9 @@
   type="text/javascript"></script>
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
-    <script src="{{ asset("/js/bootstrap.js")}}"></script>
-    <script src="{{ asset("/js/jquery.validate.min.js")}}"></script>
-    <script src="{{ asset("/js/custom.js")}}"></script>
+    <script src="{{ asset('/js/bootstrap.js') }}"></script>
+    <script src="{{ asset("/js/jquery.validate.min.js") }}"></script>
+    <script src="{{ asset("/js/custom.js") }}"></script>
     @if (Auth::user())
     <script src="{{ asset("/js/post.js")}}"></script>
     @endif
@@ -78,9 +78,9 @@
     <script>
 
         $('.rating').rating({
-                showClear:false, 
-                showCaption:false
-            });
+            showClear:false, 
+            showCaption:false
+        });
         $(document).ready(function() {
             
            
@@ -95,7 +95,7 @@
              e.stopPropagation();
          });*/
 
-        $('.dropdown.keep-inside-clicks-open').on({
+        /*$('.dropdown.keep-inside-clicks-open').on({
             "shown.bs.dropdown": function() {
                 this.closable = false;
             },
@@ -105,17 +105,7 @@
             "hide.bs.dropdown": function() {
                 return this.closable;
             }
-        });
-
-        
-
-        $('.close').on('click', function(event) {
-            // $(this).parents('.dropdown').find('button.dropdown-toggle').dropdown('toggle')
-            //$(".close").dropdown('hide');
-            // $("#close").dropdown("toggle");
-        });
-
-
+        });*/
 
         $(".nice-wrapper").niceScroll({
             cursorwidth: '10px',
@@ -137,6 +127,7 @@
         });
 
     });
+    
     function openFullscreen(id) {
         var elem = document.getElementById("myImage"+id);
         if (elem.requestFullScreen) {

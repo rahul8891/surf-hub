@@ -12,19 +12,19 @@
                                 </div>
                                 @endif
                                 <div class="pl-3">
-                                    <h4>{{ucfirst($myHub->user->user_profiles->first_name)}} {{ucfirst($myHub->user->user_profiles->last_name)}}</h4>
-                                    <span>{{ $myHub->beach_breaks->beach_name ?? '' }}, {{\Carbon\Carbon::parse($myHub->created_at)->format('d-m-Y')}}</span><br>
+                                    <h4>{{ucfirst($myHub->user->user_profiles->first_name)}} {{ucfirst($myHub->user->user_profiles->last_name)}} ( {{ ucfirst($myHub->user->user_name) }} )</h4>
+                                    <span>{{ $myHub->beach_breaks->beach_name ?? '' }} {{ $myHub->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($myHub->created_at)->format('d-m-Y')}}</span><br>
                                     <span>{{ postedDateTime($myHub->created_at) }}</span>
                                 </div>
                             </div>
 
-                            <form role="form" method="POST" name="follow{{$myHub->id}}" action="{{ route('follow') }}">
+                            <!-- <form role="form" method="POST" name="follow{{$myHub->id}}" action="{{ route('follow') }}">
                             @csrf
                             <input type="hidden" class="userID" name="followed_user_id" value="{{$myHub->user_id}}">
                             <button href="#" class="followBtn">
                                 <img src="/img/user.png" alt=""> FOLLOW
                             </button>
-                            </form>
+                            </form> -->
                         </div>
                         <p class=" description">{{$myHub->post_text}}</p>
                                 <div class="imgRatingWrap">
@@ -112,11 +112,11 @@
                                                                         {{$myHub->surfer}}
                                                                     </div>
                                                                     <div class="col-5">
-                                                                        Username
+                                                                        Posted By
                                                                     </div>
                                                                     <div class="col-2 text-center">:</div>
                                                                     <div class="col-5">
-                                                                        {{ucfirst($myHub->user->user_profiles->first_name)}} {{ucfirst($myHub->user->user_profiles->last_name)}}
+                                                                        {{ucfirst($myHub->user->user_name)}}
                                                                     </div>
                                                                     <div class="col-5">
                                                                         Beach/Break
@@ -310,4 +310,11 @@
                                 </div>
                         </div>
                     </div>
-                    @endforeach
+                   @endforeach
+                   
+<script type="text/javascript">
+    $('.rating').rating({
+         showClear:false, 
+         showCaption:false
+     });
+</script>
