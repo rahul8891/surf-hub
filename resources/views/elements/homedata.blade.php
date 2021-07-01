@@ -17,7 +17,7 @@
                                 </div>
                             </div>
                             @if($posts->user_id != Auth::user()->id)
-                            <button class="followBtn follow" data-id="{{$posts->user_id}}" data-post_id="{{$posts->id}}">
+                            <button class="followBtn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id))?((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0'))?'clicked':'clicked Follow'):'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
                                 <img src="img/user.png" alt=""> FOLLOW
                             </button>
                             @endif
@@ -259,3 +259,10 @@
                 </div>
                     @endif
                     @endforeach
+
+<script type="text/javascript">
+    $('.rating').rating({
+         showClear:false, 
+         showCaption:false
+     });
+</script>

@@ -310,7 +310,8 @@ class UserController extends Controller
     public function followRequests()
     {
         $followRequests = $this->users->followRequests();
-        $common = $this->common;  
+        $common = $this->common;
+        
         return view('user.followRequests',compact('followRequests','common'));
     }
 

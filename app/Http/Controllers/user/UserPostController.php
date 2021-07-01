@@ -339,6 +339,23 @@ class UserPostController extends Controller
             return redirect()->route('myhub', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
         }*/
     }
+    
+    /**
+     * show the specified post.
+     *
+     * @param  int  $post_id $notification_id
+     * @return \Illuminate\Http\Response
+     */
+    public function getPostData($post_id)
+    {
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;      
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $customArray = $this->customArray;
+        $postData = Post::with('followPost')->where('id', $post_id)->first();
+        //dd($postData);
+        return view('user.postData',compact('customArray','countries','states','currentUserCountryId','postData'));
+    }
 
     public function updateNotificationCountStatus(Request $request)
     {
