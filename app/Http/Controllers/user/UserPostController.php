@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\Post;
 use App\Models\Report;
 use App\Models\Notification;
+use App\Models\UserProfile;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
@@ -347,13 +348,13 @@ class UserPostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getPostData($post_id)
-    {
-        $currentUserCountryId = Auth::user()->user_profiles->country_id;      
+    {      
         $countries = $this->masterService->getCountries();
-        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
-        $postData = Post::with('followPost')->where('id', $post_id)->first();
-        //dd($postData);
+        $postData = Post::where('id', $post_id)->first();
+        $currentUserCountryId = UserProfile::where('user_id', $postData->user_id)->pluck('country_id')->first();
+        
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         return view('user.postData',compact('customArray','countries','states','currentUserCountryId','postData'));
     }
 
