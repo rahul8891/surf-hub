@@ -74,7 +74,7 @@
                                             <ul class="pl-0 mb-0 d-flex">
                                                 <li>
                                                     @if(!empty($postData->upload->image))
-                                                    <a target="_blank" href="http://m.facebook.com/sharer/sharer.php?u=<?php echo Request::url(); ?>&amp;p[title]=<?php echo $postData->post_text;?>&amp;p[images]=<?php echo asset('storage/images/'.$postData->upload->image);?>, 'sharer', 'toolbar=0,status=0,width=548,height=325'"><img src="{{ asset("/img/facebook.png")}}" alt=""></a>
+                                                    <a target="_blank" href="http://m.facebook.com/sharer/sharer.php?u=<?php echo Request::url(); ?>&amp;p[title]=<?php echo $postData->post_text;?>&amp;p[images]=<?php echo url().'storage/images/'.$postData->upload->image;?>, 'sharer', 'toolbar=0,status=0,width=548,height=325'"><img src="{{ asset("/img/facebook.png")}}" alt=""></a>
                                                     <!-- <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($postData->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$postData->upload->image)); ?>,'sharer'"> 
                                                         <img src="{{ asset("/img/facebook.png")}}" alt="">
                                                     </a> -->
