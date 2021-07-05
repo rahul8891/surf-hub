@@ -356,10 +356,19 @@
         uploadMultiple: true,
         addRemoveLinks: false,
         success: function (file, response) {
+            $(".uploadPost").attr("disabled", "false");
+            $(".uploadPost").removeClass("clicked");
+            $(".uploadPost").text("Upload");
             $(".uploadImageFiles").append('<input type="hidden" id="" name="files[]" value="'+response.success+'" />');
         },
         error: function (file, response) {
             console.log("something goes wrong");
+        },
+        sending: function(file, response, formData){
+            $(".uploadPost").attr("disabled", "true");
+            $(".uploadPost").addClass("clicked");
+            $(".uploadPost").text("Loading Files....");
+            
         }
     });
 
@@ -374,10 +383,19 @@
         uploadMultiple: true,
         addRemoveLinks: false,
         success: function (file, response) {
+            $(".uploadPost").attr("disabled", "false");
+            $(".uploadPost").removeClass("clicked");
+            $(".uploadPost").text("Upload");
             $(".uploadVideoFiles").append('<input type="hidden" id="" name="videos[]" value="'+response.success+'" />');
         },
         error: function (file, response) {
             console.log("something goes wrong");
+        },
+        sending: function(file, response, formData){
+            $(".uploadPost").attr("disabled", "true");
+            $(".uploadPost").addClass("clicked");
+            $(".uploadPost").text("Loading Files....");
+            
         }
     });
         
