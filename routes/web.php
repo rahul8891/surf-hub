@@ -94,13 +94,12 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::post('/follow', [UserController::class, 'follow'])->name('follow');
     Route::post('/report', [UserPostController::class, 'report'])->name('report');
     Route::get('/posts/{post_id}/{notification_id}/{notification_type}', [UserPostController::class, 'posts'])->name('posts');
-    Route::get('/postData/{post_id}', [UserPostController::class, 'getPostData'])->name('getPostData');
     Route::post('/user/updateNotificationCountStatus', [UserPostController::class, 'updateNotificationCountStatus'])->name('updateNotificationCountStatus');
     Route::post('updateNotificationCountStatus', [UserPostController::class, 'updateNotificationCountStatus'])->name('updateNotificationCountStatus');
     
 });
 
-
+Route::get('/postData/{post_id}', [UserPostController::class, 'getPostData'])->name('getPostData');
 /**
  * Common Route
  */
