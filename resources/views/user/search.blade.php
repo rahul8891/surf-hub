@@ -36,7 +36,7 @@
                                     <span>{{ postedDateTime($posts->created_at) }}</span>
                                 </div>
                             </div>
-                            @if($posts->user_id != Auth::user()->id)
+                            @if (isset(Auth::user()->id) && ($posts->user_id != Auth::user()->id))
                                 <button class="followBtn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id))?((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0'))?'clicked':'clicked Follow'):'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
                                     <img src="img/user.png" alt=""> FOLLOW
                                 </button>
