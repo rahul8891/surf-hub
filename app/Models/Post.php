@@ -130,6 +130,10 @@ class Post extends Model
      * @return object
      */
     public function followPost() {
-        return $this->hasOne(UserFollow::class, 'followed_user_id', 'user_id')->where('follower_user_id', Auth::user()->id)->where('is_deleted', '0');
+        if(isset(Auth::user()->id) && !empty(Auth::user()->id)) {
+            return $this->hasOne(UserFollow::class, 'followed_user_id', 'user_id')->where('follower_user_id', Auth::user()->id)->where('is_deleted', '0');
+        }else {
+            return $this->hasOne(UserFollow::class, 'followed_user_id', 'user_id')->where('is_deleted', '0');
+        } 
     }
 }
