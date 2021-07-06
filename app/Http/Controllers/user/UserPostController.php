@@ -25,7 +25,7 @@ use Closure;
 use Redirect;
 use Session;
 use File;
-use DB;
+use DB, URL;
 use FFMpeg;
 use FFMpeg\Format\Video\X264;
 use FFMpeg\Filters\Video\VideoFilters;
