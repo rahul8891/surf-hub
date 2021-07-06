@@ -218,23 +218,23 @@ class PostService {
             $postArray->whereIn('optional_info', $optionalInfo);
         }        
         
-        if ($params['surf_date']) {
+        if (isset($params['surf_date']) && !empty($params['surf_date'])) {
            $postArray->whereDate('surf_start_date','>=',$params['surf_date']);
         }
-        if ($params['end_date']) {
+        if (isset($params['end_date']) && !empty($params['end_date'])) {
            $postArray->whereDate('surf_start_date','<=',$params['end_date']);
         }
 
-        if ($params['country_id']) {
+        if (isset($params['country_id']) && !empty($params['country_id'])) {
             $postArray->where('country_id',$params['country_id']);
         }
-        if ($params['local_beach_break_id']) {
+        if (isset($params['local_beach_break_id']) && !empty($params['local_beach_break_id'])) {
             $postArray->where('local_beach_break_id',$params['local_beach_break_id']);
         }
-        if ($params['board_type']) {
+        if (isset($params['board_type']) && !empty($params['board_type'])) {
             $postArray->where('board_type',$params['board_type']);
         }
-        if ($params['wave_size']) {
+        if (isset($params['wave_size']) && !empty($params['wave_size'])) {
             $postArray->where('wave_size',$params['wave_size']);
         }
         

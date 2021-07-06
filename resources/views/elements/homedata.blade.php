@@ -1,4 +1,5 @@
-@foreach ($postsList as $key => $posts)
+@if(isset($postsList[0]->id) && !empty($postsList[0]->id))
+    @foreach ($postsList as $key => $posts)
                     @if($posts->parent_id == 0)
                 <div class="post">
                     <div class="inner">
@@ -261,9 +262,10 @@
                     @endif
                     @endforeach
 
-<script type="text/javascript">
-    $('.rating').rating({
-         showClear:false, 
-         showCaption:false
-     });
-</script>
+    <script type="text/javascript">
+        $('.rating').rating({
+             showClear:false, 
+             showCaption:false
+         });
+    </script>
+@endif

@@ -114,6 +114,12 @@ class MyHubController extends Controller
             $bb = BeachBreak::where('id',$request->input('local_beach_break_id'))->first(); 
             $beach_name=$bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;
         }
+        
+        if ($request->ajax()) {
+            $view = view('elements/myhubdata',compact('customArray','countries','states','currentUserCountryId','myHubs','beach_name'))->render();
+            return response()->json(['html' => $view]);
+        }
+        
         return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','beach_name'));    
 
     }
