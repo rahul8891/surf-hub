@@ -30,7 +30,15 @@
                             <img src="{{ asset('storage/images/'.(isset($posts->upload->image) && !empty($posts->upload->image))?$posts->upload->image:'') }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
                             @endif
                             @if(!empty($posts->upload->video))
-                            <br><video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
+                                @if (!File::exists(asset('storage/fullVideos/'.$myHub->upload->video)))
+                                <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}} video-js">
+                                    <source src="{{ asset('storage/fullVideos/'.$myHub->upload->video) }}" >    
+                                </video>
+                                @else
+                                <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}} video-js">
+                                    <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
+                                </video>
+                                @endif
                             @endif
                             
                             <div class="ratingShareWrap">

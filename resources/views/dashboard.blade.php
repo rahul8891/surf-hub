@@ -45,18 +45,26 @@
                         </div>
                         <p class="description">{{$posts->post_text}}</p>
                         <div class="imgRatingWrap">
+                            <!-- <div id="my-video"></div> -->
                             @if(!empty($posts->upload->image))
                             <div class="pos-rel editBtnWrap">
                                 <img src="/storage/images/{{ (isset($posts->upload->image) && !empty($posts->upload->image))?$posts->upload->image:'' }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
                                 
-                            </div>                            
+                            </div>
                             @endif
                             @if(!empty($posts->upload->video))
-                            <br>
                             <div class="pos-rel editBtnWrap">
-                                <video width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/videos/'.$posts->upload->video) }}"></video>
+                                @if (!File::exists(asset('storage/fullVideos/'.$myHub->upload->video)))
+                                <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}} video-js">
+                                    <source src="{{ asset('storage/fullVideos/'.$myHub->upload->video) }}" >    
+                                </video>
+                                @else
+                                <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}} video-js">
+                                    <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
+                                </video>
+                                @endif
                                 
-                            </div>                            
+                            </div>
                             @endif
                             
                             <div class="ratingShareWrap">
@@ -326,6 +334,7 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src='https://cdn.jwplayer.com/libraries/7sjHar0d.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js" type="text/javascript"></script>
 <script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
@@ -461,6 +470,11 @@
         sending: function(file, response, formData){
             spinner.show();
         }
+    });
+    
+    jwplayer("my-video").setup({
+	file: "/storage/fullVideos/1111111.mov",
+	primary: "html5",
     });
 </script>
 @endsection
