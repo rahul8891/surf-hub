@@ -1,4 +1,5 @@
-@foreach ($myHubs as $key => $myHub)
+@if(isset($myHubs[0]->id) && !empty($myHubs[0]->id))
+    @foreach ($myHubs as $key => $myHub)
                 <div class="post">
                     
                     <div class="inner">
@@ -312,9 +313,10 @@
                     </div>
                    @endforeach
                    
-<script type="text/javascript">
-    $('.rating').rating({
-         showClear:false, 
-         showCaption:false
-     });
-</script>
+    <script type="text/javascript">
+        $('.rating').rating({
+             showClear:false, 
+             showCaption:false
+         });
+    </script>
+@endif
