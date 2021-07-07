@@ -384,13 +384,14 @@ class UserPostController extends Controller
         } elseif (isset($data['videos'])) {
             $destinationPath = storage_path().'/app/public/fullVideos/';
             $file = $request->file('videos');
+            $fileExt = $file[0]->getClientOriginalExtension();
             
-            $filename = $timeDate.'.'.$file[0]->extension();
+            $filename = $timeDate.'.'.$fileExt;
             
             $file[0]->move($destinationPath, $filename);
             // $path = 'public/fullVideos/' . $filename;
-            //$path = $file>storeAs($destinationPath, $filename);
-            $fileArray[] = $filename;
+            // $path = $file>storeAs($destinationPath, $filename);
+            // $fileArray[] = $filename;
             // dd($path);
             //**********trimming video********************//
             /*$start = \FFMpeg\Coordinate\TimeCode::fromSeconds(0);
