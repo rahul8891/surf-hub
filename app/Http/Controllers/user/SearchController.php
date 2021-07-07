@@ -130,6 +130,11 @@ class SearchController extends Controller
             $bb = BeachBreak::where('id',$request->input('local_beach_break_id'))->first(); 
             $beach_name=$bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;
         }
+        
+        if ($request->ajax()) {
+            $view = view('elements/searchdata',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name'))->render();
+            return response()->json(['html' => $view]);
+        }
 
         return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name')); 
     }
