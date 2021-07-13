@@ -402,6 +402,7 @@
             $.ajax({
                 url: '?page=' + page,
                 type: "get",
+                async: false,
                 beforeSend: function() {
                     $('.ajax-load').delay(1500).show();
                 }
