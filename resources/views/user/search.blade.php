@@ -332,6 +332,7 @@
             $.ajax({
                 url: '?page=' + page,
                 type: "get",
+                async: false,
                 beforeSend: function() {
                     $('.ajax-load').show();
                 }
