@@ -356,6 +356,7 @@
         $.ajax({
             url: '?page=' + page,
             type: "get",
+            async: false,
             beforeSend: function() {
                 $('.ajax-load').show();
             }
@@ -470,11 +471,6 @@
         sending: function(file, response, formData){
             spinner.show();
         }
-    });
-    
-    jwplayer("my-video").setup({
-	file: "/storage/fullVideos/1111111.mov",
-	primary: "html5",
     });
 </script>
 @endsection
