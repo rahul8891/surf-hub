@@ -8,6 +8,7 @@
 <section class="postsWrap">
     <div class="container">
         <div class="row">
+            <div class="col-lg-12" id="post-data-main">
             <div class="col-lg-9" id="post-data">
                 <!--include comman upload video and photo layout -->
                 @include('layouts/user/upload_layout')
@@ -55,11 +56,11 @@
                             @if(!empty($posts->upload->video))
                             <div class="pos-rel editBtnWrap">
                                 @if (!File::exists(asset('storage/fullVideos/'.$posts->upload->video)))
-                                <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$posts->id}} video-js">
+                                <video width="100%" preload="auto" data-setup="{}" controls class="video" id="myImage{{$posts->id}} video">
                                     <source src="{{ asset('storage/fullVideos/'.$posts->upload->video) }}" >    
                                 </video>
                                 @else
-                                <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$posts->id}} video-js">
+                                <video width="100%" preload="auto" data-setup="{}" controls class="video" id="myImage{{$posts->id}} video">
                                     <source src="{{ asset('storage/videos/'.$posts->upload->video) }}" >    
                                 </video>
                                 @endif
@@ -296,27 +297,27 @@
                     </div>
                 </div>
                     @endforeach
-                    @endif
-                    
-                    <div class=""></div>
-                    <div class="ajax-load ajax-loadBtm" style="display:none">
-                        <div class="letter-holder">
-                            <div class="load-6">
-                                <div class="letter-holder">
-                                <div class="l-1 letter">L</div>
-                                <div class="l-2 letter">o</div>
-                                <div class="l-3 letter">a</div>
-                                <div class="l-4 letter">d</div>
-                                <div class="l-5 letter">i</div>
-                                <div class="l-6 letter">n</div>
-                                <div class="l-7 letter">g</div>
-                                <div class="l-8 letter">.</div>
-                                <div class="l-9 letter">.</div>
-                                <div class="l-10 letter">.</div>
-                                </div>
+                    @endif                
+                </div>
+                <div class=""></div>
+                <div class="ajax-load ajax-loadBtm" style="display:none">
+                    <div class="letter-holder">
+                        <div class="load-6">
+                            <div class="letter-holder">
+                            <div class="l-1 letter">L</div>
+                            <div class="l-2 letter">o</div>
+                            <div class="l-3 letter">a</div>
+                            <div class="l-4 letter">d</div>
+                            <div class="l-5 letter">i</div>
+                            <div class="l-6 letter">n</div>
+                            <div class="l-7 letter">g</div>
+                            <div class="l-8 letter">.</div>
+                            <div class="l-9 letter">.</div>
+                            <div class="l-10 letter">.</div>
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
             <div class="col-lg-3">
                 <div class="adWrap">
@@ -337,7 +338,6 @@
 <script src='https://cdn.jwplayer.com/libraries/7sjHar0d.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js" type="text/javascript"></script>
-<script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
 
 <script type="text/javascript">
     /************** spiner code ****************************/
@@ -374,7 +374,7 @@
         });
     }
         
-    Dropzone.autoDiscover = false;
+    /* Dropzone.autoDiscover = false;
 
     $('#imageUploads').dropzone({
         paramName: 'photos',
@@ -471,6 +471,6 @@
         sending: function(file, response, formData){
             spinner.show();
         }
-    });
+    });*/
 </script>
 @endsection

@@ -22,6 +22,7 @@
 <section class="postsWrap">
     <div class="container">
         <div class="row">
+            <div class="col-lg-12" id="myhub-data-main">
             <div class="col-lg-9 pos-rel" id="myhub-data">
                 @include('layouts/user/upload_layout')
                 @if (is_null($myHubs[0]))
@@ -346,8 +347,8 @@
                         </div>
                     </div>
                     @endforeach
-                    @endif
-                    
+                    @endif                    
+                    </div> 
                     <div class=""></div>
                     <div class="ajax-load ajax-loadBtm" style="display:none">
                         <div class="letter-holder">
@@ -367,7 +368,7 @@
                             </div>
                         </div>
                     </div>
-                </div>                
+                </div>
                 <div class="col-lg-3">
                     <div class="adWrap">
                         <img src="{{ asset("/img/add1.png")}}" alt="" class="img-fluid">
@@ -381,8 +382,6 @@
 </section>
 @include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
-@include('layouts/models/edit_image_upload')
-@include('layouts/models/edit_video_upload')
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -404,7 +403,7 @@
                 type: "get",
                 async: false,
                 beforeSend: function() {
-                    $('.ajax-load').delay(1500).show();
+                    $('.ajax-load').delay(5000).show();
                 }
             })
             .done(function(data) {
