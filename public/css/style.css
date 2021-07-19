@@ -3134,7 +3134,7 @@ textarea:focus,input:focus{
 .ajax-loadBtm{
     position: absolute;
     bottom: -35px;
-    left: 50%;
+    left: 35%;
     transform: translateX(-50%);
 }
 
