@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use File;
-use DB;
+use DB, Log;
 use FFMpeg;
 use FFMpeg\Format\Video\X264;
 use FFMpeg\Filters\Video\VideoFilters;
@@ -96,7 +96,7 @@ class PostService {
         $postArray =  $this->posts->whereNull('deleted_at')   
                                   ->where('is_deleted','0')                            
                                   ->orderBy('created_at','ASC')
-                                  ->paginate(5);
+                                  ->paginate(10);
         
         return $postArray;
     }
@@ -133,22 +133,22 @@ class PostService {
      */
     public function getMyHubListing($postList, $el, $order){
         if($el=='beach') { 
-          $sortedData = $postList
-          ->join('beach_breaks', 'posts.local_beach_break_id', '=', 'beach_breaks.id')
-          ->orderBy('beach_breaks.beach_name', $order)
-          ->select('posts.*')
-          ->paginate(2);
+            $sortedData = $postList
+                ->join('beach_breaks', 'posts.local_beach_break_id', '=', 'beach_breaks.id')
+                ->orderBy('beach_breaks.beach_name', $order)
+                ->select('posts.*')
+                ->paginate(10);
         } else if($el=='star') {
             //////// code for rating, make replica of above condition
-            $sortedData = $postList->with(['beach_breaks', 'ratingPost'])->orderByDesc('average_rating')->paginate(2);
+            $sortedData = $postList->with(['beach_breaks', 'ratingPost'])->orderByDesc('average_rating')->paginate(10);
             
             
         } else {
             $sortedData =  $postList
-            ->with('beach_breaks')
-            ->whereNull('posts.deleted_at')   
-            ->orderBy($el,$order)
-            ->paginate(2);
+                ->with('beach_breaks')
+                ->whereNull('posts.deleted_at')   
+                ->orderBy($el,$order)
+                ->paginate(10);
         }
         //dd($sortedData);
         return $sortedData;
@@ -259,13 +259,16 @@ class PostService {
      * @return object array
      */
     public function getPostImage($image){
+        Log::info('Log message', [$image]);
+        $filename = "";
         
-        $destinationPath = 'storage/images/';
+        $destinationPath = public_path('storage/images/');
         $timeDate = strtotime(Carbon::now()->toDateTimeString());
         $ext = $image->getClientOriginalExtension();
         // $imageNameWithExt = $requestImageName->getClientOriginalName(); 
         $filename = $timeDate.'.'.$ext;
         $image->move($destinationPath, $filename);
+        
         return $filename;
     }
     
@@ -274,19 +277,21 @@ class PostService {
      * @param  object  $video
      * @return object array
      */
-    public function getPostVideo($video){
-
-        $destinationPath = 'public/fullVideos';
+    public function getPostVideo($video) {
+        Log::info('Log message', [$video]);
+        $fileNameToStore = "";
+        
+        $destinationPath = public_path('storage/fullVideos/');
         $timeDate = strtotime(Carbon::now()->toDateTimeString());
         $filenameWithExt= $video->getClientOriginalName();
         $extension = $video->getClientOriginalExtension();
         $fileNameToStore = $timeDate.'.'.$extension;
-        $path = $video->storeAs($destinationPath,$fileNameToStore);
+        $video->move($destinationPath, $fileNameToStore);
 
 
         //**********trimming video********************/
 
-        $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(0);
+        /*$start = \FFMpeg\Coordinate\TimeCode::fromSeconds(0);
         $end   = \FFMpeg\Coordinate\TimeCode::fromSeconds(120);
         $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start,$end);
                 
@@ -298,11 +303,11 @@ class PostService {
                     ->save($fileNameToStore);
 
                     
-        //****removing untrimmed file******//
-        $oldFullVideo = storage_path().'/app/public/fullVideos/'.$fileNameToStore;
+        //****removing untrimmed file******/
+        /*$oldFullVideo = storage_path().'/app/public/fullVideos/'.$fileNameToStore;
         if(File::exists($oldFullVideo)){
             unlink($oldFullVideo);
-        }
+        }*/
 
         return $fileNameToStore;
     }
@@ -360,7 +365,7 @@ class PostService {
      * @param  message return message based on the condition 
      * @return dataArray with message
      */
-    public function savePost($input, &$message = '') {        
+    /*public function savePost($input, &$message = '') {        
         $posts = new Post();
 
         $posts->post_type = $input['post_type'];
@@ -407,6 +412,55 @@ class PostService {
         }    
 
         return $message;
+    } */
+    
+    /**
+     * [savePost] we are storing the post Details from admin section 
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function savePost($input, $fileType = '', $filename = '', &$message=''){
+        try{
+            $posts = new Post();
+
+            $posts->post_type = $input['post_type'];
+            $posts->user_id = $input['user_id'];
+            $posts->post_text = $input['post_text'];
+            $posts->country_id =$input['country_id'];
+            $posts->surf_start_date = $input['surf_date'];
+            $posts->wave_size = $input['wave_size'];
+            $posts->board_type = $input['board_type'];
+            $posts->state_id = $input['state_id'];
+            $posts->local_beach_break_id = $input['local_beach_break_id'];
+            $posts->surfer = $input['surfer'];
+            $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
+            $posts->created_at = Carbon::now();
+            $posts->updated_at = Carbon::now();
+
+            if($posts->save()){
+                if(isset($filename) && !empty($filename)) {                
+                    $upload = new Upload();
+
+                    if (isset($fileType) && ($fileType == 'image')) {
+                        $upload->image = $filename;
+                    } elseif (isset($fileType) && ($fileType == 'video')) {
+                        $upload->video = $filename;
+                    }
+                    
+                    $upload->post_id = $posts->id;
+                    $upload->save();
+                }
+            }
+            
+            $message = 'Post has been created successfully.!';
+            return $message;                
+        }
+        catch (\Exception $e){     
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message = '"'.$e->getMessage().'"';
+            return $message;
+        }
     }
     
     
