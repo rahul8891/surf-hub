@@ -38,7 +38,7 @@ class DashboardController extends Controller
                             ->where('parent_id','0')    
                             ->where('post_type','PUBLIC')                              
                             ->orderBy('posts.created_at','DESC')
-                            ->paginate(5);
+                            ->paginate(10);
         
         $url = url()->current();
         $usersList = $this->masterService->getAllUsers();

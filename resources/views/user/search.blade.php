@@ -280,6 +280,7 @@
                 </div>
                 @endforeach
                 @endif
+                </div>
                 <div class=""></div>
                 <div class="ajax-load ajax-loadBtm" style="display:none">
                     <div class="letter-holder">
