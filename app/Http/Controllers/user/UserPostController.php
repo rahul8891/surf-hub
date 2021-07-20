@@ -183,8 +183,11 @@ class UserPostController extends Controller
                 $data['surfer'] = $data['other_surfer'];
             }
             
-            $postArray = array_merge($request->file('files'), $request->file('videos'));
-                        
+            $imageArray = (isset($data['files'][0]) && !empty($data['files'][0]))?$data['files']:[];
+            $videoArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];
+            
+            $postArray = array_filter(array_merge($imageArray, $videoArray));
+            
             $rules = array(
                 'post_type' => ['required'],
                 'user_id' => ['required','numeric'],
