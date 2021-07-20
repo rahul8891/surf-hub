@@ -318,7 +318,6 @@
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
-<script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
 <script type="text/javascript">
 	var page = 1;
         
@@ -350,97 +349,5 @@
                 $("#search-data").append(data.html);
             });
 	}
-        
-    Dropzone.autoDiscover = false;
-
-    $('#imageUploads').dropzone({
-        paramName: 'photos',
-        url: '{{ route("uploadFiles") }}',
-        dictDefaultMessage: "Drag your images",
-        acceptedFiles: ".png, .jpg, .jpeg",
-        clickable: true,
-        enqueueForUpload: true,
-        maxFilesize: 100,
-        uploadMultiple: true,
-        addRemoveLinks: false,
-        success: function (file, response) {
-            $(".uploadPost").removeAttr("disabled");
-            $(".uploadPost").removeClass("clicked");
-            $(".uploadPost").text("Upload");
-            $(".uploadImageFiles").append('<input type="hidden" id="" name="files[]" value="'+response.success+'" />');
-        },
-        error: function (file, response) {
-            console.log("something goes wrong");
-        },
-        sending: function(file, response, formData){
-            $(".uploadPost").attr("disabled", "true");
-            $(".uploadPost").addClass("clicked");
-            $(".uploadPost").text("Loading Files....");
-            
-        }
-    });
-
-    $('#videoUploads').dropzone({
-        paramName: 'videos',
-        url: '{{ route("uploadFiles") }}',
-        dictDefaultMessage: "Drag your videos",
-        clickable: true,
-        acceptedFiles: ".mp4, .wmv, .mkv, .gif, .mpeg4, .mov",
-        enqueueForUpload: true,
-        maxFilesize: 1000,
-        uploadMultiple: true,
-        addRemoveLinks: false,
-        success: function (file, response) {
-            $(".uploadPost").removeAttr("disabled");
-            $(".uploadPost").removeClass("clicked");
-            $(".uploadPost").text("Upload");
-            $(".uploadVideoFiles").append('<input type="hidden" id="" name="videos[]" value="'+response.success+'" />');
-        },
-        error: function (file, response) {
-            console.log("something goes wrong");
-        },
-        sending: function(file, response, formData){
-            $(".uploadPost").attr("disabled", "true");
-            $(".uploadPost").addClass("clicked");
-            $(".uploadPost").text("Loading Files....");
-            
-        }
-    });
-        
-    $('#editImageUploads').dropzone({
-        paramName: 'photos',
-        url: '{{ route("uploadFiles") }}',
-        dictDefaultMessage: "Drag your images",
-        acceptedFiles: ".png, .jpg, .jpeg",
-        clickable: true,
-        enqueueForUpload: true,
-        maxFilesize: 1,
-        uploadMultiple: true,
-        addRemoveLinks: false,
-        success: function (file, response) {
-            $(".editUploadImageFiles").append('<input type="hidden" id="" name="files[]" value="'+response.success+'" />');
-        },
-        error: function (file, response) {
-            console.log("something goes wrong");
-        }
-    });
-
-    $('#editVideoUploads').dropzone({
-        paramName: 'videos',
-        url: '{{ route("uploadFiles") }}',
-        dictDefaultMessage: "Drag your videos",
-        clickable: true,
-        acceptedFiles: ".mp4, .wmv, .mkv, .gif, .mpeg4, .mov",
-        enqueueForUpload: true,
-        maxFilesize: 1,
-        uploadMultiple: true,
-        addRemoveLinks: false,
-        success: function (file, response) {
-            $(".editUploadVideoFiles").append('<input type="hidden" id="" name="videos[]" value="'+response.success+'" />');
-        },
-        error: function (file, response) {
-            console.log("something goes wrong");
-        }
-    });
 </script>
 @endsection

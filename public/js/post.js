@@ -71,7 +71,6 @@ $(document).ready(function () {
                         if (snapImage()) {
                             video.removeEventListener('timeupdate', timeupdate);
                         }
-                        exit;
                     };
                     video.addEventListener('loadeddata', function () {
                         if (snapImage()) {
@@ -85,17 +84,13 @@ $(document).ready(function () {
 
                         canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
                         var image = canvas.toDataURL();
-                        console.log('Imagessss = '+canvas.width+" -- "+canvas.height);
                         var success = image.length > 100000;
                         if (success) {
-                            var img = document.createElement('img');
-                            img.src = image;
-                            img.width = 50;
-                            img.height = 50;
+                            /* var img = document.createElement('img');
+                            img.src = image; */
 
-                            //$("#videoFilesInfo").append(img);
                             $("<span class=\"pip\">" +
-                            "<img style=\"width: 100px;\" class=\"imageThumb\" src=\"" + image + "\" title=\"" + videoFile.name + "\"/>" +
+                            "<img style=\"width: 80px;\" class=\"imageThumb\" src=\"" + image + "\" title=\"" + videoFile.name + "\"/>" +
                             "<br/><span class=\"remove\" data-index=\"" + index + "\"><img src=\"" + base_url + "\/img/close.png\" id=\"remove\" style=\"margin: 0px;position: inherit;padding: 0px 0px 10px 0px;top: 148px;cursor: pointer;\" width=\"14px\"></span>" +
                             "</span>").insertAfter("#videoFilesInfo");
                             // $("#videoFilesInfo img").css('padding', '5px');
