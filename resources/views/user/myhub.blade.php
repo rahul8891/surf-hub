@@ -68,11 +68,11 @@
                                     @if(!empty($myHub->upload->video))
                                     <div class="pos-rel editBtnWrap">
                                         @if (!File::exists(asset('storage/fullVideos/'.$myHub->upload->video)))
-                                        <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}} video-js">
+                                        <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}}">
                                             <source src="{{ asset('storage/fullVideos/'.$myHub->upload->video) }}" >    
                                         </video>
                                         @else
-                                        <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}} video-js">
+                                        <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}}">
                                             <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
                                         </video>
                                         @endif
@@ -386,7 +386,6 @@
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
-<script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
 <script type="text/javascript">
 	var page = 1;
         
@@ -415,125 +414,5 @@
                 $("#myhub-data").append(data.html);
             });
 	}
-        
-        $(".editBtnImage").click(function() {
-            var id = $(this).data('id');
-            
-             $.ajax({
-                url: '/getPostData/'+id+'/image',
-                type: "get",
-            })
-            .done(function(data) {
-                $("#edit_video_upload").html("");
-                $("#edit_image_upload").append(data.html);
-                $("#edit_image_upload").modal('toggle');
-            });
-        });
-        
-        $(".editBtnVideo").click(function() {
-            var id = $(this).data('id');
-            
-             $.ajax({
-                url: '/getPostData/'+id+'/video',
-                type: "get",
-            })
-            .done(function(data) {
-                $("#edit_video_upload").html("");
-                $("#edit_video_upload").append(data.html);
-                $("#edit_video_upload").modal('toggle');
-            });
-        });
-        
-    Dropzone.autoDiscover = false;
-
-    $('#imageUploads').dropzone({
-        paramName: 'photos',
-        url: '{{ route("uploadFiles") }}',
-        dictDefaultMessage: "Drag your images",
-        acceptedFiles: ".png, .jpg, .jpeg",
-        clickable: true,
-        enqueueForUpload: true,
-        maxFilesize: 100,
-        uploadMultiple: true,
-        addRemoveLinks: false,
-        success: function (file, response) {
-            $(".uploadPost").removeAttr("disabled");
-            $(".uploadPost").removeClass("clicked");
-            $(".uploadPost").text("Upload");
-            $(".uploadImageFiles").append('<input type="hidden" id="" name="files[]" value="'+response.success+'" />');
-        },
-        error: function (file, response) {
-            console.log("something goes wrong");
-        },
-        sending: function(file, response, formData){
-            $(".uploadPost").attr("disabled", "true");
-            $(".uploadPost").addClass("clicked");
-            $(".uploadPost").text("Loading Files....");
-            
-        }
-    });
-
-    $('#videoUploads').dropzone({
-        paramName: 'videos',
-        url: '{{ route("uploadFiles") }}',
-        dictDefaultMessage: "Drag your videos",
-        clickable: true,
-        acceptedFiles: ".mp4, .wmv, .mkv, .gif, .mpeg4, .mov",
-        enqueueForUpload: true,
-        maxFilesize: 1000,
-        uploadMultiple: true,
-        addRemoveLinks: false,
-        success: function (file, response) {
-            $(".uploadPost").removeAttr("disabled");
-            $(".uploadPost").removeClass("clicked");
-            $(".uploadPost").text("Upload");
-            $(".uploadVideoFiles").append('<input type="hidden" id="" name="videos[]" value="'+response.success+'" />');
-        },
-        error: function (file, response) {
-            console.log("something goes wrong");
-        },
-        sending: function(file, response, formData){
-            $(".uploadPost").attr("disabled", "true");
-            $(".uploadPost").addClass("clicked");
-            $(".uploadPost").text("Loading Files....");
-            
-        }
-    });
-        
-    $('#editImageUploads').dropzone({
-        paramName: 'photos',
-        url: '{{ route("uploadFiles") }}',
-        dictDefaultMessage: "Drag your images",
-        acceptedFiles: ".png, .jpg, .jpeg",
-        clickable: true,
-        enqueueForUpload: true,
-        maxFilesize: 1,
-        uploadMultiple: true,
-        addRemoveLinks: false,
-        success: function (file, response) {
-            $(".editUploadImageFiles").append('<input type="hidden" id="" name="files[]" value="'+response.success+'" />');
-        },
-        error: function (file, response) {
-            console.log("something goes wrong");
-        }
-    });
-
-    $('#editVideoUploads').dropzone({
-        paramName: 'videos',
-        url: '{{ route("uploadFiles") }}',
-        dictDefaultMessage: "Drag your videos",
-        clickable: true,
-        acceptedFiles: ".mp4, .wmv, .mkv, .gif, .mpeg4, .mov",
-        enqueueForUpload: true,
-        maxFilesize: 1,
-        uploadMultiple: true,
-        addRemoveLinks: false,
-        success: function (file, response) {
-            $(".editUploadVideoFiles").append('<input type="hidden" id="" name="videos[]" value="'+response.success+'" />');
-        },
-        error: function (file, response) {
-            console.log("something goes wrong");
-        }
-    });
 </script>
 @endsection
