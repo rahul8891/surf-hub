@@ -56,59 +56,10 @@ $(document).ready(function () {
         $.each(newFileList, function (index, videoFile) {
             var ext = videoFile.name.substring(videoFile.name.lastIndexOf(".") + 1).toLowerCase();
             if (videoFile && (ext == "mov" || ext == "mp4" || ext == "wmv" || ext == "mkv" || ext == "gif" || ext == "mpeg4")) {
-                $("#videoError").hide();
-                var f = newFileList[index]
-                dataImage.push(input.files[index]);
-                // dataImage[index] = newFileList[index];
-
-                reader = new FileReader();
-                reader.onload = (function (e) {
-                    var blob = new Blob([reader.result], {type: videoFile.type});
-                    var url = URL.createObjectURL(blob);
-                    var video = document.createElement('video');
-                    
-                    var timeupdate = function () {
-                        if (snapImage()) {
-                            video.removeEventListener('timeupdate', timeupdate);
-                        }
-                    };
-                    video.addEventListener('loadeddata', function () {
-                        if (snapImage()) {
-                            video.removeEventListener('timeupdate', timeupdate);
-                        }
-                    });
-                    var snapImage = function () {
-                        var canvas = document.createElement('canvas');
-                        canvas.width = video.videoWidth;
-                        canvas.height = video.videoHeight;
-
-                        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-                        var image = canvas.toDataURL();
-                        var success = image.length > 100000;
-                        if (success) {
-                            /* var img = document.createElement('img');
-                            img.src = image; */
-
-                            $("<span class=\"pip\">" +
-                            "<img style=\"width: 80px;\" class=\"imageThumb\" src=\"" + image + "\" title=\"" + videoFile.name + "\"/>" +
-                            "<br/><span class=\"remove\" data-index=\"" + index + "\"><img src=\"" + base_url + "\/img/close.png\" id=\"remove\" style=\"margin: 0px;position: inherit;padding: 0px 0px 10px 0px;top: 148px;cursor: pointer;\" width=\"14px\"></span>" +
-                            "</span>").insertAfter("#videoFilesInfo");
-                            // $("#videoFilesInfo img").css('padding', '5px');
-                            URL.revokeObjectURL(url);
-                        }
-                        return success;
-                    };
-                    
-                    // video.addEventListener('timeupdate', timeupdate);
-                    video.preload = 'metadata';
-                    video.src = url;
-                    // Load video in Safari / IE11
-                    video.muted = true;
-                    video.playsInline = true;
-                    video.play();
-                });
-                
-                reader.readAsArrayBuffer(videoFile);
+                $("<span class=\"pip\">" +
+                "<img style=\"width: 80px;\" class=\"imageThumb\" src=\"/img/play.png\" title=\"" + videoFile.name + "\"/>" +
+                "<br/><span class=\"remove\" data-index=\"" + index + "\"><img src=\"" + base_url + "\/img/close.png\" id=\"remove\" style=\"margin: 0px;position: inherit;padding: 0px 0px 10px 0px;top: 148px;cursor: pointer;\" width=\"14px\"></span>" +
+                "</span>").insertAfter("#filesInfo");
             } else {
                 // REMOVE IMAGE INDEX IF NOT IMAGE 
                 newFileList.splice(index);
