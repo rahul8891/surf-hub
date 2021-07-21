@@ -57,7 +57,7 @@ $(document).ready(function () {
             var ext = videoFile.name.substring(videoFile.name.lastIndexOf(".") + 1).toLowerCase();
             if (videoFile && (ext == "mov" || ext == "mp4" || ext == "wmv" || ext == "mkv" || ext == "gif" || ext == "mpeg4")) {
                 $("<span class=\"pip\">" +
-                "<img style=\"width: 80px;\" class=\"imageThumb\" src=\"/img/play.png\" title=\"" + videoFile.name + "\"/>" +
+                "<img style=\"width: 50px;\" class=\"imageThumb\" src=\"/img/play.png\" title=\"" + videoFile.name + "\"/>" +
                 "<br/><span class=\"remove\" data-index=\"" + index + "\"><img src=\"" + base_url + "\/img/close.png\" id=\"remove\" style=\"margin: 0px;position: inherit;padding: 0px 0px 10px 0px;top: 148px;cursor: pointer;\" width=\"14px\"></span>" +
                 "</span>").insertAfter("#filesInfo");
             } else {
