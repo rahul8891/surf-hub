@@ -96,11 +96,11 @@
                                                     <img src="{{ asset("/img/facebook.png")}}" alt="">
                                                 </a>
                                             @elseif(!empty($posts->upload->video))
-                                                <a target="_blank" href="https://www.facebook.com/dialog/feed?app_id=911205526142894&amp;link={{ asset('') }}&amp;picture={{ asset('storage/images/'.$posts->upload->video) }}&amp;description={{ $posts->post_text }}&amp;name=SurfHUb&amp;redirect_uri={{ $url }}"/>
+                                                <a target="_blank" href="https://www.facebook.com/dialog/feed?app_id=911205526142894&amp;link={{ asset('') }}&amp;picture={{ asset('storage/fullVideos/'.$posts->upload->video) }}&amp;description={{ $posts->post_text }}&amp;name=SurfHUb&amp;redirect_uri={{ $url }}"/>
                                                     <img src="{{ asset("/img/facebook.png")}}" alt="">
                                                 </a>
                                             @else
-                                                <a target="_blank" href="https://www.facebook.com/dialog/feed?app_id=911205526142894&amp;link={{ asset('') }}&amp;image={{ asset('storage/images/'.$posts->upload->video) }}&amp;description={{ $posts->post_text }}&amp;name=SurfHUb&amp;redirect_uri={{ $url }}"/>
+                                                <a target="_blank" href="https://www.facebook.com/dialog/feed?app_id=911205526142894&amp;link={{ asset('') }}&amp;description={{ $posts->post_text }}&amp;name=SurfHUb&amp;redirect_uri={{ $url }}"/>
                                                     <img src="{{ asset("/img/facebook.png")}}" alt="">
                                                 </a>
                                             @endif
