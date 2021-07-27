@@ -56,16 +56,51 @@ $(document).ready(function () {
         $.each(newFileList, function (index, videoFile) {
             var ext = videoFile.name.substring(videoFile.name.lastIndexOf(".") + 1).toLowerCase();
             if (videoFile && (ext == "mov" || ext == "mp4" || ext == "wmv" || ext == "mkv" || ext == "gif" || ext == "mpeg4")) {
+                $("#videoError").hide();
+                var f = newFileList[index]
+                dataVideo.push(input.files[index]);
+                
+                //var filename = Math.round((new Date()).getTime() / 1000) + "." + ext;               
+                
+                //$("#input_multifile2").val(filename);
+                
+                //storeFiles(videoFile, filename);
+                
                 $("<span class=\"pip\">" +
                 "<img style=\"width: 50px;\" class=\"imageThumb\" src=\"/img/play.png\" title=\"" + videoFile.name + "\"/>" +
                 "<br/><span class=\"remove\" data-index=\"" + index + "\"><img src=\"" + base_url + "\/img/close.png\" id=\"remove\" style=\"margin: 0px;position: inherit;padding: 0px 0px 10px 0px;top: 148px;cursor: pointer;\" width=\"14px\"></span>" +
                 "</span>").insertAfter("#filesInfo");
+                $(".remove").click(function () {
+                    var indexRemoved = $(this).data('index');
+                    dataImage.splice(indexRemoved, 1);
+                    $(this).parent(".pip").remove();
+                });
             } else {
                 // REMOVE IMAGE INDEX IF NOT IMAGE 
                 newFileList.splice(index);
             }
             if (newFileList.length == 0) {
                 $("#videoError").show();
+            }
+        });
+    }
+    
+    function storeFiles(file, name) {
+        var formData = new FormData();           
+        formData.append("file", videoFile);
+        formData.append("filename", filename);
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url : base_url+'/upload/file',
+            type : 'POST',
+            data : formData,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            success : function() {
+                console.log(filename);
             }
         });
     }
@@ -78,6 +113,12 @@ $(document).ready(function () {
                 $("#imageError").hide();
                 var f = newFileList[index]
                 dataImage.push(input.files[index]);
+                
+                // var filename = Math.round((new Date()).getTime() / 1000) + "." + ext;               
+                
+                // $("#input_multifile2").val(filename);
+                
+                // storeFiles(videoFile, filename);
                 // dataImage[index] = newFileList[index];
                 reader = new FileReader();
                 reader.onload = (function (e) {

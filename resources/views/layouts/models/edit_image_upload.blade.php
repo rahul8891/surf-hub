@@ -5,8 +5,6 @@
 }
 </style>
     
-<div class="modal fade uploadModal" id="edit_image_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade uploadModal" id="edit_image_upload_main" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
     
 </div>
-@include('elements/edit_popup_upload')
