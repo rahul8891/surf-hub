@@ -17,7 +17,22 @@
         border-radius: 5px; 
     }
 </style>
-<link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
+
+<meta property="og:locale" content="en_US" />
+<meta property="og:app_id" content="911205526142894" />
+<meta property="og:type" content="post" />
+<meta property="og:description" content="{{ $postData->post_text }}" />
+<meta property="og:url" content="{{ Request::url() }}" />
+<meta property="og:site_name" content="Surf Hub" />
+@if(!empty($postData->upload->image)) 
+<meta property="og:image" content="{{ url('/')."/storage/images/".$postData->upload->image }}" />
+<meta property="og:image:width" content="398" />
+<meta property="og:image:height" content="327" />
+@elseif(!empty($postData->upload->video))
+<meta property="og:video" content="{{ url('/')."/storage/fullVideos/".$postData->upload->video }}" />
+<meta property="og:video:width" content="398" />
+<meta property="og:video:height" content="327" />
+@endif
 <section class="postsWrap">
     <div class="container">
         <div class="row">
@@ -74,7 +89,7 @@
                                             <ul class="pl-0 mb-0 d-flex">
                                                 <li>
                                                     @if(!empty($postData->upload->image))
-                                                    <a target="_blank" href="http://www.facebook.com/sharer/sharer.php?u=<?php echo Request::url(); ?>&amp;title=<?php echo 'Surf Hub';?>&amp;description=<?php echo $postData->post_text;?>&amp;images=<?php echo url('/').'/storage/images/'.$postData->upload->image;?>, 'sharer', 'toolbar=0,status=0,width=548,height=325'"><img src="{{ asset("/img/facebook.png")}}" alt=""></a>
+                                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"><img src="{{ asset("/img/facebook.png")}}" alt=""></a>
                                                     <!-- <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($postData->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$postData->upload->image)); ?>,'sharer'"> 
                                                         <img src="{{ asset("/img/facebook.png")}}" alt="">
                                                     </a> -->
