@@ -470,7 +470,7 @@ class PostService {
      * @param  message return message based on the condition 
      * @return dataArray with message
      */
-    public function updatePostData($input, &$message = '') {        
+    public function updatePostData($input, $filename, $type, &$message = '') {        
         $posts = Post::findOrFail($input['id']);
 
         $posts->post_type = $input['post_type'];
@@ -486,31 +486,20 @@ class PostService {
         $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
         $posts->created_at = Carbon::now();
         $posts->updated_at = Carbon::now();
-        if($posts->save()){
+        if($posts->save()){ echo "Type = ".$type." -- File =".$filename."<pre>";
             //for store media into upload table
-            $post_id=$posts->id;
-
-            if(isset($input['files'])) {
-                foreach ($input['files'] as $file) {
-                    $upload = new Upload();
-                    $upload->post_id = $post_id;
-                    $upload->image = $file;
-                    $upload->video = null;
+            if (isset($type) && !empty($type)) {
+                $upload = Upload::where('post_id', $posts->id)->first();
+                
+                if($upload) {
+                    $upload->image = ($type == 'image')? $filename : NULL;
+                    $upload->video = ($type == 'video')? $filename : NULL;
+                    
                     $upload->save();
                 }
             }
-            
-            if(isset($input['videos'])){
-                foreach ($input['videos'] as $video) {
-                    $upload = new Upload();
-                    $upload->post_id = $post_id;
-                    $upload->image = null;
-                    $upload->video = $video;
-                    $upload->save();
-                }
-            } 
 
-            $this->savePostNotification($post_id);
+            $this->savePostNotification($posts->id);
             $message = ['status' => TRUE, 'message' => "Data updated successfully."];
         } else {
             $message = ['status' => TRUE, 'message' => "Something went wrong. Please try again later."];

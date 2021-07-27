@@ -15,7 +15,12 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Crypt;
 use App\Services\AdminUserService;
+use Carbon\Carbon;
 use App\Models\Upload;
+use File, URL;
+use FFMpeg;
+use FFMpeg\Format\Video\X264;
+use FFMpeg\Filters\Video\VideoFilters;
 
 class MyHubController extends Controller
 {
@@ -152,9 +157,8 @@ class MyHubController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, $type, Request $request)
-    {
-        try{
+    public function edit($id, Request $request)
+    {   try{
             $currentUserCountryId = Auth::user()->user_profiles->country_id;    
             $countries = $this->masterService->getCountries();
             $language = $this->language;
@@ -174,7 +178,7 @@ class MyHubController extends Controller
         }
         
         if ($request->ajax()) {
-            $view = view('elements/edit_'.$type.'_upload',compact('customArray','countries','states','currentUserCountryId','myHubs','users','beach_name'))->render();
+            $view = view('elements/edit_image_upload',compact('customArray','countries','states','currentUserCountryId','myHubs','users','beach_name'))->render();
             return response()->json(['html' => $view]);
         }
         // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));    
@@ -213,16 +217,35 @@ class MyHubController extends Controller
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-                $result = $this->postService->updatePostData($data, $message);
+                $filename = $type = "";
+                $timeDate = strtotime(Carbon::now()->toDateTimeString());
+                
+                if($request->hasFile('files')) {
+                    $image = $request->file('files');
+                    $type = 'image';
+                    $destinationPath = public_path('storage/images/');
+                    $extension = $image->getClientOriginalExtension();
+                    $filename = $timeDate.'.'.$extension;
+                    $image->move($destinationPath, $filename);
+                } else if ($request->hasFile('videos')) {
+                    $video = $request->file('videos');
+                    $type = 'video';
+                    $destinationPath = public_path('storage/fullVideos/');                     
+                    $extension = $video->getClientOriginalExtension();
+                    $filename = $timeDate.'.'.$extension;
+                    $video->move($destinationPath, $filename);
+                }
+                
+                $result = $this->postService->updatePostData($data, $filename, $type, $message);
                 if($result['status'] === TRUE){
-                    return Redirect()->route('myhub')->withSuccess($message);
+                    return Redirect()->route('myhub')->withSuccess($result['message']);
                 }else{
-                    return Redirect()->route('myhub')->withErrors($message);
+                    return Redirect()->route('myhub')->withErrors($result['message']);
                 }
             }
         }catch (\Exception $e){
                 
-            return redirect()->route('postEdit', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage()); 
+            return redirect()->route('myhub')->withErrors($e->getMessage()); 
         }
     }
 
