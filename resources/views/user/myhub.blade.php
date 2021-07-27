@@ -2,7 +2,6 @@
 @section('content')
 @include('layouts/user/user_feed_menu')
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
 <style>
     .imageWrap {
         position: relative;
@@ -62,10 +61,9 @@
                                     @if(!empty($myHub->upload->image)) 
                                     <div class="pos-rel editBtnWrap">
                                         <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
-                                        <!-- <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button> -->
+                                        <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button>
                                     </div>
-                                    @endif
-                                    @if(!empty($myHub->upload->video))
+                                    @elseif(!empty($myHub->upload->video))
                                     <div class="pos-rel editBtnWrap">
                                         @if (!File::exists(asset('storage/fullVideos/'.$myHub->upload->video)))
                                         <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}}">
@@ -76,7 +74,11 @@
                                             <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
                                         </video>
                                         @endif
-                                        <!-- <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button> -->
+                                        <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button>
+                                    </div>
+                                    @else
+                                    <div class="pos-rel editBtnWrap">
+                                        <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button>
                                     </div>
                                     @endif
 
@@ -382,10 +384,9 @@
 </section>
 @include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
+@include('layouts/models/edit_image_upload')
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 	var page = 1;
         
@@ -414,5 +415,21 @@
                 $("#myhub-data").append(data.html);
             });
 	}
+        
+        $(".editBtnVideo").click(function() {
+            var id = $(this).data('id');
+            
+            $.ajax({
+                url: '/getPostData/' + id,
+                type: "get",
+                async: false,
+                success: function(data) {
+                    // console.log(data.html);
+                    $("#edit_image_upload_main").html("");
+                    $("#edit_image_upload_main").append(data.html);
+                    $("#edit_image_upload_main").modal('show');                
+                }
+            });
+        });
 </script>
 @endsection
