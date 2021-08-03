@@ -18,21 +18,6 @@
     }
 </style>
 
-<meta property="og:locale" content="en_US" />
-<meta property="og:app_id" content="911205526142894" />
-<meta property="og:type" content="post" />
-<meta property="og:description" content="{{ $postData->post_text }}" />
-<meta property="og:url" content="{{ Request::url() }}" />
-<meta property="og:site_name" content="Surf Hub" />
-@if(!empty($postData->upload->image)) 
-<meta property="og:image" content="{{ url('/')."/storage/images/".$postData->upload->image }}" />
-<meta property="og:image:width" content="398" />
-<meta property="og:image:height" content="327" />
-@elseif(!empty($postData->upload->video))
-<meta property="og:video" content="{{ url('/')."/storage/fullVideos/".$postData->upload->video }}" />
-<meta property="og:video:width" content="398" />
-<meta property="og:video:height" content="327" />
-@endif
 <section class="postsWrap">
     <div class="container">
         <div class="row">
@@ -51,23 +36,31 @@
                                 @endif
                                 <div class="pl-3">
                                     <h4>{{ucfirst($postData->user->user_profiles->first_name)}} {{ucfirst($postData->user->user_profiles->last_name)}}</h4>
-                                    <span>{{ $postData->beach_breaks->beach_name ?? '' }}, {{\Carbon\Carbon::parse($postData->created_at)->format('d-m-Y')}}</span><br>
-                                    <span>{{ postedDateTime($postData->created_at) }}</span>
+                                    <span>{{ $postData->beach_breaks->beach_name ?? '' }}, {{\Carbon\Carbon::parse($postData->surf_start_date)->format('d-m-Y')}}</span><br>
+                                    <span>{{ postedDateTime($postData->surf_start_date) }}</span>
                                 </div>
                             </div>                            
                         </div>
                         <p class=" description">{{$postData->post_text}}</p>
                                 <div class="imgRatingWrap">
-                                    @if(!empty($postData->upload->image)) 
+                                    @if(!empty($postData->upload->image))
+                                    @php 
+                                        $type = 'image';
+                                        $file = $postData->upload->image;
+                                    @phpend
                                     <div class="pos-rel editBtnWrap">
                                             <img src="{{ asset('storage/images/'.$postData->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$postData->id}}">
                                     </div>
                                     @endif
                                     @if(!empty($postData->upload->video))
+                                    @php 
+                                        $type = 'video';
+                                        $file = $postData->upload->video;
+                                    @phpend
                                     <br>
                                     <div class="pos-rel editBtnWrap">
                                         <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$postData->id}} video-js">
-                                            <source src="{{ asset('storage/videos/'.$postData->upload->video) }}" >    
+                                            <source src="{{ asset('storage/fullVideos/'.$postData->upload->video) }}" >    
                                         </video>
                                         
                                     </div>
@@ -88,20 +81,7 @@
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
                                                 <li>
-                                                    @if(!empty($postData->upload->image))
-                                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"><img src="{{ asset("/img/facebook.png")}}" alt=""></a>
-                                                    <!-- <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($postData->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$postData->upload->image)); ?>,'sharer'"> 
-                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                    </a> -->
-                                                    @elseif(!empty($postData->upload->video))
-                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($postData->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$postData->upload->video)); ?>,'sharer'">
-                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                    </a>
-                                                    @else
-                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($postData->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>,'sharer'">
-                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                    </a>
-                                                    @endif
+                                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"><img src="{{ asset("/img/facebook.png")}}" alt=""></a>         
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>

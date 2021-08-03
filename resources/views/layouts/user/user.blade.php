@@ -5,6 +5,22 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('images/logo_small.png') }}">
+    
+    
+<meta property="og:locale" content="en_US" />
+<meta property="og:app_id" content="911205526142894" />
+<meta property="og:type" content="post" />
+<meta property="og:description" content="" />
+<meta property="og:url" content="" />
+<meta property="og:site_name" content="Surf Hub" />
+ 
+<meta property="og:image" content="" />
+<meta property="og:image:width" content="398" />
+<meta property="og:image:height" content="327" />
+<meta property="og:video" content="" />
+<meta property="og:video:width" content="398" />
+<meta property="og:video:height" content="327" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ config('customarray.siteTitle.user') }}</title>
     

@@ -34,8 +34,8 @@
                                 @endif
                                 <div class="pl-3">
                                     <h4>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ ucfirst($posts->user->user_name) }} )</h4>
-                                    <span>{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->created_at)->format('d-m-Y')}}</span><br>
-                                    <span>{{ postedDateTime($posts->created_at) }}</span>
+                                    <span>{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y')}}</span><br>
+                                    <span>{{ postedDateTime($posts->surf_start_date) }}</span>
                                 </div>
                             </div>
                             @if($posts->user_id != Auth::user()->id)
@@ -89,21 +89,9 @@
                                             <span class="divider"></span>
                                         </li> -->
                                         <li>
-                                           @if(!empty($posts->upload->image))
-                                                
-                                                <a target="_blank" href="http://www.facebook.com/dialog/feed?app_id=911205526142894&amp;link={{ asset('') }}&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[picture]={{ asset('storage/images/'.$posts->upload->image) }},'sharer'">
-                                                
-                                                    <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                </a>
-                                            @elseif(!empty($posts->upload->video))
-                                                <a target="_blank" href="https://www.facebook.com/dialog/feed?app_id=911205526142894&amp;link={{ asset('') }}&amp;picture={{ asset('storage/fullVideos/'.$posts->upload->video) }}&amp;description={{ $posts->post_text }}&amp;name=SurfHUb&amp;redirect_uri={{ $url }}"/>
-                                                    <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                </a>
-                                            @else
-                                                <a target="_blank" href="https://www.facebook.com/dialog/feed?app_id=911205526142894&amp;link={{ asset('') }}&amp;description={{ $posts->post_text }}&amp;name=SurfHUb&amp;redirect_uri={{ $url }}"/>
-                                                    <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                </a>
-                                            @endif
+                                           <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url()."/postData/".$posts->id }}">                                                
+                                                <img src="{{ asset("/img/facebook.png")}}" alt="">
+                                            </a>                                            
                                         </li>
                                         <li>
                                             <span class="divider"></span>
@@ -335,8 +323,6 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src='https://cdn.jwplayer.com/libraries/7sjHar0d.js'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -373,104 +359,5 @@
             $("#post-data").append(data.html);
         });
     }
-        
-    /* Dropzone.autoDiscover = false;
-
-    $('#imageUploads').dropzone({
-        paramName: 'photos',
-        url: '{{ route("uploadFiles") }}',
-        dictDefaultMessage: "Drag your images",
-        acceptedFiles: ".png, .jpg, .jpeg",
-        clickable: true,
-        enqueueForUpload: true,
-        maxFilesize: 100,
-        uploadMultiple: true,
-        addRemoveLinks: false,
-        success: function (file, response) {
-            $(".uploadPost").removeAttr("disabled");
-            $(".uploadPost").removeClass("clicked");
-            $(".uploadPost").text("Upload");
-            $(".uploadImageFiles").append('<input type="hidden" id="" name="files[]" value="'+response.success+'" />');
-        },
-        error: function (file, response) {
-            console.log("something goes wrong");
-        },
-        sending: function(file, response, formData){
-            $(".uploadPost").attr("disabled", "true");
-            $(".uploadPost").addClass("clicked");
-            $(".uploadPost").text("Loading Files....");
-        }
-    });
-
-    $('#videoUploads').dropzone({
-        paramName: 'videos',
-        url: '{{ route("uploadFiles") }}',
-        dictDefaultMessage: "Drag your videos",
-        clickable: true,
-        acceptedFiles: ".mp4, .wmv, .mkv, .gif, .mpeg4, .mov",
-        enqueueForUpload: true,
-        maxFilesize: 1000,
-        uploadMultiple: true,
-        addRemoveLinks: false,
-        success: function (file, response) {
-            $(".uploadPost").removeAttr("disabled");
-            $(".uploadPost").removeClass("clicked");
-            $(".uploadPost").text("Upload");
-            $(".uploadVideoFiles").append('<input type="hidden" id="" name="videos[]" value="'+response.success+'" />');
-        },
-        error: function (file, response) {
-            console.log("something goes wrong");
-        },
-        sending: function(file, response, formData){
-            $(".uploadPost").attr("disabled", "true");
-            $(".uploadPost").addClass("clicked");
-            $(".uploadPost").text("Loading Files....");
-            
-        }
-    });
-        
-    $('#editImageUploads').dropzone({
-        paramName: 'photos',
-        url: '{{ route("uploadFiles") }}',
-        dictDefaultMessage: "Drag your images",
-        acceptedFiles: ".png, .jpg, .jpeg",
-        clickable: true,
-        enqueueForUpload: true,
-        maxFilesize: 1,
-        uploadMultiple: true,
-        addRemoveLinks: false,
-        success: function (file, response) {
-            spinner.hide();
-            $(".editUploadImageFiles").append('<input type="hidden" id="" name="files[]" value="'+response.success+'" />');
-        },
-        error: function (file, response) {
-            console.log("something goes wrong");
-        },
-        sending: function(file, response, formData){
-            spinner.show();
-        }
-    });
-
-    $('#editVideoUploads').dropzone({
-        paramName: 'videos',
-        url: '{{ route("uploadFiles") }}',
-        dictDefaultMessage: "Drag your videos",
-        clickable: true,
-        acceptedFiles: ".mp4, .wmv, .mkv, .gif, .mpeg4, .mov",
-        enqueueForUpload: true,
-        maxFilesize: 1,
-        uploadMultiple: true,
-        addRemoveLinks: false,
-        success: function (file, response) {
-            spinner.hide();
-            $(".editUploadVideoFiles").append('<input type="hidden" id="" name="videos[]" value="'+response.success+'" />');
-        },
-        error: function (file, response) {
-            console.log("something goes wrong");
-        },
-        sending: function(file, response, formData){
-            spinner.show();
-        }
-    });*/
 </script>
 @endsection
