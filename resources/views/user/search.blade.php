@@ -48,19 +48,11 @@
                             @endphp
                         <div class="imgRatingWrap">
                             @if(!empty($posts->upload->image))
-                                @php 
-                                    $type = 'image';
-                                    $file = url('/')."/storage/images/".$posts->upload->image;
-                                @endphp
                                 <div class="pos-rel editBtnWrap">
                                     <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
                                     <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
                                 </div>
                             @elseif(!empty($posts->upload->video))
-                                @php 
-                                    $type = 'video';
-                                    $file = url('/')."/storage/fullVideos/".$posts->upload->video;
-                                @endphp
                                 <div class="pos-rel editBtnWrap">
                                     @if (!File::exists(asset('storage/fullVideos/'.$posts->upload->video)))
                                     <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$posts->id}} video-js">
@@ -72,12 +64,7 @@
                                     </video>
                                     @endif
                                     <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
-                                </div>                            
-                            @else
-                                @php 
-                                    $type = '';
-                                    $file = '';
-                                @endphp
+                                </div>
                             @endif
                             
                             <div class="ratingShareWrap">
@@ -99,7 +86,7 @@
                                         <li>
                                             <span class="divider"></span>
                                         </li> -->
-                                        <li onmouseover="shareFB('{{ $url }}', '{{ $posts->post_text }}', '{{ $type }}', '{{ $file }}');">
+                                        <li>
                                             <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url()."/postData/".$posts->id }}">                                                
                                                 <img src="{{ asset("/img/facebook.png")}}" alt="">
                                             </a> 
