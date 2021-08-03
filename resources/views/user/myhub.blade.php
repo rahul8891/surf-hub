@@ -112,8 +112,8 @@
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
                                                 <li>
-                                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url()."/postData/".$myHub->id }}">                                                
-                                                        <img onclick="shareFB({{ $url }}, {{ $myHub->post_text }}, {{ $type }} {{ $file }});" src="{{ asset("/img/facebook.png")}}" alt="">
+                                                    <a target="_blank" onclick="shareFB({{ $url }}, {{ $myHub->post_text }}, {{ $type }} {{ $file }});" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url()."/postData/".$myHub->id }}">                                                
+                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
                                                     </a> 
                                                 </li>
                                                 <li>

@@ -81,7 +81,7 @@
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
                                                 <li>
-                                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"><img src="{{ asset("/img/facebook.png")}}" alt=""></a>         
+                                                    <a target="_blank" onclick="shareFB({{ $url }}, {{ $myHub->post_text }}, {{ $type }} {{ $file }});" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"><img src="{{ asset("/img/facebook.png")}}" alt=""></a>         
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>
