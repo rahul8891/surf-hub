@@ -14,8 +14,8 @@
                                 @endif
                                 <div class="pl-3">
                                     <h4>{{ucfirst($myHub->user->user_profiles->first_name)}} {{ucfirst($myHub->user->user_profiles->last_name)}} ( {{ ucfirst($myHub->user->user_name) }} )</h4>
-                                    <span>{{ $myHub->beach_breaks->beach_name ?? '' }} {{ $myHub->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($myHub->created_at)->format('d-m-Y')}}</span><br>
-                                    <span>{{ postedDateTime($myHub->created_at) }}</span>
+                                    <span>{{ $myHub->beach_breaks->beach_name ?? '' }} {{ $myHub->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($myHub->surf_start_date)->format('d-m-Y')}}</span><br>
+                                    <span>{{ postedDateTime($myHub->surf_start_date) }}</span>
                                 </div>
                             </div>
 
@@ -66,19 +66,9 @@
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
                                                 <li>
-                                                    @if(!empty($myHub->upload->image))
-                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$myHub->upload->image)); ?>,'sharer'">
+                                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url()."/postData/".$myHub->id }}">                                                
                                                         <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                    </a>
-                                                    @elseif(!empty($myHub->upload->video))
-                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$myHub->upload->video)); ?>,'sharer'">
-                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                    </a>
-                                                    @else
-                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>,'sharer'">
-                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                    </a>
-                                                    @endif
+                                                    </a> 
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>

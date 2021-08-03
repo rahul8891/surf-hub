@@ -14,8 +14,8 @@
                                 @endif
                                 <div class="pl-3">
                                     <h4>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ ucfirst($posts->user->user_name) }} )</h4>
-                                    <span>{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->created_at)->format('d-m-Y')}}</span><br>
-                                    <span>{{ postedDateTime($posts->created_at) }}</span>
+                                    <span>{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y')}}</span><br>
+                                    <span>{{ postedDateTime($posts->surf_start_date) }}</span>
                                 </div>
                             </div>
                             @if($posts->user_id != Auth::user()->id)
@@ -62,19 +62,9 @@
                                             <span class="divider"></span>
                                         </li> -->
                                         <li>
-                                           @if(!empty($posts->upload->image))
-                                                <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$posts->upload->image)); ?>,'sharer'">
-                                                    <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                </a>
-                                            @elseif(!empty($posts->upload->video))
-                                                <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$posts->upload->video)); ?>,'sharer'">
-                                                    <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                </a>
-                                            @else
-                                                <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($posts->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>,'sharer'">
-                                                    <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                </a>
-                                            @endif
+                                           <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url()."/postData/".$posts->id }}">                                                
+                                                <img src="{{ asset("/img/facebook.png")}}" alt="">
+                                            </a> 
                                         </li>
                                         <li>
                                             <span class="divider"></span>
