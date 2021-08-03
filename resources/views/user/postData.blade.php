@@ -42,28 +42,37 @@
                             </div>                            
                         </div>
                         <p class=" description">{{$postData->post_text}}</p>
+                                @php 
+                                    $url = Request::url();
+                                @endphp
                                 <div class="imgRatingWrap">
                                     @if(!empty($postData->upload->image))
-                                    @php 
-                                        $type = 'image';
-                                        $file = $postData->upload->image;
-                                    @phpend
-                                    <div class="pos-rel editBtnWrap">
-                                            <img src="{{ asset('storage/images/'.$postData->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$postData->id}}">
-                                    </div>
-                                    @endif
-                                    @if(!empty($postData->upload->video))
-                                    @php 
-                                        $type = 'video';
-                                        $file = $postData->upload->video;
-                                    @phpend
-                                    <br>
-                                    <div class="pos-rel editBtnWrap">
-                                        <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$postData->id}} video-js">
-                                            <source src="{{ asset('storage/fullVideos/'.$postData->upload->video) }}" >    
-                                        </video>
-                                        
-                                    </div>
+                                        @php 
+                                            $type = 'image';
+                                            $file = url('/')."/storage/images/".$postData->upload->image;
+                                        @endphp
+                                        <div class="pos-rel editBtnWrap">
+                                                <img src="{{ asset('storage/images/'.$postData->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$postData->id}}">
+                                        </div>
+                                    @elseif(!empty($postData->upload->video))
+                                        @php 
+                                            $type = 'video';
+                                            $file = url('/')."/storage/fullVideos/".$postData->upload->video;
+                                        @endphp
+                                        <br>
+                                        <div class="pos-rel editBtnWrap">
+                                            <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$postData->id}} video-js">
+                                                <source src="{{ asset('storage/fullVideos/'.$postData->upload->video) }}" >    
+                                            </video>
+                                        </div>
+                                    @else
+                                        @php 
+                                            $type = '';
+                                            $file = '';
+                                        @endphp
+                                        <div class="pos-rel editBtnWrap">
+                                            <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button>
+                                        </div>
                                     @endif
 
                                     <div class="ratingShareWrap">
@@ -80,8 +89,8 @@
                                         </ul>
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
-                                                <li>
-                                                    <a target="_blank" onclick="shareFB({{ $url }}, {{ $myHub->post_text }}, {{ $type }} {{ $file }});" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"><img src="{{ asset("/img/facebook.png")}}" alt=""></a>         
+                                                <li onmouseover="shareFB('{{ $url }}', '{{ $postData->post_text }}', '{{ $type }}', '{{ $file }}');">
+                                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"><img src="{{ asset("/img/facebook.png")}}" alt=""></a>         
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>
@@ -339,11 +348,4 @@
 </section>
 @include('elements/location_popup_model')
 
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
-<script type="text/javascript">
-	
-</script>
 @endsection

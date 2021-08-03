@@ -28,27 +28,46 @@
                             </form> -->
                         </div>
                         <p class=" description">{{$myHub->post_text}}</p>
+                                @php 
+                                    $url = Request::url();
+                                @endphp
+                                
                                 <div class="imgRatingWrap">
                                     @if(!empty($myHub->upload->image)) 
+                                    @php 
+                                        $type = 'image';
+                                        $file = url('/')."/storage/images/".$myHub->upload->image;
+                                    @endphp
                                     <div class="pos-rel editBtnWrap">
                                         <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
                                         <button class="editBtn editBtnVideo"><img src="/img/edit.png" class="img-fluid"></button>
                                     </div>
                                     @endif
                                     @if(!empty($myHub->upload->video))
-                                    
-                                    <div class="pos-rel editBtnWrap">
-                                        @if (!File::exists(asset('storage/fullVideos/'.$myHub->upload->video)))
-                                        <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}} video-js">
-                                            <source src="{{ asset('storage/fullVideos/'.$myHub->upload->video) }}" >    
-                                        </video>
-                                        @else
-                                        <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}} video-js">
-                                            <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
-                                        </video>
-                                        @endif
-                                        <button class="editBtn editBtnVideo"><img src="/img/edit.png" class="img-fluid"></button>
-                                    </div>
+                                        @php 
+                                            $type = 'video';
+                                            $file = url('/')."/storage/fullVideos/".$myHub->upload->video;
+                                        @endphp
+                                        <div class="pos-rel editBtnWrap">
+                                            @if (!File::exists(asset('storage/fullVideos/'.$myHub->upload->video)))
+                                            <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}} video-js">
+                                                <source src="{{ asset('storage/fullVideos/'.$myHub->upload->video) }}" >    
+                                            </video>
+                                            @else
+                                            <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}} video-js">
+                                                <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
+                                            </video>
+                                            @endif
+                                            <button class="editBtn editBtnVideo"><img src="/img/edit.png" class="img-fluid"></button>
+                                        </div>
+                                    @else
+                                        @php 
+                                            $type = '';
+                                            $file = '';
+                                        @endphp
+                                        <div class="pos-rel editBtnWrap">
+                                            <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button>
+                                        </div>
                                     @endif
 
                                     <div class="ratingShareWrap">
@@ -65,7 +84,7 @@
                                         </ul>
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
-                                                <li>
+                                                <li onmouseover="shareFB('{{ $url }}', '{{ $myHub->post_text }}', '{{ $type }}', '{{ $file }}');">
                                                     <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url()."/postData/".$myHub->id }}">                                                
                                                         <img src="{{ asset("/img/facebook.png")}}" alt="">
                                                     </a> 
