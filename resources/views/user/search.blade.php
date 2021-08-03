@@ -43,27 +43,41 @@
                             @endif
                         </div>
                         <p class="description">{{$posts->post_text}}</p>
+                            @php 
+                                $url = Request::url();
+                            @endphp
                         <div class="imgRatingWrap">
                             @if(!empty($posts->upload->image))
-                            <div class="pos-rel editBtnWrap">
-                                <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
-                                <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
-                            </div>
-                            
-                            @endif
-                            @if(!empty($posts->upload->video))
-                            <div class="pos-rel editBtnWrap">
-                                @if (!File::exists(asset('storage/fullVideos/'.$posts->upload->video)))
-                                <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$posts->id}} video-js">
-                                    <source src="{{ asset('storage/fullVideos/'.$posts->upload->video) }}" >    
-                                </video>
-                                @else
-                                <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$posts->id}} video-js">
-                                    <source src="{{ asset('storage/videos/'.$posts->upload->video) }}" >    
-                                </video>
-                                @endif
-                                <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
-                            </div>                            
+                                @php 
+                                    $type = 'image';
+                                    $file = url('/')."/storage/images/".$posts->upload->image;
+                                @endphp
+                                <div class="pos-rel editBtnWrap">
+                                    <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
+                                    <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
+                                </div>
+                            @elseif(!empty($posts->upload->video))
+                                @php 
+                                    $type = 'video';
+                                    $file = url('/')."/storage/fullVideos/".$posts->upload->video;
+                                @endphp
+                                <div class="pos-rel editBtnWrap">
+                                    @if (!File::exists(asset('storage/fullVideos/'.$posts->upload->video)))
+                                    <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$posts->id}} video-js">
+                                        <source src="{{ asset('storage/fullVideos/'.$posts->upload->video) }}" >    
+                                    </video>
+                                    @else
+                                    <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$posts->id}} video-js">
+                                        <source src="{{ asset('storage/videos/'.$posts->upload->video) }}" >    
+                                    </video>
+                                    @endif
+                                    <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
+                                </div>                            
+                            @else
+                                @php 
+                                    $type = '';
+                                    $file = '';
+                                @endphp
                             @endif
                             
                             <div class="ratingShareWrap">
@@ -85,7 +99,7 @@
                                         <li>
                                             <span class="divider"></span>
                                         </li> -->
-                                        <li>
+                                        <li onmouseover="shareFB('{{ $url }}', '{{ $posts->post_text }}', '{{ $type }}', '{{ $file }}');">
                                             <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url()."/postData/".$posts->id }}">                                                
                                                 <img src="{{ asset("/img/facebook.png")}}" alt="">
                                             </a> 
