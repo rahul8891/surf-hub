@@ -61,7 +61,6 @@
                                     @if(!empty($myHub->upload->image)) 
                                         <div class="pos-rel editBtnWrap">
                                             <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
-                                            <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button>
                                         </div>
                                     @elseif(!empty($myHub->upload->video))
                                         <div class="pos-rel editBtnWrap">
@@ -74,7 +73,6 @@
                                                 <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
                                             </video>
                                             @endif
-                                            <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button>
                                         </div>
                                     @endif
 
@@ -111,6 +109,12 @@
                                                 <li>
                                                     <a onclick="openFullscreen({{$myHub->id}});"><img src="{{ asset("/img/full_screen.png")}}"
                                                             alt=""></a>
+                                                </li>
+                                                <li>
+                                                    <span class="divider"></span>
+                                                </li>
+                                                <li>
+                                                <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $myHub->id }}">Edit</a>
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>
