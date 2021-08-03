@@ -1,4 +1,4 @@
-@extends('layouts.user.user')
+@extends('layouts.user.user_post')
 @section('content')
 @include('layouts/user/user_feed_menu')
 

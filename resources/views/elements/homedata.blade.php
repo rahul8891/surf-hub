@@ -25,23 +25,10 @@
                             @endif
                         </div>
                         <p class="description">{{$posts->post_text}}</p>
-                            @php 
-                                $url = Request::url();
-                            @endphp
                             <div class="imgRatingWrap">
                             @if(!empty($posts->upload->image))
-                                @php 
-                                    $type = 'image';
-                                    $file = url('/')."/storage/images/".$posts->upload->image;
-                                @endphp
-                                
                                 <img src="{{ asset('storage/images/'.(isset($posts->upload->image) && !empty($posts->upload->image))?$posts->upload->image:'') }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
                             @elseif(!empty($posts->upload->video))
-                                @php 
-                                    $type = 'video';
-                                    $file = url('/')."/storage/fullVideos/".$posts->upload->video;
-                                @endphp
-                                
                                 @if (!File::exists(asset('storage/fullVideos/'.$posts->upload->video)))
                                     <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$posts->id}} video-js">
                                         <source src="{{ asset('storage/fullVideos/'.$posts->upload->video) }}" >    
@@ -51,11 +38,6 @@
                                         <source src="{{ asset('storage/videos/'.$posts->upload->video) }}" >    
                                     </video>
                                 @endif
-                            @else
-                                @php 
-                                    $type = '';
-                                    $file = '';
-                                @endphp
                             @endif
                             
                             <div class="ratingShareWrap">
@@ -72,13 +54,8 @@
                                 </ul>
                                 <div>
                                     <ul class="pl-0 mb-0 d-flex">
-                                        <!-- <li>
-                                            <a href="#"><img src={{asset("img/instagram.png")}} alt=""></a>
-                                        </li>
+                                       
                                         <li>
-                                            <span class="divider"></span>
-                                        </li> -->
-                                        <li onmouseover="shareFB('{{ $url }}', '{{ $postData->post_text }}', '{{ $type }}', '{{ $file }}');">
                                            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url()."/postData/".$posts->id }}">                                                
                                                 <img src="{{ asset("/img/facebook.png")}}" alt="">
                                             </a> 
