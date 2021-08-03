@@ -765,11 +765,9 @@ $(document).ready(function () {
 	};
 	
 	// ajax form field data for post
-	$('.search-box').keyup(debounce(function(){
+	$('.search-box').keyup(debounce(function() { 
 		// the following function will be executed every half second	
-	
-		if($(this).val().length > 2){
-		
+                if($(this).val().length > 2){		
 			$.ajax({
 				type: "GET",
 				url: "/getBeachBreach",
@@ -980,7 +978,7 @@ $(document).on('click','#filter_other_surfer_list li', function(){
 	 * State Baded on the selection on country
 	 */
 
-	$(document).on('change', '#country_id', function (e) {    
+	$(document).on('change', '#country_id, #edit_country_id', function (e) {    
         var currentcountryValue = $(this).val();
         if (currentcountryValue != 0) {
            $.ajax({
@@ -994,11 +992,11 @@ $(document).on('click','#filter_other_surfer_list li', function(){
               success: function (jsonResponse) {
                  //console.log(jsonResponse);
                  if (jsonResponse.status == 'success') {
-                    $("#state_id").empty();
+                    $("#state_id, #edit_state_id").empty();
                     var myJsonData = jsonResponse.data;
-                    $("#state_id").append('<option value="">--Select--</option>');
+                    $("#state_id, #edit_state_id").append('<option value="">--Select--</option>');
                     $.each(myJsonData, function (key, value) {
-                       $("#state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                       $("#state_id, #edit_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                     });
                  } else {
                     $("#state_id").empty();
@@ -1015,7 +1013,7 @@ $(document).on('click','#filter_other_surfer_list li', function(){
 	 * Filter State Baded on the selection on filter country
 	 */
 
-	$(document).on('change', '#filter_country_id', function (e) {    
+	$(document).on('change', '#filter_country_id, #edit_country_id', function (e) {
         var currentcountryValue = $(this).val();
         if (currentcountryValue != 0) {
            $.ajax({
@@ -1029,11 +1027,11 @@ $(document).on('click','#filter_other_surfer_list li', function(){
               success: function (jsonResponse) {
                  //console.log(jsonResponse);
                  if (jsonResponse.status == 'success') {
-                    $("#filter_state_id").empty();
+                    $("#filter_state_id, #edit_state_id").empty();
                     var myJsonData = jsonResponse.data;
-                    $("#filter_state_id").append('<option value="">--Select--</option>');
+                    $("#filter_state_id, #edit_state_id").append('<option value="">--Select--</option>');
                     $.each(myJsonData, function (key, value) {
-                       $("#filter_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                       $("#filter_state_id, #edit_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                     });
                  } else {
                     $("#filter_state_id").empty();
@@ -1323,3 +1321,20 @@ $('#test-other').click(function() {
         $('#othersFilterSurfer').hide();
     }
 });
+
+
+function shareFB(url, desc, type, file) {
+    $('meta[property=og:url]').attr('content', url);
+    $('meta[property=og:description]').attr('content', desc);
+
+    if(type == 'image') {
+        $('meta[property=og:image]').attr('content', file);                
+        $('meta[property=og:video]').attr('content', '');
+    } else if (type == 'video') {
+        $('meta[property=og:image]').attr('content', '');                
+        $('meta[property=og:video]').attr('content', file);
+    } else {
+        $('meta[property=og:image]').attr('content', '');                
+        $('meta[property=og:video]').attr('content', '');
+    }      
+}

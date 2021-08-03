@@ -45,14 +45,15 @@
                                 <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
                                 <input type="file" id="input_multifileSelect1" name="files[]" accept=".png, .jpg, .jpeg"
                                        multiple />
+                                <input type="hiddden" id="input_multifile1" name="images[]" style="display:none;" />
                             </div>
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
                                 <input type="file" id="input_multifileSelect2" name="videos[]" accept=".mp4, .wmv, .mkv, .gif, .mpeg4, .mov" multiple />
+                                <input type="hiddden" id="input_multifile2" name="videofile[]" style="display:none;" />
                             </div>
                         </div>
                         <div class="row" id="filesInfo"></div>
-                        <div class="row" id="videoFilesInfo"></div>
 
                         <span id="imageError" class="notDisplayed required">{{ __('Please upload files having extensions: jpg, jpeg, png') }}</span>
                         <span id="videoError" class="notDisplayed required">{{ __('Please upload files having extensions: mp4, wmv, mkv, gif, mpeg4, mov') }}</span>

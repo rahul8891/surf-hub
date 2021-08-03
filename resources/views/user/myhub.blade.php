@@ -46,8 +46,8 @@
                                 @endif
                                 <div class="pl-3">
                                     <h4>{{ucfirst($myHub->user->user_profiles->first_name)}} {{ucfirst($myHub->user->user_profiles->last_name)}} ( {{ ucfirst($myHub->user->user_name) }} )</h4>
-                                    <span>{{ $myHub->beach_breaks->beach_name ?? '' }} {{ $myHub->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($myHub->created_at)->format('d-m-Y')}}</span><br>
-                                    <span>{{ postedDateTime($myHub->created_at) }}</span>
+                                    <span>{{ $myHub->beach_breaks->beach_name ?? '' }} {{ $myHub->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($myHub->surf_start_date)->format('d-m-Y')}}</span><br>
+                                    <span>{{ postedDateTime($myHub->surf_start_date) }}</span>
                                 </div>
                             </div>
 
@@ -57,26 +57,41 @@
                             
                         </div>
                         <p class=" description">{{$myHub->post_text}}</p>
+                                @php 
+                                    $url = Request::url()."/postData/".$myHub->id;
+                                @endphp
                                 <div class="imgRatingWrap">
                                     @if(!empty($myHub->upload->image)) 
-                                    <div class="pos-rel editBtnWrap">
-                                        <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
-                                        <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button>
-                                    </div>
+                                        @php 
+                                            $type = 'image';
+                                            $file = $myHub->upload->image;
+                                        @endphp
+                                        <div class="pos-rel editBtnWrap">
+                                            <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
+                                            <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button>
+                                        </div>
                                     @elseif(!empty($myHub->upload->video))
-                                    <div class="pos-rel editBtnWrap">
-                                        @if (!File::exists(asset('storage/fullVideos/'.$myHub->upload->video)))
-                                        <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}}">
-                                            <source src="{{ asset('storage/fullVideos/'.$myHub->upload->video) }}" >    
-                                        </video>
-                                        @else
-                                        <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}}">
-                                            <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
-                                        </video>
-                                        @endif
-                                        <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button>
-                                    </div>
+                                        @php 
+                                            $type = 'video';
+                                            $file = $myHub->upload->video;
+                                        @endphp
+                                        <div class="pos-rel editBtnWrap">
+                                            @if (!File::exists(asset('storage/fullVideos/'.$myHub->upload->video)))
+                                            <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}}">
+                                                <source src="{{ asset('storage/fullVideos/'.$myHub->upload->video) }}" >    
+                                            </video>
+                                            @else
+                                            <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}}">
+                                                <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
+                                            </video>
+                                            @endif
+                                            <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button>
+                                        </div>                                    
                                     @else
+                                    @php 
+                                        $type = '';
+                                        $file = '';
+                                    @endphp
                                     <div class="pos-rel editBtnWrap">
                                         <button class="editBtn editBtnVideo" data-id="{{ $myHub->id }}"><img src="/img/edit.png" class="img-fluid"></button>
                                     </div>
@@ -97,19 +112,9 @@
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
                                                 <li>
-                                                    @if(!empty($myHub->upload->image))
-                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$myHub->upload->image)); ?>,'sharer'">
-                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                    </a>
-                                                    @elseif(!empty($myHub->upload->video))
-                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>&amp;p[image][0]=<?php echo (asset('storage/images/'.$myHub->upload->video)); ?>,'sharer'">
-                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                    </a>
-                                                    @else
-                                                    <a target="_blank" href="http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo ($myHub->post_text); ?>&amp;p[url]=<?php echo (asset('')); ?>,'sharer'">
-                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
-                                                    </a>
-                                                    @endif
+                                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url()."/postData/".$myHub->id }}">                                                
+                                                        <img onclick="shareFB({{ $url }}, {{ $myHub->post_text }}, {{ $type }} {{ $file }});" src="{{ asset("/img/facebook.png")}}" alt="">
+                                                    </a> 
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>
@@ -431,5 +436,6 @@
                 }
             });
         });
+        
 </script>
 @endsection

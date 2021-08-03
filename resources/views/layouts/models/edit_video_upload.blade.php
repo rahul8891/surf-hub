@@ -9,3 +9,4 @@
     aria-hidden="true">
     
 </div>
+@include('elements/edit_popup_upload')
