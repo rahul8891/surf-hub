@@ -331,8 +331,15 @@
     });
 
     function loadMoreData(page) {
+        var url = window.location.href;
+        if(url.indexOf("?") !== -1) {
+            var url = window.location.href + '&page=' + page;
+        }else {
+            var url = window.location.href + '?page=' + page;
+        }
+        
         $.ajax({
-            url: '?page=' + page,
+            url: url,
             type: "get",
             async: false,
             beforeSend: function() {
