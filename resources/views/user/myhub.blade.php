@@ -58,13 +58,13 @@
                         </div>
                         <p class=" description">{{$myHub->post_text}}</p>
                                 @php 
-                                    $url = Request::url()."/postData/".$myHub->id;
+                                    $url = Request::url();
                                 @endphp
                                 <div class="imgRatingWrap">
                                     @if(!empty($myHub->upload->image)) 
                                         @php 
                                             $type = 'image';
-                                            $file = $myHub->upload->image;
+                                            $file = url('/')."/storage/images/".$myHub->upload->image;
                                         @endphp
                                         <div class="pos-rel editBtnWrap">
                                             <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
@@ -73,7 +73,7 @@
                                     @elseif(!empty($myHub->upload->video))
                                         @php 
                                             $type = 'video';
-                                            $file = $myHub->upload->video;
+                                            $file = url('/')."/storage/fullVideos/".$myHub->upload->video;
                                         @endphp
                                         <div class="pos-rel editBtnWrap">
                                             @if (!File::exists(asset('storage/fullVideos/'.$myHub->upload->video)))
