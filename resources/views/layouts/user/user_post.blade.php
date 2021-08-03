@@ -5,6 +5,23 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('images/logo_small.png') }}">
+    
+    <meta property="og:locale" content="en_US" />
+    <meta property="fb:app_id" content="911205526142894" />
+    <meta property="og:type" content="post" />
+    <meta property="og:description" content="{{ $postData->post_text }}" />
+    <meta property="og:url" content="{{ Request::url() }}" />
+    <meta property="og:title" content="Surf Hub" />
+
+    @if(!empty($postData->upload->image))
+        <meta property="og:image" content="{{ url('/')."/storage/images/".$postData->upload->image }}" />
+        <meta property="og:image:width" content="398" />
+        <meta property="og:image:height" content="327" />
+    @else@if(!empty($postData->upload->video))
+        <meta property="og:video" content="{{ url('/')."/storage/fullVideos/".$postData->upload->video }}" />
+        <meta property="og:video:width" content="398" />
+        <meta property="og:video:height" content="327" />
+    @endif
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ config('customarray.siteTitle.user') }}</title>

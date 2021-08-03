@@ -1321,20 +1321,3 @@ $('#test-other').click(function() {
         $('#othersFilterSurfer').hide();
     }
 });
-
-
-function shareFB(url, desc, type, file) {
-    $('meta[property="og:url"]').attr('content', url);
-    $('meta[property="og:description"]').attr('content', desc);
-
-    if(type == 'image') {
-        $('meta[property="og:image"]').attr('content', file);                
-        $('meta[property="og:video"]').attr('content', '');
-    } else if (type == 'video') {
-        $('meta[property="og:image"]').attr('content', '');                
-        $('meta[property="og:video"]').attr('content', file);
-    } else {
-        $('meta[property="og:image"]').attr('content', '');                
-        $('meta[property="og:video"]').attr('content', '');
-    }      
-}
