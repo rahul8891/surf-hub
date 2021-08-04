@@ -81,7 +81,7 @@
                                 <div>
                                     <ul class="pl-0 mb-0 d-flex">
                                         <li>
-                                           <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url()."/postData/".$posts->id }}">                                                
+                                           <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ url('/')."/postData/".$posts->id }}">                                                
                                                 <img src="{{ asset("/img/facebook.png")}}" alt="">
                                             </a>                                            
                                         </li>
