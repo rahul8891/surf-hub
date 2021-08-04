@@ -66,7 +66,7 @@
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
                                                 <li>
-                                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url()."/postData/".$myHub->id }}">                                                
+                                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ url('/')."/postData/".$myHub->id }}">                                                
                                                         <img src="{{ asset("/img/facebook.png")}}" alt="">
                                                     </a> 
                                                 </li>
@@ -89,7 +89,7 @@
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
-                                                <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $myHub->id }}">Edit</a>
+                                                <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $myHub->id }}">EDIT</a>
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>

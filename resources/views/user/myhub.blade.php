@@ -114,7 +114,7 @@
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
-                                                <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $myHub->id }}">Edit</a>
+                                                <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $myHub->id }}">EDIT</a>
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>

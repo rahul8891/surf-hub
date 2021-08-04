@@ -4,8 +4,7 @@
             <input type="hidden" name="id" value="{{ $myHubs->id }}">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"><img src="{{ asset("/img/logo_small.png")}}">Upload
-                        Video</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"><img src="{{ asset("/img/logo_small.png")}}">Edit Post</h5>
                     <div class="selectWrap pos-rel">
                         <select class="form-control" name="post_type" required>
                             @foreach($customArray['post_type'] as $key => $value)
@@ -206,7 +205,7 @@
                                             <div class="cstm-check pos-rel">
                                                 <input type="checkbox" name="optional_info[]" value="{{ __($key) }}"
                                                     id="{{ __($key) }}"  {{ in_array(__($key), $optional) ? "checked='''checked'":"" }} />
-                                                <label for="{{ __($key) }}" class="custom-control-label">{{ __($value) }}</label>
+                                                <label for="{{ __($key) }}" class="">{{ __($value) }}</label>
                                             </div>
                                         </div>
                                         @endforeach
