@@ -87,7 +87,7 @@
                                             <span class="divider"></span>
                                         </li> -->
                                         <li>
-                                            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url()."/postData/".$posts->id }}">                                                
+                                            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ url('/')."/postData/".$posts->id }}">                                                
                                                 <img src="{{ asset("/img/facebook.png")}}" alt="">
                                             </a> 
                                         </li>
