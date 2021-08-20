@@ -165,6 +165,7 @@
         text-align: center;
         margin-bottom: 0px;
         margin-top: 30px;
+        /* display: none; */
     }
 
     .banner .contentWrap {
@@ -271,7 +272,8 @@
         margin-right: 0px;
     }
 
-    .postsWrap .col-lg-9{
+    .postsWrap .col-lg-9,
+    .postsWrap .col-lg-12{
         padding-left: 0px;
         padding-right: 0px;
     }
@@ -504,6 +506,7 @@
     .postsWrap .ratingShareWrap .rate li span,
     .postsWrap .ratingShareWrap li a {
         font-size: 16px;
+        padding: 6px 0;
     }
 
     .postsWrap .ratingShareWrap .divider {
@@ -648,15 +651,25 @@
     }
 
     .infoHover {
-        width: 215px;
+        /* width: 215px;
         left: -30px;
+        right: auto; */
+
+        width: 345px;
+        left: 40px;
         right: auto;
     }
-
+    .infoHover.reasonHover {
+        width: 320px;
+        left: -80px;
+        right: auto;
+    }
     .infoHover .pos-rel img {
         bottom: -23px;
-        right: 1px;
+        /* right: 1px; */
         left: auto;
+
+        right: 142px;
     }
 
     .loginWrap .formWrap {
