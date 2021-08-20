@@ -216,12 +216,13 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer text-center justify-content-center">
+                        <div class="modal-footer text-center justify-content-center">
                         <!-- <button type="reset">RESET</button> 
                         <button type="submit" form="updateVideoPostData" class="submitBtn">UPLOAD</button> -->
-                        <input type="submit" class="btn btn-primary" name="submit" value="Upload" />
+                        <input type="submit" class="btn btn-primary" name="submit" value="Save" />
                     </div>
+                    </div>
+                    
                 </div>
                 </form>
             </div>

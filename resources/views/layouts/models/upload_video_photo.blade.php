@@ -234,11 +234,12 @@
                     </div>
                 </div>
             </div>
+            <div class="modal-footer text-center justify-content-center">
+                <!-- <button type="reset">RESET</button> -->
+                <button class="uploadPost" type="submit">UPLOAD</button>
+            </div>
         </div>
-        <div class="modal-footer text-center justify-content-center">
-            <!-- <button type="reset">RESET</button> -->
-            <button class="uploadPost" type="submit">UPLOAD</button>
-        </div>
+        
     </div>
 </form>
 </div>

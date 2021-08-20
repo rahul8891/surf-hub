@@ -65,11 +65,11 @@
                                     @elseif(!empty($myHub->upload->video))
                                         <div class="pos-rel editBtnWrap">
                                             @if (!File::exists(asset('storage/fullVideos/'.$myHub->upload->video)))
-                                            <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}}">
+                                            <video width="100%" preload="auto" data-setup="{}" controls controlsList="nofullscreen" autoplay playsinline playsinline="playsinline" muted class="video-js" id="myImage{{$myHub->id}}">
                                                 <source src="{{ asset('storage/fullVideos/'.$myHub->upload->video) }}" >    
                                             </video>
                                             @else
-                                            <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}}">
+                                            <video width="100%" preload="auto" data-setup="{}" controls controlsList="nofullscreen" autoplay playsinline playsinline="playsinline" muted class="video-js" id="myImage{{$myHub->id}}">
                                                 <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
                                             </video>
                                             @endif
@@ -125,64 +125,64 @@
                                                             <div class="pos-rel">
                                                                 <img src="{{ asset("img/tooltipArrowDown.png")}}" alt="">
                                                                 <div class="row">
-                                                                    <div class="col-5">
+                                                                    <div class="col-4">
                                                                         Date
                                                                     </div>
-                                                                    <div class="col-2 text-center">:</div>
-                                                                    <div class="col-5">
+                                                                    <div class="col-1 text-center">:</div>
+                                                                    <div class="col-6">
                                                                         {{date('d-m-Y',strtotime($myHub->surf_start_date))}}
                                                                     </div>
-                                                                    <div class="col-5">
+                                                                    <div class="col-4">
                                                                         Surfer
                                                                     </div>
-                                                                    <div class="col-2 text-center">:</div>
-                                                                    <div class="col-5">
+                                                                    <div class="col-1 text-center">:</div>
+                                                                    <div class="col-6">
                                                                         {{$myHub->surfer}}
                                                                     </div>
-                                                                    <div class="col-5">
+                                                                    <div class="col-4">
                                                                         Posted By
                                                                     </div>
-                                                                    <div class="col-2 text-center">:</div>
-                                                                    <div class="col-5">
+                                                                    <div class="col-1 text-center">:</div>
+                                                                    <div class="col-6">
                                                                         {{ ucfirst($myHub->user->user_name) }}
                                                                     </div>
-                                                                    <div class="col-5">
+                                                                    <div class="col-4">
                                                                         Beach/Break
                                                                     </div>
-                                                                    <div class="col-2 text-center">:</div>
-                                                                    <div class="col-5">
+                                                                    <div class="col-1 text-center">:</div>
+                                                                    <div class="col-6">
                                                                         {{ $myHub->beach_breaks->beach_name ?? '' }}/{{ $myHub->beach_breaks->break_name ?? '' }}
                                                                     </div> 
-                                                                    <div class="col-5">
+                                                                    <div class="col-4">
                                                                         Country
                                                                     </div>
-                                                                    <div class="col-2 text-center">:</div>
-                                                                    <div class="col-5">
+                                                                    <div class="col-1 text-center">:</div>
+                                                                    <div class="col-6">
                                                                         {{$myHub->countries->name}}
                                                                     </div>
-                                                                    <div class="col-5">
+                                                                    <div class="col-4">
                                                                         State
                                                                     </div>
-                                                                    <div class="col-2 text-center">:</div>
-                                                                    <div class="col-5">
+                                                                    <div class="col-1 text-center">:</div>
+                                                                    <div class="col-6">
                                                                         {{$myHub->states->name??""}}
                                                                     </div>
-                                                                    <div class="col-5">
+                                                                    <div class="col-4">
                                                                         Wave Size
                                                                     </div>
-                                                                    <div class="col-2 text-center">:</div>
-                                                                    <div class="col-5">
+                                                                    <div class="col-1 text-center">:</div>
+                                                                    <div class="col-6">
                                                                         @foreach($customArray['wave_size'] as $key => $value)
                                                                             @if($key == $myHub->wave_size)
                                                                                 {{$value}}
                                                                             @endif
                                                                         @endforeach
                                                                     </div>
-                                                                    <div class="col-5">
+                                                                    <div class="col-4">
                                                                         Board Type
                                                                     </div>
-                                                                    <div class="col-2 text-center">:</div>
-                                                                    <div class="col-5">
+                                                                    <div class="col-1 text-center">:</div>
+                                                                    <div class="col-6">
                                                                         {{$myHub->board_type}}
                                                                     </div>
                                                                 </div>
