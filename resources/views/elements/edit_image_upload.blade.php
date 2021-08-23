@@ -169,14 +169,14 @@
                                                 @endphp
                                                 @foreach ($customArray['surfer'] as $key => $value)
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="surfer" value="{{$value }}" id="{{ strtolower($value) }}" required {{ ($surfer == $value) ? 'checked' : '' }} />
-                                                    <label for="{{ strtolower($value) }}" class="form-check-label text-primary">{{$value}}</label>
+                                                    <input class="form-check-input surfer-info" type="radio" name="surfer" value="{{ $value }}" id="{{ strtolower($value) }}" required {{ ($surfer == $value) ? 'checked' : '' }} />
+                                                    <label for="{{ strtolower($value) }}" class="form-check-label text-primary">{{ $value }}</label>
                                                 </div>
                                                 @endforeach
                                             </div>  
                                         </div>
-                                        Follow Requests         </div>
-                                        <div class="col-md-8 col-sm-4 float-right" style="display:none" id="othersSurfer">
+                                    </div>
+                                        <div class="col-md-8 col-sm-4 float-right othersSurferInfo" style="display:none" id="othersSurfer">
                                               <div class="selectWrap pos-rel">
                                                 <div class="selectWrap pos-rel">
                                                     <input type="text" value="{{ old('other_surfer')}}" name="other_surfer" placeholder="Search other user" class="form-control other_surfer">
@@ -312,8 +312,17 @@
             }
         });
         
-        $(".submitBtn").click(function() { console.log('[aaaa');
+        $(".submitBtn").click(function() {
             $("#updateVideoPostData").submit();
+        });
+        
+        
+        $('.surfer-info').click(function() {
+            if ($(this).val() == "Others") {
+                $('.othersSurferInfo').show();
+            } else {
+                $('.othersSurferInfo').hide();
+            }
         });
     }); 
 </script>
