@@ -66,7 +66,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
    // Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
     
-    Route::get('/user/myhub', [MyHubController::class, 'index'])->name('myhub');
+    Route::get('/user/myhub', [MyHubController::class, 'newIndex'])->name('myhub');
     // Route::get('/getPostData/{id}/{type}', [MyHubController::class, 'edit'])->name('getPostData');
     Route::post('/updatePostData', [MyHubController::class, 'update'])->name('updatePostData');
     Route::get('/getPostData/{id}', [MyHubController::class, 'edit'])->name('getPostData');

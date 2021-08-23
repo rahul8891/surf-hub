@@ -23,28 +23,15 @@
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src="{{ asset("/img/sort.png")}}" alt=""> Sort
                         </button>
-                        @if(str_contains(Request::path(),'search'))
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'dateDesc'])}}">Post Date (New to Old)</a>
-                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'dateAsc'])}}">Post Date (Old to New)</a>
-                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'surfDateDesc'])}}">Surf Date (New to Old)</a>
-                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'surfDateAsc'])}}">Surf Date (Old to New)</a>
-                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'beach'])}}">Beach / Break</a>
-                            <a class="dropdown-item" href="{{route('searchPosts',['sort'=>'star'])}}">Star Rating </a>
-                        </div>
-                        @endif
-
-                        @if(str_contains(Request::path(),'myhub'))
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <a class="dropdown-item" href="{{route('myhub',['sort'=>'dateDesc'])}}">Post Date (New to Old)</a>
-                            <a class="dropdown-item" href="{{route('myhub',['sort'=>'dateAsc'])}}">Post Date (Old to New)</a>
-                            <a class="dropdown-item" href="{{route('myhub',['sort'=>'surfDateDesc'])}}">Surf Date (New to Old)</a>
-                            <a class="dropdown-item" href="{{route('myhub',['sort'=>'surfDateAsc'])}}">Surf Date (Old to New)</a>
-                            <a class="dropdown-item" href="{{route('myhub',['sort'=>'beach'])}}">Beach / Break</a>
-                            <a class="dropdown-item" href="{{route('myhub',['sort'=>'star'])}}">Star Rating </a>
-                        </div>
-                        @endif
                         
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort'=>'dateDesc']) }}">Post Date (New to Old)</a>
+                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort'=>'dateAsc']) }}">Post Date (Old to New)</a>
+                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort'=>'surfDateDesc']) }}">Surf Date (New to Old)</a>
+                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort'=>'surfDateAsc']) }}">Surf Date (Old to New)</a>
+                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort'=>'beach']) }}">Beach / Break</a>
+                            <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort'=>'star']) }}">Star Rating </a>
+                        </div>                        
                     </div>
                 </div>
                 <div class="col-md-3 col-6 text-web-right">
@@ -60,7 +47,7 @@
                         @endif
 
                         @if(str_contains(Request::path(),'myhub'))
-                            <form class="dropdown-menu filterWrap" action="{{route('myhubFilterIndex')}}" aria-labelledby="dropdownMenuButton2">
+                            <form class="dropdown-menu filterWrap" action="{{ route('myhub') }}" aria-labelledby="dropdownMenuButton2">
                         @endif
 
                             <div class="filterHeader">
