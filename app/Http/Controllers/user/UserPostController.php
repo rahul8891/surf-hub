@@ -174,14 +174,16 @@ class UserPostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         $postArray = [];
     
         try{
             $data = $request->all();   
             if(!empty($data['other_surfer'])){
                 $data['surfer'] = $data['other_surfer'];
-            }
+            } elseif (isset($data['surfer']) && ($data['surfer'] == 'Me')) {
+                $data['surfer'] = Auth::user()->user_name;
+            } 
             
             $imageArray = (isset($data['files'][0]) && !empty($data['files'][0]))?$data['files']:[];
             $videoArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];

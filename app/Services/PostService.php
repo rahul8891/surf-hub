@@ -93,10 +93,11 @@ class PostService {
      * @return dataArray
      */
     public function getPostsListing() {
-        $postArray =  $this->posts->whereNull('deleted_at')   
-                                  ->where('is_deleted','0')                            
-                                  ->orderBy('created_at','ASC')
-                                  ->paginate(10);
+        $postArray =  $this->posts->whereNull('deleted_at')  
+                                ->where('is_feed', '1')
+                                ->where('is_deleted','0')                            
+                                ->orderBy('created_at','ASC')
+                                ->paginate(10);
         
         return $postArray;
     }
@@ -250,6 +251,133 @@ class PostService {
         }
         
         return $postArray->orderBy('posts.id','DESC')->paginate(10);
+    }
+    
+    /**
+     * [getFilteredList] we are getiing all login user post with filter
+     * @param  
+     * @param  
+     * @return dataArray
+     */
+    public function getFilteredData($params, $for) {
+        if ($for=='search'){
+            $postArray =  $this->posts
+                        ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_break_id')
+                        ->join('ratings', 'ratings.rateable_id', '=', 'posts.id')
+                        ->select('posts.*')
+                        ->whereNull('posts.deleted_at');
+        }
+        
+        if ($for=='myhub'){
+            $postArray =  $this->posts
+                        ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_break_id')
+                        ->join('ratings', 'ratings.rateable_id', '=', 'posts.id')
+                        ->select('posts.*')
+                        ->whereNull('posts.deleted_at')
+                        ->whereNull('posts.deleted_at')->where('posts.user_id',[Auth::user()->id]);
+        }
+        
+        //************* applying conditions *****************/
+        if (isset($params['filterUser']) && ($params['filterUser'] == 'me')){
+            $username = Auth::user()->user_name;
+            $postArray->where('surfer', $username);
+        }elseif (isset($params['filterUser']) && ($params['filterUser'] == 'others') && isset($params['other_surfer']) && !empty($params['other_surfer'])) {
+            $postArray->where('surfer', $params['other_surfer']);
+        }elseif (isset($params['filterUser']) && ($params['filterUser'] == 'unknown')) {
+            $postArray->where('surfer', 'Unknown');
+        }
+        
+        $optionalInfo = [];
+        
+        if(isset($params['FLOATER']) && ($params['FLOATER']=='on')){
+            $optionalInfo[] = 'FLOATER';
+        }
+        
+        if(isset($params['AIR']) && ($params['AIR']=='on')){
+            $optionalInfo[] = 'AIR';
+        }
+        
+        if(isset($params['360']) && ($params['360']=='on')) {
+            $optionalInfo[] = '360';
+        }
+        
+        if(isset($params['DROP_IN']) && ($params['DROP_IN']=='on')){
+            $optionalInfo[] = 'DROP_IN';
+        }
+        
+        if(isset($params['BARREL_ROLL']) && ($params['BARREL_ROLL']=='on')){
+            $optionalInfo[] = 'BARREL_ROLL';
+        }
+        
+        if(isset($params['WIPEOUT']) && ($params['WIPEOUT']=='on')){
+            $optionalInfo[] = 'WIPEOUT';
+        }
+        
+        if(isset($params['CUTBACK']) && ($params['CUTBACK']=='on')){
+            $optionalInfo[] = 'CUTBACK';
+        }
+        if(isset($params['SNAP']) && ($params['SNAP']=='on')){
+            $optionalInfo[] = 'SNAP';
+            $postArray->where('optional_info','SNAP');
+        }
+        
+        if(isset($optionalInfo[0]) && !empty($optionalInfo[0])) {
+            $postArray->whereIn('optional_info', $optionalInfo);
+        }        
+        
+        if (isset($params['surf_date']) && !empty($params['surf_date'])) {
+           $postArray->whereDate('surf_start_date','>=',$params['surf_date']);
+        }
+        if (isset($params['end_date']) && !empty($params['end_date'])) {
+           $postArray->whereDate('surf_start_date','<=',$params['end_date']);
+        }
+
+        if (isset($params['country_id']) && !empty($params['country_id'])) {
+            $postArray->where('country_id',$params['country_id']);
+        }
+        if (isset($params['local_beach_break_id']) && !empty($params['local_beach_break_id'])) {
+            $postArray->where('local_beach_break_id', $params['local_beach_break_id']);
+        }
+        if (isset($params['board_type']) && !empty($params['board_type'])) {
+            $postArray->where('board_type',$params['board_type']);
+        }
+        if (isset($params['wave_size']) && !empty($params['wave_size'])) {
+            $postArray->where('wave_size',$params['wave_size']);
+        }
+        
+        if (isset($params['state_id'])) {
+            $postArray->where('state_id',$params['state_id']);
+        }
+        
+        if (isset($params['rating'])) {
+            $postArray->where('rating', $params['rating']);
+        }
+        
+        if (isset($params['sort'])) {
+            if($params['sort'] == "dateAsc"){
+                $postArray->orderBy('posts.created_at','ASC');
+            }
+            else if($params['sort'] == "dateDesc"){
+                $postArray->orderBy('posts.created_at','DESC');
+            }
+            else if($params['sort'] == "surfDateAsc"){
+                $postArray->orderBy('posts.surf_start_date','ASC');
+            }
+            else if($params['sort'] == "surfDateDesc"){
+                $postArray->orderBy('posts.surf_start_date','DESC');
+            }
+            else if($params['sort'] == "beach"){
+                $postArray->orderBy('beach_breaks.beach_name','ASC');
+            }
+            else if($el=="star"){
+                $postArray->orderBy('ratingPost.rating','DESC');
+            }
+            else{
+                $postArray->orderBy('posts.created_at','DESC');
+            }
+        }
+        
+        return $postArray->paginate(10);
     }
     
     
