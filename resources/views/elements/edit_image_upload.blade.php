@@ -169,13 +169,13 @@
                                                 @endphp
                                                 @foreach ($customArray['surfer'] as $key => $value)
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="surfer" value="{{$value }}" id="{{$value}}" required {{ ($surfer == $value) ? 'checked' : '' }} />
-                                                    <label for="{{$value}}" class="form-check-label text-primary">{{$value}}</label>
+                                                    <input class="form-check-input" type="radio" name="surfer" value="{{$value }}" id="{{ strtolower($value) }}" required {{ ($surfer == $value) ? 'checked' : '' }} />
+                                                    <label for="{{ strtolower($value) }}" class="form-check-label text-primary">{{$value}}</label>
                                                 </div>
                                                 @endforeach
                                             </div>  
                                         </div>
-                                    </div>
+                                        Follow Requests         </div>
                                         <div class="col-md-8 col-sm-4 float-right" style="display:none" id="othersSurfer">
                                               <div class="selectWrap pos-rel">
                                                 <div class="selectWrap pos-rel">
@@ -204,8 +204,8 @@
                                         <div class="col-md-4 pl-1 pr-1 col-6">
                                             <div class="cstm-check pos-rel">
                                                 <input type="checkbox" name="optional_info[]" value="{{ __($key) }}"
-                                                    id="{{ __($key) }}"  {{ in_array(__($key), $optional) ? "checked='''checked'":"" }} />
-                                                <label for="{{ __($key) }}" class="">{{ __($value) }}</label>
+                                                    id="{{ __(strtolower($key)) }}"  {{ in_array(__($key), $optional) ? "checked='''checked'":"" }} />
+                                                <label for="{{ __(strtolower($key)) }}" class="">{{ __($value) }}</label>
                                             </div>
                                         </div>
                                         @endforeach
