@@ -47,7 +47,7 @@
                                 <div class="pl-3">
                                     <h4>{{ucfirst($myHub->user->user_profiles->first_name)}} {{ucfirst($myHub->user->user_profiles->last_name)}} ( {{ ucfirst($myHub->user->user_name) }} )</h4>
                                     <span>{{ $myHub->beach_breaks->beach_name ?? '' }} {{ $myHub->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($myHub->surf_start_date)->format('d-m-Y')}}</span><br>
-                                    <span>{{ postedDateTime($myHub->surf_start_date) }}</span>
+                                    <span>{{ postedDateTime($myHub->created_at) }}</span>
                                 </div>
                             </div>
 

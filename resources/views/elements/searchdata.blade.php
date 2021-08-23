@@ -16,7 +16,7 @@
                                 <div class="pl-3">
                                     <h4>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ ucfirst($posts->user->user_name) }} )</h4>
                                     <span>{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y')}}</span><br>
-                                    <span>{{ postedDateTime($posts->surf_start_date) }}</span>
+                                    <span>{{ postedDateTime($posts->created_at) }}</span>
                                 </div>
                             </div>
                             @if (isset(Auth::user()->id) && ($posts->user_id != Auth::user()->id))

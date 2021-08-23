@@ -64,6 +64,53 @@ class MyHubController extends Controller
         
         return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'));
     }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function newIndex(Request $request)
+    {   
+        $beach_name="";
+        $params = $request->all();
+        $order = $request->input('order');
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;      
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $customArray = $this->customArray;
+        $userDetail = Auth::user()->user_profiles;
+        $myHubs = $this->postService->getFilteredData($params,'myhub');
+        
+        if(!empty($request->input('local_beach_break_id'))){
+            $bb = BeachBreak::where('id',$request->input('local_beach_break_id'))->first(); 
+            $beach_name=$bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;
+        }
+        
+        if ($request->ajax()) {
+            $view = view('elements/myhubdata',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'))->render();
+            return response()->json(['html' => $view]);
+        }
+        
+        /*$beach_name ="";
+        $params=$request->all();
+        $order=$request->input('order');
+        
+        $el = $request->input('sort');
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;      
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $customArray = $this->customArray;
+        $myHubs = $this->sort($el);
+        $userDetail=Auth::user()->user_profiles;
+//        dd($myHubs);
+        if ($request->ajax()) {
+            $view = view('elements/myhubdata',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'))->render();
+            return response()->json(['html' => $view]);
+        }*/
+        
+        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'));
+    }
 
 
     /**
