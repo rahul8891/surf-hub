@@ -168,7 +168,7 @@ $borderBtm = Auth::user() ? 'border-btm ' : '';
             </ul>
             <ul class="navbar-nav ml-auto tab-dis-none topmenuhideshow">
                 <li class="nav-item dropdown">
-                    <a class="nav-link auth-btn" href="#">Follow Requests</a>
+                    <a class="nav-link auth-btn" href="{{ route('followRequests') }}">Follow Requests</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link auth-btn" href="{{ route('profile') }}">My Profile</a>
