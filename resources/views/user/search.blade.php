@@ -63,7 +63,6 @@
                                         <source src="{{ asset('storage/videos/'.$posts->upload->video) }}" >    
                                     </video>
                                     @endif
-                                    <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
                                 </div>
                             @endif
                             
