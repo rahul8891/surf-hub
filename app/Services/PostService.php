@@ -375,6 +375,8 @@ class PostService {
             else{
                 $postArray->orderBy('posts.created_at','DESC');
             }
+        } else {
+            $postArray->orderBy('posts.created_at','DESC');
         }
         
         return $postArray->paginate(10);
