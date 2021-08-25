@@ -370,8 +370,8 @@ class PostService {
             else if($params['sort'] == "beach"){
                 $postArray->orderBy('beach_breaks.beach_name','ASC');
             }
-            else if($el=="star"){
-                $postArray->orderBy('ratingPost.rating','DESC');
+            else if($params['sort'] == "star"){
+                $postArray->orderBy('ratings.rating','DESC');
             }
             else{
                 $postArray->orderBy('posts.created_at','DESC');
