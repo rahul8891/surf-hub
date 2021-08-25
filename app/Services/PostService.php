@@ -379,7 +379,7 @@ class PostService {
         } else {
             $postArray->orderBy('posts.created_at','DESC');
         }
-        dd($postArray->toSql());
+        
         return $postArray->paginate(10);
     }
     
