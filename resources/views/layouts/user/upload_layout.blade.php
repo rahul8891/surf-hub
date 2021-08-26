@@ -103,7 +103,7 @@
                                     <div class="col-md-2">
                                         <label class="mb-0">Start Date</label>
                                     </div>
-                                    <div class="col-md-5 col-sm-7">
+                                    <div class="col-mdiuytyg7y-5 col-sm-7">
                                         <div class="selectWrap pos-rel">
 
                                             <input class="form-control" type="date" name="surf_date" id="datepicker"
@@ -184,8 +184,7 @@
                                                     {{ $value->name }}</option>
                                                 @endforeach
                                             </select>
-                                            <span>
-                                              
+                                            <span>                                              
                                                 <img src="{{ asset("/img/select-downArrow.png")}}" alt="">
                                             </span>
                                         </div>
