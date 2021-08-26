@@ -37,7 +37,7 @@ class WelcomeFeedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function welcome()
+    public function welcome(Request $request)
     {
         /**
          * Admin cant access this url
@@ -55,6 +55,11 @@ class WelcomeFeedController extends Controller
         $customArray = $this->customArray;
         // non logged in user redirect to home page
         $postsList = $this->postService->getPostsListing();
+        
+        if ($request->ajax()) {
+            $view = view('elements/welcomedata',compact('customArray','postsList'))->render();
+            return response()->json(['html' => $view]);
+        }
         
         return view('welcome',compact('customArray','postsList'));
     }
