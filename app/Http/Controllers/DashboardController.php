@@ -35,7 +35,6 @@ class DashboardController extends Controller
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;      
         $postsList = Post::with('followPost')->where('is_deleted','0')
-                            ->where('is_feed', '1')
                             ->where('parent_id','0')    
                             ->where('post_type','PUBLIC')                              
                             ->orderBy('posts.created_at','DESC')
