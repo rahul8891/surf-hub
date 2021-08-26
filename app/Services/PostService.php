@@ -263,7 +263,7 @@ class PostService {
         if ($for=='search'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_break_id')
-                        ->join('ratings', 'ratings.rateable_id', '=', 'posts.id')
+                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
                         ->select('posts.*')
                         ->whereNull('posts.deleted_at');
         }
@@ -271,10 +271,10 @@ class PostService {
         if ($for=='myhub'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_break_id')
-                        ->join('ratings', 'ratings.rateable_id', '=', 'posts.id')
+                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
                         ->select('posts.*')
                         ->whereNull('posts.deleted_at')
-                        ->whereNull('posts.deleted_at')->where('posts.user_id',[Auth::user()->id]);
+                        ->where('posts.user_id', Auth::user()->id);
         }
         
         //************* applying conditions *****************/
@@ -350,6 +350,7 @@ class PostService {
         }
         
         if (isset($params['rating'])) {
+            //$postArray->join('ratings', 'ratings.rateable_id', '=', 'posts.id');
             $postArray->where('rating', $params['rating']);
         }
         
@@ -369,12 +370,14 @@ class PostService {
             else if($params['sort'] == "beach"){
                 $postArray->orderBy('beach_breaks.beach_name','ASC');
             }
-            else if($el=="star"){
-                $postArray->orderBy('ratingPost.rating','DESC');
+            else if($params['sort'] == "star"){
+                $postArray->orderBy('ratings.rating','DESC');
             }
             else{
                 $postArray->orderBy('posts.created_at','DESC');
             }
+        } else {
+            $postArray->orderBy('posts.created_at','DESC');
         }
         
         return $postArray->paginate(10);
