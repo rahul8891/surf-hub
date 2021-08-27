@@ -94,10 +94,7 @@ class PostService {
      */
     public function getPostsListing() {
         $postArray =  $this->posts->whereNull('deleted_at')  
-                                ->where(function ($query) {
-                                    $query->where('is_feed', 1)
-                                          ->orWhere('post_type', 'PUBLIC');
-                                })
+                                ->where('is_feed', 1)
                                 ->where('is_deleted','0')                            
                                 ->orderBy('created_at','DESC')
                                 ->paginate(10);
