@@ -99,7 +99,7 @@ class PostService {
                                           ->orWhere('post_type', 'PUBLIC');
                                 })
                                 ->where('is_deleted','0')                            
-                                ->orderBy('created_at','ASC')
+                                ->orderBy('created_at','DESC')
                                 ->paginate(10);
         
         return $postArray;
