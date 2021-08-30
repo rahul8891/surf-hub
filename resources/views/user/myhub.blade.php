@@ -65,11 +65,11 @@
                                     @elseif(!empty($myHub->upload->video))
                                         <div class="pos-rel editBtnWrap">
                                             @if (!File::exists(asset('storage/fullVideos/'.$myHub->upload->video)))
-                                            <video width="100%" preload="auto" data-setup="{}" controls controlsList="nofullscreen" autoplay playsinline playsinline="playsinline" muted class="video-js" id="myImage{{$myHub->id}}">
+                                            <video width="100%" preload="auto" data-setup="{}" controls  autoplay playsinline playsinline="playsinline" muted class="video-js" id="myImage{{$myHub->id}}">
                                                 <source src="{{ asset('storage/fullVideos/'.$myHub->upload->video) }}" >    
                                             </video>
                                             @else
-                                            <video width="100%" preload="auto" data-setup="{}" controls controlsList="nofullscreen" autoplay playsinline playsinline="playsinline" muted class="video-js" id="myImage{{$myHub->id}}">
+                                            <video width="100%" preload="auto" data-setup="{}" controls  autoplay playsinline playsinline="playsinline" muted class="video-js" id="myImage{{$myHub->id}}">
                                                 <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
                                             </video>
                                             @endif
@@ -268,7 +268,7 @@
                                                                 <div class="col-md-12 col-sm-4" id="tagUser">
                                                                     <div class="selectWrap pos-rel">
                                                                         <div class="selectWrap pos-rel">
-                                                                            <input type="text" value="{{ old('tag_user')}}" name="tag_user"
+                                                                            <input type="text" autofocus value="{{ old('tag_user')}}" name="tag_user"
                                                                                 placeholder="@ Search user" class="form-control tag_user" required data-post_id="{{$myHub->id}}">
                                                                                 <input type="hidden" value="{{ old('user_id')}}" name="user_id"
                                                                                 id="user_id" class="form-control user_id">
@@ -428,6 +428,10 @@
                 }
             });
         });
-        
+        $('.pos-rel a').each(function(){
+           $(this).on('hover, mouseover, click', function() {
+                $(this).children('.userinfoModal').find('input[type="text"]').focus();
+            });
+        });
 </script>
 @endsection
