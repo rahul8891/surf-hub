@@ -126,13 +126,19 @@
         function openFullscreen(id) {
             var elem = document.getElementById("myImage"+id);
             if (elem.requestFullScreen) {
-              elem.requestFullScreen();
+                elem.requestFullScreen();
+                elem.webkitEnterFullscreen();
+                elem.enterFullscreen();
             } else if (elem.webkitRequestFullScreen) { /* Safari */
-              elem.webkitRequestFullScreen();
+                elem.webkitRequestFullScreen();
+                elem.webkitEnterFullscreen();
+                elem.enterFullscreen();
             } else if (elem.mozRequestFullScreen) {
-              elem.mozRequestFullScreen();
+                elem.mozRequestFullScreen();
+                elem.enterFullscreen();
             } else if (elem.msRequestFullScreen) { /* IE11 */
-              elem.msRequestFullScreen();
+                elem.msRequestFullScreen();
+                elem.enterFullscreen();
             }
         }    
     </script>

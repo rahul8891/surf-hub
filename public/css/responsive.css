@@ -271,7 +271,11 @@
         margin-left: 0px;
         margin-right: 0px;
     }
-
+    .postsWrap .filterModal .row,
+    .filterModal .row{
+        margin-left: -15px;
+        margin-right: -15px;
+    }
     .postsWrap .col-lg-9,
     .postsWrap .col-lg-12{
         padding-left: 0px;
@@ -297,7 +301,16 @@
         padding-top: 20px;
     }
 
-
+    .infoHover.userinfoModal {
+        right: auto;
+        left: -126px;
+    }
+    .infoHover.userinfoModal .pos-rel img{
+        left: 97%;
+    }
+    .filterModal .modal-body{
+        max-height: 100%;
+    }
 }
 
 @media only screen and (max-width: 767px) {
@@ -413,6 +426,10 @@
 
     .phoneWrap {
         max-width: 100%;
+    }
+    .filterModal .leftImg,
+    .filterModal .rightImg {
+        display: none;
     }
 }
 
@@ -768,8 +785,24 @@
     .a_uploadWrap [type="checkbox"]:checked+label::before {
         top: 3px;
     }
+
+    .infoHover.userinfoModal {
+        right: auto;
+        left: -106px;
+    }
 }
 
+@media only screen and (max-width: 390px){
+    .infoHover.userinfoModal {
+        right: auto;
+        left: 13px;
+    }
+    .infoHover.userinfoModal .pos-rel img {
+        bottom: -27px;
+        right: auto;
+        left: 50%;
+    }
+}
 /**
 rafi*/
 @media only screen and (max-width: 1024px) {
