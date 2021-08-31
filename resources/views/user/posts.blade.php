@@ -34,7 +34,7 @@
                                     @if(!empty($detail->post->upload->video))
                                     <br>
                                     <div class="pos-rel editBtnWrap">
-                                        <video width="100%" controls id="myImage{{$detail->post->id}}">
+                                        <video width="100%" controls autoplay playsinline playsinline="playsinline" muted id="myImage{{$detail->post->id}}">
                                             <source src="{{ asset('storage/videos/'.$detail->post->upload->video) }}" >    
                                         </video>
                                         <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>

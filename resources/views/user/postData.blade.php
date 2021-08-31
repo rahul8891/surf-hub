@@ -61,7 +61,7 @@
                                         @endphp
                                         <br>
                                         <div class="pos-rel editBtnWrap">
-                                            <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$postData->id}} video-js">
+                                            <video width="100%" preload="auto" data-setup="{}"  controls  autoplay playsinline playsinline="playsinline" muted class="video-js" id="myImage{{$postData->id}}">
                                                 <source src="{{ asset('storage/fullVideos/'.$postData->upload->video) }}" >    
                                             </video>
                                         </div>

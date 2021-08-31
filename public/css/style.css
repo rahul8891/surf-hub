@@ -422,6 +422,7 @@ footer .copyright {
     line-height: 30px;
     color: #61676f;
     font-weight: 700;
+    cursor: pointer;
 }
 
 .postsWrap .WriteComment {
@@ -674,10 +675,10 @@ header .dropdown-toggle::after {
     top: -82px;
     z-index: 1;
     right: -53px;
-    opacity: 0;
     transition: all ease-in-out;
     transition-delay: 0.6s;
     pointer-events: none;
+    display: none;
 }
 
 .saveInfo:hover {
@@ -697,7 +698,7 @@ header .dropdown-toggle::after {
 }
 
 .postsWrap .ratingShareWrap li a:hover .saveInfo {
-    opacity: 1;
+    display: block;
     pointer-events: unset;
 }
 
@@ -744,7 +745,7 @@ header .dropdown-toggle::after {
     background-color: transparent;
 }
 
-.postsWrap .post .uploadWrap .head .dropdown-menu.filterWrap {
+.postsWrap .post .uploadWrap .head .dropdown-menu.filterWrap{
     width: 650px;
     right: -40px;
     left: auto !important;
@@ -753,8 +754,18 @@ header .dropdown-toggle::after {
     top: 40px !important;
     z-index: 1;
 }
+.filterModal .filterWrap{
+    /* width: 650px;
+    right: -40px;
+    left: auto !important;
+    padding: 10px 25px 20px 25px;
+    transform: translate3d(0, 0, 0) !important;
+    top: 40px !important;
+    z-index: 1; */
+}
 
-.postsWrap .post .uploadWrap .head .dropdown-menu .filterHeader {
+.postsWrap .post .uploadWrap .head .dropdown-menu .filterHeader,
+.filterModal .filterHeader{
     display: flex;
     align-items: center;
     border-bottom: 1px solid #cacaca;
@@ -762,12 +773,14 @@ header .dropdown-toggle::after {
     margin-bottom: 10px;
 }
 
-.postsWrap .post .uploadWrap .head .dropdown-menu .heading {
+.postsWrap .post .uploadWrap .head .dropdown-menu .heading,
+.filterModal .heading{
     display: flex;
     align-items: center;
 }
 
-.postsWrap .post .uploadWrap .head .dropdown-menu .heading h2 {
+.postsWrap .post .uploadWrap .head .dropdown-menu .heading h2,
+.filterModal .heading h2 {
     font-size: 22px;
     color: #4b4f55;
     font-weight: 700;
@@ -775,7 +788,9 @@ header .dropdown-toggle::after {
     padding-left: 10px;
     padding-top: 10px;
 }
-
+.filterModal .filterBody{
+    position: relative;
+}
 .postsWrap .post .uploadWrap .head .dropdown-menu .filterHeader a.ml-auto {
     font-size: 18px;
     line-height: 36px;
@@ -790,6 +805,14 @@ header .dropdown-toggle::after {
     font-weight: 400;
 }
 
+.filterModal label{
+    text-align: left;
+    display: block;
+    line-height: 24px;
+}
+/* .filterModal .cstm-check {
+    
+} */
 .form-control {
     box-shadow: -1px 0 1.5px rgba(0, 0, 1, 0.18);
     background-color: #ffffff;
@@ -1063,7 +1086,9 @@ header .dropdown-toggle::after {
 .uploadModal .selectWrap {
     margin-bottom: 15px;
 }
-
+.filterModal .selectWrap{
+    margin-bottom: 0;
+}
 .uploadModal .formWrap label.width-102 {
     width: 102px;
 }
@@ -1969,6 +1994,7 @@ form .error {
     overflow-x: hidden;
 }
 
+
 /* 8-jan-2021 */
 .postsWrap .userinfoModal .post-head {
     padding: 0px;
@@ -2010,9 +2036,13 @@ form .error {
 }
 
 .infoHover.userinfoModal {
-    padding: 15px
+    padding: 15px;
+    bottom: 40px;
 }
-
+.postsWrap .ratingShareWrap li a:focus .saveInfo{
+    display: block;
+    pointer-events: unset;
+}
 @font-face {
     font-family: 'Glyphicons Halflings';
     src: url('../fonts/glyphicons-halflings-regular.eot');
