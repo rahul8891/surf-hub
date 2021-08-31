@@ -427,6 +427,10 @@
     .phoneWrap {
         max-width: 100%;
     }
+    .filterModal .leftImg,
+    .filterModal .rightImg {
+        display: none;
+    }
 }
 
 @media only screen and (max-width: 567px) {
