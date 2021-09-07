@@ -27,17 +27,15 @@
                     <div class="inner">
                         <div class="post-head">
                             <div class="userDetail">
-                                @if($postData->user->profile_photo_path)
-                                <img src="{{ asset('storage/'.$postData->user->profile_photo_path) }}" class="profileImg" alt="">
+                                @if(file_exists(asset('storage/'.$postData->user->profile_photo_path)))
+                                    <img src="{{ asset('storage/'.$postData->user->profile_photo_path) }}" class="profileImg" alt="">
                                 @else
-                                <div class="profileImg no-image">
-                                    {{ucwords(substr($postData->user->user_profiles->first_name,0,1))}}{{ucwords(substr($postData->user->user_profiles->last_name,0,1))}}
-                                </div>
+                                    <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
                                 <div class="pl-3">
-                                    <h4>{{ucfirst($postData->user->user_profiles->first_name)}} {{ucfirst($postData->user->user_profiles->last_name)}}</h4>
-                                    <span>{{ $postData->beach_breaks->beach_name ?? '' }}, {{\Carbon\Carbon::parse($postData->surf_start_date)->format('d-m-Y')}}</span><br>
-                                    <span>{{ postedDateTime($postData->surf_start_date) }}</span>
+                                    <h4>{{ucfirst($postData->user->user_profiles->first_name)}} {{ucfirst($postData->user->user_profiles->last_name)}} ( {{ (isset($postData->user->user_name) && !empty($postData->user->user_name))?ucfirst($postData->user->user_name):"SurfHub" }} )</h4>
+                                    <span>{{ $postData->beach_breaks->beach_name ?? '' }} {{ $postData->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($postData->surf_start_date)->format('d-m-Y') }}</span><br>
+                                    <span>{{ postedDateTime($postData->created_at) }}</span>
                                 </div>
                             </div>                            
                         </div>
