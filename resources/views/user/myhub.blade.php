@@ -37,15 +37,13 @@
                     <div class="inner">
                         <div class="post-head">
                             <div class="userDetail">
-                                @if($myHub->user->profile_photo_path)
-                                <img src="{{ asset('storage/'.$myHub->user->profile_photo_path) }}" class="profileImg" alt="">
+                                @if(file_exists(asset('storage/'.$myHub->user->profile_photo_path)))
+                                    <img src="{{ asset('storage/'.$myHub->user->profile_photo_path) }}" class="profileImg" alt="">
                                 @else
-                                <div class="profileImg no-image">
-                                    {{ucwords(substr($myHub->user->user_profiles->first_name,0,1))}}{{ucwords(substr($myHub->user->user_profiles->last_name,0,1))}}
-                                </div>
+                                    <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
                                 <div class="pl-3">
-                                    <h4>{{ucfirst($myHub->user->user_profiles->first_name)}} {{ucfirst($myHub->user->user_profiles->last_name)}} ( {{ ucfirst($myHub->user->user_name) }} )</h4>
+                                    <h4>{{ucfirst($myHub->user->user_profiles->first_name)}} {{ucfirst($myHub->user->user_profiles->last_name)}} ( {{ (isset($myHub->user->user_name) && !empty($myHub->user->user_name))?ucfirst($myHub->user->user_name):"SurfHub" }} )</h4>
                                     <span>{{ $myHub->beach_breaks->beach_name ?? '' }} {{ $myHub->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($myHub->surf_start_date)->format('d-m-Y')}}</span><br>
                                     <span>{{ postedDateTime($myHub->created_at) }}</span>
                                 </div>
