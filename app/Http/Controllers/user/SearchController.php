@@ -35,7 +35,7 @@ class SearchController extends Controller
      */
     public function search(Request $request)
     {
-        $el = $request->input('sort');
+        /*$el = $request->input('sort');
         $beach_name="";
         $currentUserCountryId = (isset(Auth::user()->user_profiles->country_id) && !empty(Auth::user()->user_profiles->country_id))?Auth::user()->user_profiles->country_id:'';      
         $countries = $this->masterService->getCountries();
@@ -63,7 +63,29 @@ class SearchController extends Controller
             return response()->json(['html' => $view]);
         }
         
-        return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name')); 
+        return view('user.search',compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name')); */
+        
+        $beach_name="";
+        $params = $request->all();
+//        $order = $request->input('order');
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;      
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $customArray = $this->customArray;
+        $userDetail = Auth::user()->user_profiles;
+        $postsList = $this->postService->getFilteredData($params, 'search');
+        
+        if(!empty($request->input('local_beach_break_id'))){
+            $bb = BeachBreak::where('id',$request->input('local_beach_break_id'))->first(); 
+            $beach_name=$bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;
+        }
+//        print_r($postsList);die;
+        if ($request->ajax()) {
+            $view = view('elements/searchdata', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name'))->render();
+            return response()->json(['html' => $view]);
+        }
+        
+        return view('user.search', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name'));
     }
 
     /**
