@@ -265,7 +265,8 @@ class PostService {
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_break_id')
                         ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
                         ->select('posts.*')
-                        ->whereNull('posts.deleted_at');
+                        ->whereNull('posts.deleted_at')
+                        ->groupBy('posts.id');
         }
         
         if ($for=='myhub'){
@@ -274,7 +275,8 @@ class PostService {
                         ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
                         ->select('posts.*')
                         ->whereNull('posts.deleted_at')
-                        ->where('posts.user_id', Auth::user()->id);
+                        ->where('posts.user_id', Auth::user()->id)
+                        ->groupBy('posts.id');
         }
         
         //************* applying conditions *****************/
@@ -350,7 +352,6 @@ class PostService {
         }
         
         if (isset($params['rating'])) {
-            //$postArray->join('ratings', 'ratings.rateable_id', '=', 'posts.id');
             $postArray->where('rating', $params['rating']);
         }
         
@@ -377,9 +378,9 @@ class PostService {
                 $postArray->orderBy('posts.created_at','DESC');
             }
         } else {
-            $postArray->orderBy('posts.created_at','DESC');
+            $postArray->orderBy('posts.id','DESC');
         }
-        
+//        dd($postArray->toSql());
         return $postArray->paginate(10);
     }
     
