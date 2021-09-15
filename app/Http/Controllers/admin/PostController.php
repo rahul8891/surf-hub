@@ -81,7 +81,7 @@ class PostController extends Controller
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();
         $language = $this->language;
-        $users=User::all();
+        $users= User::all();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;   
         return view('admin/post/create', compact('users','countries','currentUserCountryId','customArray','language','states'));
@@ -97,8 +97,22 @@ class PostController extends Controller
     {   
         try{
             $data = $request->all();
+            
+            $data = $request->all();   
+            if(!empty($data['other_surfer'])){
+                $data['surfer'] = $data['other_surfer'];
+            } elseif (isset($data['surfer']) && ($data['surfer'] == 'Me')) {
+                $data['surfer'] = Auth::user()->user_name;
+            } 
+            
+            $imageArray = (isset($data['files'][0]) && !empty($data['files'][0]))?$data['files']:[];
+            $videoArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];
+            
+            $postArray = array_filter(array_merge($imageArray, $videoArray));
+            /* dd($request->file());
             $imageArray=$request->file('files');
-            $videoArray=$request->file('videos');
+            $videoArray=$request->file('videos');*/
+            
             $rules = array(
                 'post_type' => ['required'],
                 'user_id' => ['required','numeric'],
@@ -118,7 +132,43 @@ class PostController extends Controller
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-                $result = $this->posts->savePost($data,$imageArray,$videoArray,$message);
+                /*$result = $this->posts->savePost($data, $imageArray, $videoArray, $message);
+                if($result){  
+                    return redirect()->route('postIndex')->withSuccess($message);
+                }else{
+                    return redirect()->route('postCreate')->withErrors($message);
+                }*/
+                
+                if(!empty($postArray)) {
+                    $fileData = [];
+                    foreach ($postArray as $value) { 
+                        $fileName = "";
+                        
+                        $fileType = explode('/', $value->getMimeType());
+                        
+                        if($fileType[0] == 'image'){
+                            $destinationPath = public_path('storage/images/');
+                        } elseif ($fileType[0] == 'video') {
+                            $destinationPath = public_path('storage/fullVideos/');
+                        }
+                        
+                        $timeDate = strtotime(Carbon::now()->toDateTimeString());
+                        $filenameWithExt= $value->getClientOriginalName();
+                        $extension = $value->getClientOriginalExtension();
+                        while (in_array($timeDate, $fileData)) {
+                            $timeDate = $timeDate . 1;
+                        }
+                        
+                        $fileData[] = $timeDate;
+                        $fileName = $timeDate.'.'.$extension;
+                        $value->move($destinationPath, $fileName);
+                        
+                        $result = $this->posts->savePost($data, $fileType[0], $fileName, $message);
+                    }                    
+                } else {
+                    $result = $this->posts->savePost($data, '', '', $message);
+                }
+                
                 if($result){  
                     return redirect()->route('postIndex')->withSuccess($message);
                 }else{
