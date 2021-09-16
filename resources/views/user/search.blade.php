@@ -7,6 +7,7 @@
 <section class="postsWrap a_searchPage">
     <div class="container">
         <div class="row">
+            <div class="col-lg-12" id="search-data-main">
             <div class="col-lg-9" id="search-data">
                 <!--include comman upload video and photo layout -->
                 @include('layouts/user/upload_layout')
