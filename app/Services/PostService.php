@@ -94,7 +94,10 @@ class PostService {
      */
     public function getPostsListing() {
         $postArray =  $this->posts->whereNull('deleted_at')  
-                                ->where('is_feed', 1)
+                                ->where(function($query) {
+                                    $query->where('post_type', 'PUBLIC')
+                                            ->orWhere('is_feed', '1');
+                                })
                                 ->where('is_deleted','0')                            
                                 ->orderBy('created_at','DESC')
                                 ->paginate(10);
@@ -113,12 +116,12 @@ class PostService {
             $postArray =  $this->posts->orWhere('post_text', 'like', '%'.$input['search'].'%')
                                 ->orWhere('surfer', $input['search'])
                                 ->where('is_deleted','0')
-                                ->orderBy('posts.created_at','ASC')
+                                ->orderBy('posts.created_at','DESC')
                                 ->paginate(20);
         } else {
             $postArray =  $this->posts
-                                  ->where('is_deleted','0')   
-                                  ->orderBy('posts.created_at','ASC')
+                                  ->where('is_deleted','0') 
+                                  ->orderBy('posts.created_at','DESC')
                                   ->paginate(20);
         }
         
@@ -492,15 +495,19 @@ class PostService {
 
 
     /**
-     * [savePost] we are storing the post Details from admin section 
+     * [saveAdminPost] we are storing the post Details from admin section 
      * @param  requestInput get all the requested input data
      * @param  message return message based on the condition 
      * @return dataArray with message
      */
-    /*public function savePost($input, &$message = '') {        
+    public function saveAdminPost($input, $imageArray = '', $videoArray = '', &$message='') {
         $posts = new Post();
 
         $posts->post_type = $input['post_type'];
+        if(isset($input['post_type']) && ($input['post_type'] == 'PUBLIC')) {
+            $posts->is_feed = "1";
+        }
+        
         $posts->user_id = $input['user_id'];
         $posts->post_text = $input['post_text'];
         $posts->country_id =$input['country_id'];
@@ -544,7 +551,7 @@ class PostService {
         }    
 
         return $message;
-    } */
+    }
     
     /**
      * [savePost] we are storing the post Details from admin section 
@@ -556,7 +563,7 @@ class PostService {
         try{
             $posts = new Post();
 
-            $posts->post_type = $input['post_type'];
+            $posts->post_type = $input['post_type'];            
             $posts->user_id = $input['user_id'];
             $posts->post_text = $input['post_text'];
             $posts->country_id =$input['country_id'];
