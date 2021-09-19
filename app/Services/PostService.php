@@ -266,8 +266,8 @@ class PostService {
         if ($for=='search'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_break_id')
-                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
-                        ->select('posts.*')
+                        ->join('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
                         ->whereNull('posts.deleted_at')
                         ->groupBy('posts.id');
         }
@@ -275,8 +275,8 @@ class PostService {
         if ($for=='myhub'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_break_id')
-                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
-                        ->select('posts.*')
+                        ->join('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
                         ->whereNull('posts.deleted_at')
                         ->where('posts.user_id', Auth::user()->id)
                         ->groupBy('posts.id');
@@ -375,7 +375,7 @@ class PostService {
                 $postArray->orderBy('beach_breaks.beach_name','ASC');
             }
             else if($params['sort'] == "star"){
-                $postArray->orderBy('ratings.rating','DESC');
+                $postArray->orderBy('average','DESC');
             }
             else{
                 $postArray->orderBy('posts.created_at','DESC');
