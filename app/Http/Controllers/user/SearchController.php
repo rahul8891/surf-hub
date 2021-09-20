@@ -74,10 +74,10 @@ class SearchController extends Controller
         $customArray = $this->customArray;
         $userDetail = Auth::user()->user_profiles;
         $postsList = $this->postService->getFilteredData($params, 'search');
-        
+        // echo "<pre>";print_r($postsList);die;
         if(!empty($request->input('local_beach_break_id'))){
-            $bb = BeachBreak::where('id',$request->input('local_beach_break_id'))->first(); 
-            $beach_name=$bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;
+            $bb = BeachBreak::where('id',$request->input('local_beach_break_id'))->first();
+            $beach_name = $bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;
         }
        // print_r($postsList);die;
         if ($request->ajax()) {

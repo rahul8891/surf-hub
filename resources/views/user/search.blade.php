@@ -7,6 +7,7 @@
 <section class="postsWrap a_searchPage">
     <div class="container">
         <div class="row">
+            <div class="col-lg-12" id="search-data-main">
             <div class="col-lg-9" id="search-data">
                 <!--include comman upload video and photo layout -->
                 @include('layouts/user/upload_layout')
@@ -48,7 +49,6 @@
                             @if(!empty($posts->upload->image))
                                 <div class="pos-rel editBtnWrap">
                                     <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
-                                    <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
                                 </div>
                             @elseif(!empty($posts->upload->video))
                                 <div class="pos-rel editBtnWrap">
@@ -68,11 +68,11 @@
                                 <ul class="pl-0 mb-0 d-flex align-items-center">
                                     <li>
                                         <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}"
-                                        data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$posts->userAverageRating}}">   
+                                        data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">   
                                     </li>
                                     <li class="ratingCount">
-                                        <span id="average-rating{{$posts->id}}">{{intval($posts->averageRating)}}</span>
-                                        (<span id="users-rated{{$posts->id}}">{{intval($posts->usersRated())}}</span>)
+                                        <span id="average-rating{{$posts->id}}">{{ round(floatval($posts->averageRating)) }}</span>
+                                        (<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span>)
                                     </li>
                                 </ul>
                                 <div>

@@ -94,10 +94,7 @@ class PostService {
      */
     public function getPostsListing() {
         $postArray =  $this->posts->whereNull('deleted_at')  
-                                ->where(function($query) {
-                                    $query->where('post_type', 'PUBLIC')
-                                            ->orWhere('is_feed', '1');
-                                })
+                                ->where('is_feed', '1')
                                 ->where('is_deleted','0')                            
                                 ->orderBy('created_at','DESC')
                                 ->paginate(10);
@@ -266,8 +263,8 @@ class PostService {
         if ($for=='search'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_break_id')
-                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
-                        ->select('posts.*')
+                        ->join('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
                         ->whereNull('posts.deleted_at')
                         ->groupBy('posts.id');
         }
@@ -275,8 +272,8 @@ class PostService {
         if ($for=='myhub'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_break_id')
-                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
-                        ->select('posts.*')
+                        ->join('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
                         ->whereNull('posts.deleted_at')
                         ->where('posts.user_id', Auth::user()->id)
                         ->groupBy('posts.id');
@@ -355,7 +352,8 @@ class PostService {
         }
         
         if (isset($params['rating'])) {
-            $postArray->where('rating', $params['rating']);
+            $postArray->havingRaw('round(avg(ratings.rating)) = '. $params['rating']);
+            // $postArray->where('avg(ratings.rating)', $params['rating']);
         }
         
         if (isset($params['sort'])) {
@@ -375,7 +373,7 @@ class PostService {
                 $postArray->orderBy('beach_breaks.beach_name','ASC');
             }
             else if($params['sort'] == "star"){
-                $postArray->orderBy('ratings.rating','DESC');
+                $postArray->orderBy('average','DESC');
             }
             else{
                 $postArray->orderBy('posts.created_at','DESC');

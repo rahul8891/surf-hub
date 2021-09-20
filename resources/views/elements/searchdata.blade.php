@@ -26,29 +26,31 @@
                         <p class="description">{{$posts->post_text}}</p>
                         <div class="imgRatingWrap">
                             @if(!empty($posts->upload->image))
-                                
-                                <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
+                                <div class="pos-rel editBtnWrap">
+                                    <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
+                                </div>
                             @elseif(!empty($posts->upload->video))
-                                @if (!File::exists(asset('storage/fullVideos/'.$posts->upload->video)))
-                                <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$posts->id}}">
-                                    <source src="{{ asset('storage/fullVideos/'.$posts->upload->video) }}" >    
-                                </video>
-                                @else
-                                <video width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$posts->id}}">
-                                    <source src="{{ asset('storage/videos/'.$posts->upload->video) }}" >    
-                                </video>
-                                @endif
+                                <div class="pos-rel editBtnWrap">
+                                    @if (!File::exists(asset('storage/fullVideos/'.$posts->upload->video)))
+                                    <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline playsinline="playsinline" muted class="video-js" id="myImage{{$posts->id}}">
+                                        <source src="{{ asset('storage/fullVideos/'.$posts->upload->video) }}" >    
+                                    </video>
+                                    @else
+                                    <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline playsinline="playsinline" muted class="video-js" id="myImage{{$posts->id}}">
+                                        <source src="{{ asset('storage/videos/'.$posts->upload->video) }}" >    
+                                    </video>
+                                    @endif
+                                </div>
                             @endif
                             
                             <div class="ratingShareWrap">
                                 <ul class="pl-0 mb-0 d-flex align-items-center">
                                     <li>
-                                        <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}"
-                                        data-min="0" data-max="5" data-step="1" data-size="xs" value="{{$posts->userAverageRating}}">   
+                                        <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">   
                                     </li>
                                     <li class="ratingCount">
-                                        <span id="average-rating{{$posts->id}}">{{intval($posts->averageRating)}}</span>
-                                        (<span id="users-rated{{$posts->id}}">{{intval($posts->usersRated())}}</span>)
+                                        <span id="average-rating{{$posts->id}}">{{ round(floatval($posts->averageRating)) }}</span>
+                                        (<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span>)
                                     </li>
                                 </ul>
                                 <div>
