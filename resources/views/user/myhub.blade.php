@@ -77,10 +77,10 @@
                                     <div class="ratingShareWrap">
                                         <ul class="pl-0 mb-0 d-flex align-items-center">
                                             <li>
-                                                <input id="rating{{$myHub->id}}" name="rating" class="rating rating-loading" data-id="{{$myHub->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ $myHub->averageRating }}">   
+                                                <input id="rating{{$myHub->id}}" name="rating" class="rating rating-loading" data-id="{{$myHub->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($myHub->averageRating) }}">   
                                             </li>
                                             <li class="ratingCount">
-                                                <span id="average-rating{{$myHub->id}}">{{ floatval($myHub->averageRating) }}</span>
+                                                <span id="average-rating{{$myHub->id}}">{{ round(floatval($myHub->averageRating)) }}</span>
                                                 (<span id="users-rated{{$myHub->id}}">{{ $myHub->usersRated() }}</span>)
                                                 
                                             </li>

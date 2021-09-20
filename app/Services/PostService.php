@@ -94,10 +94,7 @@ class PostService {
      */
     public function getPostsListing() {
         $postArray =  $this->posts->whereNull('deleted_at')  
-                                ->where(function($query) {
-                                    $query->where('post_type', 'PUBLIC')
-                                            ->orWhere('is_feed', '1');
-                                })
+                                ->where('is_feed', '1')
                                 ->where('is_deleted','0')                            
                                 ->orderBy('created_at','DESC')
                                 ->paginate(10);
@@ -355,7 +352,8 @@ class PostService {
         }
         
         if (isset($params['rating'])) {
-            $postArray->where('rating', $params['rating']);
+            $postArray->havingRaw('round(avg(ratings.rating)) = '. $params['rating']);
+            // $postArray->where('avg(ratings.rating)', $params['rating']);
         }
         
         if (isset($params['sort'])) {
