@@ -76,10 +76,10 @@
                                     <div class="ratingShareWrap">
                                         <ul class="pl-0 mb-0 d-flex align-items-center">
                                             <li>
-                                                <input id="rating{{$postData->id}}" name="rating" class="rating rating-loading" data-id="{{$postData->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ $postData->averageRating }}">   
+                                                <input id="rating{{$postData->id}}" name="rating" class="rating rating-loading" data-id="{{$postData->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($postData->averageRating) }}">   
                                             </li>
                                             <li class="ratingCount">
-                                                <span id="average-rating{{$postData->id}}">{{ floatval($postData->averageRating) }}</span>
+                                                <span id="average-rating{{$postData->id}}">{{ round(floatval($postData->averageRating)) }}</span>
                                                 (<span id="users-rated{{$postData->id}}">{{ $postData->usersRated() }}</span>)
                                                 
                                             </li>

@@ -68,10 +68,10 @@
                                 <ul class="pl-0 mb-0 d-flex align-items-center">
                                     <li>
                                         <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}"
-                                        data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ $posts->averageRating }}">   
+                                        data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">   
                                     </li>
                                     <li class="ratingCount">
-                                        <span id="average-rating{{$posts->id}}">{{ floatval($posts->averageRating) }}</span>
+                                        <span id="average-rating{{$posts->id}}">{{ round(floatval($posts->averageRating)) }}</span>
                                         (<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span>)
                                     </li>
                                 </ul>

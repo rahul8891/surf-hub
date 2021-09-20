@@ -36,7 +36,10 @@ class DashboardController extends Controller
         $customArray = $this->customArray;      
         $postsList = Post::with('followPost')->where('is_deleted','0')
                             ->where('parent_id','0')    
-                            ->where('post_type','PUBLIC')                              
+                            ->where(function($query) {
+                                $query->where('post_type', 'PUBLIC')
+                                    ->orWhere('is_feed', '1');
+                            })                         
                             ->orderBy('posts.created_at','DESC')
                             ->paginate(10);
         
