@@ -3,7 +3,7 @@
 <div class="feedHubNav followRequestLinksWrap">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9">
+            <div class="col-lg-12">
                 <ul class="mb-0 pl-0">
                     <li class="hover-no">
                         <a href="javascript:void(0);">Contact Us</a>
@@ -35,7 +35,7 @@
     <div class="innerWrap">
         <div class="container">
             <div class="row">
-                <div class="col-lg-9">
+                <div class="col-lg-12">
                     <div class="formWrap">
                         <div class="row">
                             <div class="col-lg-9">

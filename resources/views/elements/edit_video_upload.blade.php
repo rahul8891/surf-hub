@@ -105,7 +105,7 @@
                                                     class="form-control search-box" required>
                                                 <input type="hidden" name="local_beach_break_id"
                                                        id="local_beach_break_id" class="form-control" value="{{ old('local_beach_break', $myHubs->local_beach_break_id) }}">
-                                                <div class="auto-search search1" id="country_list"></div>
+                                                <!-- <div class="auto-search search1" id="country_list"></div> -->
                                             </div>
                                         </div>
                                     </div>

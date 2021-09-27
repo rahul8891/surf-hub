@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12" id="post-data-main">
-            <div class="col-lg-9" id="post-data">
+            <div class="col-lg-12" id="post-data">
                     @if (!empty($postsList))
                     @foreach ($postsList as $key => $posts)
                 <div class="post">

@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12" id="search-data-main">
-            <div class="col-lg-9" id="search-data">
+            <div class="col-lg-12" id="search-data">
                 <!--include comman upload video and photo layout -->
                 @include('layouts/user/upload_layout')
                     @if (is_null($postsList[0]))
