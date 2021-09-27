@@ -22,7 +22,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12" id="myhub-data-main">
-            <div class="col-lg-9 pos-rel" id="myhub-data">
+            <div class="col-lg-12 pos-rel" id="myhub-data">
                 @include('layouts/user/upload_layout')
                 @if (is_null($myHubs[0]))
                 <div class="post alert text-center alert-dismissible py-5" role="alert" id="msg">

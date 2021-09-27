@@ -21,7 +21,7 @@
 <section class="postsWrap">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9 pos-rel" id="myhub-data">
+            <div class="col-lg-12 pos-rel" id="myhub-data">
                 
                 <div class="post">
                     <div class="inner">

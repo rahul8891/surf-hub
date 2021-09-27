@@ -818,7 +818,7 @@ header .dropdown-toggle::after {
     background-color: #ffffff;
     border: 1px solid #4c8df5;
     border-radius: 0px;
-    height: auto;
+    /* height: auto; */
     padding: 4px 10px;
     color: #333333;
     font-size: 15px;
@@ -1307,14 +1307,15 @@ header .dropdown-toggle::after {
     color: #929292;
     font-weight: 400;
     box-shadow: -0.259px 0.966px 1.5px rgba(0, 0, 1, 0.18);
-    padding: 11px 10px 11px 37px;
+    /* padding: 11px 10px 11px 37px; */
     padding-right: 40px;
+    padding-left: 37px;
 }
 
 .loginWrap .formWrap .form-group span {
     position: absolute;
     left: 10px;
-    top: 8px;
+    top: 4px;
 }
 
 .loginWrap .formWrap [type="checkbox"]:not(:checked)+label,

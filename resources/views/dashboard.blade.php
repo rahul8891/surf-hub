@@ -9,7 +9,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12" id="post-data-main">
-            <div class="col-lg-9" id="post-data">
+            <div class="col-lg-12" id="post-data">
                 <!--include comman upload video and photo layout -->
                 @include('layouts/user/upload_layout')
                 @if (is_null($postsList[0]))

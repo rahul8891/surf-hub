@@ -4,7 +4,7 @@
 <section class="followRequestMainWrap">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9">
+            <div class="col-lg-12">
                 @if (count($followers) > 0)
                 <div class="requests" id="allFollower">
                     @foreach ($followers as $key => $follower)

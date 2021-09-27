@@ -166,7 +166,7 @@
                                 placeholder="Your Local Beach / Break" class="form-control search-box" required>
                             <input type="hidden" value="{{ old('local_beach_break_id')}}" name="local_beach_break_id"
                                 id="local_beach_break_id" class="form-control">
-                            <div class="auto-search search1" id="country_list"></div>
+                            <!-- <div class="auto-search search1" id="country_list"></div> -->
                         </div>
                     </div>
                 </div>
