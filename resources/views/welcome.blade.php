@@ -40,7 +40,7 @@
                             @if(!empty($posts->upload->video))
                             <br>
                             <div class="pos-rel editBtnWrap">
-                                <video width="100%" controls autoplay playsinline playsinline="playsinline" muted class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/fullVideos/'.$posts->upload->video) }}"></video>
+                                <video width="100%" controls autoplay playsinline muted class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/fullVideos/'.$posts->upload->video) }}"></video>
                                 
                             </div>
                             @endif
