@@ -101,11 +101,11 @@
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
                                                 <input type="text" value="{{ old('local_beach_break', $beach_name) }}"
-                                                    name="local_beach_break" placeholder="Break / Beach Name"
+                                                    name="local_beach_break" autocomplete="off" placeholder="Break / Beach Name"
                                                     class="form-control search-box" required>
                                                 <input type="hidden" name="local_beach_break_id"
                                                        id="local_beach_break_id" class="form-control" value="{{ old('local_beach_break', $myHubs->local_beach_break_id) }}">
-                                                <!-- <div class="auto-search search1" id="country_list"></div> -->
+                                                <div class="auto-search search1" id="country_list"></div>
                                             </div>
                                         </div>
                                     </div>

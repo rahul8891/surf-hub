@@ -181,7 +181,7 @@
                                             @endphp
                                             <input type="text"
                                                 class="form-control @error('local_beach_break') is-invalid @enderror search-box"
-                                                name="local_beach_break" placeholder="Your Local Beach / Break"
+                                                name="local_beach_break" autocomplete="off" placeholder="Your Local Beach / Break"
                                                 value="{{ old('local_beach_break',$beach_break)}}">
                                             @error('local_beach_break')
                                             <span class="invalid-feedback" role="alert">
@@ -192,7 +192,7 @@
                                                 value="{{old('local_beach_break',$posts->local_beach_break_id )}}"
                                                 name="local_beach_break_id" id="local_beach_break_id" class="form-control">
                 
-                                            <!-- <div class="auto-search search1" id="country_list"></div> -->
+                                            <div class="auto-search search1" id="country_list"></div>
                                         </div>
                                     </div>
                                 </div>
