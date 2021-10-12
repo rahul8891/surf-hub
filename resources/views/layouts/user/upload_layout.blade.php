@@ -184,10 +184,10 @@
                                                     <div class="col-md-8">
                                                         <div class="pos-rel">
                                                             <input type="text" value="{{ old('local_beach_break',$beach_name)}}"
-                                                                placeholder="Search Beach Break" class="form-control search-box2">
+                                                                placeholder="Search Beach Break" autocomplete="off" class="form-control search-box2">
                                                             <input type="hidden" value="{{ Request::get('local_beach_break_id') ? Request::get('local_beach_break_id') : "" }}" name="local_beach_break_id"
                                                                 id="local_beach_break_id2" class="form-control">
-                                                            <!-- <div class="auto-search searchTwo" id="country_list2"></div>                     -->
+                                                            <div class="auto-search searchTwo" id="country_list2"></div>
                                                         </div>
                                                     </div>
                                                 </div>
