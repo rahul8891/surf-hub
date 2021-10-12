@@ -22,7 +22,7 @@
                 <div class="modal-body">
                     <div class="">
                         <input type="hidden" name="user_id" value="{{auth()->user()->id ?? ''}}">
-                        <textarea placeholder="Share your surf experience....." name="post_text" required>{{ (isset($myHubs->post_text) && !empty($myHubs->post_text))?$myHubs->post_text:'' }}</textarea>
+                        <textarea placeholder="Share your surf experience....." name="post_text" >{{ (isset($myHubs->post_text) && !empty($myHubs->post_text))?$myHubs->post_text:'' }}</textarea>
                         <div class="videoImageUploader">
                             <div class="upload-btn-wrapper">
                                 <a data-toggle="modal" data-target="#editVideoModal"><img alt="" src="{{ asset("/img/video.png")}}"></a>
