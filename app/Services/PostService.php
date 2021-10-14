@@ -265,7 +265,7 @@ class PostService {
         if ($for=='search'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_break_id')
-                        ->join('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
                         ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
                         ->whereNull('posts.deleted_at')
                         ->groupBy('posts.id');
@@ -274,7 +274,7 @@ class PostService {
         if ($for=='myhub'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_break_id')
-                        ->join('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
                         ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
                         ->whereNull('posts.deleted_at')
                         ->where('posts.user_id', Auth::user()->id)
@@ -383,7 +383,7 @@ class PostService {
         } else {
             $postArray->orderBy('posts.id','DESC');
         }
-//        dd($postArray->toSql());
+        // dd($postArray->paginate(10));
         return $postArray->paginate(10);
     }
     
