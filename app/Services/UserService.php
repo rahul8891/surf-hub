@@ -173,8 +173,10 @@ class UserService {
         $userProfiles =  new UserProfile();
         
         $result = $userProfiles
+            ->join('users', 'users.id', '=', 'user_profiles.user_id')
             ->where('user_id','!=', Auth::user()->id)
             ->where($fieldFirstName, 'LIKE',  '%' . $string .'%')
+            ->orWhere('users.user_name', 'LIKE',  '%' . $string .'%')
             ->orWhere($fieldLastName, 'LIKE',  '%' . $string .'%')
             ->get();
         return $result;
