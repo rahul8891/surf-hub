@@ -251,9 +251,9 @@ class UserController extends Controller
             $fieldLastName = 'last_name';
             //get users list for tagging
             $resultData = $this->users->getUsersForTagging($string, $fieldFirstName, $fieldLastName);
-            
+            // dd($resultData);
             $returnObject = '';
-            if(!$resultData->isEmpty()){
+            if($resultData) {
                 $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1; width:100%">';
                 foreach ($resultData as $key => $value) {
                     $val = ucfirst($value->first_name).' '.ucfirst($value->last_name);   
