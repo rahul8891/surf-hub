@@ -214,14 +214,15 @@ class UserController extends Controller
         $data = $request->all();   
         $searchTerm = $data['searchTerm'];      
         if(!empty($searchTerm)){
-            $searchTerm = explode(",",$searchTerm);
-            $string = $searchTerm['0'];        
-            $field = ['user_name'];
-            $resultData = DB::Table('users')->Where(function ($query) use($string, $field) {
+            $searchTerm = explode(",", $searchTerm);
+            $string = $searchTerm['0'];
+            
+            /* $resultData = DB::Table('users')->Where(function ($query) use($string, $field) {
                 for ($i = 0; $i < count($field); $i++){             
                     $query->orWhere($field[$i], 'LIKE',  '%' . $string .'%');
                 }      
-            })->get(); 
+            })->get(); */
+            $resultData = $this->users->getUsersForTagging($string);
            
             $returnObject = '';
             if(!$resultData->isEmpty()){
@@ -246,14 +247,13 @@ class UserController extends Controller
         $searchTerm = $data['searchTerm'];      
         if(!empty($searchTerm)){
             $searchTerm = explode(",",$searchTerm);
-            $string = $searchTerm['0'];        
-            $fieldFirstName = 'first_name';
-            $fieldLastName = 'last_name';
+            $string = $searchTerm['0'];
+            
             //get users list for tagging
-            $resultData = $this->users->getUsersForTagging($string, $fieldFirstName, $fieldLastName);
+            $resultData = $this->users->getUsersForTagging($string);
             // dd($resultData);
             $returnObject = '';
-            if($resultData) {
+            if(!$resultData->isEmpty()) {
                 $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1; width:100%">';
                 foreach ($resultData as $key => $value) {
                     $val = ucfirst($value->first_name).' '.ucfirst($value->last_name);   
