@@ -168,17 +168,19 @@ class UserService {
         return $users;
     }
 
-    public function getUsersForTagging($string, $fieldFirstName, $fieldLastName)
+    public function getUsersForTagging($string)
     {
         $userProfiles =  new UserProfile();
         
         $result = $userProfiles
             ->join('users', 'users.id', '=', 'user_profiles.user_id')
             ->where('user_id','!=', Auth::user()->id)
-            ->where($fieldFirstName, 'LIKE',  '%' . $string .'%')
+            ->where('first_name', 'LIKE',  '%' . $string .'%')
             ->orWhere('users.user_name', 'LIKE',  '%' . $string .'%')
-            ->orWhere($fieldLastName, 'LIKE',  '%' . $string .'%')
+            ->orWhere('last_name', 'LIKE',  '%' . $string .'%')
+            ->groupBy('users.id')
             ->get();
+        //dd($result);
         return $result;
     }
 
