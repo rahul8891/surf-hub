@@ -159,10 +159,20 @@
                                                 </li>
                                                 <!-- <li>
                                                     <a href="{{route('deleteUserPost', Crypt::encrypt($detail->id))}}">DELETE</a>
+                                                </li> -->
+                                                <li class="pos-rel">
+                                                    <a href="{{route('saveToMyHub', Crypt::encrypt($detail->post->id))}}" class="">SAVE
+                                                        <div class="saveInfo">
+                                                            <div class="pos-rel">
+                                                                <img src={{asset("img/tooltipArrowDown.png")}} alt="">
+                                                                Save this video to your personal MyHub library
+                                                            </div>
+                                                        </div>
+                                                    </a>
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>
-                                                </li> -->
+                                                </li>
                                                 <li class="pos-rel">
                                                     <a href="javascript:void(0)">TAG
                                                         @if(count($detail->post->tags) >= 1)
