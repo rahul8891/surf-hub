@@ -324,5 +324,26 @@
                 $('.othersSurferInfo').hide();
             }
         });
+        
+        $('.other_surfer').keyup(debounce(function(){
+            // the following function will be executed every half second	
+            if($(this).val().length > 1){
+                $.ajax({
+                    type: "GET",
+                    url: "/getUsers",
+                    data: {				
+                        searchTerm: $(this).val(),
+                        _token: csrf_token
+                    },
+                    dataType: "json",
+                    success: function (jsonResponse) {
+                        $('#other_surfer_list').html(jsonResponse);
+                    }
+                })
+            }else{
+                $('#surfer_id').val('');
+                $('#other_surfer_list').html("");
+            }
+        }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
     }); 
 </script>
