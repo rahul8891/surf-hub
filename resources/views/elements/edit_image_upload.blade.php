@@ -179,9 +179,9 @@
                                         <div class="col-md-8 col-sm-4 float-right othersSurferInfo" style="display:none" id="othersSurfer">
                                               <div class="selectWrap pos-rel">
                                                 <div class="selectWrap pos-rel">
-                                                    <input type="text" value="{{ old('other_surfer')}}" name="other_surfer" placeholder="Search other user" class="form-control other_surfer">
-                                                        <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id" id="surfer_id" class="form-control surfer_id">
-                                                    <div class="auto-search search2" id="other_surfer_list"></div>
+                                                    <input type="text" value="{{ old('other_surfer')}}" name="other_surfer" placeholder="Search other user" class="form-control edit_other_surfer">
+                                                        <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id" id="edit_surfer_id" class="form-control surfer_id">
+                                                    <div class="auto-search search2" id="edit_other_surfer_list"></div>
                                                 </div>
 
                                             </div>
@@ -325,7 +325,7 @@
             }
         });
         
-        $('.other_surfer').keyup(debounce(function(){
+        $('.edit_other_surfer').keyup(debounce(function(){
             // the following function will be executed every half second	
             if($(this).val().length > 2){
                 $.ajax({
@@ -336,13 +336,22 @@
                     },
                     dataType: "json",
                     success: function (jsonResponse) {
-                        $('#other_surfer_list').html(jsonResponse);
+                        $('#edit_other_surfer_list').html(jsonResponse);
                     }
                 })
             }else{
-                $('#surfer_id').val('');
-                $('#other_surfer_list').html("");
+                $('#edit_surfer_id').val('');
+                $('#edit_other_surfer_list').html("");
             }
         }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
+        
+        $(document).on('click','.search2 li', function(){
+            var value = $(this).text().trim();
+            var dataId = $(this).attr("data-id");
+            $('#edit_other_surfer_list').html("");
+            $('.edit_other_surfer').val(value);
+            $('#edit_surfer_id').val(dataId);
+            $('#edit_other_surfer_list').html("");
+        });
     }); 
 </script>
