@@ -252,7 +252,7 @@
 	};
         
         // ajax form field data for post
-	$('.search-box').keyup(debounce(function() {  console.log('aa111');
+	$('.search-box').keyup(debounce(function() { 
             // the following function will be executed every half second	
             if($(this).val().length > 2){		
                 $.ajax({
@@ -327,13 +327,12 @@
         
         $('.other_surfer').keyup(debounce(function(){
             // the following function will be executed every half second	
-            if($(this).val().length > 1){
+            if($(this).val().length > 2){
                 $.ajax({
                     type: "GET",
                     url: "/getUsers",
                     data: {				
                         searchTerm: $(this).val(),
-                        _token: csrf_token
                     },
                     dataType: "json",
                     success: function (jsonResponse) {
