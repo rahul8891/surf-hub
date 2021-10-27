@@ -19,14 +19,18 @@ class UserMiddleware
     public function handle(Request $request, Closure $next)
     {
         try{
-            $user = Auth::user();
-            $checkUserType = config('customarray.userType');
-            if (in_array($user->user_type, $checkUserType)) {
-                if($user->user_type == $checkUserType['USER']){
-                    // return true and allow route to USER
-                    return $next($request);
-                }else{
-                    return Redirect::to('/admin/dashboard/index')->withErrors('Sorry, You Are Not Authorized to Access User Route'); 
+            if (!Auth::user()){
+                return Redirect::to('/login')->withErrors('Sorry, please login to access this page.'); 
+            } else {
+                $user = Auth::user();
+                $checkUserType = config('customarray.userType');
+                if (in_array($user->user_type, $checkUserType)) {
+                    if($user->user_type == $checkUserType['USER']){
+                        // return true and allow route to USER
+                        return $next($request);
+                    }else{
+                        return Redirect::to('/admin/dashboard/index')->withErrors('Sorry, You Are Not Authorized to Access User Route'); 
+                    }
                 }
             }
         }catch (\Exception $e){
