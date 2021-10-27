@@ -178,6 +178,7 @@ class UserService {
             ->where('first_name', 'LIKE',  '%' . $string .'%')
             ->orWhere('users.user_name', 'LIKE',  '%' . $string .'%')
             ->orWhere('last_name', 'LIKE',  '%' . $string .'%')
+            ->orWhere(DB::raw('CONCAT_WS(" ", first_name, last_name)'), 'like', '%' . $string . '%')
             ->groupBy('users.id')
             ->get();
         //dd($result);
