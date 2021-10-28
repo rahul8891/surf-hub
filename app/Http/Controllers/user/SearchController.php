@@ -68,11 +68,11 @@ class SearchController extends Controller
         $beach_name="";
         $params = $request->all();
 //        $order = $request->input('order');
-        $currentUserCountryId = Auth::user()->user_profiles->country_id;      
+        $currentUserCountryId = (isset(Auth::user()->user_profiles->country_id) && !empty(Auth::user()->user_profiles->country_id))?Auth::user()->user_profiles->country_id:'';
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
-        $userDetail = Auth::user()->user_profiles;
+        $userDetail = (isset(Auth::user()->user_profiles) && !empty(Auth::user()->user_profiles))?Auth::user()->user_profiles:'';
         $postsList = $this->postService->getFilteredData($params, 'search');
         // echo "<pre>";print_r($postsList);die;
         if(!empty($request->input('local_beach_break_id'))){
