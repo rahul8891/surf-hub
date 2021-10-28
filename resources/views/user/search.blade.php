@@ -267,6 +267,7 @@
                                 @endforeach
                             </div>
                             @endif
+                            @if(Auth::user())
                             <div class="WriteComment">
                                 <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
                                 @csrf
@@ -276,6 +277,7 @@
                                 <button type="submit" class="btn btn-info postComment" id="submitPost{{$posts->id}}">Submit</button>
                                 </form>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>

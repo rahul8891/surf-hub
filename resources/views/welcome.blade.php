@@ -204,9 +204,11 @@
                                 @endforeach
                             </div>
                             @endif
-                            <div class="WriteComment">
-                                <textarea placeholder="Write a comment.."></textarea>
-                            </div>
+                            @if(Auth::user())
+                                <div class="WriteComment">
+                                    <textarea placeholder="Write a comment.."></textarea>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
