@@ -985,6 +985,7 @@ header .dropdown-toggle::after {
 
 .uploadModal .modal-content {
     padding: 45px 60px 30px 50px;
+    z-index: 999;
 }
 
 .uploadModal .modal-header {
@@ -1093,7 +1094,7 @@ header .dropdown-toggle::after {
     width: 102px;
 }
 
-.uploadModal .modal-footer button {
+.uploadModal .modal-footer button, .uploadPost {
     font-size: 16px;
     line-height: 24px;
     color: #ffffff;
@@ -1106,6 +1107,11 @@ header .dropdown-toggle::after {
     border: none;
 }
 
+.uploadPost:hover, .uploadPost:focus, 
+.uploadModal .modal-footer button:focus,
+.uploadModal .modal-footer button:hover{
+    background: #4076cd;
+}
 .uploadModal .modal-footer {
     border: none;
     padding: 0px;
