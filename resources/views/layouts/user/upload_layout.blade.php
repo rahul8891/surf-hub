@@ -12,7 +12,7 @@
         <div class="head">
             <div class="row">
                 @if(Auth::user() && (!str_contains(Request::path(),'search')))
-                <div class="col-md-6 col-auto">
+                <div class="col-md-6 col-auto"  data-toggle="modal" data-target="#exampleModal" data-backdrop="static" data-keyboard="false">
                     <img src="{{ asset("/img/upload.png")}}" alt=""> Upload Video/Photo
                 </div>
                 @endif
@@ -76,21 +76,21 @@
                                             </div>
                                             <div class="col-md-6 col-sm-12">
                                                 <div class="row">
-                                                    <div class="col-md-3 col-sm-3 col-6">
+                                                    <div class="col-md-4 col-sm-4 col-4">
                                                         <div class="cstm-check pos-rel">
                                                             <input type="radio" id="test-me" name="filterUser" value="me" {{ Request::get('me') ? "checked" : "" }} />
                                                             <label for="test-me" class="pr-4">Me</label>
                                                         </div>
                                     
                                                     </div>
-                                                    <div class="col-md-4 col-sm-4 col-6">
+                                                    <div class="col-md-4 col-sm-4 col-4">
                                                         <div class="cstm-check pos-rel">
                                                             <input type="radio" id="test-other" name="filterUser" value="others" {{ Request::get('others') ? "checked" : "" }} />
                                                             <label for="test-other" class="pr-4">Other</label>
                                                         </div>
                                     
                                                     </div>
-                                                    <div class="col-md-5 col-sm-5 col-6">
+                                                    <div class="col-md-4 col-sm-4 col-4">
                                                         <div class="cstm-check pos-rel">
                                                             <input type="radio" id="test-unknown" name="filterUser" value="unknown" {{ Request::get('unknown') ? "checked" : "" }} />
                                                             <label for="test-unknown" class="pr-4">Unknown</label>

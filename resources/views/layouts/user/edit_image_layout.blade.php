@@ -12,7 +12,7 @@
         <div class="head">
             <div class="row">
                 @if(Auth::user() && (!str_contains(Request::path(),'search')))
-                <div class="col-md-6">
+                <div class="col-md-6" data-toggle="modal" data-target="#exampleModal" data-backdrop="static" data-keyboard="false">
                     <img src="{{ asset("/img/upload.png")}}" alt=""> Upload Video/Photo
                 </div>
                 @endif
