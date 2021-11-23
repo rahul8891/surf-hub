@@ -3238,3 +3238,9 @@ textarea:focus,input:focus{
 .searchHeaderWrap{
     display: flex;
 }
+
+.postsWrap .post .uploadWrap .head span.star,
+.postsWrap .post .uploadWrap .head span.filled-stars,
+.postsWrap .post .uploadWrap .head span.empty-stars{
+	display:inline-block !important;
+}
