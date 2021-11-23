@@ -68,7 +68,8 @@
   type="text/javascript"></script>
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
-    <script src="{{ asset('/js/bootstrap.js') }}"></script>
+    <!-- <script src="{{ asset('/js/bootstrap.js') }}"></script> -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="{{ asset("/js/jquery.validate.min.js") }}"></script>
     <script src="{{ asset("/js/custom.js") }}"></script>
     @if (Auth::user())
@@ -123,24 +124,24 @@
             });
         });
 
-        function openFullscreen(id) {
+       function openFullscreen(id) {
             var elem = document.getElementById("myImage"+id);
             if (elem.requestFullScreen) {
                 elem.requestFullScreen();
                 elem.webkitEnterFullscreen();
                 elem.enterFullscreen();
-            } else if (elem.webkitRequestFullScreen) { /* Safari */
+            } else if (elem.webkitRequestFullScreen) {  // Safari 
                 elem.webkitRequestFullScreen();
                 elem.webkitEnterFullscreen();
                 elem.enterFullscreen();
             } else if (elem.mozRequestFullScreen) {
                 elem.mozRequestFullScreen();
                 elem.enterFullscreen();
-            } else if (elem.msRequestFullScreen) { /* IE11 */
+            } else if (elem.msRequestFullScreen) { // IE11 
                 elem.msRequestFullScreen();
                 elem.enterFullscreen();
             }
-        }    
+        }      
     </script>
 </body>
 </html>
