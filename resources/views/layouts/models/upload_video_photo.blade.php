@@ -44,7 +44,7 @@
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
                                 <input type="file" id="input_multifileSelect1" name="files[]" accept=".png, .jpg, .jpeg, .gif" multiple />
-                                <input type="hiddden" id="input_multifile1" name="images[]" style="display:none;" accept="video/*"/>
+                                <input type="hiddden" id="input_multifile1" name="images[]" style="display:none;"/>
                             </div>
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
