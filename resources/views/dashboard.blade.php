@@ -197,16 +197,16 @@
                                                         <img src={{asset("img/tooltipArrowDown.png")}} alt="">
                                                         <div class="text-center reportContentTxt">Report Content</div>
                                                         <div class="reason">
-                                                            <input type="checkbox" id="Report1" name="incorrect" value="1">
-                                                            <label for="Report1">Report Info as incorrect</label>
+                                                            <input type="checkbox" id="Report1_{{$posts->id}}" name="incorrect" value="1">
+                                                            <label for="Report1_{{$posts->id}}">Report Info as incorrect</label>
                                                         </div>
                                                         <div class="cstm-check pos-rel">
-                                                            <input type="checkbox" id="Report2" name="inappropriate" value="1">
-                                                            <label for="Report2">Report content as inappropriate</label>
+                                                            <input type="checkbox" id="Report2_{{$posts->id}}" name="inappropriate" value="1">
+                                                            <label for="Report2_{{$posts->id}}">Report content as inappropriate</label>
                                                         </div>
                                                         <div class="cstm-check pos-rel">
-                                                            <input type="checkbox" id="Report3" name="tolls" value="1">
-                                                            <label for="Report3">Report tolls</label>
+                                                            <input type="checkbox" id="Report3_{{$posts->id}}" name="tolls" value="1">
+                                                            <label for="Report3_{{$posts->id}}">Report tolls</label>
                                                         </div>
                                                         <div>
                                                             Additional Comments:

@@ -219,7 +219,7 @@
                         <div class="modal-footer text-center justify-content-center">
                         <!-- <button type="reset">RESET</button> 
                         <button type="submit" form="updateVideoPostData" class="submitBtn">UPLOAD</button> -->
-                        <input type="submit" class="btn btn-primary" name="submit" value="Save" />
+                        <input type="submit" class="uploadPost" name="submit" value="SAVE" />
                     </div>
                     </div>
                     
