@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12" id="post-data-main">
-            <div class="col-lg-9" id="post-data">
+            <div class="col-lg-12" id="post-data">
                     @if (!empty($postsList))
                     @foreach ($postsList as $key => $posts)
                 <div class="post">
@@ -40,7 +40,7 @@
                             @if(!empty($posts->upload->video))
                             <br>
                             <div class="pos-rel editBtnWrap">
-                                <video width="100%" controls autoplay playsinline playsinline="playsinline" muted class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/fullVideos/'.$posts->upload->video) }}"></video>
+                                <video width="100%" controls autoplay playsinline muted class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ asset('storage/fullVideos/'.$posts->upload->video) }}"></video>
                                 
                             </div>
                             @endif
@@ -204,9 +204,11 @@
                                 @endforeach
                             </div>
                             @endif
-                            <div class="WriteComment">
-                                <textarea placeholder="Write a comment.."></textarea>
-                            </div>
+                            @if(Auth::user())
+                                <div class="WriteComment">
+                                    <textarea placeholder="Write a comment.."></textarea>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

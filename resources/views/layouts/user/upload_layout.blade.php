@@ -12,16 +12,16 @@
         <div class="head">
             <div class="row">
                 @if(Auth::user() && (!str_contains(Request::path(),'search')))
-                <div class="col-md-6">
+                <div class="col-md-6 col-auto">
                     <img src="{{ asset("/img/upload.png")}}" alt=""> Upload Video/Photo
                 </div>
                 @endif
                 @if((str_contains(Request::path(),'myhub') || str_contains(Request::path(),'search')))
-                <div class="col-md-3 col-6">
+                <div class="col-md-3 col-auto">
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="{{ asset("/img/sort.png")}}" alt=""> Sort
+                            <img src="{{ asset("/img/sort.png")}}" alt=""> <span>Sort</span>
                         </button>
                         
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -34,12 +34,12 @@
                         </div>                        
                     </div>
                 </div>
-                <div class="col-md-3 col-6 text-web-right">
+                <div class="col-md-3 col-auto text-web-right">
                     <div class="dropdown" id="dropdown-toggle-id">
 
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2"
                         data-toggle="modal" data-target="#filterModal">
-                            <img src="{{ asset("/img/filter.png")}}" alt=""> Filter
+                            <img src="{{ asset("/img/filter.png")}}" alt=""> <span>Filter</span>
                         </button>
 
                         <!-- modal -->
@@ -184,10 +184,10 @@
                                                     <div class="col-md-8">
                                                         <div class="pos-rel">
                                                             <input type="text" value="{{ old('local_beach_break',$beach_name)}}"
-                                                                placeholder="Search Beach Break" class="form-control search-box2">
+                                                                placeholder="Search Beach Break" autocomplete="off" class="form-control search-box2">
                                                             <input type="hidden" value="{{ Request::get('local_beach_break_id') ? Request::get('local_beach_break_id') : "" }}" name="local_beach_break_id"
                                                                 id="local_beach_break_id2" class="form-control">
-                                                            <div class="auto-search searchTwo" id="country_list2"></div>                    
+                                                            <div class="auto-search searchTwo" id="country_list2"></div>
                                                         </div>
                                                     </div>
                                                 </div>

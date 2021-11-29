@@ -2,7 +2,7 @@
 <div class="feedHubNav followRequestLinksWrap">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9">
+            <div class="col-lg-12">
                 <ul class="mb-0 pl-0">
                     <li class="{{ userActiveMenu('followRequests') }}">
                         <a href="{{ route('followRequests') }}">Follow Requests</a>

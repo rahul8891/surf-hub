@@ -3,10 +3,10 @@
 <div class="feedHubNav ">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9">
+            <div class="col-lg-12">
                 <ul class="mb-0 pl-0">
                     <li class="hover-no">
-                        <a href="javascript:void(0);">Change Password</a>
+                        <a href="javascript:void(0);">Change Password</a> 
                     </li>
                 </ul>
             </div>

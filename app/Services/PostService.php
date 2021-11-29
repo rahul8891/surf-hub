@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\sendReportMail;
 use File;
 use DB, Log;
 use FFMpeg;
@@ -73,7 +75,7 @@ class PostService {
     }
 
     /**
-     * [getPostTotal] we are getiing number of total posts
+     * [getPostTotal] we are getting number of total posts
      * @param  
      * @param  
      * @return dataCount
@@ -87,7 +89,7 @@ class PostService {
         return $postArray;
     }
     /**
-     * [getPostListing] we are getiing all the post
+     * [getPostListing] we are getting all the post
      * @param  
      * @param  
      * @return dataArray
@@ -103,7 +105,7 @@ class PostService {
     }
 
     /**
-     * [getPostListing] we are getiing all the post
+     * [getPostListing] we are getting all the post
      * @param  
      * @param  
      * @return dataArray
@@ -263,7 +265,7 @@ class PostService {
         if ($for=='search'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_break_id')
-                        ->join('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
                         ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
                         ->whereNull('posts.deleted_at')
                         ->groupBy('posts.id');
@@ -272,7 +274,7 @@ class PostService {
         if ($for=='myhub'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_break_id')
-                        ->join('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
                         ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
                         ->whereNull('posts.deleted_at')
                         ->where('posts.user_id', Auth::user()->id)
@@ -381,7 +383,7 @@ class PostService {
         } else {
             $postArray->orderBy('posts.id','DESC');
         }
-//        dd($postArray->toSql());
+        // dd($postArray->paginate(10));
         return $postArray->paginate(10);
     }
     
@@ -852,26 +854,42 @@ class PostService {
      * @return dataArray with message
      */
     public function saveReport($input,&$message=''){
-        
+        $data = [];
         try{
             $this->report->post_id = $input['post_id'];
             $this->report->user_id = Auth::user()->id;
             if(isset($input['incorrect'])){
+                $data['type']['incorrect'] = 'Incorrect';
                 $this->report->incorrect = $input['incorrect'];
             }
             if(isset($input['inappropriate'])){
+                $data['type']['inappropriate'] = 'Inappropriate';
                 $this->report->inappropriate = $input['inappropriate'];
             }
             if(isset($input['tolls'])){
+                $data['type']['tolls'] = 'Tolls';
                 $this->report->tolls = $input['tolls'];
             }
             $this->report->comments = $input['comments'];
             $this->report->created_at = Carbon::now();
             $this->report->updated_at = Carbon::now();
             //dd($this->comments);
-            if($this->report->save()){
+            if($this->report->save()) {                
+                $data['from'] = config('customarray.report_email');
+                $data['mail'] = 'report';
+                $data['name'] = Auth::user()->user_name;
+                $data['email'] = Auth::user()->email;
+                $data['date'] = $this->report->created_at;
+                $data['template'] = 'static-pages.report_mail';
+                $data['subject'] = 'Post has been reported as '.implode(', ', $data['type']).' by '.$data['name'].' on '.date('d-m-Y', strtotime($data['date']));
+                $data['comment'] = $this->report->comments;                
+                $data['post_id'] = $this->report->post_id;
+                
+                Mail::to($data['from'])
+                    ->send(new sendReportMail($data));
+                
                 //for store media into upload table
-                $message = 'Report has been created successfully.!';
+                $message = 'Post has been reported successfully.!';
                 return $message;                    
             }
                 

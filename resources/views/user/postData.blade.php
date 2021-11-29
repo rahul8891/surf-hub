@@ -21,7 +21,7 @@
 <section class="postsWrap">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9 pos-rel" id="myhub-data">
+            <div class="col-lg-12 pos-rel" id="myhub-data">
                 
                 <div class="post">
                     <div class="inner">
@@ -59,7 +59,7 @@
                                         @endphp
                                         <br>
                                         <div class="pos-rel editBtnWrap">
-                                            <video width="100%" preload="auto" data-setup="{}"  controls  autoplay playsinline playsinline="playsinline" muted class="video-js" id="myImage{{$postData->id}}">
+                                            <video width="100%" preload="auto" data-setup="{}"  controls  autoplay playsinline muted class="video-js" id="myImage{{$postData->id}}">
                                                 <source src="{{ asset('storage/fullVideos/'.$postData->upload->video) }}" >    
                                             </video>
                                         </div>
@@ -183,6 +183,19 @@
                                                 </li>
                                                 <li>
                                                     <a href="{{route('deleteUserPost', Crypt::encrypt($postData->id))}}"  onclick="return confirm('Do you really want to delete this footage?')">DELETE</a>
+                                                </li>
+                                                <li>
+                                                    <span class="divider"></span>
+                                                </li>
+                                                <li class="pos-rel">
+                                                    <a href="{{route('saveToMyHub', Crypt::encrypt($postData->id))}}" class="">SAVE
+                                                        <div class="saveInfo">
+                                                            <div class="pos-rel">
+                                                                <img src={{asset("img/tooltipArrowDown.png")}} alt="">
+                                                                Save this video to your personal MyHub library
+                                                            </div>
+                                                        </div>
+                                                    </a>
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>

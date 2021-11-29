@@ -136,4 +136,7 @@ return [
         'UPDATE_SUCCESS'=>'Record has been successfully updated',
         'IMAGE_UPDATE_SUCCESS'=>'Profile Image has been successfully updated'
     ],
+
+    'report_email' => 'reports@surfhub.net.au',
+    'contact_email' => 'contactus@surfhub.net.au',
 ];

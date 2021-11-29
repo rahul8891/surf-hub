@@ -43,9 +43,8 @@
 
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
-                                <input type="file" id="input_multifileSelect1" name="files[]" accept=".png, .jpg, .jpeg, .gif"
-                                       multiple />
-                                <input type="hiddden" id="input_multifile1" name="images[]" style="display:none;" />
+                                <input type="file" id="input_multifileSelect1" name="files[]" accept=".png, .jpg, .jpeg, .gif" multiple />
+                                <input type="hiddden" id="input_multifile1" name="images[]" style="display:none;" accept="video/*"/>
                             </div>
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
@@ -129,7 +128,7 @@
                                         <div class="selectWrap pos-rel">
                                             <input type="text" value="{{ old('local_beach_break')}}"
                                                    name="local_beach_break" placeholder="Break / Beach Name"
-                                                   class="form-control search-box" required>
+                                                   class="form-control search-box" autocomplete="off" required>
                                             <input type="hidden" name="local_beach_break_id"
                                                    id="local_beach_break_id" class="form-control">
                                             <div class="auto-search search1" id="country_list"></div>

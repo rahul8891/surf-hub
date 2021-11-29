@@ -22,7 +22,7 @@
                 <div class="modal-body">
                     <div class="">
                         <input type="hidden" name="user_id" value="{{auth()->user()->id ?? ''}}">
-                        <textarea placeholder="Share your surf experience....." name="post_text" required>{{ (isset($myHubs->post_text) && !empty($myHubs->post_text))?$myHubs->post_text:'' }}</textarea>
+                        <textarea placeholder="Share your surf experience....." name="post_text" >{{ (isset($myHubs->post_text) && !empty($myHubs->post_text))?$myHubs->post_text:'' }}</textarea>
                         <div class="videoImageUploader">
                             <div class="upload-btn-wrapper">
                                 <a data-toggle="modal" data-target="#editVideoModal"><img alt="" src="{{ asset("/img/video.png")}}"></a>
@@ -101,7 +101,7 @@
                                         <div class="col-md-8">
                                             <div class="selectWrap pos-rel">
                                                 <input type="text" value="{{ old('local_beach_break', $beach_name) }}"
-                                                    name="local_beach_break" placeholder="Break / Beach Name"
+                                                    name="local_beach_break" autocomplete="off" placeholder="Break / Beach Name"
                                                     class="form-control search-box" required>
                                                 <input type="hidden" name="local_beach_break_id"
                                                        id="local_beach_break_id" class="form-control" value="{{ old('local_beach_break', $myHubs->local_beach_break_id) }}">

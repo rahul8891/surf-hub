@@ -19,7 +19,7 @@
         <div class="container">
                         <h2 style="color: #FFFFFF;">My Profile</h2>
             <div class="row">
-                <div class="col-lg-9">
+                <div class="col-lg-12">
                     <div class="formWrap">
                         <div class="profileImgDetail">
                             <!-- <div class="imgWrap">

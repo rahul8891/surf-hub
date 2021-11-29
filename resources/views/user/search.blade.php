@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12" id="search-data-main">
-            <div class="col-lg-9" id="search-data">
+            <div class="col-lg-12" id="search-data">
                 <!--include comman upload video and photo layout -->
                 @include('layouts/user/upload_layout')
                     @if (is_null($postsList[0]))
@@ -53,11 +53,11 @@
                             @elseif(!empty($posts->upload->video))
                                 <div class="pos-rel editBtnWrap">
                                     @if (!File::exists(asset('storage/fullVideos/'.$posts->upload->video)))
-                                    <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline playsinline="playsinline" muted class="video-js" id="myImage{{$posts->id}}">
+                                    <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                                         <source src="{{ asset('storage/fullVideos/'.$posts->upload->video) }}" >    
                                     </video>
                                     @else
-                                    <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline playsinline="playsinline" muted class="video-js" id="myImage{{$posts->id}}">
+                                    <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                                         <source src="{{ asset('storage/videos/'.$posts->upload->video) }}" >    
                                     </video>
                                     @endif
@@ -195,30 +195,33 @@
                                         </li>
                                         <li>
                                             <a href="javascript:void(0)">REPORT
-                                                <div class="saveInfo infoHover reasonHover">
-                                                    <div class="pos-rel">
-                                                        <img src={{asset("img/tooltipArrowDown.png")}} alt="">
-                                                        <div class="text-center reportContentTxt">Report Content</div>
-                                                        <div class="reason">
-                                                            <input type="checkbox" id="Report1" name="Report1"
-                                                                value="Report">
-                                                            <label for="Report1">Report Info as incorrect</label>
+                                                <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
+                                                    @csrf
+                                                    <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
+                                                    <div class="saveInfo infoHover reasonHover">
+                                                        <div class="pos-rel">
+                                                            <img src={{asset("img/tooltipArrowDown.png")}} alt="">
+                                                            <div class="text-center reportContentTxt">Report Content</div>
+                                                            <div class="reason">
+                                                                <input type="checkbox" id="Report1" name="incorrect" value="1">
+                                                                <label for="Report1">Report Info as incorrect</label>
+                                                            </div>
+                                                            <div class="cstm-check pos-rel">
+                                                                <input type="checkbox" id="Report2" name="inappropriate" value="1">
+                                                                <label for="Report2">Report content as inappropriate</label>
+                                                            </div>
+                                                            <div class="cstm-check pos-rel">
+                                                                <input type="checkbox" id="Report3" name="tolls" value="1">
+                                                                <label for="Report3">Report tolls</label>
+                                                            </div>
+                                                            <div>
+                                                                Additional Comments:
+                                                                <textarea name="comments" class="reportOnPost" id="{{$posts->id}}"></textarea>
+                                                            </div>
+                                                            <button type="submit" class="btn btn-info postReport" id="submitReport{{$posts->id}}">REPORT</button>
                                                         </div>
-                                                        <div class="cstm-check pos-rel">
-                                                            <input type="checkbox" id="Report3">
-                                                            <label for="Report3">Report content as inappropriate</label>
-                                                        </div>
-                                                        <div class="cstm-check pos-rel">
-                                                            <input type="checkbox" id="Report4">
-                                                            <label for="Report4">Report tolls</label>
-                                                        </div>
-                                                        <div>
-                                                            Additional Comments:
-                                                            <textarea></textarea>
-                                                        </div>
-                                                        <button>REPORT</button>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </a>
                                         </li>
                                         @endif
@@ -264,6 +267,7 @@
                                 @endforeach
                             </div>
                             @endif
+                            @if(Auth::user())
                             <div class="WriteComment">
                                 <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
                                 @csrf
@@ -273,6 +277,7 @@
                                 <button type="submit" class="btn btn-info postComment" id="submitPost{{$posts->id}}">Submit</button>
                                 </form>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>

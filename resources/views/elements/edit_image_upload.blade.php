@@ -21,7 +21,7 @@
                 <div class="modal-body">
                     <div class="">
                         <input type="hidden" name="user_id" value="{{auth()->user()->id ?? ''}}">
-                        <textarea placeholder="Share your surf experience....." name="post_text" required>{{ (isset($myHubs->post_text) && !empty($myHubs->post_text))?$myHubs->post_text:'' }}</textarea>
+                        <textarea placeholder="Share your surf experience....." name="post_text" >{{ (isset($myHubs->post_text) && !empty($myHubs->post_text))?$myHubs->post_text:'' }}</textarea>
                         <div class="videoImageUploader">
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
@@ -112,7 +112,7 @@
                                                     class="form-control search-box" required>
                                                 <input type="hidden" name="local_beach_break_id"
                                                        id="local_beach_break_id" class="form-control" value="{{ old('local_beach_break', $myHubs->local_beach_break_id) }}">
-                                                <div class="auto-search country_list_beach search1"></div>
+                                                <!-- <div class="auto-search country_list_beach search1"></div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -179,9 +179,9 @@
                                         <div class="col-md-8 col-sm-4 float-right othersSurferInfo" style="display:none" id="othersSurfer">
                                               <div class="selectWrap pos-rel">
                                                 <div class="selectWrap pos-rel">
-                                                    <input type="text" value="{{ old('other_surfer')}}" name="other_surfer" placeholder="Search other user" class="form-control other_surfer">
-                                                        <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id" id="surfer_id" class="form-control surfer_id">
-                                                    <div class="auto-search search2" id="other_surfer_list"></div>
+                                                    <input type="text" value="{{ old('other_surfer')}}" name="other_surfer" placeholder="Search other user" class="form-control edit_other_surfer">
+                                                        <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id" id="edit_surfer_id" class="form-control surfer_id">
+                                                    <div class="auto-search search2" id="edit_other_surfer_list"></div>
                                                 </div>
 
                                             </div>
@@ -252,7 +252,7 @@
 	};
         
         // ajax form field data for post
-	$('.search-box').keyup(debounce(function() {  console.log('aa111');
+	$('.search-box').keyup(debounce(function() { 
             // the following function will be executed every half second	
             if($(this).val().length > 2){		
                 $.ajax({
@@ -323,6 +323,35 @@
             } else {
                 $('.othersSurferInfo').hide();
             }
+        });
+        
+        $('.edit_other_surfer').keyup(debounce(function(){
+            // the following function will be executed every half second	
+            if($(this).val().length > 2){
+                $.ajax({
+                    type: "GET",
+                    url: "/getUsers",
+                    data: {				
+                        searchTerm: $(this).val(),
+                    },
+                    dataType: "json",
+                    success: function (jsonResponse) {
+                        $('#edit_other_surfer_list').html(jsonResponse);
+                    }
+                })
+            }else{
+                $('#edit_surfer_id').val('');
+                $('#edit_other_surfer_list').html("");
+            }
+        }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
+        
+        $(document).on('click','.search2 li', function(){
+            var value = $(this).text().trim();
+            var dataId = $(this).attr("data-id");
+            $('#edit_other_surfer_list').html("");
+            $('.edit_other_surfer').val(value);
+            $('#edit_surfer_id').val(dataId);
+            $('#edit_other_surfer_list').html("");
         });
     }); 
 </script>
