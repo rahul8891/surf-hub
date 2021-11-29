@@ -48,7 +48,7 @@
                             </div>
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
-                                <input type="file" id="input_multifileSelect2" name="videos[]" accept=".mp4, .wmv, .mkv, .mpeg4, .mov" multiple />
+                                <input type="file" id="input_multifileSelect2" name="videos[]" accept="video/mp4,video/wmv,video/mkv,video/mpeg4,video/mov,video/*" multiple />
                                 <input type="hiddden" id="input_multifile2" name="videofile[]" style="display:none;" />
                             </div>
                         </div>
