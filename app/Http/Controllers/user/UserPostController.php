@@ -192,16 +192,11 @@ class UserPostController extends Controller
             
             $rules = array(
                 'post_type' => ['required'],
-                'user_id' => ['required','numeric'],
-                'post_text' => ['nullable', 'string', 'max:255'],
-                'surf_date' => ['required', 'string'],
-                'wave_size' => ['required', 'string'],
-                'state_id' => ['nullable', 'numeric'],
-                'board_type' => ['required', 'string'],
+                'user_id' => ['required'],
+                'surf_date' => ['required'],
+                'wave_size' => ['required'],
                 'surfer' => ['required'],
-                'country_id' => ['required','numeric'],
-                'local_beach_break_id' => ['nullable', 'string'],
-                'optional_info'=>['nullable'],
+                'country_id' => ['required'],
             );       
             $validate = Validator::make($data, $rules);          
             if ($validate->fails()) {

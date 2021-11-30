@@ -175,13 +175,13 @@ $(document).ready(function () {
 
 
     // no space allow in text box
-    $.validator.addMethod(
-            "noSpace",
-            function (value, element) {
-                return value == "" || value.trim().length != 0;
-            },
-            "No space please and don't leave it empty"
-            );
+    /* $.validator.addMethod(
+        "noSpace",
+        function (value, element) { 
+            return value == "" || value.trim().length != 0;
+        },
+        "No space please and don't leave it empty"
+    ); */
     /**
      * Validate post form befor submit
      */
@@ -215,7 +215,6 @@ $(document).ready(function () {
             surfer: {
                 required: true
             }
-
         },
         errorPlacement: function (error, element) {
             if (element.is(":radio")) {
@@ -253,56 +252,33 @@ $(document).ready(function () {
             surfer: {
                 required: "Please select surfer"
             }
-
         },
         submitHandler: function (form, e) {
             spinner.show();
             form.submit();
-            // Manage Form Data        
-            // let formData = new FormData(form);
+            // Manage Form Data 
             e.preventDefault();
-
-            // var d = $('#files')[0].files[0]
 
             var myCheckboxes = $('input[name="optional_info[]"]:checked').map(function () {
                 return $(this).val();
             }).get();
 
+            var result = new Array();
             var files = new Array();
             files = $('input[name="files[]"]').map(function () {
                 return $(this).val();
             }).get();
 
-            console.log(files);
-
-            var result = {};
-
-            var files = {};
-
             // Updated part
-            /*$.each(jQuery('#files')[0].files, function(i, file) {
-             data.append('file-'+i, file);
-             });*/
-
             $.each($('form').serializeArray(), function () {
                 result[this.name] = this.value;
             });
 
-            var myCheckboxes = $('input[name="optional_info[]"]:checked').map(function () {
-                return $(this).val();
-            }).get();
-
-            // console.log(dataImage);
             result['optional'] = myCheckboxes;
 
             $.each(dataImage, function (i, file) {
                 result['file-' + i, file]
-                // files[i] = file;
-                // data.append('file-'+i, file);
             });
-            console.log(result);
-
-            // result.push({'files':dataImage});
 
             $.ajax({
                 type: "POST",
@@ -315,9 +291,8 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (jsonResponse) {
                     postResult(jsonResponse);
-                    // console.log(jsonResponse);
                 }
-            })
+            });
         }
     });
 
