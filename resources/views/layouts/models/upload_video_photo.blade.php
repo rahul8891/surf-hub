@@ -30,17 +30,8 @@
                 <div class="modal-body">
                     <div class="">
                         <input type="hidden" name="user_id" value="{{auth()->user()->id ?? ''}}">
-                        <textarea placeholder="Share your surf experience....." name="post_text" required></textarea>
+                        <textarea placeholder="Share your surf experience....." name="post_text"></textarea>
                         <div class="videoImageUploader">
-                            <!-- <div class="upload-btn-wrapper">
-                                <a data-toggle="modal" data-target="#imageUploadModal"><img alt="" src="{{ asset("/img/photo.png")}}"></a>
-                                <div class="uploadImageFiles"></div>
-                            </div>
-                            <div class="upload-btn-wrapper">
-                                <a data-toggle="modal" data-target="#videoUploadModal"><img alt="" src="{{ asset("/img/video.png")}}"></a>
-                                <div class="uploadVideoFiles"></div>
-                            </div> -->
-
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/photo.png")}}"></button>
                                 <input type="file" id="input_multifileSelect1" name="files[]" accept=".png, .jpg, .jpeg, .gif" multiple />
@@ -48,7 +39,7 @@
                             </div>
                             <div class="upload-btn-wrapper">
                                 <button class=""><img alt="" src="{{ asset("/img/video.png")}}"></button>
-                                <input type="file" id="input_multifileSelect2" name="videos[]" accept=".mp4, .wmv, .mkv, .mpeg4, .mov" multiple />
+                                <input type="file" id="input_multifileSelect2" name="videos[]" accept="video/mp4,video/wmv,video/mkv,video/mpeg4,video/mov,video/*" multiple />
                                 <input type="hiddden" id="input_multifile2" name="videofile[]" style="display:none;" />
                             </div>
                         </div>
@@ -159,11 +150,11 @@
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label class="width-102">Board Type <span class="mandatory">*</span></label>
+                                        <label class="width-102">Board Type</label>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="selectWrap pos-rel">
-                                            <select class="form-control" name="board_type" required>
+                                            <select class="form-control" name="board_type">
                                                 <option value="">{{ __('-- Select --')}}</option>
                                                 @foreach($customArray['board_type'] as $key => $value)
                                                 <option value="{{ $key }}"
