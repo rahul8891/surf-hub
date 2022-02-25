@@ -29,6 +29,7 @@ use DB, URL;
 use FFMpeg;
 use FFMpeg\Format\Video\X264;
 use FFMpeg\Filters\Video\VideoFilters;
+use Illuminate\Support\Facades\Storage;
 
 class UserPostController extends Controller
 {
@@ -173,7 +174,7 @@ class UserPostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    /* public function store(Request $request)
     {
         $postArray = [];
     
@@ -228,6 +229,81 @@ class UserPostController extends Controller
                         $value->move($destinationPath, $fileName);
                         
                         $result = $this->posts->savePost($data, $fileType[0], $fileName, $message);
+                    }
+                } else {
+                    $result = $this->posts->savePost($data, '', '', $message);
+                }
+                
+                if($result){  
+                    return Redirect()->route('myhub')->withSuccess($message);
+                }else{
+                    return Redirect()->route('myhub')->withErrors($message);
+                }
+            }
+        }catch (\Exception $e) {
+            throw ValidationException::withMessages([$e->getMessage()]);             
+        }
+    } */
+    public function store(Request $request)
+    {
+        $postArray = [];
+    
+        try{
+            $data = $request->all();   
+            if(!empty($data['other_surfer'])){
+                $data['surfer'] = $data['other_surfer'];
+            } elseif (isset($data['surfer']) && ($data['surfer'] == 'Me')) {
+                $data['surfer'] = Auth::user()->user_name;
+            } 
+            
+            $imageArray = (isset($data['files'][0]) && !empty($data['files'][0]))?$data['files']:[];
+            $videoArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];
+            
+            $postArray = array_filter(array_merge($imageArray, $videoArray));
+            
+            $rules = array(
+                'post_type' => ['required'],
+                'user_id' => ['required'],
+                'surf_date' => ['required'],
+                'wave_size' => ['required'],
+                'surfer' => ['required'],
+                'country_id' => ['required'],
+            );       
+            $validate = Validator::make($data, $rules);          
+            if ($validate->fails()) {
+                // If validation falis redirect back to register.
+                return response()->json(['error'=>$validate->errors()]);     
+            }else {                
+                if(!empty($postArray)) {
+                    $fileData = [];
+                    foreach ($postArray as $value) { 
+                        $fileName = "";
+                        
+                        $fileType = explode('/', $value->getMimeType());
+                        
+                        if($fileType[0] == 'image'){
+                            $fileFolder = 'images/' . $request->user_id;
+                            // $destinationPath = public_path('storage/images/');
+                        } elseif ($fileType[0] == 'video') {
+                            $fileFolder = 'videos/' . $request->user_id;
+                            // $destinationPath = public_path('storage/fullVideos/');
+                        }
+
+                        $path = Storage::disk('s3')->put($fileFolder, $value);
+                        $filePath = Storage::disk('s3')->url($path);
+                        
+                        // $timeDate = strtotime(Carbon::now()->toDateTimeString());
+                        // $filenameWithExt= $value->getClientOriginalName();
+                        // $extension = $value->getClientOriginalExtension();
+                        // while (in_array($timeDate, $fileData)) {
+                        //     $timeDate = $timeDate . 1;
+                        // }
+                        
+                        // $fileData[] = $timeDate;
+                        // $fileName = $timeDate.'.'.$extension;
+                        // $value->move($destinationPath, $fileName);
+                        
+                        $result = $this->posts->savePost($data, $fileType[0], $filePath, $message);
                     }
                 } else {
                     $result = $this->posts->savePost($data, '', '', $message);

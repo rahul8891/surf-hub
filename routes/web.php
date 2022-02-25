@@ -12,6 +12,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\user\MyHubController;
 use App\Http\Controllers\user\SearchController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -150,3 +151,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::get('/report/index', [ReportController::class, 'index'])->name('reportIndex');
 
 });
+
+/***************** S3 Bucket *************/
+Route::get('image-upload', [ImageController::class, 'index' ])->name('image.index');
+Route::post('image-upload', [ImageController::class, 'upload' ])->name('image.upload');
