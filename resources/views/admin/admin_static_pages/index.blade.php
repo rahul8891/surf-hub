@@ -10,17 +10,17 @@
             <table id="example3" class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Title</th>
-                        <th class="no-sort">Body</th>
-                        <th class="no-sort">Action</th>
+                        <th width="150px">Title</th>
+                        <th width="400px" class="no-sort">Body</th>
+                        <th width="100px" class="no-sort">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($pages as $key => $value)
                     <tr>
-                        <td>{{ __($value->title) }}</td>
-                        <td>{!! substr($value->body,0, 100) !!}</td>
-                        <td>
+                        <td width="150px">{{ __($value->title) }}</td>
+                        <td width="400px">{{ $value->body }}</td>
+                        <td width="100px">
                             <a id="next" class="btn btn-info btn-sm"
                                 href="{{route('adminPageEdit', Crypt::encrypt($value->id))}}"><i
                                     class="fas fa-pencil-alt"></i> Edit</a>
