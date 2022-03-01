@@ -52,13 +52,13 @@
                                 </div>
                             @elseif(!empty($posts->upload->video))
                                 <div class="pos-rel editBtnWrap">
-                                    @if (!File::exists(asset('storage/fullVideos/'.$posts->upload->video)))
+                                    @if (!File::exists($posts->upload->video))
                                     <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video" id="myImage{{$posts->id}}">
-                                        <source src="{{ asset('storage/fullVideos/'.$posts->upload->video) }}" >    
+                                        <source src="{{ $posts->upload->video }}" >    
                                     </video>
                                     @else
                                     <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video" id="myImage{{$posts->id}}">
-                                        <source src="{{ asset('storage/videos/'.$posts->upload->video) }}" >    
+                                        <source src="{{ $posts->upload->video }}" >    
                                     </video>
                                     @endif
                                 </div>

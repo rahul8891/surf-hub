@@ -55,12 +55,12 @@
                                     @elseif(!empty($postData->upload->video))
                                         @php 
                                             $type = 'video';
-                                            $file = url('/')."/storage/fullVideos/".$postData->upload->video;
+                                            $file = $postData->upload->video;
                                         @endphp
                                         <br>
                                         <div class="pos-rel editBtnWrap">
                                             <video width="100%" preload="auto" data-setup="{}"  controls  autoplay playsinline muted class="video-js" id="myImage{{$postData->id}}">
-                                                <source src="{{ asset('storage/fullVideos/'.$postData->upload->video) }}" >    
+                                                <source src="{{ $postData->upload->video }}" >    
                                             </video>
                                         </div>
                                     @else
