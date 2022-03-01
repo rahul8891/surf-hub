@@ -265,8 +265,8 @@ class MyHubController extends Controller
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-                $filename = $type = "";
-                $timeDate = strtotime(Carbon::now()->toDateTimeString());
+                $filePath = $type = "";
+                // $timeDate = strtotime(Carbon::now()->toDateTimeString());
                 
                 if($request->hasFile('files')) {
                     $file = $request->file('files');
@@ -284,11 +284,13 @@ class MyHubController extends Controller
                     // $video->move($destinationPath, $filename);
                 }
 
-                $fileFolder = $type . '/' . $request->user_id;
-                $path = Storage::disk('s3')->put($fileFolder, $file);
-                $filePath = Storage::disk('s3')->url($path);
+                if(isset($type) && !empty($type)) {
+                    $fileFolder = $type . '/' . $request->user_id;
+                    $path = Storage::disk('s3')->put($fileFolder, $file);
+                    $filePath = Storage::disk('s3')->url($path);
+                }
                 
-                $result = $this->postService->updatePostData($data, $filename, $type, $message);
+                $result = $this->postService->updatePostData($data, $filePath, $type, $message);
                 if($result['status'] === TRUE){
                     return Redirect()->route('myhub')->withSuccess($result['message']);
                 }else{
