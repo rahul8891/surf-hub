@@ -5,6 +5,7 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\Storage;
 use App\Services\MasterService;
 use App\Services\UserService;
 use App\Services\PostService;
@@ -268,20 +269,24 @@ class MyHubController extends Controller
                 $timeDate = strtotime(Carbon::now()->toDateTimeString());
                 
                 if($request->hasFile('files')) {
-                    $image = $request->file('files');
+                    $file = $request->file('files');
                     $type = 'image';
-                    $destinationPath = public_path('storage/images/');
-                    $extension = $image->getClientOriginalExtension();
-                    $filename = $timeDate.'.'.$extension;
-                    $image->move($destinationPath, $filename);
+                    // $destinationPath = public_path('storage/images/');
+                    // $extension = $image->getClientOriginalExtension();
+                    // $filename = $timeDate.'.'.$extension;
+                    // $image->move($destinationPath, $filename);
                 } else if ($request->hasFile('videos')) {
-                    $video = $request->file('videos');
+                    $file = $request->file('videos');
                     $type = 'video';
-                    $destinationPath = public_path('storage/fullVideos/');                     
-                    $extension = $video->getClientOriginalExtension();
-                    $filename = $timeDate.'.'.$extension;
-                    $video->move($destinationPath, $filename);
+                    // $destinationPath = public_path('storage/fullVideos/');                     
+                    // $extension = $video->getClientOriginalExtension();
+                    // $filename = $timeDate.'.'.$extension;
+                    // $video->move($destinationPath, $filename);
                 }
+
+                $fileFolder = $type . '/' . $request->user_id;
+                $path = Storage::disk('s3')->put($fileFolder, $file);
+                $filePath = Storage::disk('s3')->url($path);
                 
                 $result = $this->postService->updatePostData($data, $filename, $type, $message);
                 if($result['status'] === TRUE){

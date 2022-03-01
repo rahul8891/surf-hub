@@ -120,7 +120,7 @@
                                                     <a href="javascript:void(0)">INFO
                                                         <div class="saveInfo infoHover">
                                                             <div class="pos-rel">
-                                                                <img src="{{ asset("img/tooltipArrowDown.png")}}" alt="">
+                                                                <img src="{{ asset("img/tooltipArrowDown.png") }}" alt="">
                                                                 <div class="row">
                                                                     <div class="col-4">
                                                                         Date
@@ -186,7 +186,7 @@
                                                             </div>
                                                         </div>
                                                     </a>
-                                                </li>
+                                                </li> 
                                                 <li>
                                                     <span class="divider"></span>
                                                 </li>
@@ -212,7 +212,7 @@
                                                           <div class="modal-body">
                                                             @foreach ($myHub->tags as $tags)
                                                             <p class="comment ">
-                                                                <div class="post-head">
+                                                                <div class="post-head"> 
                                                                 <div class="userDetail">
                                                                 @if($tags->user->profile_photo_path)
                                                                 <img src="{{ asset('storage/'.$tags->user->profile_photo_path) }}" class="profileImg" alt="">

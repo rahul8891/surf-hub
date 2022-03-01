@@ -32,18 +32,14 @@
                                         <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
                                     </div>
                                     @elseif(!empty($myHub->upload->video))
-                                        @php 
-                                            $type = 'video';
-                                            $file = url('/')."/storage/fullVideos/".$myHub->upload->video;
-                                        @endphp
                                         <div class="pos-rel editBtnWrap">
-                                            @if (!File::exists(asset('storage/fullVideos/'.$myHub->upload->video)))
+                                            @if (!File::exists($myHub->upload->video))
                                             <video width="100%" playsinline preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}}">
-                                                <source src="{{ asset('storage/fullVideos/'.$myHub->upload->video) }}" >    
+                                                <source src="{{ $myHub->upload->video }}" >    
                                             </video>
                                             @else
                                             <video width="100%" playsinline preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}}">
-                                                <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
+                                                <source src="{{ $myHub->upload->video }}" >    
                                             </video>
                                             @endif
                                         </div>
