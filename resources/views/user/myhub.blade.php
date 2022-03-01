@@ -58,17 +58,17 @@
                                 <div class="imgRatingWrap">
                                     @if(!empty($myHub->upload->image)) 
                                         <div class="pos-rel editBtnWrap">
-                                            <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
+                                            <img src="{{ $myHub->upload->image }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
                                         </div>
                                     @elseif(!empty($myHub->upload->video))
                                         <div class="pos-rel editBtnWrap">
-                                            @if (!File::exists(asset('storage/fullVideos/'.$myHub->upload->video)))
+                                            @if ($myHub->upload->video)
                                             <video width="100%" preload="auto" data-setup="{}" controls  autoplay playsinline muted class="video-js" id="myImage{{$myHub->id}}">
-                                                <source src="{{ asset('storage/fullVideos/'.$myHub->upload->video) }}" >    
+                                                <source src="{{ $myHub->upload->video }}" >    
                                             </video>
                                             @else
                                             <video width="100%" preload="auto" data-setup="{}" controls  autoplay playsinline muted class="video-js" id="myImage{{$myHub->id}}">
-                                                <source src="{{ asset('storage/videos/'.$myHub->upload->video) }}" >    
+                                                <source src="{{ $myHub->upload->video }}" >    
                                             </video>
                                             @endif
                                         </div>
@@ -120,7 +120,7 @@
                                                     <a href="javascript:void(0)">INFO
                                                         <div class="saveInfo infoHover">
                                                             <div class="pos-rel">
-                                                                <img src="{{ asset("img/tooltipArrowDown.png")}}" alt="">
+                                                                <img src="{{ asset("img/tooltipArrowDown.png") }}" alt="">
                                                                 <div class="row">
                                                                     <div class="col-4">
                                                                         Date
@@ -186,7 +186,7 @@
                                                             </div>
                                                         </div>
                                                     </a>
-                                                </li>
+                                                </li> 
                                                 <li>
                                                     <span class="divider"></span>
                                                 </li>
@@ -212,7 +212,7 @@
                                                           <div class="modal-body">
                                                             @foreach ($myHub->tags as $tags)
                                                             <p class="comment ">
-                                                                <div class="post-head">
+                                                                <div class="post-head"> 
                                                                 <div class="userDetail">
                                                                 @if($tags->user->profile_photo_path)
                                                                 <img src="{{ asset('storage/'.$tags->user->profile_photo_path) }}" class="profileImg" alt="">
