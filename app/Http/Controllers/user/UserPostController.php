@@ -277,7 +277,7 @@ class UserPostController extends Controller
                 if(!empty($postArray)) {
                     $fileData = [];
                     foreach ($postArray as $value) { 
-                        $fileName = "";
+                        $filePath = "";
                         
                         $fileType = explode('/', $value->getMimeType());
                         
