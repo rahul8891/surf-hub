@@ -288,9 +288,12 @@ class MyHubController extends Controller
                     $fileFolder = $type . '/' . $request->user_id;
                     $path = Storage::disk('s3')->put($fileFolder, $file);
                     $filePath = Storage::disk('s3')->url($path);
+
+                    $fileArray = explode("/", $filePath);
+                    $filename = end($fileArray);
                 }
                 
-                $result = $this->postService->updatePostData($data, $filePath, $type, $message);
+                $result = $this->postService->updatePostData($data, $filename, $type, $message);
                 if($result['status'] === TRUE){
                     return Redirect()->route('myhub')->withSuccess($result['message']);
                 }else{
