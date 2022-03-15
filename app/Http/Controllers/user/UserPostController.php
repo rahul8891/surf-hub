@@ -291,6 +291,9 @@ class UserPostController extends Controller
 
                         $path = Storage::disk('s3')->put($fileFolder, $value);
                         $filePath = Storage::disk('s3')->url($path);
+
+                        $fileArray = explode("/", $filePath);
+                        $filename = end($fileArray);
                         
                         // $timeDate = strtotime(Carbon::now()->toDateTimeString());
                         // $filenameWithExt= $value->getClientOriginalName();
@@ -303,7 +306,7 @@ class UserPostController extends Controller
                         // $fileName = $timeDate.'.'.$extension;
                         // $value->move($destinationPath, $fileName);
                         
-                        $result = $this->posts->savePost($data, $fileType[0], $filePath, $message);
+                        $result = $this->posts->savePost($data, $fileType[0], $filename, $message);
                     }
                 } else {
                     $result = $this->posts->savePost($data, '', '', $message);

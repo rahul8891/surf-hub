@@ -29,17 +29,17 @@
                                 <div class="imgRatingWrap">
                                     @if(!empty($myHub->upload->image)) 
                                     <div class="pos-rel editBtnWrap">
-                                        <img src="{{ asset('storage/images/'.$myHub->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
+                                        <img src="{{ env('FILE_CLOUD_PATH').'images/'.$myHub->user->id.'/'.$myHub->upload->image }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
                                     </div>
                                     @elseif(!empty($myHub->upload->video))
                                         <div class="pos-rel editBtnWrap">
                                             @if (!File::exists($myHub->upload->video))
                                             <video width="100%" playsinline preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}}">
-                                                <source src="{{ $myHub->upload->video }}" >    
+                                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$myHub->user->id.'/'.$myHub->upload->video }}" >    
                                             </video>
                                             @else
                                             <video width="100%" playsinline preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$myHub->id}}">
-                                                <source src="{{ $myHub->upload->video }}" >    
+                                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$myHub->user->id.'/'.$myHub->upload->video }}" >    
                                             </video>
                                             @endif
                                         </div>
