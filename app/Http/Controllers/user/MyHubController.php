@@ -5,6 +5,7 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\Storage;
 use App\Services\MasterService;
 use App\Services\UserService;
 use App\Services\PostService;
@@ -264,8 +265,8 @@ class MyHubController extends Controller
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-                $filename = $type = "";
-                $timeDate = strtotime(Carbon::now()->toDateTimeString());
+                $filePath = $type = "";
+                // $timeDate = strtotime(Carbon::now()->toDateTimeString());
                 
                 if($request->hasFile('files')) {
                     $file = $request->file('files');
@@ -283,9 +284,14 @@ class MyHubController extends Controller
                     // $video->move($destinationPath, $filename);
                 }
 
-                $fileFolder = $type . '/' . $request->user_id;
-                $path = Storage::disk('s3')->put($fileFolder, $file);
-                $filePath = Storage::disk('s3')->url($path);
+                if(isset($type) && !empty($type)) {
+                    $fileFolder = $type . '/' . $request->user_id;
+                    $path = Storage::disk('s3')->put($fileFolder, $file);
+                    $filePath = Storage::disk('s3')->url($path);
+
+                    $fileArray = explode("/", $filePath);
+                    $filename = end($fileArray);
+                }
                 
                 $result = $this->postService->updatePostData($data, $filename, $type, $message);
                 if($result['status'] === TRUE){

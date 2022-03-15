@@ -25,15 +25,15 @@
                         <p class="description">{{$posts->post_text}}</p>
                             <div class="imgRatingWrap">
                             @if(!empty($posts->upload->image))
-                                <img src="{{ asset('storage/images/'.(isset($posts->upload->image) && !empty($posts->upload->image))?$posts->upload->image:'') }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
+                                <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
                             @elseif(!empty($posts->upload->video))
                                 @if (!File::exists($posts->upload->video))
                                     <video playsinline width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$posts->id}}">
-                                        <source src="{{ $posts->upload->video }}" >    
+                                        <source src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->video }}" >    
                                     </video>
                                 @else
                                     <video playsinline width="100%" preload="auto" data-setup="{}" controls class="video-js" id="myImage{{$posts->id}}">
-                                        <source src="{{ $posts->upload->video }}" >    
+                                        <source src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->video }}" >    
                                     </video>
                                 @endif
                             @endif
