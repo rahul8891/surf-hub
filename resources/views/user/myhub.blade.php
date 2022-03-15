@@ -89,7 +89,7 @@
                                             <ul class="pl-0 mb-0 d-flex">
                                                 <li>
                                                     <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ url('/')."/postData/".$myHub->id }}">                                                
-                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
+                                                        <img src="{{ asset("/img/facebook.png") }}" alt="">
                                                     </a> 
                                                 </li>
                                                 <li>
@@ -97,14 +97,14 @@
                                                 </li>
                                                 <li>
                                                     <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$myHub->beach_breaks->latitude ?? ''}}" data-long="{{$myHub->beach_breaks->longitude ?? ''}}" data-id="{{$myHub->id}}" class="locationMap">
-                                                        <img src="{{ asset("/img/maps-and-flags.png")}}" alt="">
+                                                        <img src="{{ asset("/img/maps-and-flags.png") }}" alt="">
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
-                                                    <a onclick="openFullscreen({{$myHub->id}});"><img src="{{ asset("/img/full_screen.png")}}"
+                                                    <a onclick="openFullscreen({{ $myHub->id }});"><img src="{{ asset("/img/full_screen.png")}}"
                                                             alt=""></a>
                                                 </li>
                                                 <li>
