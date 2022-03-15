@@ -26,14 +26,14 @@
                         <div class="imgRatingWrap">
                             @if(!empty($posts->upload->image))
                             <div class="pos-rel editBtnWrap">
-                                <img src="{{ asset('storage/images/'.$posts->upload->image) }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
+                                <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
                                 
                             </div>                            
                             @endif
                             @if(!empty($posts->upload->video))
                             <br>
                             <div class="pos-rel editBtnWrap">
-                                <video playsinline width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ $posts->upload->video }}"></video>
+                                <video playsinline width="100%" controls class=" img-fluid" id="myImage{{$posts->id}}"><source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}"></video>
                                 
                             </div>
                             @endif
@@ -67,7 +67,7 @@
                                             <span class="divider"></span>
                                         </li>
                                         <li>
-                                            <a onclick="openFullscreen({{$posts->id}});"><img src="img/full_screen.png" alt=""></a>
+                                            <a onclick="openFullscreen({{ $posts->id }});"><img src="img/full_screen.png" alt=""></a>
                                         </li>
                                         <li>
                                             <span class="divider"></span>

@@ -47,20 +47,20 @@
                                     @if(!empty($postData->upload->image))
                                         @php 
                                             $type = 'image';
-                                            $file = url('/')."/storage/images/".$postData->upload->image;
+                                            $file = env('FILE_CLOUD_PATH').'images/'.$postData->user->id.'/'.$postData->upload->image;
                                         @endphp
                                         <div class="pos-rel editBtnWrap">
-                                                <img src="{{ asset('storage/images/'.$postData->upload->image) }}" alt="" width="100%" class="img-fluid" id="myImage{{$postData->id}}">
+                                                <img src="{{ env('FILE_CLOUD_PATH').'images/'.$postData->user->id.'/'.$postData->upload->image }}" alt="" width="100%" class="img-fluid" id="myImage{{$postData->id}}">
                                         </div>
                                     @elseif(!empty($postData->upload->video))
                                         @php 
                                             $type = 'video';
-                                            $file = $postData->upload->video;
+                                            $file = env('FILE_CLOUD_PATH').'videos/'.$postData->user->id.'/'.$postData->upload->video;
                                         @endphp
                                         <br>
                                         <div class="pos-rel editBtnWrap">
                                             <video width="100%" preload="auto" data-setup="{}"  controls  autoplay playsinline muted class="video-js" id="myImage{{$postData->id}}">
-                                                <source src="{{ $postData->upload->video }}" >    
+                                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$postData->user->id.'/'.$postData->upload->video }}" >    
                                             </video>
                                         </div>
                                     @else
