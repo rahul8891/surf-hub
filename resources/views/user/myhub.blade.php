@@ -410,12 +410,12 @@
             });
 	}
         
-        $(".editBtnVideo").click(function() {
+        $(document).on('click', '.editBtnVideo', function() {
             var id = $(this).data('id');
             
             $.ajax({
                 url: '/getPostData/' + id,
-                type: "get",
+                type: "get", 
                 async: false,
                 success: function(data) {
                     // console.log(data.html);
