@@ -410,7 +410,7 @@
             });
 	}
         
-        $(".editBtnVideo").click(function() {
+        $(document).on('click', '.editBtnVideo', function() {
             var id = $(this).data('id');
             
             $.ajax({
