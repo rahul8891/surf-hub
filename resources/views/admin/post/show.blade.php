@@ -21,14 +21,14 @@
                                 @if (!empty($postMedia))
                                     @foreach ($postMedia as $item)  
                                         @if (!is_null($item->image))
-                                        <img src="{{ asset('storage/images/'.$item->image) }}" class="img-fluid img-thumbnail rounded mx-auto px-2" width="20%" alt="No photo attached">
+                                        <img src="{{ env('FILE_CLOUD_PATH').'images/'.$post->user->id.'/'.$item->image }}" class="img-fluid img-thumbnail rounded mx-auto px-2" width="20%" alt="No photo attached">
                                         @endif
                                     @endforeach
                                 <hr/>
                                     @foreach ($postMedia as $item)
                                         @if (!is_null($item->video))
                                         <video width="200" height="150" controls="true">
-                                        <source src="{{ asset('storage/videos/'.$item->video) }}" type="" />
+                                        <source src="{{ config('config.file_path').'videos/'.$post->user->id.'/'.$item->video }}" type="" />
                                         </video>
                                         @endif
                                     @endforeach

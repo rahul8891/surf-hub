@@ -425,6 +425,7 @@
                 }
             });
         });
+        
         $('.pos-rel a').each(function(){
            $(this).on('hover, mouseover, click', function() {
                 $(this).children('.userinfoModal').find('input[type="text"]').focus();
