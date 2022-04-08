@@ -28,7 +28,7 @@
                                     @foreach ($postMedia as $item)
                                         @if (!is_null($item->video))
                                         <video width="200" height="150" controls="true">
-                                        <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$post->user->id.'/'.$item->video }}" type="" />
+                                        <source src="{{ config('config.file_path').'videos/'.$post->user->id.'/'.$item->video }}" type="" />
                                         </video>
                                         @endif
                                     @endforeach
