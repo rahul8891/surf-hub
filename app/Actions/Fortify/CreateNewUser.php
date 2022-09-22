@@ -29,7 +29,8 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input)
     {
         $user = new User(); // user tabel object 
-        $userProfile = new UserProfile(); // user profile table object      
+        $userProfile = new UserProfile(); // user profile table object   
+      
         Validator::make($input, [
             'first_name' => ['required','min:3','string'],
             'last_name' => ['required','min:3','string'],
@@ -38,18 +39,22 @@ class CreateNewUser implements CreatesNewUsers
             'phone' => ['required', 'string'],
             'language' => ['required', 'string'],
             'country_id' => ['required', 'numeric'],
-            'account_type' => ['required', 'string'],
+            'user_type' => ['required', 'numeric'],
+//            'account_type' => ['required', 'string'],
             'profile_photo_name' => ['image', 'mimes:jpeg,jpg,png'],
-            'local_beach_break' => ['required', 'string'],
+//            'local_beach_break' => ['required', 'string'],
             'terms' => ['required'],
             'password' => $this->passwordRules(),
         ])->validate();
+//         echo '<pre>';print_r($input);die;
         try {
+             
             $getImageArray = $this->uploadImage($input);
             $user->user_name = $input['user_name'];
             $user->email = $input['email'];
+            $user->user_type = $input['user_type'];
             $user->password = Hash::make($input['password']);
-            $user->account_type = $input['account_type'];
+            $user->account_type = !empty($input['account_type'])?$input['account_type']:1;
             $user->profile_photo_name = ($getImageArray['status']) ? $getImageArray['profile_photo_name'] : '';
             $user->profile_photo_path = ($getImageArray['status']) ? $getImageArray['profile_photo_path'] : '';
             $user->created_at = Carbon::now();
@@ -58,13 +63,39 @@ class CreateNewUser implements CreatesNewUsers
                 $userProfile->user_id = $user->id;
                 $userProfile->first_name =  $input['first_name'];
                 $userProfile->last_name = $input['last_name'];
-                $userProfile->facebook = $input['facebook'];
-                $userProfile->instagram = $input['instagram'];
+//                $userProfile->facebook = $input['facebook'];
+//                $userProfile->instagram = $input['instagram'];
                 $userProfile->language = $input['language'];
                 $userProfile->country_id = $input['country_id'];
                 $userProfile->local_beach_break_id = $input['local_beach_break_id'];
                 $userProfile->icc = $input['telephone_prefix'];
                 $userProfile->phone =$input['phone'];
+                $userProfile->website =$input['website'];
+                if($input['gender']) {
+                $userProfile->gender =$input['gender'];
+                }
+                if($input['dob']) {
+                $userProfile->dob =$input['dob'];
+                }
+                if($input['business_name']) {
+                $userProfile->business_name =$input['business_name'];
+                $userProfile->business_type =$input['photographer_type'];
+                }
+                if($input['resort_name']) {
+                $userProfile->resort_name =$input['resort_name'];
+                $userProfile->resort_type =$input['resort_type'];
+                }
+                if($input['camera_brand']) {
+                $userProfile->preferred_camera =$input['camera_brand'];
+                }
+                if($input['company_name']) {
+                $userProfile->company_name =$input['company_name'];
+                $userProfile->company_address =$input['company_address'];
+                $userProfile->industry =$input['industry'];
+                $userProfile->suburb =$input['suburb'];
+                $userProfile->state_id =$input['state_id'];
+                }
+                $userProfile->paypal =$input['paypal'];
                 $userProfile->created_at = Carbon::now();
                 $userProfile->updated_at = Carbon::now();
                 if ($userProfile->save()) {

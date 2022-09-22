@@ -368,6 +368,7 @@
             $("#post-data").append(data.html);
         });
     }
+    
 
 </script>
 @endsection
