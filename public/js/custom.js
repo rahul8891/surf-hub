@@ -823,6 +823,10 @@ $(document).ready(function () {
                         $.each(myJsonData, function (key, value) {
                             if(value.break_name!='') {
                             $("#break_id").append('<option value="' + value.id + '">' + value.break_name + '</option>');
+                            $("#break_id").rules( "add", {required: true,messages: { required: "Break is required"}});
+
+                        } else {
+                            $("#break_id").rules( "remove" );
                         }
                         });
                     } else {
@@ -869,46 +873,7 @@ $(document).ready(function () {
     }
 });
 
-//    function getMultiplebreak(beachValue) {
-//        alert('here');
-////        var beachValue = $(this).val();
-//        if (beachValue != 0) {
-////            if($('#beach_'+beachValue+':checked'))
-////{
-////    alert('check');
-////    return true;
-////}else{
-////  alert('uncheck');
-////  return true;
-////}
-//            $.ajax({
-//                type: "GET",
-//                url: '/getBreak',
-//                data: {
-//                    beach_id: beachValue,
-//                    _token: csrf_token
-//                },
-//                dataType: "json",
-//                success: function (jsonResponse) {
-//                    //console.log(jsonResponse);
-//                    if (jsonResponse.status == 'success') {
-//                        $("#break_id").empty();
-//                        var myJsonData = jsonResponse.data;
-//                        $("#break_id").append('<option value="">--Select--</option>');
-//                        $.each(myJsonData, function (key, value) {
-//                            if(value.break_name!='') {
-//                            $("#break_id").append('<option value="' + value.id + '">' + value.break_name + '</option>');
-//                        }
-//                        });
-//                    } else {
-//                        $("#break_id").empty();
-//                    }
-//                }
-//            });
-//        } else {
-//            $("#state_id").empty();
-//        }
-//    }
+    
 
 
     // ajax form field data for filter

@@ -128,7 +128,7 @@
                                     </div>
                                     <div class="modal-body">
                                         @if(str_contains(Request::path(),'search'))
-                                        <form class="filterWrap" action="{{route('searchPosts')}}" aria-labelledby="dropdownMenuButton2">
+                                        <form class="filterWrap" action="{{route('searchPosts')}}" aria-labelledby="dropdownMenuButton2" name="searchFilter">
                                             @endif
 
                                             @if(str_contains(Request::path(),'myhub'))

@@ -45,7 +45,9 @@
                                     <span id="remove-img" class="reset-img notDisplayed" style="z-index: 1;">
                                         <img src="{{ asset("/img/close.png")}}" id="img-remove" width="14px" alt="">
                                     </span>
-                                    <div class="col-md-12">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
                                         <div class="d-flex uploadBtnMainWrap align-items-center form-group">
                                             <div class="upload-btn-wrapper">
                                                 <button class="">
@@ -70,7 +72,7 @@
                                     </div>
                                     <!-- <input type="file" name="upload" id="upload" /> -->
                                     <!-- Error display -->
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <!-- <x-jet-validation-errors class="errorMsg" /> -->
                                         @if (session('status'))
                                         <div class="successMsg">
@@ -78,8 +80,9 @@
                                         </div>
                                         @endif
                                     </div>
+                                    </div>
                                     <!-- End Error display -->
-
+                                    <div class="row">
                                         
                                     <div class="d-none row" id="common-fields">
                                         
