@@ -1,6 +1,6 @@
 @extends('layouts.guest_user')
 @section('content')
-<section class="loginWrap">
+<!--<section class="loginWrap">
     <div class="innerWrap">
         <div class="container">
             <div class="text-center">
@@ -29,15 +29,15 @@
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
                                         <input type="text" class="form-control" id="email" name="email"
-                                            value="{{ old('email') }}" placeholder="Email / User Name" autofocus
-                                            required>
+                                               value="{{ old('email') }}" placeholder="Email / User Name" autofocus
+                                               required>
                                         <span><img src="img/email.png" alt=""></span>
                                     </div>
                                 </div>
                                 <div class="form-group pos-rel">
                                     <div class="inputWrap">
                                         <input type="password" class="form-control" id="password" name="password"
-                                            placeholder="Password" autocomplete="current-password" required>
+                                               placeholder="Password" autocomplete="current-password" required>
                                         <span><img src="img/lock.png" alt=""></span>
                                     </div>
                                 </div>
@@ -56,7 +56,7 @@
                                     @endif
                                 </div>
                                 <a href="{{ route('register') }}"
-                                    class="signupBtn">{{ __('Sign Up for New User?') }}</a>
+                                   class="signupBtn">{{ __('Sign Up for New User?') }}</a>
                         </div>
                         </form>
                     </div>
@@ -67,5 +67,43 @@
             </div>
         </div>
     </div>
-</section>
+</section>-->
+
+<div class="login-wrap">
+    <div class="container">
+        <h1><span class="blue-txt">SurfHub’s</span> Login</h1>
+        <p>Log In or Sign Up below to start your own free Storage
+            Hub of all your personal surf videos and photos!
+            Follow your friends and enjoy the best search
+            filters available to view surf footage from
+            around the world!!</p>
+        @if (session('status'))
+        <div class="mb-4 successMsg">
+            {{ session('status') }}
+        </div>
+        @endif
+        <form method="POST" name="login" id=" login" action="{{ route('login') }}">
+            @csrf
+            <div>
+                <input type="text" class="form-control user-icon" id="email" name="email" value="{{ old('email') }}" autofocus
+                       required>
+            </div>
+            <div>
+                <input type="password" class="form-control password-icon" id="password" name="password"
+                       autocomplete="current-password" required>
+            </div>
+            <div class="d-flex flex-wrap justify-content-between">
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="logggedIn" name="remember">
+                    <label class="form-check-label" for="logggedIn">Keep me logged in.</label>
+                </div>
+                <a href="/forgot-password" class="blue-txt frgt-pswd">Forgot Password?</a>
+
+            </div>
+            <input type="submit" class="btn blue-btn w-100" value="LOGIN">
+            <div class="sign-up-anchor">For New User ! <a href="/register" class="blue-txt">Sign Up</a></div>
+        </form>
+    </div>
+</div>
+
 @endsection
