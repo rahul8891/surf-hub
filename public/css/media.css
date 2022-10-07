@@ -1,0 +1,99 @@
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1440px;
+    }
+}
+
+@media screen and (max-width: 1399px) {
+    header .navbar-nav.middle-menu {
+        width: 500px;
+    }
+}
+
+@media screen and (max-width: 991px) { 
+    header .navbar>.container{
+        flex-wrap: wrap;
+    }
+    .side-navbar{
+        order: 2;
+    }
+    header .navbar-nav.middle-menu {
+        order: 3;
+        width: 100%;
+        margin-top: 10px;
+    }
+    header .navbar-nav .nav-link img{
+        display: block;
+        text-align: center;
+        margin: 0 auto 3px;
+    }
+    .login-wrap,
+    .register-wrap,
+    .contact-wrap{
+        margin: 100px auto;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    header .navbar-nav {
+        font-size: 14px;
+    }
+
+    header .side-navbar .dropdown {
+        margin-left: 10px;
+    }
+
+    header .side-navbar .dropdown .dropdown-menu {
+        top: 39px;
+        width: 200px;
+    }
+
+    header .side-navbar .dropdown .dropdown-menu .dropdown-item{
+        font-size: 13px;
+        line-height: 35px;
+        padding: 0 15px;
+    }
+    p,
+    .login-wrap .form-check,
+    .login-wrap .frgt-pswd,
+    .sign-up-anchor{
+        font-size: 14px;
+        line-height: 24px;
+    }
+    .login-wrap h1 {
+        font-size: 16px;
+        line-height: 22px;
+        margin-bottom: 20px;
+    }
+    footer .navbar-nav{
+        flex-direction: column;
+        align-items: center;
+    }
+    footer .navbar-nav a+a:before{
+        display: none;
+    }
+    footer p{
+        padding: 0.5rem 1rem;
+    }
+    .login-wrap,
+    .register-wrap,
+    .contact-wrap{
+        margin: 75px auto;
+    }
+    .register-wrap h1,
+    .contact-wrap h1{
+        font-size: 22px;
+        line-height: 28px;    
+    }
+}
+
+@media screen and (max-width: 575px) {
+    header .navbar-brand {
+        width: 110px;
+    }
+    .login-wrap,
+    .register-wrap,
+    .contact-wrap{
+        margin: 50px auto;
+    }
+}

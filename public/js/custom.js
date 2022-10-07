@@ -85,6 +85,16 @@ $(document).ready(function () {
     $("#exampleInputFile").change(function () {
         readURL(this);
     });
+    $("form[name='register-surfer'] #exampleInputFile").change(function () {
+        readURL(this);
+    });
+    $("form[name='register-resort'] #exampleInputFile").change(function () {
+        readURL(this);
+    });
+    $("form[name='register-advertiser'] #exampleInputFile").change(function () {
+        readURL(this);
+    });
+    
 
     var $image_crop;
     $image_crop = $('#image').croppie({
@@ -122,13 +132,40 @@ $(document).ready(function () {
             reader.readAsDataURL(input.files[0]);
             $('#myModal').modal('show');
             $("#remove-img").show();
+            $("form[name='register-surfer'] #remove-img").show();
+            $("form[name='register-resort'] #remove-img").show();
+            $("form[name='register-advertiser'] #remove-img").show();
         } else {
             $('#imagebase64').val("");
+            $("form[name='register-surfer'] #imagebase64").val("");
+            $("form[name='register-resort'] #imagebase64").val("");
+            $("form[name='register-advertiser'] #imagebase64").val("");
             $("#exampleInputFile").val("");
+            $("form[name='register-surfer'] #exampleInputFile").val("");
+            $("form[name='register-resort'] #exampleInputFile").val("");
+            $("form[name='register-advertiser'] #exampleInputFile").val("");
+            
             $("#category-img-tag").attr("src", "/img/image-file.png");
             $("#category-img-tag").attr("width", "auto");
+            
+            
+            $("form[name='register-surfer'] #category-img-tag").attr("src", "/img/image-file.png");
+            $("form[name='register-surfer'] #category-img-tag").attr("width", "auto");
+            
+            $("form[name='register-resort'] #category-img-tag").attr("src", "/img/image-file.png");
+            $("form[name='register-resort'] #category-img-tag").attr("width", "auto");
+            
+            $("form[name='register-advertiser'] #category-img-tag").attr("src", "/img/image-file.png");
+            $("form[name='register-advertiser'] #category-img-tag").attr("width", "auto");
+            
             $("#remove-img").hide();
             $("#imageError").show();
+            $("form[name='register-surfer'] #remove-img").hide();
+            $("form[name='register-resort'] #remove-img").hide();
+            $("form[name='register-advertiser'] #remove-img").hide();
+            $("form[name='register-surfer'] #imageError").show();
+            $("form[name='register-resort'] #imageError").show();
+            $("form[name='register-advertiser'] #imageError").show();
         }
     }
 
@@ -138,8 +175,21 @@ $(document).ready(function () {
             size: 'viewport'
         }).then(function (response) {
             $('#imagebase64').val(response);
+            $("form[name='register-surfer'] #imagebase64").val(response);
+            $("form[name='register-resort'] #imagebase64").val(response);
+            $("form[name='register-advertiser'] #imagebase64").val(response);
             $("#category-img-tag").attr("src", response);
-            $("#category-img-tag").attr("width", "90px");
+            $("#category-img-tag").attr("width", "100%");
+            
+            $("form[name='register-surfer'] #category-img-tag").attr("src", response);
+            $("form[name='register-surfer'] #category-img-tag").attr("width", "100%");
+            
+            $("form[name='register-resort'] #category-img-tag").attr("src", response);
+            $("form[name='register-resort'] #category-img-tag").attr("width", "100%");
+            
+            $("form[name='register-advertiser'] #category-img-tag").attr("src", response);
+            $("form[name='register-advertiser'] #category-img-tag").attr("width", "100%");
+            
             $('#myModal').modal('hide');
         })
     });
@@ -149,7 +199,13 @@ $(document).ready(function () {
      */
     $(".close").click(function () {
         $('#imagebase64').val("");
+        $("form[name='register-surfer'] #imagebase64").val("");
+        $("form[name='register-resort'] #imagebase64").val("");
+        $("form[name='register-advertiser'] #imagebase64").val("");
         $("#exampleInputFile").val("");
+        $("form[name='register-surfer'] #exampleInputFile").val("");
+        $("form[name='register-resort'] #exampleInputFile").val("");
+        $("form[name='register-advertiser'] #exampleInputFile").val("");
         $("#category-img-tag").attr("src", "");
         $("#category-img-tag").attr("src", "img/image-file.png");
         $("#category-img-tag").attr("width", "auto");
@@ -405,7 +461,7 @@ $(document).ready(function () {
                 error.insertAfter(element.parent().parent());
             } else {
                 // This is the default behavior of the script for all fields
-                error.insertAfter(element.parent());
+                error.insertAfter(element);
             }
         },
         messages: {
@@ -470,6 +526,473 @@ $(document).ready(function () {
             form.submit();
         }
     });
+    
+    $("form[name='register-resort']").validate({
+        rules: {
+            resort_name: {
+                required: true,
+            },
+            resort_type: {
+                required: true,
+            },
+            first_name: {
+                required: true,
+                minlength: 3,
+                maxlength: 15,
+                noSpace: true,
+                spaceNotAllow: true
+            },
+
+            last_name: {
+                required: true,
+                minlength: 3,
+                maxlength: 15,
+                noSpace: true,
+                spaceNotAllow: true
+            },
+
+            user_name: {
+                required: true,
+                minlength: 5,
+                noSpace: true,
+                spaceNotAllow: true,
+                remote: {
+                    url: 'checkUsername',
+                    type: "post",
+                    data: {
+                        _token: csrf_token
+                    }
+                }
+            },
+
+            email: {
+                required: true,
+                email: true,
+                validEmailFormat: true
+            },
+
+            phone: {
+                noSpace: true,
+                required: true,
+                minlength: 8,
+                maxlength: 15,
+                spaceNotAllow: true,
+                numericOnly: true
+            },
+
+            country_id: {
+                required: true
+            },
+
+            language: {
+                required: true
+            },
+            local_beach_break_id: {
+                required: true
+            },
+
+            password: {
+                minlength: 8,
+                required: true,
+                pwcheck: true,
+                spaceNotAllow: true
+            },
+
+            password_confirmation: {
+                minlength: 8,
+                required: true,
+                pwcheck: true,
+                spaceNotAllow: true,
+                equalTo: "#password1"
+            },
+
+            local_beach_break: {
+                localBeachBreak: true
+            },
+
+            terms: {
+                required: true
+            }
+        },
+        errorPlacement: function (error, element) {
+            if (element.is(":radio")) {
+                error.insertAfter(element.parent().parent());
+            } else {
+                // This is the default behavior of the script for all fields
+                error.insertAfter(element);
+            }
+        },
+        messages: {
+            resort_name: {
+                required: "Please enter resort name"
+            },
+            resort_type: {
+                required: "Please select resort type"
+            },
+            first_name: {
+                required: "Please enter your first name",
+                minlength: "Your first name must be at least 3 characters long."
+            },
+
+            last_name: {
+                required: "Please enter your last name",
+                minlength: "Your last name must be at least 3 characters long."
+            },
+
+            user_name: {
+                required: "Please enter your user name",
+                minlength: "Your user name must be at least 5 characters long.",
+                remote: "User name already in use."
+            },
+
+            email: {
+                required: "Please enter your email",
+                email: "Please enter valid email address"
+            },
+
+            phone: {
+                required: "Please enter your phone number",
+                minlength: "Your phone must be minimun 8 number long.",
+                maxlength: "Your phone must be maximum 15 number long."
+            },
+
+            country_id: {
+                required: "Please select your country"
+            },
+
+            language: {
+                required: "Please select your language"
+            },
+
+            local_beach_break_id: {
+                required: "Please enter beach"
+            },
+
+            password: {
+                required: "Please enter your password",
+                pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+            },
+
+            password_confirmation: {
+                required: "Please enter your confirmation password",
+                pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+            },
+
+            terms: {
+                required: "Please select terms and conditions"
+            }
+        },
+        submitHandler: function (form) {
+            var input = document.getElementById('formFile');
+   if(input.files.length>4){
+       $('.resort_pics_error').text('Please select only 5 pics');
+       return false;
+   }else{
+      $('.resort_pics_error').text('');
+   }  
+            form.submit();
+        }
+    });
+    
+    
+    
+    $("form[name='register-advertiser']").validate({
+        rules: {
+            company_name: {
+                required: true,
+            },
+            industry: {
+                required: true,
+            },
+            first_name: {
+                required: true,
+                minlength: 3,
+                maxlength: 15,
+                noSpace: true,
+                spaceNotAllow: true
+            },
+
+            last_name: {
+                required: true,
+                minlength: 3,
+                maxlength: 15,
+                noSpace: true,
+                spaceNotAllow: true
+            },
+
+            email: {
+                required: true,
+                email: true,
+                validEmailFormat: true
+            },
+
+            phone: {
+                noSpace: true,
+                required: true,
+                minlength: 8,
+                maxlength: 15,
+                spaceNotAllow: true,
+                numericOnly: true
+            },
+
+            country_id: {
+                required: true
+            },
+
+            password: {
+                minlength: 8,
+                required: true,
+                pwcheck: true,
+                spaceNotAllow: true
+            },
+
+            password_confirmation: {
+                minlength: 8,
+                required: true,
+                pwcheck: true,
+                spaceNotAllow: true,
+                equalTo: "#password3"
+            },
+            terms: {
+                required: true
+            }
+        },
+        errorPlacement: function (error, element) {
+            if (element.is(":radio")) {
+                error.insertAfter(element.parent().parent());
+            } else {
+                // This is the default behavior of the script for all fields
+                error.insertAfter(element);
+            }
+        },
+        messages: {
+            company_name: {
+                required: "Please enter company name"
+            },
+            industry: {
+                required: "Please select industry"
+            },
+            first_name: {
+                required: "Please enter your first name",
+                minlength: "Your first name must be at least 3 characters long."
+            },
+
+            last_name: {
+                required: "Please enter your last name",
+                minlength: "Your last name must be at least 3 characters long."
+            },
+
+            email: {
+                required: "Please enter your email",
+                email: "Please enter valid email address"
+            },
+
+            phone: {
+                required: "Please enter your phone number",
+                minlength: "Your phone must be minimun 8 number long.",
+                maxlength: "Your phone must be maximum 15 number long."
+            },
+
+            country_id: {
+                required: "Please select your country"
+            },
+            password: {
+                required: "Please enter your password",
+                pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+            },
+
+            password_confirmation: {
+                required: "Please enter your confirmation password",
+                pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+            },
+
+            terms: {
+                required: "Please select terms and conditions"
+            }
+        },
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+    
+    $("form[name='register-surfer']").validate({
+        rules: {
+            gender: {
+                required: true,
+            },
+            dob: {
+                required: true,
+            },
+            first_name: {
+                required: true,
+                minlength: 3,
+                maxlength: 15,
+                noSpace: true,
+                spaceNotAllow: true
+            },
+
+            last_name: {
+                required: true,
+                minlength: 3,
+                maxlength: 15,
+                noSpace: true,
+                spaceNotAllow: true
+            },
+
+            user_name: {
+                required: true,
+                minlength: 5,
+                noSpace: true,
+                spaceNotAllow: true,
+                remote: {
+                    url: 'checkUsername',
+                    type: "post",
+                    data: {
+                        _token: csrf_token
+                    }
+                }
+            },
+
+            email: {
+                required: true,
+                email: true,
+                validEmailFormat: true
+            },
+
+            phone: {
+                noSpace: true,
+                required: true,
+                minlength: 8,
+                maxlength: 15,
+                spaceNotAllow: true,
+                numericOnly: true
+            },
+
+            country_id: {
+                required: true
+            },
+
+            language: {
+                required: true
+            },
+            account_type: {
+                required: true
+            },
+
+            local_beach_break_id: {
+                required: true
+            },
+
+            password: {
+                minlength: 8,
+                required: true,
+                pwcheck: true,
+                spaceNotAllow: true
+            },
+
+            password_confirmation: {
+                minlength: 8,
+                required: true,
+                pwcheck: true,
+                spaceNotAllow: true,
+                equalTo: "#password2"
+            },
+
+            local_beach_break: {
+                localBeachBreak: true
+            },
+
+            terms: {
+                required: true
+            }
+        },
+        errorPlacement: function (error, element) {
+            if (element.is(":radio")) {
+                error.insertAfter(element.parent().parent());
+            } else {
+                // This is the default behavior of the script for all fields
+                error.insertAfter(element);
+            }
+        },
+        messages: {
+            gender: {
+                required: "Please select your gender",
+            },
+            dob: {
+                required: "Please enter your dob",
+            },
+            first_name: {
+                required: "Please enter your first name",
+                minlength: "Your first name must be at least 3 characters long."
+            },
+
+            last_name: {
+                required: "Please enter your last name",
+                minlength: "Your last name must be at least 3 characters long."
+            },
+
+            user_name: {
+                required: "Please enter your user name",
+                minlength: "Your user name must be at least 5 characters long.",
+                remote: "User name already in use."
+            },
+
+            email: {
+                required: "Please enter your email",
+                email: "Please enter valid email address"
+            },
+
+            phone: {
+                required: "Please enter your phone number",
+                minlength: "Your phone must be minimun 8 number long.",
+                maxlength: "Your phone must be maximum 15 number long."
+            },
+
+            country_id: {
+                required: "Please select your country"
+            },
+
+            language: {
+                required: "Please select your language"
+            },
+
+            account_type: {
+                required: "Please select your account type"
+            },
+
+            local_beach_break_id: {
+                required: "Please enter beach break"
+            },
+
+            password: {
+                required: "Please enter your password",
+                pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+            },
+
+            password_confirmation: {
+                required: "Please enter your confirmation password",
+                pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
+            },
+
+            terms: {
+                required: "Please select terms and conditions"
+            }
+        },
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+    
+    
+//    $('#formFile').change(function(){
+//   //get the input and the file list
+//   var input = document.getElementById('formFile');
+//   if(input.files.length>4){
+//       $('.validation').css('display','block');
+//   }else{
+//       $('.validation').css('display','none');
+//   }
+//});
 
     // Login Validation
     $("form[name='login']").validate({
@@ -791,6 +1314,54 @@ $(document).ready(function () {
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
+    $('.search-box4').keyup(debounce(function () {
+        // the following function will be executed every half second	
+        if ($(this).val().length > 2) {
+            $.ajax({
+                type: "GET",
+                url: "/getBeachBreach",
+                data: {
+                    searchTerm: $(this).val(),
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+
+                    $('#country_list4').html(jsonResponse);
+                }
+            })
+
+        } else {
+            $('#local_beach_break_id_resort').val('');
+            $('#country_list4').html("");
+        }
+
+    }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+
+    $('.search-box3').keyup(debounce(function () {
+        // the following function will be executed every half second	
+        if ($(this).val().length > 2) {
+            $.ajax({
+                type: "GET",
+                url: "/getBeachBreach",
+                data: {
+                    searchTerm: $(this).val(),
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+
+                    $('#country_list3').html(jsonResponse);
+                }
+            })
+
+        } else {
+            $('#local_beach_break_id_surfer').val('');
+            $('#country_list3').html("");
+        }
+
+    }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+
 
     $(document).on('click', '.search1 li', function () {
         var value = $(this).text();
@@ -800,6 +1371,26 @@ $(document).ready(function () {
         $('#local_beach_break_id').val(dataId);
         getBreak(dataId);
         $('#country_list').html("");
+    });
+
+    $(document).on('click', '.search4 li', function () {
+        var value = $(this).text();
+        var dataId = $(this).attr("data-id");
+        $('#country_list4').html("");
+        $('.search-box4').val(value);
+        $('#local_beach_break_id_resort').val(dataId);
+        getBreak(dataId);
+        $('#country_list4').html("");
+    });
+
+    $(document).on('click', '.search3 li', function () {
+        var value = $(this).text();
+        var dataId = $(this).attr("data-id");
+        $('#country_list3').html("");
+        $('.search-box3').val(value);
+        $('#local_beach_break_id_surfer').val(dataId);
+        getBreak(dataId);
+        $('#country_list3').html("");
     });
 
 
@@ -1405,9 +1996,10 @@ $('#test-other').click(function () {
     this.areAllChecked = false;
     this.$el = $(el);
     this.$label = this.$el.find(".dropdown-label");
+    this.$option = this.$el.find(".dropdown-list");
     this.$checkAll = this.$el.find('[data-toggle="check-all"]').first();
     this.$inputs = this.$el.find('[type="checkbox"]');
-
+    this.$option.css({"transform": "scale(1, 0)","position": "absolute"});
     this.onCheckBox();
 
     this.$label.on("click", function (e) {
@@ -1468,6 +2060,7 @@ $('#test-other').click(function () {
     if (!this.isOpen || forceOpen) {
       this.isOpen = true;
       this.$el.addClass("on");
+      this.$option.css({transform: "","position": "relative"});
       $(document).on("click", function (e) {
         if (!$(e.target).closest("[data-control]").length) {
           _this.toggleOpen();
@@ -1475,6 +2068,7 @@ $('#test-other').click(function () {
       });
     } else {
       this.isOpen = false;
+      this.$option.css({"transform": "scale(1, 0)","position": "absolute"});
       this.$el.removeClass("on");
       $(document).off("click");
     }
