@@ -67,10 +67,14 @@ class SearchController extends Controller
         
         $beach_name="";
         $params = $request->all();
+//        $from_date = date('Y-m-d H:i:s', strtotime('-'.$params["from_age"].' year'));
+//        print_r($from_date);die;
 //        $order = $request->input('order');
         $currentUserCountryId = (isset(Auth::user()->user_profiles->country_id) && !empty(Auth::user()->user_profiles->country_id))?Auth::user()->user_profiles->country_id:'';
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $beaches = $this->masterService->getBeaches();
+//        echo '<pre>';        print_r($beaches);die;
         $customArray = $this->customArray;
         $userDetail = (isset(Auth::user()->user_profiles) && !empty(Auth::user()->user_profiles))?Auth::user()->user_profiles:'';
         $postsList = $this->postService->getFilteredData($params, 'search');
@@ -85,7 +89,7 @@ class SearchController extends Controller
             return response()->json(['html' => $view]);
         }
         
-        return view('user.search', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name'));
+        return view('user.search', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name','beaches'));
     }
 
     /**

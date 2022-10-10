@@ -183,7 +183,7 @@ class UserController extends Controller
         $searchTerm = $data['searchTerm'];      
         if(!empty($searchTerm)){
             $searchTerm = explode(",",$searchTerm);
-            $string = $searchTerm['0'];        
+            $string = $searchTerm['0'];   
             $field = ['beach_name','break_name','city_region','state','country'];
             $resultData = DB::Table('beach_breaks')->Where(function ($query) use($string, $field) {
                 for ($i = 0; $i < count($field); $i++){             

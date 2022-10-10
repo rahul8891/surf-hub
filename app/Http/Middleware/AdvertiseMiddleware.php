@@ -7,7 +7,7 @@ use Illuminate\Validation\ValidationException;
 use Closure;
 use Illuminate\Http\Request;
 use Redirect;
-class UserMiddleware
+class AdvertiseMiddleware
 {
     /**
      * Handle an incoming request.
@@ -24,8 +24,10 @@ class UserMiddleware
             } else {
                 $user = Auth::user();
                 $checkUserType = config('customarray.userType');
+//                print_r($checkUserType);
+//                die('here');
                 if (in_array($user->user_type, $checkUserType)) {
-                    if($user->user_type == ($checkUserType['USER'] || $checkUserType['PHOTOGRAPHER'] || $checkUserType['ADVERTISEMENT'] || $checkUserType['SURFER CAMP'])){
+                    if($user->user_type == $checkUserType['ADVERTISEMENT']){
                         // return true and allow route to USER
                         return $next($request);
                     }else{

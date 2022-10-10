@@ -44,6 +44,7 @@ Route::post('/checkUsername', [UserController::class, 'checkUsername'])->name('c
 Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
 Route::get('search/filter', [SearchController::class, 'filter'])->name('searchFilterIndex');
 Route::post('upload/file', [UserPostController::class, 'uploadFiles'])->name('uploadFiles');
+Route::get('/getBreak', [DashboardController::class, 'getBreak'])->name('getBreak');
 
 /*********************************************************************************************
  *                              User Route
@@ -98,7 +99,56 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::post('/user/updateNotificationCountStatus', [UserPostController::class, 'updateNotificationCountStatus'])->name('updateNotificationCountStatus');
     Route::post('updateNotificationCountStatus', [UserPostController::class, 'updateNotificationCountStatus'])->name('updateNotificationCountStatus');
     
+    
+    Route::get('/surferRequest/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');
+    Route::get('/surferRequestList', [UserPostController::class, 'surferRequestList'])->name('surferRequestList');
+    Route::get('/acceptRejectRequest/{id}/{type}', [UserPostController::class, 'acceptRejectRequest'])->name('acceptRejectRequest');
+
+    
 });
+
+/*********************************************************************************************
+ *                              photograher Route
+ * ********************************************************************************************/
+
+
+Route::group(['middleware' => ['auth:sanctum', 'verified', 'photographerAuth']], function () {
+
+    Route::get('/photographer/dashboard', [DashboardController::class, 'photographerDashboard'])->name('dashboard');  
+     
+    
+    
+});
+
+/*********************************************************************************************
+ *                              Advertise Route
+ * ********************************************************************************************/
+
+
+Route::group(['middleware' => ['auth:sanctum', 'verified', 'advertiseAuth']], function () {
+
+    Route::get('/advertiser/dashboard', [DashboardController::class, 'advertiserDashboard'])->name('dashboard');  
+     
+    
+    
+});
+
+
+
+/*********************************************************************************************
+ *                              Surfer camp Route
+ * ********************************************************************************************/
+
+Route::group(['middleware' => ['auth:sanctum', 'verified', 'surfercampAuth']], function () {
+
+    Route::get('/surfercamp/dashboard', [DashboardController::class, 'surfercampDashboard'])->name('dashboard');  
+     
+    
+    
+});
+
+
+
 
 Route::get('/postData/{post_id}', [UserPostController::class, 'getPostData'])->name('getPostData');
 /**

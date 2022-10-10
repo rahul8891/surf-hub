@@ -11,6 +11,9 @@
             <li class="{{ userActiveMenu('searchPosts') }}">
                 <a href="{{ url('search')}}">Search</a>
             </li>
+            <li class="{{ userActiveMenu('searchPosts') }}">
+                <a href="{{ url('surferRequestList')}}">Recieved Request</a>
+            </li>
         </ul> 
         <!-- <ul class="mb-0 pl-0">
             <li class="{{ userActiveMenu('dashboard') }}">

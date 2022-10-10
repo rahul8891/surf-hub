@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Services\AdminUserService;
 use App\Services\MasterService;
 use App\Services\PostService;
+use App\Models\SurferRequest;
 use App\Traits\PasswordTrait;
 use App\Models\User;
 use App\Models\Post;
@@ -247,9 +248,9 @@ class UserPostController extends Controller
     public function store(Request $request)
     {
         $postArray = [];
-    
         try{
             $data = $request->all();   
+//    echo "<pre>";print_r($data);die;
             if(!empty($data['other_surfer'])){
                 $data['surfer'] = $data['other_surfer'];
             } elseif (isset($data['surfer']) && ($data['surfer'] == 'Me')) {
@@ -422,6 +423,67 @@ class UserPostController extends Controller
             return redirect()->route('dashboard', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
         }
     }
+    /**
+     * Move post to the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function surferRequest($id)
+    {
+        try{
+            $result = $this->posts->surferRequest(Crypt::decrypt($id),$message);
+            if($result){
+                return redirect()->route('dashboard')->withSuccess($message);  
+            }else{
+                return redirect()->route('dashboard')->withErrors($message); 
+            }
+        }catch (\Exception $e){
+            return redirect()->route('dashboard', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
+        }
+    }
+    /**
+     * Move post to the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function acceptRejectRequest($id,$type)
+    {
+        try{
+            $request_id = Crypt::decrypt($id);
+            $surferRequest = SurferRequest::select("*")->where("id", "=", $request_id)->get()->toArray();
+//            echo '<pre>';            print_r($surferRequest);die;
+            foreach ($surferRequest as $res) {
+            $userName = User::select("user_name")->where("id", "=", $res['user_id'])->get();
+            }
+//            echo '<pre>';            print_r($userName);die;
+            if($type == 'accept') {
+                SurferRequest::where(['id'=>$request_id])
+                ->update(['status'=>1]);
+                foreach ($userName as $uu) {
+                $result =   Post::where(['id'=>$surferRequest[0]['post_id']])
+                ->update(['surfer'=>$uu['user_name']]);   
+                }
+                $message = 'Surfer request accepted';
+                
+            }
+            if($type == 'reject') {
+            $result =     SurferRequest::where(['id'=>$request_id])
+                ->update(['status'=>2]);
+                $message = 'Surfer request rejected';    
+            }
+            
+//            echo '<pre>';            print_r($data);die;
+            if($result){
+                return redirect()->route('surferRequestList')->withSuccess($message);  
+            }else{
+                return redirect()->route('surferRequestList')->withErrors($message); 
+            }
+        }catch (\Exception $e){
+            return redirect()->route('surferRequestList')->withErrors($e->getMessage());
+        }
+    }
 
     /**
      * show the specified post.
@@ -523,5 +585,23 @@ class UserPostController extends Controller
         }
     
         return response()->json(['success' => $filename]);
+    }
+    
+    public function surferRequestList()
+    {      
+        $posts = Post::select("*")
+                    ->where("user_id", "=", Auth::user()->id)
+                    ->where("is_deleted", '0')
+                    ->where("surfer", 'Unknown')
+                    ->get()
+                    ->toArray();
+                    $postIds = array_filter(array_column($posts, 'id'));
+                    
+                    $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
+                    ->whereIn("surfer_requests.post_id", $postIds)
+                    ->where("surfer_requests.status", "=", 0)
+                    ->get(['surfer_requests.id','surfer_requests.post_id', 'user_profiles.first_name', 'user_profiles.last_name'])
+                    ->toArray();
+        return view('user.surfersRequestList',compact('surferRequest'));
     }
 }
