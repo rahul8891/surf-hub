@@ -8,7 +8,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand" href="#"><img src="img/logo.png" alt="Logo"></a>
-                <div class="navbar-nav middle-menu">
+                <div class="navbar-nav middle-menu" style="<?php echo !Auth::user()?'width:250px !important;margin-right:220px;':'' ?>">
                     <a class="nav-link" href="/"><img src="{{ asset("/img/home.png")}}" alt="Feed" class="align-middle"> <span class="align-middle">FEED</span></a>
                     @if(Auth::user()) 
                     <a class="nav-link" href="#"><img src="{{ asset("/img/hub.png")}}" alt="Hub" class="align-middle"> <span class="align-middle">MY HUB</span></a>
