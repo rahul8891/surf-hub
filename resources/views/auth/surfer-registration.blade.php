@@ -205,5 +205,5 @@
             <input type="submit" class="btn blue-btn w-100" value="SIGNUP">
         </div>
     </div>
-    <div class="sign-in-anchor">Already have an account? <a href="#" class="blue-txt">Sign In</a></div>
+    <div class="sign-in-anchor">Already have an account? <a href="/login" class="blue-txt">Sign In</a></div>
 </form>

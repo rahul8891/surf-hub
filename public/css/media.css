@@ -8,6 +8,9 @@
     header .navbar-nav.middle-menu {
         width: 500px;
     }
+    .right-advertisement{
+        display: none;
+    }
 }
 
 @media screen and (max-width: 991px) { 
@@ -31,6 +34,44 @@
     .register-wrap,
     .contact-wrap{
         margin: 100px auto;
+    }
+    .left-advertisement,
+    .left-option>div span{
+        display: none;
+    }
+    .left-option>div{
+        line-height: 35px;
+    }
+    header{
+        border-bottom: 0;
+    }
+    .home-section{
+        padding-top: 0;
+    }
+    .my-details-div {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        z-index: 1;
+        height: 100vh;
+    }
+    .inner-my-details{
+        height: 100%;
+    }
+    .profile-menu{
+        overflow: auto;
+        height: calc(100% - 172px);
+    }
+    .my-details-div .profile-pic{
+        height: 100px;
+        width: 100px;
+    }
+    .my-details-div .profile-row .notification{
+        width: 18px;
+        height: 18px;
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 16px;
     }
 }
 
@@ -85,6 +126,37 @@
         font-size: 22px;
         line-height: 28px;    
     }
+    .user-bottom-options {
+        flex-direction: column;
+    }
+    .home-section > .container{
+        padding: 0;
+    }
+    .right-options a{
+        padding: 0 10px;
+    }
+    .right-options a+a:before{
+        left: -6px;
+    }
+    .profile-row{
+        padding: 8px 0;
+    }
+    .profile-menu{
+        font-size: 14px;
+    }
+    .my-details-div .my-name {
+        font-size: 16px;
+        line-height: 22px;
+    }
+    .my-details-div .my-comp{
+        font-size: 13px;
+    }
+    .my-details-div .my-comp span{
+        font-size: 15px;
+    }
+    .profile-row img{
+        margin-right: 5px;
+    }
 }
 
 @media screen and (max-width: 575px) {
@@ -95,5 +167,8 @@
     .register-wrap,
     .contact-wrap{
         margin: 50px auto;
+    }
+    .right-options a{
+        padding: 0 5px;
     }
 }
