@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand p-0">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="/"><img src="/img/new/logo.png" alt="Logo"></a>
+        <div class="navbar-nav middle-menu">
+            <a class="nav-link" href="/"><img src="/img/new/home.png" alt="Feed" class="align-middle">
+                <span class="align-middle">FEED</span>
+            </a>
+            @if (Auth::user())
+                <a class="nav-link" href="{{ route('myhub') }}"><img src="/img/new/hub.png" alt="Hub" class="align-middle">
+                    <span class="align-middle">MY HUB</span>
+                </a>
+            @endif
+            <a class="nav-link" href="{{route('searchPosts')}}"><img src="/img/new/search.png" alt="Search" class="align-middle"> 
+                <span class="align-middle">SEARCH</span>
+            </a>
+            @if (Auth::user())
+                <a class="nav-link" href="#"><img src="/img/new/upload.png" alt="Upload" class="align-middle">
+                    <span class="align-middle">UPLOAD</span>
+                </a>
+            @endif
+        </div>
+        <div class="side-navbar">
+            <div class="navbar-nav">
+                @if (!Auth::user())
+                    <a class="nav-link" href="{{ route('register') }}">Signup</a>
+                    <a class="nav-link" href="{{ route('login') }}">Login</a>
+                @endif
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('contact') }}">Contact Us</a></li>
+                        <li><a class="dropdown-item" href="{{ route('privacy') }}">Privacy Policy</a></li>
+                        <li><a class="dropdown-item" href="{{ route('terms') }}">T&C's</a></li>
+                        <li><a class="dropdown-item" href="{{ route('faq') }}">Help/FAQ's</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

@@ -63,7 +63,7 @@ class MyHubController extends Controller
             return response()->json(['html' => $view]);
         }
         
-        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'));
+        return view('user.feed',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'));
     }
     
     /**
@@ -81,7 +81,8 @@ class MyHubController extends Controller
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
         $userDetail = Auth::user()->user_profiles;
-        $myHubs = $this->postService->getFilteredData($params,'myhub');
+        $postsList = $myHubs = $this->postService->getFilteredData($params,'myhub');
+        $beaches = $this->masterService->getBeaches();
         
         if(!empty($request->input('local_beach_break_id'))){
             $bb = BeachBreak::where('id',$request->input('local_beach_break_id'))->first(); 
@@ -89,7 +90,7 @@ class MyHubController extends Controller
         }
         
         if ($request->ajax()) {
-            $view = view('elements/myhubdata',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'))->render();
+            $view = view('elements/myhubdata',compact('postsList','customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'))->render();
             return response()->json(['html' => $view]);
         }
         
@@ -110,7 +111,7 @@ class MyHubController extends Controller
             return response()->json(['html' => $view]);
         }*/
         
-        return view('user.myhub',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'));
+        return view('user.feed',compact('postsList','customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name','beaches'));
     }
 
 

@@ -3,21 +3,12 @@
 <section class="home-section">
     <div class="container">
         <div class="home-row">
-                <div class="left-advertisement">
-                        <img src="img/new/advertisement1.png" alt="advertisement">
-                        <img src="img/new/advertisement2.png" alt="advertisement">
-                </div>
+            <div class="my-details-div">
+                @include('layouts.user.left_sidebar')
+            </div>
                 <div class="middle-content">
-                        <div class="filter-sort">
-                                <div class="sort">
-                                        <img src="img/new/sort.png" alt="filter">
-                                        <span>Sort</span>
-                                </div>
-                                <div class="filter">
-                                        <img src="img/new/filter.png" alt="filter">
-                                        <span>Filter</span>
-                                </div>
-                        </div>
+                    @include('layouts.user.content_menu')
+                    
                         <div class="news-feed">
                              @if (!empty($postsList))
                                 @foreach ($postsList as $key => $posts)
@@ -35,25 +26,27 @@
                                                             <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
                                                         </div>
                                                 </div>
+                                                @if($posts->user_id != Auth::user()->id)
                                                 <div class="user-right"> 
-                                                        <img src="img/new/normal-user.png" alt="normal-user">
-                                                        <a href="{{ route('login') }}" class="follow-btn"><img src="img/new/follow-user.png">FOLLOW</a>
+                                                        <img src="/img/new/normal-user.png" alt="normal-user">
+                                                        <a href="{{ route('login') }}" class="follow-btn"><img src="/img/new/follow-user.png">FOLLOW</a>
                                                 </div>
+                                                @endif
                                         </div>
-                                        <img src="img/new/feed-big-img.png" alt="Feed" class="w-100">
+                                        <img src="/img/new/feed-big-img.png" alt="Feed" class="w-100">
                                         <div class="user-bottom-options">
                                                 <div class="rating">
-                                                        <img src="img/new/blue-star.png" alt="start" class="align-text-bottom">
+                                                        <img src="/img/new/blue-star.png" alt="start" class="align-text-bottom">
                                                         <span>3/5</span>
                                                 </div>
                                                 <div class="right-options">
-                                                        <a href="#"><img src="img/new/save.png" alt="Save"></a>
-                                                        <a href="#"><img src="img/new/small-logo.png" alt="Logo"></a>
-                                                        <a href="#"><img src="img/new/location.png" alt="Location"></a>
-                                                        <a href="#"><img src="img/new/expand.png" alt="Expand"></a>
-                                                        <a href="#"><img src="img/new/warning.png" alt="Warning"></a>
-                                                        <a href="#"><img src="img/new/tag.png" alt="Tag"></a>
-                                                        <a href="#"><img src="img/new/flag.png" alt="Flag"></a>
+                                                        <a href="#"><img src="/img/new/save.png" alt="Save"></a>
+                                                        <a href="#"><img src="/img/new/small-logo.png" alt="Logo"></a>
+                                                        <a href="#"><img src="/img/new/location.png" alt="Location"></a>
+                                                        <a href="#"><img src="/img/new/expand.png" alt="Expand"></a>
+                                                        <a href="#"><img src="/img/new/warning.png" alt="Warning"></a>
+                                                        <a href="#"><img src="/img/new/tag.png" alt="Tag"></a>
+                                                        <a href="#"><img src="/img/new/flag.png" alt="Flag"></a>
                                                 </div>
                                         </div>
                                 </div>
@@ -62,8 +55,8 @@
                         </div>
                 </div>
                 <div class="right-advertisement">
-                        <img src="img/new/advertisement1.png" alt="advertisement">
-                        <img src="img/new/advertisement2.png" alt="advertisement">
+                        <img src="/img/new/advertisement1.png" alt="advertisement">
+                        <img src="/img/new/advertisement2.png" alt="advertisement">
                 </div>
         </div>
     </div>

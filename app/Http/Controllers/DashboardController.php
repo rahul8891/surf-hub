@@ -68,7 +68,7 @@ class DashboardController extends Controller {
             return response()->json(['html' => $view]);
         }
 
-        return view('dashboard', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer'));
+        return view('user.feed', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer'));
     }
 
     public function photographerDashboard(Request $request) {
