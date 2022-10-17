@@ -13,23 +13,31 @@
         text-decoration: none;
         color: #379937;
     }
+    
+    .dropdown-label {
+/*            display: block;
+            height: 30px;
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 6px 12px;
+            line-height: 1;
+            cursor: pointer;*/
 
-
-    .multi-dropdown {
-        position: relative;
-        font-size: 14px;
-        color: #333;
-
-        .dropdown-list {
+            &:before {
+                content: '▼';
+                float: right;
+            }
+        }
+    .dropdown-list {
             padding: 12px;
             background: #fff;
-            position: absolute;
-            top: 30px;
+            /*position: absolute;*/
+            /*top: 30px;*/
             left: 2px;
             right: 2px;
             box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
             transform-origin: 50% 0;
-            transform: scale(1, 0);
+            /*transform: scale(1, 0);*/
             transition: transform .15s ease-in-out .15s;
             max-height: 66vh;
             overflow-y: scroll;
@@ -41,21 +49,15 @@
             opacity: 0;
             transition: opacity .15s ease-in-out;
         }
+        
+    .multi-dropdown {
+        position: relative;
+        font-size: 14px;
+        color: #333;
 
-        .dropdown-label {
-            display: block;
-            height: 30px;
-            background: #fff;
-            border: 1px solid #ccc;
-            padding: 6px 12px;
-            line-height: 1;
-            cursor: pointer;
+        
 
-            &:before {
-                content: '▼';
-                float: right;
-            }
-        }
+        
 
         &.on {
             .dropdown-list {
@@ -84,18 +86,18 @@
 <div class="post p-0 ">
     <div class="uploadWrap a_uploadWrap">
         <div class="head">
-            <div class="row">
+            <div class="filter-sort">
                 @if(Auth::user() && (!str_contains(Request::path(),'search')))
                 <div class="col-md-6 col-auto"  data-toggle="modal" data-target="#exampleModal" data-backdrop="static" data-keyboard="false">
                     <img src="{{ asset("/img/upload.png")}}" alt=""> Upload Video/Photo
                 </div>
                 @endif
                 @if((str_contains(Request::path(),'myhub') || str_contains(Request::path(),'search')))
-                <div class="col-md-3 col-auto">
+                <div class="sort">
                     <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        <button class="btn" type="button" id="dropdownMenuButton1"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="{{ asset("/img/sort.png")}}" alt=""> <span>Sort</span>
+                            <img src="{{ asset("/img/sort.png")}}" alt=""> <span class="text-white">Sort</span>
                         </button>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -108,12 +110,12 @@
                         </div>                        
                     </div>
                 </div>
-                <div class="col-md-3 col-auto text-web-right">
+               <div class="filter">
                     <div class="dropdown" id="dropdown-toggle-id">
 
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2"
+                        <button class="btn" type="button" id="dropdownMenuButton2"
                                 data-toggle="modal" data-target="#filterModal">
-                            <img src="{{ asset("/img/filter.png")}}" alt=""> <span>Filter</span>
+                            <img src="{{ asset("/img/filter.png")}}" alt=""> <span class="text-white">Filter</span>
                         </button>
 
                         <!-- modal -->
@@ -393,16 +395,22 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="multi-dropdown" data-control="checkbox-dropdown">
-                                                                <label class="dropdown-label">Select</label>
-
-                                                                <div class="dropdown-list">
+                                                            <div class="multi-dropdown row mb-3" data-control="checkbox-dropdown">
+                                                                <div class="col-md-4">
+                                                                    <label class="mb-0">Beach </label>
+                                                                </div>
+                                                                <!--<label class="dropdown-label">Select</label>-->
+<!--                                                                
+                                                                <div class="col-md-8">
+                                                                    
+                                                                </div>-->
+                                                                <div class="dropdown-list col-md-8">
                                                                     <a href="#" data-toggle="check-all" class="dropdown-option">
                                                                         Check All  
                                                                     </a>
                                                                     @foreach($beaches as $val)
                                                                     <div class="cstm-check pos-rel">
-                                                                        <input type="checkbox" id="beach_{{$val['id']}}" name="beach_{{$val['id']}}" value="{{$val['id']}}" />
+                                                                        <input class="form-control" type="checkbox" id="beach_{{$val['id']}}" name="beach_{{$val['id']}}" value="{{$val['id']}}" />
                                                                         <label for="beach_{{$val['id']}}" class="width-138">{{$val['beach_name']}}</label>
                                                                     </div>
                                                                     @endforeach

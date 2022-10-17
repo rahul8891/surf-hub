@@ -19,19 +19,22 @@
     <link rel="stylesheet" href="{{ asset("/css/croppie.css") }}" />
 </head>
 
-<body>
+<body class="login-body">
 
     <!-- Header -->
 
     @php
     $profileClass = (Auth::user() && Request::path() == 'user/profile') ? 'contactUsWrap profileWrap' : '';
     @endphp
+    @include('layouts/header')
     <main class="{{ $profileClass }}">
+        <div id="loader"></div> 
         <div class="loaderWrap">
             <div class="lds-hourglass"></div>
         </div>
         <!--<div id="loader"></div> -->
-        @include('layouts/user/user_header')
+        <!--@include('layouts/user/user_header')-->
+        
         @include('layouts/user/user_banner')
         @if ($errors->any())
         <div class="alert alert-danger alert-dismissible" id="msg" role="alert">
