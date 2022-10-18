@@ -260,7 +260,7 @@ class UserService {
         Notification::where(['receiver_id'=> Auth::user()->id, 'notification_type'=> 'Accept'])->orWhere(['notification_type' => 'Reject'])->update(['status'=>'1','count_status'=>'1','updated_at'=>Carbon::now()]);
         $following = $this->userFollows->where('follower_user_id',Auth::user()->id)   
                     ->where('status','FOLLOW')   
-                    ->where('follower_request_status','0') 
+//                    ->where('follower_request_status','0') 
                     ->where('is_deleted','0')
                     ->orderBy('id','desc')->get();
         return $following;
@@ -350,6 +350,16 @@ class UserService {
         $count = $this->userFollows->where($column,Auth::user()->id)
                 ->where('status','FOLLOW')   
                 ->where('follower_request_status',$status) 
+                ->where('is_deleted','0')
+                ->count();
+        return $count;
+    }
+    
+    public function getFollowDataCount($column=null,$status=null)
+    {
+        $count = $this->userFollows->where($column,Auth::user()->id)
+                ->where('status','FOLLOW')   
+                ->whereIn('follower_request_status',$status) 
                 ->where('is_deleted','0')
                 ->count();
         return $count;

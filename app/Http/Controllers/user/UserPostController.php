@@ -604,4 +604,47 @@ class UserPostController extends Controller
                     ->toArray();
         return view('user.surfersRequestList',compact('surferRequest'));
     }
+    public function upload(Request $request)
+    {      
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $beaches = $this->masterService->getBeaches();
+        $customArray = $this->customArray;
+        $postsList = Post::with('followPost')->where('is_deleted', '0')
+                ->where('parent_id', '0')
+                ->where(function ($query) {
+                    $query->where('post_type', 'PUBLIC')
+                    ->orWhere('is_feed', '1');
+                })
+                ->orderBy('posts.created_at', 'DESC')
+                ->paginate(10);
+        $requestSurfer = array();
+        foreach ($postsList as $val) {
+//            $surferRequest = SurferRequest::select("*")
+//                    ->where("post_id", "=", $val['id'])
+//                    ->where("status", "=", 0)
+//                    ->get();
+
+            $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
+                    ->where("surfer_requests.post_id", "=", $val['id'])
+                    ->where("surfer_requests.status", "=", 0)
+                    ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
+
+            foreach ($surferRequest as $res) {
+//                echo '<pre>'; print_r($res['id']);die;
+                $requestSurfer[$val['id']]['id'] = $res['id'];
+                $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
+            }
+        }
+//        echo '<pre>'; print_r($postsList);die;
+        $url = url()->current();
+        $usersList = $this->masterService->getAllUsers();
+
+        if ($request->ajax()) {
+            $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url'))->render();
+            return response()->json(['html' => $view]);
+        }
+        return view('user.upload', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches'));
+    }
 }

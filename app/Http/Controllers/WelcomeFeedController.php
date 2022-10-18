@@ -61,7 +61,7 @@ class WelcomeFeedController extends Controller
             return response()->json(['html' => $view]);
         }
         
-        return view('welcome',compact('customArray','postsList'));
+        return view('welcome', compact('customArray','postsList'));
     }
 
     public function privacy(){

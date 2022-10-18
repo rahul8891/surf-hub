@@ -1,4 +1,4 @@
-@extends('layouts.guest_user')
+@extends('layouts.user.user')
 @section('content')
 
 <div class="register-wrap">
@@ -33,7 +33,7 @@
                     <input type="hidden" name="user_type_id" id="user_type_id">
                     <input type="submit" class="btn blue-btn w-100" value="SIGNUP">
                 </div>
-            <div class="sign-in-anchor">Already have an account? <a href="#" class="blue-txt">Sign In</a></div>
+            <div class="sign-in-anchor">Already have an account? <a href="/login" class="blue-txt">Sign In</a></div>
             </div>
         </form>
         <div class="d-none photographer-fileds">
