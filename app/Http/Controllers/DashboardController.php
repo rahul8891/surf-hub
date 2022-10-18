@@ -67,7 +67,6 @@ class DashboardController extends Controller {
             $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url'))->render();
             return response()->json(['html' => $view]);
         }
-
         return view('user.feed', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer'));
     }
 

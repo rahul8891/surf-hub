@@ -11,7 +11,7 @@
     }
     a {
         text-decoration: none;
-        color: #379937;
+        color: #616161;
     }
     
     .dropdown-label {

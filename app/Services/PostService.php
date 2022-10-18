@@ -95,6 +95,21 @@ class PostService {
         return $postArray;
     }
     /**
+     * [getPostTotal] we are getting number of total posts of a user
+     * @param  
+     * @param  
+     * @return dataCount
+     */
+    public function getPostByUserId(){
+
+        $postArray =  $this->posts->where('user_id',Auth::user()->id)   
+                                  ->where('is_deleted','0')                            
+                                  ->orderBy('created_at','ASC')
+                                  ->get()
+                                  ->toArray();
+        return $postArray;
+    }
+    /**
      * [getPostListing] we are getting all the post
      * @param  
      * @param  
@@ -1157,5 +1172,33 @@ class PostService {
             $message='"'.$e->getMessage().'"';
             return $message;
         }
+    }
+    /**
+     * [surferRequest] we are getting surfer request
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function getSurferRequest($ids,$status){
+        
+   
+        $surferRequest =  $this->surferRequest
+                                  ->whereIn('post_id', $ids)
+                                  ->where('status',$status)                            
+                                  ->orderBy('id','ASC')
+                                  ->get()
+                                  ->toArray();
+        return $surferRequest;
+        
+    }
+    public function getUploads($ids){
+        
+   
+        $uploads =  $this->upload
+                                  ->whereIn('post_id', $ids)                          
+                                  ->orderBy('id','ASC')
+                                  ->get()
+                                  ->toArray();
+        return $uploads;
+        
     }
 }

@@ -1,3 +1,148 @@
+.infoHover {
+    width: 320px;
+    text-align: left;
+    padding: 15px 30px;
+    right: auto;
+    left: 70%;
+    bottom: 46px;
+    top: auto;
+    transform: translateX(-50%);
+}
+
+.infoHover .pos-rel img {
+    bottom: -30px;
+}
+
+.infoHover .col-5,
+.infoHover .col-2 {
+    margin-bottom: 10px;
+}
+.infoHover.userinfoModal {
+    padding: 15px;
+    bottom: 40px;
+}
+.reasonHover {
+    padding: 10px 20px 15px 20px;
+}
+
+.reasonHover .reportContentTxt {
+    padding-bottom: 6px;
+    border-bottom: 1px solid #fff;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.reasonHover [type="checkbox"]:not(:checked)+label,
+.reasonHover [type="checkbox"]:checked+label {
+    padding-left: 20px;
+    margin-bottom: 6px;
+}
+
+.reasonHover [type="checkbox"]:not(:checked)+label::before,
+.reasonHover [type="checkbox"]:checked+label::before {
+    left: 0px;
+    right: auto;
+    top: 3px;
+    width: 13px;
+    height: 13px;
+}
+
+.reasonHover textarea {
+    resize: none;
+    width: 100%;
+    background: #fff;
+    border: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 10px;
+    height: 57px;
+}
+
+.reasonHover button {
+    background: #ffffff;
+    border: none;
+    height: 36px;
+    width: 104px;
+    border-radius: 3px;
+    color: #4b8df5;
+    font-weight: 700;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.reasonHover [type="checkbox"]:not(:checked)+label::after,
+.reasonHover [type="checkbox"]:checked+label::after {
+    font-size: 1em;
+    right: auto;
+    left: 1px;
+    top: 4px;
+}
+.saveInfo {
+    font-size: 13px;
+    line-height: 18px;
+    color: #ffffff;
+    font-weight: 400;
+    text-align: center;
+    box-shadow: 0px 2px 0px #013381;
+    /*width: 155px;*/
+    border-radius: 5px;
+    background-color: #4b8df5;
+    padding: 6px 15px;
+    position: absolute;
+    top: 82px;
+    z-index: 1;
+    right: -53px;
+    transition: all ease-in-out;
+    transition-delay: 0.6s;
+    pointer-events: none;
+    display: none;
+}
+
+.saveInfo:hover {
+    opacity: 1;
+    pointer-events: unset;
+}
+
+.saveInfo .pos-rel img {
+    position: absolute;
+    bottom: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+ a:hover .saveInfo {
+    display: block;
+    pointer-events: unset;
+}
+a:focus .saveInfo{
+    display: block;
+    pointer-events: unset;
+}
+.pos-rel {
+    position: relative;
+}
+.cstm-check {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.cstm-check {
+    max-width: 138px;
+    width: 100%;
+}
+.cstm-check {
+    padding-right: 20px;
+}
+.cstm-check {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+
+
+
+
+
 body {
     font-family: "Open Sans", sans-serif;
     color: #616161;
@@ -764,4 +909,13 @@ header .notification{
 }
 .my-details-div.menu-slideIn {
     left: 0;
+}
+.show-vid {
+    height: 180px;
+    margin-bottom: 3px;
+}
+.vid-expand {
+    height: 580px;
+    width: 100%;
+    object-fit: cover;
 }

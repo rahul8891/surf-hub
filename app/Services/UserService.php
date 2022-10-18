@@ -354,6 +354,16 @@ class UserService {
                 ->count();
         return $count;
     }
+    
+    public function getFollowDataCount($column=null,$status=null)
+    {
+        $count = $this->userFollows->where($column,Auth::user()->id)
+                ->where('status','FOLLOW')   
+                ->whereIn('follower_request_status',$status) 
+                ->where('is_deleted','0')
+                ->count();
+        return $count;
+    }
 
     public function updateRemoveStatus($input,&$message='',$column=null)
     {

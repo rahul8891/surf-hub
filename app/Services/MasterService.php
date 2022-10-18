@@ -5,6 +5,7 @@ use App\Models\Country;
 use App\Models\State;
 use App\Models\User;
 use App\Models\BeachBreak;
+use App\Models\UserFollow;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -29,6 +30,8 @@ class MasterService {
     protected $users;
     
     protected $beach_break;
+    
+    protected $user_follow;
 
     public function __construct() {
        
@@ -44,6 +47,9 @@ class MasterService {
        
         // Beach break model object
         $this->beach_break = new BeachBreak();
+       
+        // User Follow model object
+        $this->user_follow = new UserFollow();
        
         // get custom config file
         $this->checkUserType = config('customarray');

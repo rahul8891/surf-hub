@@ -16,6 +16,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\RequestGuard;
 use Illuminate\Support\Facades\DB;
 use App\Services\UserService;
+use App\Services\PostService;
 use Redirect;
 
 class UserController extends Controller
@@ -29,9 +30,10 @@ class UserController extends Controller
      * @param  UserService  $users
      * @return void
      */
-    public function __construct(UserService $users)
+    public function __construct(UserService $users,PostService $post)
     {
         $this->users = $users;    
+        $this->post = $post;    
         $this->common = config('customarray.common');   
     }
     
@@ -381,6 +383,33 @@ class UserController extends Controller
          }else{
              echo json_encode(array('status'=>$result['status'], 'message'=>$result['message']));
          }
+    }
+
+    public function followCounts(Request $request)
+    {
+//        $data = $request->all();
+        $followersCount = $this->users->getFollowDataCount('followed_user_id',array('0'));
+        $followingCount = $this->users->getFollowDataCount('follower_user_id',array('0','1'));
+        $followRequestCount = $this->users->getFollowDataCount('followed_user_id',array('1'));
+        $notification = $this->users->getNotificationCount();
+        $userPosts = $this->post->getPostByUserId();
+        
+        $postIds = array_filter(array_column($userPosts, 'id'));
+        $surferRequests = $this->post->getSurferRequest($postIds,0);
+        $uploads = $this->post->getUploads($postIds);
+//          echo '<pre>';        print_r($notification);die;
+        $fCounts = array(
+        'follwers' =>  $followersCount,   
+        'follwing' =>  $followingCount,   
+        'follwerRequest' =>  $followRequestCount,   
+        'posts' =>  count($userPosts),   
+        'surferRequest' =>  count($surferRequests),   
+        'uploads' =>  count($uploads),   
+        'notification' =>  $notification   
+        );
+      
+        echo json_encode($fCounts);
+         
     }
 
     public function checkUsername(Request $request)

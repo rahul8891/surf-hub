@@ -40,6 +40,7 @@ Route::get('/getUsers', [UserController::class, 'getUsers'])->name('getUsers');
 Route::get('/getTagUsers', [UserController::class, 'getTagUsers'])->name('getTagUsers');
 Route::post('/setTagUsers', [UserController::class, 'setTagUsers'])->name('setTagUsers');
 Route::post('/checkUsername', [UserController::class, 'checkUsername'])->name('checkUsername');
+Route::get('/follow-counts', [UserController::class, 'followCounts'])->name('follow-counts');
 
 Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
 Route::get('search/filter', [SearchController::class, 'filter'])->name('searchFilterIndex');
