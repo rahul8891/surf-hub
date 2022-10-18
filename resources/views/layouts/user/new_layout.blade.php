@@ -17,7 +17,7 @@
 
 <body class="login-body">
 	<header>
-            @include('layouts/user/header')
+            @include('layouts/header')
 	</header>
 
 	<main>

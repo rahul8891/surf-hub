@@ -1,4 +1,4 @@
-@extends('layouts.user.user')
+@extends('layouts.user.new_layout')
 @section('content')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
 <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
@@ -6,15 +6,12 @@
 <section class="home-section">
     
     <div class="container">
-        <div class="show-vid">
-    
-</div>
         <div class="home-row">
             
             @include('layouts.user.left_sidebar')    
 
             <div class="middle-content">
-                @include('layouts/user/upload_layout')
+                @include('layouts/user/content_menu')
 
                 @if (is_null($postsList[0]))
                 <div class="post alert text-center alert-dismissible py-5" role="alert">
@@ -46,50 +43,13 @@
                         <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="Feed" class="w-100" id="myImage{{$posts->id}}">
                         @elseif(!empty($posts->upload->video))
                         @if (!File::exists($posts->upload->video))
-                        <!-- Carousel wrapper -->
-                        <div id="carouselVideoExample" class="carousel slide carousel-fade" data-mdb-ride="carousel">
-<!--                             Indicators 
-                            <div class="carousel-indicators">
-<button type="button" data-mdb-target="#carouselVideoExample" data-mdb-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                <button type="button" data-mdb-target="#carouselVideoExample" data-mdb-slide-to="1" aria-label="Slide 2"></button>
-                                <button type="button" data-mdb-target="#carouselVideoExample" data-mdb-slide-to="2" aria-label="Slide 3"></button>
-                            </div>-->
-
-                            <!-- Inner -->
-                            <div class="carousel-inner">
-                                <!-- Single item -->
-                                <div class="carousel-item active">
-                                    <video width="100%" preload="auto" data-setup="{}" controls controlsList="nofullscreen nodownload" autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                                        <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" />
-                                    </video>
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <h5>First slide label</h5>
-                                        <p>
-                                            Nulla vitae elit libero, a pharetra augue mollis interdum.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Inner -->
-
-                            <!-- Controls -->
-                            <button class="carousel-control-prev" type="button" data-mdb-target="#carouselVideoExample" data-mdb-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-mdb-target="#carouselVideoExample" data-mdb-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
-<!-- Carousel wrapper -->
-<!--                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                             <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-                        </video>-->
+                        </video>
                         @else
-<!--                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                             <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-                        </video>-->
+                        </video>
                         @endif
                         @endif
                         <div class="user-bottom-options">
@@ -98,47 +58,17 @@
                                     <img src="img/blue-star.png" alt="start" class="align-text-bottom">
                                     <span>{{ round(floatval($posts->averageRating)) }} </span>
                                 </div>
-                                <div class="highlight">Highlights</div>
+                                <!--<div class="highlight">Highlights</div>-->
                             </div>
                             <div class="right-options">
-                                <a href="#"><img src="img/small-logo.png" alt="Logo"></a>
+                                <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="img/small-logo.png" alt="Logo"></a>
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                                 <img src={{asset("img/location.png")}} alt="Location"></a>
                                 <!--<a href="#"><img src="img/location.png" alt="Location"></a>-->
-                                @if(!empty($posts->upload->video))
-                                <a onclick="openFullscreen('{{env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video}}');"><img src={{asset("img/expand.png")}} alt="Expand"></a>
-                                @endif
+                                <a onclick="openFullscreen({{$posts->id}});"><img src={{asset("img/expand.png")}} alt="Expand"></a>
                                 <!--<a href="#"><img src="img/expand.png" alt="Expand"></a>-->
                                 <!--<a href="#"><img src="img/edit.png" alt="Edit"></a>-->
-                                <a href="javascript:void(0)"><img src="img/warning.png" alt="Warning">
-                                <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
-                                    @csrf
-                                    <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
-                                    <div class="saveInfo infoHover reasonHover">
-                                        <div class="pos-rel">
-                                            <img src={{asset("img/tooltipArrowDown.png")}} alt="">
-                                            <div class="text-center reportContentTxt">Report Content</div>
-                                            <div class="reason">
-                                                <input type="checkbox" id="Report1" name="incorrect" value="1">
-                                                <label for="Report1">Report Info as incorrect</label>
-                                            </div>
-                                            <div class="cstm-check pos-rel">
-                                                <input type="checkbox" id="Report2" name="inappropriate" value="1">
-                                                <label for="Report2">Report content as inappropriate</label>
-                                            </div>
-                                            <div class="cstm-check pos-rel">
-                                                <input type="checkbox" id="Report3" name="tolls" value="1">
-                                                <label for="Report3">Report tolls</label>
-                                            </div>
-                                            <div>
-                                                Additional Comments:
-                                                <textarea name="comments" class="reportOnPost" id="{{$posts->id}}"></textarea>
-                                            </div>
-                                            <button type="submit" class="btn btn-info postReport" id="submitReport{{$posts->id}}">REPORT</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </a>
+                                
                                 <!--<a href="#"><img src="img/warning.png" alt="Warning"></a>-->
                                 <!--<a href="#"><img src="img/delete.png" alt="Delete"></a>-->
                                 <a href="#"><img src="img/tag.png" alt="Tag"></a>

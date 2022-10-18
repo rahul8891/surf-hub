@@ -109,6 +109,16 @@ class PostService {
                                   ->toArray();
         return $postArray;
     }
+    public function getPostUnknownByUserId(){
+
+        $postArray =  $this->posts->where('user_id',Auth::user()->id)   
+                                  ->where('is_deleted','0')   
+                                  ->where("surfer", 'Unknown')
+                                  ->orderBy('created_at','ASC')
+                                  ->get()
+                                  ->toArray();
+        return $postArray;
+    }
     /**
      * [getPostListing] we are getting all the post
      * @param  

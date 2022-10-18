@@ -60,6 +60,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');  
      
     Route::post('/create-post', [UserPostController::class, 'store'])->name('storeVideoImagePost');
+    
+    Route::get('/upload', [UserPostController::class, 'upload'])->name('upload');
 
     Route::get('/user/change-password', [UserController::class, 'showChangePassword'])->name('showPassword');
 

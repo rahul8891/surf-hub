@@ -395,7 +395,9 @@ class UserController extends Controller
         $userPosts = $this->post->getPostByUserId();
         
         $postIds = array_filter(array_column($userPosts, 'id'));
-        $surferRequests = $this->post->getSurferRequest($postIds,0);
+        $userPostsUnknown = $this->post->getPostUnknownByUserId();
+        $postUnIds = array_filter(array_column($userPostsUnknown, 'id'));
+        $surferRequests = $this->post->getSurferRequest($postUnIds,0);
         $uploads = $this->post->getUploads($postIds);
 //          echo '<pre>';        print_r($notification);die;
         $fCounts = array(

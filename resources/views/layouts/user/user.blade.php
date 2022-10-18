@@ -132,7 +132,7 @@
             var elem = document.getElementById("myImage"+id);
 //            alert('here');
             $('.home-row').hide();
-            $('.show-vid').html('<video width="100%" preload="auto" data-setup="{}" controls controlsList="nofullscreen nodownload" autoplay playsinline muted class="vid-expand" id="myImage{{$posts->id}}"><source src="'+id+'" /></video>');
+            $('.show-vid').html('<video width="100%" preload="auto" data-setup="{}" controls controlsList="nofullscreen nodownload" autoplay playsinline muted class="vid-expand" id="myImage"><source src="'+id+'" /></video>');
 //            if (elem.requestFullScreen) {
 //                elem.requestFullScreen();
 //                elem.webkitEnterFullscreen();

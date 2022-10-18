@@ -32,6 +32,7 @@ class DashboardController extends Controller {
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $beaches = $this->masterService->getBeaches();
         $customArray = $this->customArray;
         $postsList = Post::with('followPost')->where('is_deleted', '0')
                 ->where('parent_id', '0')
@@ -67,7 +68,7 @@ class DashboardController extends Controller {
             $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url'))->render();
             return response()->json(['html' => $view]);
         }
-        return view('user.feed', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer'));
+        return view('user.feed', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches'));
     }
 
     public function photographerDashboard(Request $request) {

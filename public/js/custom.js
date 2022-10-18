@@ -1430,8 +1430,10 @@ $(document).ready(function () {
         }
     }
     
-    $(".dropdown-list :checkbox").change(function(e){
-    if ($(this).is(":checked")) {
+    $("#beach_filter").change(function(e){
+//    if ($('#beach_filter').is(":selected")) {
+        $('#break_filter').find('option').remove();
+        $("#break_filter").append('<option value=""> -- Break --</option>');
         var beachValue = $(this).val();
         $.ajax({
             type: "GET",
@@ -1445,9 +1447,11 @@ $(document).ready(function () {
                 //console.log(jsonResponse);
                 if (jsonResponse.status == 'success') {
                     var myJsonData = jsonResponse.data;
+                    
                     $.each(myJsonData, function (key, value) {
                         if (value.break_name != '') {
-                            $(".break-multi").append('<div class="cstm-check pos-rel break_rem'+beachValue+'"><input type="checkbox" id="break_' + value.id + '" name="filter_break_' + value.id + '" value="' + value.id + '" /><label for="break_' + value.id + '" class="width-138">' + value.break_name + '</label></div>');
+                            $("#break_filter").append('<option value="' + value.id + '">' + value.break_name + '</option>');
+//                            $("#break_filter").append('<div class="cstm-check pos-rel break_rem'+beachValue+'"><input type="checkbox" id="break_' + value.id + '" name="filter_break_' + value.id + '" value="' + value.id + '" /><label for="break_' + value.id + '" class="width-138">' + value.break_name + '</label></div>');
                         }
                     });
                 } else {
@@ -1456,16 +1460,91 @@ $(document).ready(function () {
             }
         });
     
-        }
+//        }
 //        alert("checked Score: " + $(this).val());
-    else {
-        var beachValue = $(this).val();
-        $(".break_rem"+beachValue).remove();
-    }
+//    else {
+//        var beachValue = $(this).val();
+////        $("#break_filter").remove();
+//    }
 });
 
     
-
+    
+    $("#change-start5").mouseover(function () {
+        for (let i = 1; i <= 5; i++) {
+            $("#change-start" + i).attr("src", "img/blue-star.png");
+        }
+    });
+    
+            
+      
+    $("#change-start5").mouseout(function () {
+        var filterRating = $('#filter-rating').val();
+//        if(filterRating == '') {
+        for (let i = 1; i <= 5; i++) {
+            $("#change-start" + i).attr("src", "img/star.png");
+        }
+//}
+    });
+    $("#change-start4").mouseover(function () {
+        for (let i = 1; i <= 4; i++) {
+            $("#change-start" + i).attr("src", "img/blue-star.png");
+        }
+    });
+    $("#change-start4").mouseout(function () {
+        var filterRating = $('#filter-rating').val();
+        for (let i = 1; i <= 4; i++) {
+            $("#change-start" + i).attr("src", "img/star.png");
+        }
+    });
+    $("#change-start3").mouseover(function () {
+        for (let i = 1; i <= 3; i++) {
+            $("#change-start" + i).attr("src", "img/blue-star.png");
+        }
+    });
+    $("#change-start3").mouseout(function () {
+        var filterRating = $('#filter-rating').val();
+        for (let i = 1; i <= 3; i++) {
+            $("#change-start" + i).attr("src", "img/star.png");
+        }
+    });
+    $("#change-start2").mouseover(function () {
+        for (let i = 1; i <= 2; i++) {
+            $("#change-start" + i).attr("src", "img/blue-star.png");
+        }
+    });
+    $("#change-start2").mouseout(function () {
+        var filterRating = $('#filter-rating').val();
+        for (let i = 1; i <= 2; i++) {
+            $("#change-start" + i).attr("src", "img/star.png");
+        }
+    });
+    $("#change-start1").mouseover(function () {
+      $("#change-start1").attr("src", "img/blue-star.png");
+    });
+    
+    $("#change-start1").mouseout(function () {
+      $("#change-start1").attr("src", "img/blue-star.png");
+    });
+    
+    $('#change-start5').on('click', function () {
+        $('#filter-rating').val('5');
+    });
+    $('#change-start4').on('click', function () {
+        $('#filter-rating').val('4');
+    });
+    $('#change-start3').on('click', function () {
+        $('#filter-rating').val('5');
+    });
+    $('#change-start2').on('click', function () {
+        $('#filter-rating').val('2');
+    });
+    $('#change-start1').on('click', function () {
+        $('#filter-rating').val('1');
+    });
+   $(".dropdownmenuname").click(function(e){
+   e.stopPropagation();
+})
 
     // ajax form field data for filter
     $('.search-box2').keyup(debounce(function () {
