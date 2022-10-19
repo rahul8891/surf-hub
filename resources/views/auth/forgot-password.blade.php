@@ -1,4 +1,4 @@
-@extends('layouts.guest_user')
+@extends('layouts.user.new_layout')
 @section('content')
 <section class="loginWrap">
     <div class="innerWrap">

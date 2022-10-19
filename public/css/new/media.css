@@ -8,46 +8,50 @@
     header .navbar-nav.middle-menu {
         width: 500px;
     }
-    .right-advertisement{
+
+    .right-advertisement {
         display: none;
     }
 }
 
-@media screen and (max-width: 991px) { 
-    header .navbar>.container{
+@media screen and (max-width: 991px) {
+    header .navbar>.container {
         flex-wrap: wrap;
     }
-    .side-navbar{
+
+    .side-navbar {
         order: 2;
     }
+
     header .navbar-nav.middle-menu {
         order: 3;
         width: 100%;
         margin-top: 10px;
     }
-    header .navbar-nav .nav-link img{
+
+    header .navbar-nav .nav-link img {
         display: block;
         text-align: center;
         margin: 0 auto 3px;
     }
-    .login-wrap,
-    .register-wrap,
-    .contact-wrap{
-        margin: 100px auto;
-    }
+
     .left-advertisement,
-    .left-option>div span{
+    .left-option>div span {
         display: none;
     }
-    .left-option>div{
+
+    .left-option>div {
         line-height: 35px;
     }
-    header{
+
+    header {
         border-bottom: 0;
     }
-    .home-section{
+
+    .home-section {
         padding-top: 0;
     }
+
     .my-details-div {
         position: fixed;
         left: -100%;
@@ -55,24 +59,29 @@
         z-index: 1;
         height: 100vh;
     }
-    .inner-my-details{
+
+    .inner-my-details {
         height: 100%;
     }
-    .profile-menu{
+
+    .profile-menu {
         overflow: auto;
         height: calc(100% - 172px);
     }
-    .my-details-div .profile-pic{
+
+    .my-details-div .profile-pic {
         height: 100px;
         width: 100px;
     }
-    .my-details-div .profile-row .notification{
+
+    .my-details-div .profile-row .notification {
         width: 18px;
         height: 18px;
         font-weight: 600;
         font-size: 13px;
         line-height: 16px;
     }
+
 }
 
 @media screen and (max-width: 767px) {
@@ -89,86 +98,186 @@
         width: 200px;
     }
 
-    header .side-navbar .dropdown .dropdown-menu .dropdown-item{
+    header .side-navbar .dropdown .dropdown-menu .dropdown-item {
         font-size: 13px;
         line-height: 35px;
         padding: 0 15px;
     }
+
     p,
     .login-wrap .form-check,
     .login-wrap .frgt-pswd,
-    .sign-up-anchor{
+    .sign-up-anchor {
         font-size: 14px;
         line-height: 24px;
     }
+
     .login-wrap h1 {
         font-size: 16px;
         line-height: 22px;
         margin-bottom: 20px;
     }
-    footer .navbar-nav{
+
+    footer .navbar-nav {
         flex-direction: column;
         align-items: center;
     }
-    footer .navbar-nav a+a:before{
+
+    footer .navbar-nav a+a:before {
         display: none;
     }
-    footer p{
+
+    footer p {
         padding: 0.5rem 1rem;
     }
-    .login-wrap,
-    .register-wrap,
-    .contact-wrap{
-        margin: 75px auto;
-    }
+
     .register-wrap h1,
-    .contact-wrap h1{
+    .contact-wrap h1 {
         font-size: 22px;
-        line-height: 28px;    
+        line-height: 28px;
     }
+
     .user-bottom-options {
         flex-direction: column;
     }
-    .home-section > .container{
+
+    .home-section>.container {
         padding: 0;
     }
-    .right-options a{
+
+    .right-options a {
         padding: 0 10px;
     }
-    .right-options a+a:before{
+
+    .right-options a+a:before {
         left: -6px;
     }
-    .profile-row{
+
+    .profile-row {
         padding: 8px 0;
     }
-    .profile-menu{
+
+    .profile-menu {
         font-size: 14px;
     }
+
     .my-details-div .my-name {
         font-size: 16px;
         line-height: 22px;
     }
-    .my-details-div .my-comp{
+
+    .my-details-div .my-comp {
         font-size: 13px;
     }
-    .my-details-div .my-comp span{
+
+    .my-details-div .my-comp span {
         font-size: 15px;
     }
-    .profile-row img{
+
+    .profile-row img {
         margin-right: 5px;
     }
+
+    .right-modal-footer {
+        width: 100%;
+    }
+
+    .profile-photo-edit {
+        padding: 10px;
+    }
+
+    .profile-photo-edit .profile-pic {
+        width: 75px;
+        height: 75px;
+    }
+
+    .profile-photo-edit .name p:first-child {
+        font-size: 16px;
+        line-height: 20px;
+    }
+
+    .profile-photo-edit .name p:nth-child(2) span {
+        font-size: 15px
+    }
+
+    .edit-profile-box .edit-btn {
+        position: static;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .edit-profile-box {
+        padding: 15px;
+    }
+
+    .edit-profile-box table,
+    .edit-profile-box tr,
+    .edit-profile-box td {
+        display: block;
+    }
+
+    .edit-profile-box tbody {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .edit-profile-box tr {
+        width: 50%;
+    }
+
+    .edit-profile-box table td:nth-child(2) {
+        display: none;
+    }
+
+    .edit-profile-box table td {
+        padding: 5px;
+        word-break: break-word;
+    }
+
+    .edit-profile-box tr {
+        padding: 10px 0;
+    }
+
+    .filter-checkbox {
+        display: inline-flex;
+        width: 32%;
+    }
+
+    .filter-checkbox>label {
+        width: 100px;
+    }
+
+    .filter-checkbox.start-rating {
+        width: auto;
+    }
+
+    .filter-checkbox.start-rating label{
+        margin: 0;
+    }
+    .upload-body label{
+        margin-bottom: 5px;
+    }
+
 }
 
 @media screen and (max-width: 575px) {
     header .navbar-brand {
         width: 110px;
     }
+
     .login-wrap,
     .register-wrap,
-    .contact-wrap{
+    .contact-wrap {
         margin: 50px auto;
     }
-    .right-options a{
+
+    .right-options>* {
         padding: 0 5px;
+    }
+    
+    .sort.dropdown .dropdown-menu{
+        right: auto !important;
+        left: 0 !important;
+
     }
 }
