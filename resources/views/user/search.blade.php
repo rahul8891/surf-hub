@@ -10,7 +10,7 @@
 
             @include('layouts.user.left_sidebar')    
 
-            <div class="middle-content">
+            <div class="middle-content" id="search-data">
                 @include('layouts/user/content_menu')
 
                 @if (is_null($postsList[0]))
@@ -203,116 +203,13 @@
                         </div>
                     </div>
                 </div>
-
-                <!--                                <div class="news-feed">
-                                                    <div class="inner-news-feed">
-                                                        <div class="user-details">
-                                                            <div class="user-left">
-                                                                <img src="img/user-img.png" alt="USer">
-                                                                <div>
-                                                                    <p class="name"><span>John Ward ( Wardy )</span> Shared by Upender (Upen001)
-                                                                    </p>
-                                                                    <p class="address">Noosa Heads Main Beach , 03-01-2022</p>
-                                                                    <p class="time-ago">4 months ago</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="user-right">
-                                                                <img src="img/normal-user.png" alt="normal-user">
-                                                                <a href="#" class="follow-btn"><img src="img/follow-user.png">FOLLOW</a>
-                                                            </div>
-                                                        </div>
-                                                        <img src="img/feed-big-img.png" alt="Feed" class="w-100">
-                                                        <div class="user-bottom-options">
-                                                            <div>
-                                                                <div class="rating">
-                                                                    <img src="img/blue-star.png" alt="start" class="align-text-bottom">
-                                                                    <span>3/5</span>
-                                                                </div>
-                                                                <div class="highlight">Highlights</div>
-                                                            </div>
-                                                            <div class="right-options">
-                                                                <a href="#"><img src="img/small-logo.png" alt="Logo"></a>
-                                                                <a href="#"><img src="img/location.png" alt="Location"></a>
-                                                                <a href="#"><img src="img/expand.png" alt="Expand"></a>
-                                                                <a href="#"><img src="img/edit.png" alt="Edit"></a>
-                                                                <a href="#"><img src="img/warning.png" alt="Warning"></a>
-                                                                <a href="#"><img src="img/delete.png" alt="Delete"></a>
-                                                                <a href="#"><img src="img/tag.png" alt="Tag"></a>
-                                                                <a href="#"><img src="img/flag.png" alt="Flag"></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="comments-div">
-                                                        <a class="" data-bs-toggle="collapse" href="#collapseExample" role="button"
-                                                           aria-expanded="false" aria-controls="collapseExample">
-                                                            Say Something <img src="img/dropdwon.png" alt="dropdown" class="ms-1">
-                                                        </a>
-                                                        <div class="collapse" id="collapseExample">
-                                                            <form>
-                                                                <div class="comment-box">
-                                                                    <div class="form-group">
-                                                                        <input type="text" class="form-control ps-2 mb-0 h-100">
-                                                                    </div>
-                                                                    <button class="send-btn btn"><img src="img/send.png"></button>
-                                                                </div>
-                                                            </form>
-                                                            <div class="comment-row">
-                                                                <span class="comment-name">Upender Rawat : </span>
-                                                                Nice Photogrph
-                                                            </div>
-                                                            <div class="comment-row">
-                                                                <span class="comment-name">Upender Rawat : </span>
-                                                                Nice Photogrph
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="news-feed">
-                                                    <div class="inner-news-feed">
-                                                        <img src="img/feed-big-img-2.png" alt="Feed" class="w-100">
-                                                    </div>
-                                                </div>
-                                                <div class="news-feed">
-                                                    <div class="inner-news-feed">
-                                                        <div class="user-details">
-                                                            <div class="user-left">
-                                                                <img src="img/user-img.png" alt="USer">
-                                                                <div>
-                                                                    <p class="name"><span>John Ward ( Wardy )</span> Shared by Upender (Upen001)
-                                                                    </p>
-                                                                    <p class="address">Noosa Heads Main Beach , 03-01-2022</p>
-                                                                    <p class="time-ago">4 months ago</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="user-right">
-                                                                <img src="img/photographer-user.png" alt="photographer-user">
-                                                                <a href="#" class="follow-btn"><img src="img/follow-user.png">FOLLOW</a>
-                                                            </div>
-                                                        </div>
-                                                        <img src="img/feed-big-img.png" alt="Feed" class="w-100">
-                                                        <div class="user-bottom-options">
-                                                            <div>
-                                                                <div class="rating">
-                                                                    <img src="img/blue-star.png" alt="start" class="align-text-bottom">
-                                                                    <span>3/5</span>
-                                                                </div>
-                                                                <div class="highlight">Highlights</div>
-                                                            </div>
-                                                            <div class="right-options">
-                                                                <a href="#"><img src="img/small-logo.png" alt="Logo"></a>
-                                                                <a href="#"><img src="img/location.png" alt="Location"></a>
-                                                                <a href="#"><img src="img/expand.png" alt="Expand"></a>
-                                                                <a href="#"><img src="img/edit.png" alt="Edit"></a>
-                                                                <a href="#"><img src="img/warning.png" alt="Warning"></a>
-                                                                <a href="#"><img src="img/delete.png" alt="Delete"></a>
-                                                                <a href="#"><img src="img/tag.png" alt="Tag"></a>
-                                                                <a href="#"><img src="img/flag.png" alt="Flag"></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
                 @endforeach
                 @endif
+                
+                <div class="justify-content-center ajax-load" style="display:none;margin-left: 40%">
+                    <img src="/images/spiner4.gif" alt="loading" height="90px;" width="170px;">
+              </div>
+                
             </div>
 
             <div class="right-advertisement">
@@ -331,40 +228,65 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-                                    var page = 1;
-                                    $(window).scroll(function () {
-                                    if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-                                    page++;
-                                    loadMoreData(page);
-                                    }
-                                    });
-                                    function loadMoreData(page) {
-                                    var url = window.location.href;
-                                    if (url.indexOf("?") !== - 1) {
-                                    var url = window.location.href + '&page=' + page;
-                                    } else {
-                                    var url = window.location.href + '?page=' + page;
-                                    }
+	var page = 1;
 
-                                    $.ajax({
-                                    url: url,
-                                            type: "get",
-                                            async: false,
-                                            beforeSend: function () {
-                                            $('.ajax-load').show();
-                                            }
-                                    })
-                                            .done(function (data) {
-                                            if (data.html == "") {
-                                            $('.ajax-load').addClass('requests');
-                                            $('.ajax-load').html("No more records found");
-                                            return;
-                                            }
+    $(window).scroll(function() {
+        if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+            page++;
+            loadMoreData(page);
+        }
+    });
 
-                                            $('.ajax-load').removeClass('requests');
-                                            $('.ajax-load').hide();
-                                            $("#search-data").append(data.html);
-                                            });
-                                    }
+    function loadMoreData(page) {
+        var url = window.location.href;
+        if(url.indexOf("?") !== -1) {
+            var url = window.location.href + '&page=' + page;
+        }else {
+            var url = window.location.href + '?page=' + page;
+        }
+        
+        $.ajax({
+            url: url,
+            type: "get",
+            async: false,
+            beforeSend: function() {
+                $('.ajax-load').show();
+            }
+        })
+        .done(function(data) {
+            if(data.html == "") {
+                $('.ajax-load').addClass('requests');
+                $('.ajax-load').html("No more records found");
+                return;
+            }
+
+            $('.ajax-load').removeClass('requests');
+            $('.ajax-load').hide();
+//            $("#search-data").append(data.html);
+            $(data.html).insertBefore(".ajax-load");
+        });
+    }
+        
+        $(document).on('click', '.editBtnVideo', function() {
+            var id = $(this).data('id');
+            
+            $.ajax({
+                url: '/getPostData/' + id,
+                type: "get", 
+                async: false,
+                success: function(data) {
+                    // console.log(data.html);
+                    $("#edit_image_upload_main").html("");
+                    $("#edit_image_upload_main").append(data.html);
+                    $("#edit_image_upload_main").modal('show');                
+                }
+            });
+        });
+        
+        $('.pos-rel a').each(function(){
+           $(this).on('hover, mouseover, click', function() {
+                $(this).children('.userinfoModal').find('input[type="text"]').focus();
+            });
+        });
 </script>
 @endsection
