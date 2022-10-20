@@ -61,7 +61,7 @@
                                 <div class="d-inline-block info dropdown" title="Info">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
-                                        <img src="img/warning.png" alt="Info">
+                                        <img src="/img/warning.png" alt="Info">
                                     </button>
                                     <div class="dropdown-menu">
                                         <div class="row">
@@ -99,7 +99,7 @@
                                 <div class="d-inline-block tag dropdown" title="Tag">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
-                                        <img src="img/tag.png" alt="Tag">
+                                        <img src="/img/tag.png" alt="Tag">
                                     </button>
                                     <div class="dropdown-menu">
                                         @if (count($posts->tags) >= 1)
@@ -129,7 +129,7 @@
                                 <div class="d-inline-block report dropdown" title="Report">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
-                                        <img src="img/flag.png" alt="Report">
+                                        <img src="/img/flag.png" alt="Report">
                                     </button>
 
                                     <div class="dropdown-menu">

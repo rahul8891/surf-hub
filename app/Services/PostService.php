@@ -411,7 +411,12 @@ class PostService {
             $postArray->havingRaw('round(avg(ratings.rating)) = '. $params['rating']);
             // $postArray->where('avg(ratings.rating)', $params['rating']);
         }
-        
+        if (isset($params['beach']) && $params['beach']>0) {
+            $postArray->where('local_beach_id',$params['beach']);
+        }
+        if (isset($params['break']) && $params['break']>0) {
+            $postArray->where('local_break_id',$params['break']);
+        }
         if (isset($params['sort'])) {
             if($params['sort'] == "dateAsc"){
                 $postArray->orderBy('posts.created_at','ASC');

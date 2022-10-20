@@ -8,6 +8,11 @@
             </div>
             <div class="middle-content" id="post-data">
                 @include('layouts.user.content_menu')
+                @if (is_null($postsList[0]))
+                <div class="post alert text-center alert-dismissible py-5" role="alert">
+                    {{ ucWords('no matches found') }}
+                </div>
+                @endif
                 @if (!empty($postsList))
                 @foreach ($postsList as $key => $posts)
                 <div class="news-feed">
@@ -70,7 +75,7 @@
                                 <div class="d-inline-block info dropdown" title="Info">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
-                                        <img src="img/warning.png" alt="Info">
+                                        <img src="/img/warning.png" alt="Info">
                                     </button>
                                     <div class="dropdown-menu">
                                         <div class="row">
@@ -108,7 +113,7 @@
                                 <div class="d-inline-block tag dropdown" title="Tag">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
-                                        <img src="img/tag.png" alt="Tag">
+                                        <img src="/img/tag.png" alt="Tag">
                                     </button>
                                     <div class="dropdown-menu">
                                         @if (count($posts->tags) >= 1)
@@ -138,7 +143,7 @@
                                 <div class="d-inline-block report dropdown" title="Report">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
-                                        <img src="img/flag.png" alt="Report">
+                                        <img src="/img/flag.png" alt="Report">
                                     </button>
 
                                     <div class="dropdown-menu">
@@ -174,6 +179,32 @@
                                 </div>
                                 @endif
                             </div>
+                        </div>
+                    </div>
+                    <div class="comments-div">
+                        <a class="" data-bs-toggle="collapse" href="#collapseExample{{$posts->id}}" role="button"
+                           aria-expanded="false" aria-controls="collapseExample{{$posts->id}}">
+                            Say Something <img src="img/dropdwon.png" alt="dropdown" class="ms-1">
+                        </a>
+                        <div class="collapse" id="collapseExample{{$posts->id}}">
+                            <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
+                                @csrf
+                                <div class="comment-box">
+                                    <div class="form-group">
+                                        <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
+                                        <input type="hidden" name="parent_user_id" value="{{$posts->user_id}}">
+                                        <input type="text" name="comment" id="{{$posts->id}}" class="form-control ps-2 mb-0 h-100 commentOnPost">
+                                    </div>
+                                    <button type="submit" id="submitPost{{$posts->id}}" class="send-btn btn"><img src="img/send.png"></button>
+                                </div>
+                            </form>
+                            @foreach ($posts->comments as $comments)
+                            <div class="comment-row">
+                                <span class="comment-name">{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :
+                                </span> 
+                                {{$comments->value}}
+                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>

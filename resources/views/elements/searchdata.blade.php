@@ -5,7 +5,7 @@
                     <div class="inner-news-feed">
                         <div class="user-details">
                             <div class="user-left">
-                                <img src="img/user-img.png" alt="USer">
+                                <img src="/img/user-img.png" alt="USer">
                                 <div>
                                     <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span> Shared by Upender (Upen001)
                                     </p>
@@ -44,7 +44,7 @@
                             </div>
                             <div class="right-options">
                                 @if($posts->user_id != Auth::user()->id)
-                                <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="img/small-logo.png" alt="Logo"></a>
+                                <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/small-logo.png" alt="Logo"></a>
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                                     <img src={{asset("img/location.png")}} alt="Location"></a>
@@ -52,7 +52,7 @@
                                 <div class="d-inline-block info dropdown" title="Info">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
-                                        <img src="img/warning.png" alt="Info">
+                                        <img src="/img/warning.png" alt="Info">
                                     </button>
                                     <div class="dropdown-menu">
                                         <div class="row">
@@ -90,7 +90,7 @@
                                 <div class="d-inline-block tag dropdown" title="Tag">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
-                                        <img src="img/tag.png" alt="Tag">
+                                        <img src="/img/tag.png" alt="Tag">
                                     </button>
                                     <div class="dropdown-menu">
                                         @if (count($posts->tags) >= 1)
@@ -120,7 +120,7 @@
                                 <div class="d-inline-block report dropdown" title="Report">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
-                                        <img src="img/flag.png" alt="Report">
+                                        <img src="/img/flag.png" alt="Report">
                                     </button>
 
                                     <div class="dropdown-menu">

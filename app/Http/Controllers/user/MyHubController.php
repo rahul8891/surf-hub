@@ -90,7 +90,7 @@ class MyHubController extends Controller
         }
         
         if ($request->ajax()) {
-            $view = view('elements/myhubdata',compact('postsList','customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'))->render();
+            $view = view('elements/myhubdata',compact('postsList','customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name','beaches'))->render();
             return response()->json(['html' => $view]);
         }
         

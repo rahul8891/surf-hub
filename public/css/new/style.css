@@ -1201,7 +1201,7 @@ header .notification {
     display: flex;
 }
 .avg-rating {
-  margin-top: 15px;  
+  margin-top: 8px;  
 }
 @font-face {
     font-family: 'Glyphicons Halflings';
