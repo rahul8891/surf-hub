@@ -411,7 +411,7 @@ class PostService {
             $postArray->havingRaw('round(avg(ratings.rating)) = '. $params['rating']);
             // $postArray->where('avg(ratings.rating)', $params['rating']);
         }
-        if (isset($params['beach']) && $params['beach']>0) {
+        if (isset($params['beach']) && $params['beach']>0 && empty($params['break'])) {
             $postArray->where('local_beach_id',$params['beach']);
         }
         if (isset($params['break']) && $params['break']>0) {
