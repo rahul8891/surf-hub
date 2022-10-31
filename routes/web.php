@@ -63,6 +63,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     
     Route::get('/upload', [UserPostController::class, 'upload'])->name('upload');
 
+    Route::post('/upload-large-files', [UserPostController::class, 'uploadLargeFiles'])->name('files.upload.large');
+    
     Route::get('/user/change-password', [UserController::class, 'showChangePassword'])->name('showPassword');
 
     Route::get('/user/profile', [UserController::class, 'showProfile'])->name('profile');
@@ -107,6 +109,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/surferRequestList', [UserPostController::class, 'surferRequestList'])->name('surferRequestList');
     Route::get('/acceptRejectRequest/{id}/{type}', [UserPostController::class, 'acceptRejectRequest'])->name('acceptRejectRequest');
 
+    Route::post('/upload-media', [UserPostController::class, 'uploadMedia'])->name('uploadMedia');
+    
     
 });
 

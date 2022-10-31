@@ -1,5 +1,6 @@
 @extends('layouts.user.new_layout')
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
 <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
 
@@ -11,7 +12,7 @@
             @include('layouts.user.left_sidebar')    
 
             <div class="middle-content">
-            <form id="postForm" method="POST" name="postForm" action="{{ route('storeVideoImagePost') }}" class="upload-form" accept-charset="utf-8" enctype="multipart/form-data">
+            <form class="" id="my-great-dropzone" method="POST" name="postForm" action="{{ route('storeVideoImagePost') }}" class="upload-form" accept-charset="utf-8" enctype="multipart/form-data">
             @csrf
                 <div class="upload-wrap">
                     <div class="upload-header">
@@ -23,16 +24,17 @@
                         </select>
                     </div>
                     <div class="upload-body">
+                       <input type="hidden" name="post_id" id="postIds" >
                        <input type="hidden" name="user_id" value="{{auth()->user()->id ?? ''}}">
                         <div class="multiple-photo-upload">
                             <div class=" align-items-start d-flex flex-wrap gap-4">
-                                <div class="upload-photo-multiple">
+                                <div class="upload-photo-multiple" >
                                     <div>
                                         <img src="img/blue-upload-large.png">
                                         <span>Drag files to<br>upload</span>
                                     </div>
                                     <button class="blue-btn btn">CHOOSE FILE</button>
-                                    <input type="file" id="input_multifileSelect1" name="files[]">
+                                    <input type="files[]" id="input_multifileSelect2" name="file" multiple="multiple">
                                 </div>
                                 <div class="upload-file-name">
 <!--                                    <div class="name-row">
@@ -271,8 +273,95 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1.0/resumable.min.js"></script>
 <script type="text/javascript">
+    
+//    let browseFile = $('#input_multifileSelect2');
+//    let resumable = new Resumable({
+//        target: '{{ route('files.upload.large') }}',
+//        query:{_token:'{{ csrf_token() }}'} ,// CSRF token
+//        fileType: ['mp4','png','jpeg'],
+//        headers: {
+//            'Accept' : 'application/json'
+//        },
+//        testChunks: false,
+//        throttleProgressCallbacks: 1,
+//    });
+//    
+//    resumable.assignBrowse(browseFile[0]);
+//
+//    resumable.on('fileAdded', function (file) { // trigger when file picked
+////        showProgress();
+//        resumable.upload() // to actually start uploading.
+//    });
+//
+//    resumable.on('fileProgress', function (file) { // trigger when file progress update
+////        alert(resumable.files.length);
+////        let per = Math.floor(file.progress() * 100);
+////        updateProgress(per);
+//    });
+//
+//    resumable.on('fileSuccess', function (file, response) { // trigger when file upload complete
+////        response = JSON.parse(response)
+////        var s3Val = $('#test_name').val()
+////        $('#test_name').val(response.path +', '+ s3Val);
+//        alert('success');
+//        $('#videoPreview').attr('src', response.path);
+//        $('.card-footer').show();
+//    });
+//
+//    resumable.on('fileError', function (file, response) { // trigger when there is any error
+//        alert(response)
+//        alert('file uploading error.')
+//    });
+//
+//
+//    let progress = $('.progress');
+//    function showProgress() {
+//        progress.find('.progress-bar').css('width', '0%');
+//        progress.find('.progress-bar').html('0%');
+//        progress.find('.progress-bar').removeClass('bg-success');
+//        progress.show();
+//    }
+//
+//    function updateProgress(value) {
+//        progress.find('.progress-bar').css('width', `${value}%`)
+//        progress.find('.progress-bar').html(`${value}%`)
+//    }
+//
+//    function hideProgress() {
+//        progress.hide();
+//    }
+    
+    
+    
+    Dropzone.options.myGreatDropzone =
+         {
+            maxFilesize: 500,
+            renameFile: function(file) {
+                var dt = new Date();
+                var time = dt.getTime();
+               return time+file.name;
+            },
+//            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            addRemoveLinks: true,
+            timeout: 0,
+            success: function(file, response) 
+            {
+                var obj = JSON.parse(response);
+                const arr = $('#postIds').val();
+                if(arr) {
+                 $('#postIds').val(arr+','+obj.data);   
+                } else {
+                 $('#postIds').val(obj.data);   
+                }
+            },
+            error: function(file, response)
+            {
+               alert(response);
+            }
+};
+    
     var page = 1;
 
     $(window).scroll(function () {
