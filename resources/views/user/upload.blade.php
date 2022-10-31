@@ -34,7 +34,7 @@
                                         <span>Drag files to<br>upload</span>
                                     </div>
                                     <button class="blue-btn btn">CHOOSE FILE</button>
-                                    <input type="files[]" id="input_multifileSelect2" name="file" multiple="multiple">
+                                    <input type="file" id="input_multifileSelect2" name="files[]" multiple="multiple">
                                 </div>
                                 <div class="upload-file-name">
 <!--                                    <div class="name-row">
@@ -273,7 +273,7 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1.0/resumable.min.js"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1.0/resumable.min.js"></script>-->
 <script type="text/javascript">
     
 //    let browseFile = $('#input_multifileSelect2');
