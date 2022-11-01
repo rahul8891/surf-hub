@@ -13,6 +13,8 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/new/media.css') }}">
 	<script src="{{ asset('js/new/jquery-3.5.1.min.js') }}"></script>
 	<script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
+        <link rel="stylesheet" href="{{ asset("/css/new/croppie.css") }}" />
+        <link rel="stylesheet" href="{{ asset("/css/new/star-rating.min.css") }}" />
 </head>
 
 <body class="login-body">
@@ -56,18 +58,21 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5JiYXogWVNPfX_L4uA0oWb-qiNSfKfYk"
   type="text/javascript"></script>
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
+    
     <script src="{{ asset('/js/bootstrap.js') }}"></script>
     <script src="{{ asset("js/jquery.validate.min.js") }}"></script>
     <script src="{{ asset("js/custom.js") }}"></script>
     @if (Auth::user())
     <script src="{{ asset("js/post.js")}}"></script>
     @endif
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
-    
+    <script src="{{ asset("js/new/star-rating.min.js")}}"></script>    
     <script>
 
         $('.rating').rating({
+            showClear:false, 
+            showCaption:false
+        });
+        $('.rating-filter').rating({
             showClear:false, 
             showCaption:false
         });

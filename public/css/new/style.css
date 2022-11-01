@@ -130,12 +130,16 @@ footer .navbar-nav a+a {
 
 header .side-navbar .navbar-nav a+a:before,
 footer .navbar-nav a+a:before,
-.right-options a+a:before {
+.right-options>*+*:before {
     content: "|";
     position: absolute;
     left: -4px;
     top: 50%;
     transform: translateY(-50%);
+}
+
+.right-options .dropdown-toggle::after {
+    display: none;
 }
 
 header .side-navbar .dropdown {
@@ -184,16 +188,54 @@ header .side-navbar .dropdown .dropdown-menu {
     top: 48px;
 }
 
-header .side-navbar .dropdown .dropdown-menu li+li,
-.sort.dropdown .dropdown-menu li+li {
+.dropdown-menu li+li {
     border-top: 1px solid #C0BCBC;
 }
 
-header .side-navbar .dropdown .dropdown-menu .dropdown-item,
-.sort.dropdown .dropdown-menu .dropdown-item {
+.dropdown-menu .dropdown-item,
+.dropdown-menu {
     font-weight: 400;
     font-size: 15px;
     line-height: 45px;
+    padding: 0 20px;
+}
+
+.info .dropdown-menu,
+.report .dropdown-menu,
+.tag .dropdown-menu {
+    width: 320px;
+    padding: 10px 20px;
+}
+
+.info .dropdown-menu {
+    line-height: 30px;
+}
+
+.report .dropdown-menu {
+    line-height: initial;
+
+}
+
+.username-tag .initial-name {
+    width: 35px;
+    height: 35px;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 35px;
+    background-color: #2861f7;
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.username-tag {
+    margin-bottom: 10px;
+}
+
+.right-options a.dropdown-item:last-child {
     padding: 0 20px;
 }
 
@@ -590,7 +632,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .rating,
 .highlight {
     background: #FFFAFA;
-    border: 1px solid #C0BCBC;
+    /*border: 1px solid #C0BCBC;*/
     padding: 0 12px;
     font-weight: 600;
     font-size: 14px;
@@ -598,7 +640,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     height: 30px;
     line-height: 30px;
 }
-
 .highlight {
     margin-left: 20px;
 }
@@ -607,7 +648,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     line-height: 28px;
 }
 
-.right-options a {
+.right-options>* {
     position: relative;
     color: #616161;
     padding: 0 15px;
@@ -1149,4 +1190,46 @@ header .notification {
 
 .w-150 {
     width: 150px;
+}
+.clicked{
+    background: #325CFD !important;
+    color: #fff !important;
+    border: #fff !important;
+    
+}
+.rating-flex {
+    display: flex;
+}
+.avg-rating {
+  margin-top: 8px;  
+}
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('../../fonts/glyphicons-halflings-regular.eot');
+    src: url('../../new/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+        url('../../fonts/glyphicons-halflings-regular.woff2') format('woff2'),
+        url('../../fonts/glyphicons-halflings-regular.woff') format('woff'),
+        url('../../fonts/glyphicons-halflings-regular.ttf') format('truetype'),
+        url('../../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.glyphicon-star:before {
+    content: "\e006";
+}
+
+.glyphicon-star-empty:before {
+    content: "\e007";
+}
+.glyphicon-star-empty:before {
+    content: "\e007";
 }
