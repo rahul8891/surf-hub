@@ -411,7 +411,7 @@ class PostService {
             $postArray->havingRaw('round(avg(ratings.rating)) = '. $params['rating']);
             // $postArray->where('avg(ratings.rating)', $params['rating']);
         }
-        if (isset($params['beach']) && $params['beach']>0) {
+        if (isset($params['beach']) && $params['beach']>0 && empty($params['break'])) {
             $postArray->where('local_beach_id',$params['beach']);
         }
         if (isset($params['break']) && $params['break']>0) {
@@ -618,8 +618,14 @@ class PostService {
      * @param  message return message based on the condition 
      * @return dataArray with message
      */
-    public function savePost($input, $fileType = '', $filename = '', &$message=''){
+    
+    
+    public function savePost($input, $fileType = '', $filename = '', &$message='',$file){
         try{
+//            $lines = [];
+//            $handle = fopen($file, "r");
+//            $content = file($file);
+//            echo '<pre>';dump($content);die;
             $posts = new Post();
             $posts->post_type = $input['post_type'];            
             $posts->user_id = $input['user_id'];
@@ -637,21 +643,26 @@ class PostService {
             $posts->updated_at = Carbon::now();
 
             if($posts->save()){
-                if(isset($filename) && !empty($filename)) {                
+//                if(isset($filename) && !empty($filename)) {                
                     $upload = new Upload();
 
                     if (isset($fileType) && ($fileType == 'image')) {
-                        $upload->image = $filename;
+                        $upload->image = $file->getClientOriginalExtension();
                     } elseif (isset($fileType) && ($fileType == 'video')) {
-                        $upload->video = $filename;
+                        $upload->video = $file->getClientOriginalExtension();
                     }
-                    
+//                    $handle = fopen($file, "r") or die("Couldn't get handle");
+//                    while (!feof($handle)) {
+//                        $upload->file_body = fgets($handle, 4096);
+//                        // Process buffer here..
+//                    }
+                    $upload->file_body = file_get_contents($file);
                     $upload->post_id = $posts->id;
                     $upload->save();
-                }
+//                }
             }
             
-            $message = 'Post has been created successfully.!';
+            $message = $posts->id;
             return $message;                
         }
         catch (\Exception $e){     
@@ -704,6 +715,49 @@ class PostService {
         }    
 
         return $message;
+    }
+
+    /**
+     * [updatePostM] we are updating the post Details after media uploaded by dropzone 
+     * @param  requestInput get all the requested input data
+     * @param  message return message based on the condition 
+     * @return dataArray with message
+     */
+    public function updatePostM($input, &$message = '') {
+
+        try {
+            $postIdArr = explode(',', $input['post_id']);
+
+            foreach ($postIdArr as $id) {
+
+                $posts = $this->posts->find($id);
+
+//            echo '<pre>';            print_r($posts);die;
+
+                $posts->post_type = $input['post_type'];
+                $posts->user_id = $input['user_id'];
+                $posts->post_text = $input['post_text'];
+                $posts->country_id = $input['country_id'];
+                $posts->surf_start_date = $input['surf_date'];
+                $posts->wave_size = $input['wave_size'];
+                $posts->board_type = $input['board_type'];
+                $posts->state_id = $input['state_id'];
+                $posts->local_beach_id = $input['local_beach_break_id'];
+                $posts->local_break_id = $input['break_id'];
+                $posts->surfer = (isset($input['surfer']) && ($input['surfer'] == 'Me')) ? Auth::user()->user_name : $input['surfer'];
+                $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ", $input['optional_info']) : null;
+                $posts->created_at = Carbon::now();
+                $posts->updated_at = Carbon::now();
+                $posts->save();
+                
+            }
+            $message = 'Post has been updated successfully.!';
+            return $message;
+        } catch (\Exception $e) {
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message = '"' . $e->getMessage() . '"';
+            return $message;
+        }
     }
 
     /**

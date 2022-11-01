@@ -31,6 +31,8 @@ use FFMpeg;
 use FFMpeg\Format\Video\X264;
 use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Facades\Storage;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class UserPostController extends Controller
 {
@@ -290,11 +292,11 @@ class UserPostController extends Controller
                             // $destinationPath = public_path('storage/fullVideos/');
                         }
 
-                        $path = Storage::disk('s3')->put($fileFolder, $value);
-                        $filePath = Storage::disk('s3')->url($path);
+//                        $path = Storage::disk('s3')->put($fileFolder, $value);
+//                        $filePath = Storage::disk('s3')->url($path);
 
-                        $fileArray = explode("/", $filePath);
-                        $filename = end($fileArray);
+//                        $fileArray = explode("/", $filePath);
+//                        $filename = end($fileArray);
                         
                         // $timeDate = strtotime(Carbon::now()->toDateTimeString());
                         // $filenameWithExt= $value->getClientOriginalName();
@@ -307,10 +309,10 @@ class UserPostController extends Controller
                         // $fileName = $timeDate.'.'.$extension;
                         // $value->move($destinationPath, $fileName);
                         
-                        $result = $this->posts->savePost($data, $fileType[0], $filename, $message);
+                        $result = $this->posts->savePost($data, $fileType[0], '', $message,$value);
                     }
                 } else {
-                    $result = $this->posts->savePost($data, '', '', $message);
+                    $result = $this->posts->savePost($data, '', '', $message,'');
                 }
                 
                 if($result){  
@@ -319,6 +321,143 @@ class UserPostController extends Controller
                     return Redirect()->route('myhub')->withErrors($message);
                 }
             }
+        }catch (\Exception $e) {
+            throw ValidationException::withMessages([$e->getMessage()]);             
+        }
+    }
+    public function uploadLargeFiles(Request $request) {
+        $receiver = new FileReceiver('file', $request, HandlerFactory::classFromRequest($request));
+//        print_r($request);die;
+
+        if (!$receiver->isUploaded()) {
+            // file not uploaded
+        }
+
+        $fileReceived = $receiver->receive(); // receive file
+        if ($fileReceived->isFinished()) { // file uploading is complete / all chunks are uploaded
+            $file = $fileReceived->getFile(); // get file
+            $extension = $file->getClientOriginalExtension();
+            $fileName = str_replace('.' . $extension, '', $file->getClientOriginalName()); //file name without extenstion
+            $fileName .= '_' . md5(time()) . '.' . $extension; // a unique file name
+
+            $disk = Storage::disk(config('filesystems.default'));
+            $x = $disk->putFileAs('videos', $file, $fileName);
+            $p = storage_path('app/' . $x);
+//            $source = fopen($p, 'rb');
+
+//            $s3Client = new S3Client([
+//                'version' => 'latest',
+//                'region' => 'ap-southeast-2',
+////            'endpoint' => 'https://d1d39qm6rlhacy.cloudfront.net',
+////            's3BucketEndpoint' => true,    
+//            ]);
+//            $c = 1;
+//            $key = 'myvid' . $c . '.mp4';
+//            $uploader = new MultipartUploader($s3Client, $p, [
+//                'bucket' => 'surfhub',
+//                'key' => $key,
+//            ]);
+//
+//            try {
+//                $result = $uploader->upload();
+////            echo "Upload complete: {$result['ObjectURL']}\n";
+//            } catch (MultipartUploadException $e) {
+//                echo $e->getMessage() . "\n";
+//            }
+//            $c++;
+//            $path = Storage::disk('s3')->getDriver()->putStream('videos/test2.mp4', $file);
+//            $path2 = Storage::disk('s3')->put('video', $file);
+//            $upload = new Upload();
+//            $upload->post_id = 1;
+//            $upload->video = $path2;
+//            $upload->save();
+//            $url = Storage::disk('s3')->url($path2);
+//            $source = fopen($p, 'rb');
+//            $s3 = new S3Client([
+//                    'version' => 'latest',
+//                    'region'  => 'ap-southeast-2',
+////                    'endpoint'  => 'https://d1d39qm6rlhacy.cloudfront.net/video/'
+//                ]);
+////                $path = Storage::disk('s3');
+////            foreach($file as $chunck) {
+//                $uploader = new MultipartUploader($s3, $source, [
+//                    'bucket' => env('AWS_BUCKET'),
+//                    'key'    => 'testvideo2.mp4',
+//                ]);
+//    
+//                try {
+//                    $result = $uploader->upload();
+//                   
+//                } catch (MultipartUploadException $e) {
+//                    return $e->getMessage();
+//                }
+//            }
+//            $path = $disk->putFileAs('videos', $file, $fileName);
+//            $path = Storage::disk('s3')->put('video', $file);
+//            echo '<pre>';print_r($result);die;
+            // delete chunked file
+//            unlink($file->getPathname());
+            return ;
+        }
+
+        // otherwise return percentage informatoin
+        $handler = $fileReceived->handler();
+        return [
+            'done' => $handler->getPercentageDone(),
+            'status' => true
+        ];
+    }
+    
+    public function uploadMedia(Request $request)
+    {
+        try{
+            $data = $request->all();   
+            if(!empty($data['other_surfer'])){
+                $data['surfer'] = $data['other_surfer'];
+            } elseif (isset($data['surfer']) && ($data['surfer'] == 'Me')) {
+                $data['surfer'] = Auth::user()->user_name;
+            } 
+            
+            $postArray = (isset($data['file']) && !empty($data['file']))?$data['file']:[];
+                if(!empty($postArray)) {
+                    
+    
+                    $fileData = [];
+//                    foreach ($postArray as $value) { 
+                        $filePath = "";
+                        
+                        $fileType = explode('/', $postArray->getMimeType());
+//                        echo "<pre>";print_r($fileType);die;
+                        if($fileType[0] == 'image'){
+                            $fileFolder = 'images/' . $request->user_id;
+                            // $destinationPath = public_path('storage/images/');
+                        } elseif ($fileType[0] == 'video') {
+                            $fileFolder = 'videos/' . $request->user_id;
+                            // $destinationPath = public_path('storage/fullVideos/');
+                        }
+
+                        $path = Storage::disk('s3')->put($fileFolder, $postArray);
+                        $filePath = Storage::disk('s3')->url($path);
+
+                        $fileArray = explode("/", $filePath);
+                        $filename = end($fileArray);
+                        $result = $this->posts->savePost($data, $fileType[0], $filename, $message);
+                        echo json_encode(array('status' => 'success', 'message' => 'true', 'data' => $result));die;
+//                    }
+                }  else {
+                   
+                    if($data['post_id'] && !empty($data['post_id'])) {
+                        $result = $this->posts->updatePostM($data, $message);
+                    } else {
+                        $result = $this->posts->savePost($data, '', '', $message);
+                    }
+                }
+                if($result){  
+                    return Redirect()->route('myhub')->withSuccess($message);
+                }else{
+                    return Redirect()->route('myhub')->withErrors($message);
+                }
+            
         }catch (\Exception $e) {
             throw ValidationException::withMessages([$e->getMessage()]);             
         }
