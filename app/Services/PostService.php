@@ -620,7 +620,7 @@ class PostService {
      */
     
     
-    public function savePost($input, $fileType = '', $filename = '', &$message='',$file){
+    public function savePost($input, $fileType = '', $filename = '', &$message=''){
         try{
 //            $lines = [];
 //            $handle = fopen($file, "r");
@@ -643,26 +643,26 @@ class PostService {
             $posts->updated_at = Carbon::now();
 
             if($posts->save()){
-//                if(isset($filename) && !empty($filename)) {                
+                if(isset($filename) && !empty($filename)) {                
                     $upload = new Upload();
 
                     if (isset($fileType) && ($fileType == 'image')) {
-                        $upload->image = $file->getClientOriginalExtension();
+                        $upload->image = $filename;
                     } elseif (isset($fileType) && ($fileType == 'video')) {
-                        $upload->video = $file->getClientOriginalExtension();
+                        $upload->video = $filename;
                     }
 //                    $handle = fopen($file, "r") or die("Couldn't get handle");
 //                    while (!feof($handle)) {
 //                        $upload->file_body = fgets($handle, 4096);
 //                        // Process buffer here..
 //                    }
-                    $upload->file_body = file_get_contents($file);
+//                    $upload->file_body = file_get_contents($file);
                     $upload->post_id = $posts->id;
                     $upload->save();
-//                }
+                }
             }
             
-            $message = $posts->id;
+            $message = 'Post has been updated successfully.!';
             return $message;                
         }
         catch (\Exception $e){     
