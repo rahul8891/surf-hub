@@ -280,7 +280,6 @@ class UserPostController extends Controller
                 if(!empty($postArray)) {
                     $fileData = [];
                     foreach ($postArray as $value) { 
-                        $filePath = "";
                         
                         $fileType = explode('/', $value->getMimeType());
                         
@@ -292,11 +291,11 @@ class UserPostController extends Controller
                             // $destinationPath = public_path('storage/fullVideos/');
                         }
 
-//                        $path = Storage::disk('s3')->put($fileFolder, $value);
-//                        $filePath = Storage::disk('s3')->url($path);
+                        $path = Storage::disk('s3')->put($fileFolder, $value);
+                        $filePath = Storage::disk('s3')->url($path);
 
-//                        $fileArray = explode("/", $filePath);
-//                        $filename = end($fileArray);
+                        $fileArray = explode("/", $filePath);
+                        $filename = end($fileArray);
                         
                         // $timeDate = strtotime(Carbon::now()->toDateTimeString());
                         // $filenameWithExt= $value->getClientOriginalName();
@@ -309,10 +308,10 @@ class UserPostController extends Controller
                         // $fileName = $timeDate.'.'.$extension;
                         // $value->move($destinationPath, $fileName);
                         
-                        $result = $this->posts->savePost($data, $fileType[0], '', $message,$value);
+                        $result = $this->posts->savePost($data, $fileType[0], $filename, $message);
                     }
                 } else {
-                    $result = $this->posts->savePost($data, '', '', $message,'');
+                    $result = $this->posts->savePost($data, '', '', $message);
                 }
                 
                 if($result){  
@@ -331,8 +330,8 @@ class UserPostController extends Controller
 
         if (!$receiver->isUploaded()) {
             // file not uploaded
+            return ;
         }
-
         $fileReceived = $receiver->receive(); // receive file
         if ($fileReceived->isFinished()) { // file uploading is complete / all chunks are uploaded
             $file = $fileReceived->getFile(); // get file

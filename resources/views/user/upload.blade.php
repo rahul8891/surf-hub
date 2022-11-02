@@ -273,7 +273,7 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!--<script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1.0/resumable.min.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1.0/resumable.min.js"></script>
 <script type="text/javascript">
     
 //    let browseFile = $('#input_multifileSelect2');
@@ -284,7 +284,11 @@
 //        headers: {
 //            'Accept' : 'application/json'
 //        },
-//        testChunks: false,
+//        chunkSize: (15 * 1024 * 1024),
+//        forceChunkSize: true,
+//        method: "POST",
+//        simultaneousUploads: 1,
+////        testChunks: false,
 //        throttleProgressCallbacks: 1,
 //    });
 //    
@@ -312,7 +316,6 @@
 //
 //    resumable.on('fileError', function (file, response) { // trigger when there is any error
 //        alert(response)
-//        alert('file uploading error.')
 //    });
 //
 //
