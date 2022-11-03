@@ -22,7 +22,7 @@
             <span>Filter</span>
         </button>
         <div class="dropdown-menu dropdownmenuname">
-            @if(str_contains(Request::path(),'search'))
+            @if(str_contains(Request::path(),'search') || str_contains(Request::path(),''))
             <form class="filterWrap" action="{{route('searchPosts')}}" aria-labelledby="dropdownMenuButton2" name="searchFilter">
                 @endif
                 

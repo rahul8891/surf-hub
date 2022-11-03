@@ -70,8 +70,8 @@
                                 <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
-                                    <img src={{asset("img/location.png")}} alt="Location"></a>
-                                <a onclick="openFullscreen({{$posts->id}});"><img src={{asset("img/expand.png")}} alt="Expand"></a>
+                                    <img src={{asset("/img/location.png")}} alt="Location"></a>
+                                <a onclick="openFullscreen({{$posts->id}});"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
                                 <div class="d-inline-block info dropdown" title="Info">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -184,7 +184,7 @@
                     <div class="comments-div">
                         <a class="" data-bs-toggle="collapse" href="#collapseExample{{$posts->id}}" role="button"
                            aria-expanded="false" aria-controls="collapseExample{{$posts->id}}">
-                            Say Something <img src="img/dropdwon.png" alt="dropdown" class="ms-1">
+                            Say Something <img src="/img/dropdwon.png" alt="dropdown" class="ms-1">
                         </a>
                         <div class="collapse" id="collapseExample{{$posts->id}}">
                             <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
@@ -195,7 +195,7 @@
                                         <input type="hidden" name="parent_user_id" value="{{$posts->user_id}}">
                                         <input type="text" name="comment" id="{{$posts->id}}" class="form-control ps-2 mb-0 h-100 commentOnPost">
                                     </div>
-                                    <button type="submit" id="submitPost{{$posts->id}}" class="send-btn btn"><img src="img/send.png"></button>
+                                    <button type="submit" id="submitPost{{$posts->id}}" class="send-btn btn"><img src="/img/send.png"></button>
                                 </div>
                             </form>
                             @foreach ($posts->comments as $comments)
