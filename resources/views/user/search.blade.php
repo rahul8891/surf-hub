@@ -7,9 +7,14 @@
 
     <div class="container">
         <div class="home-row">
-
+            @if (Auth::user())
             @include('layouts.user.left_sidebar')    
-
+            @else
+            <div class="left-advertisement">
+                        <img src="img/new/advertisement1.png" alt="advertisement">
+                        <img src="img/new/advertisement2.png" alt="advertisement">
+                </div>
+            @endif
             <div class="middle-content" id="search-data">
                 @include('layouts/user/content_menu')
 
@@ -61,7 +66,7 @@
 
                             </div>
                             <div class="right-options">
-                                @if($posts->user_id != Auth::user()->id)
+                                @if(Auth::user() && $posts->user_id != Auth::user()->id)
                                 <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/small-logo.png" alt="Logo"></a>
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
@@ -134,7 +139,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if($posts->user_id != Auth::user()->id)
+                                @if(Auth::user() && $posts->user_id != Auth::user()->id)
                                 <div class="d-inline-block report dropdown" title="Report">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -176,6 +181,7 @@
                             </div>
                         </div>
                     </div>
+                    @if(Auth::user())
                     <div class="comments-div">
                         <a class="" data-bs-toggle="collapse" href="#collapseExample{{$posts->id}}" role="button"
                            aria-expanded="false" aria-controls="collapseExample{{$posts->id}}">
@@ -202,6 +208,7 @@
                             @endforeach
                         </div>
                     </div>
+                    @endif
                 </div>
                 @endforeach
                 @endif
