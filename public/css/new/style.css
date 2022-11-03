@@ -1233,3 +1233,14 @@ header .notification {
 .glyphicon-star-empty:before {
     content: "\e007";
 }
+
+.newsFeedImgVideo img,.newsFeedImgVideo video {
+    height: 325px;
+    /*width: 100%;*/
+    object-fit: cover;
+}
+
+.newsFeedImgVideo {
+    background: #000;
+    text-align: center; 
+}
