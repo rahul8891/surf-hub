@@ -7,11 +7,11 @@
         </div>
         <div class="tag">
             <img src="/img/new/tag-white.png" alt="Tagged">
-            <a href="{{ url('myhub') }}"><span>Tagged</span></a>
+            <a href="{{ url('/user/myhub') }}"><span>Tagged</span></a>
         </div>
         <div class="saved">
             <img src="/img/new/save-white.png" alt="Saved">
-            <a href="{{ url('myhub') }}"><span>Saved</span></a>
+            <a href="{{ url('/user/myhub') }}"><span>Saved</span></a>
         </div>
         <div class="Reel">
             <img src="/img/new/reel-white.png" alt="reel">
