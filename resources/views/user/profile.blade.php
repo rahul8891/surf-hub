@@ -1,380 +1,351 @@
-@extends('layouts.user.user')
+@extends('layouts.user.new_layout')
 @section('content')
-@include('layouts/user/user_feed_menu')
-<!-- <div class="feedHubNav ">
+<section class="home-section">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-9">
-                <ul class="mb-0 pl-0">
-                    <li class="hover-no">
-                        <a href="javascript:void(0);">My Profile</a>
-                    </li>
-                </ul>
+        <div class="home-row">
+            <div class="my-details-div">
+                @include('layouts.user.left_sidebar')
             </div>
-        </div>
-    </div>
-</div> -->
-<section class="loginWrap changePswd registrationWrap">
-    <div class="innerWrap">
-        <div class="container">
-                        <h2 style="color: #FFFFFF;">My Profile</h2>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="formWrap">
-                        <div class="profileImgDetail">
-                            <!-- <div class="imgWrap">
-                                @if($user->profile_photo_path)
-                                <img src="{{ asset('storage/'.$user->profile_photo_path) }}" class="img-fluid image"
-                                    alt="" id="category-img-tag">
+            <div class="middle-content" id="post-data">
+                @include('layouts.user.content_menu')
+
+                <div class="profile-photo-edit">
+							<div class="profile-pic">
+								<img src="img/profile-pic.png" alt="profile-pic">
+							</div>
+							<div class="name">
+								<p>{{__(ucwords($user->user_profiles->first_name .' '. $user->user_profiles->last_name))}}</p>
+								<p class="mb-0">Surfhub <span class="blue-txt">$2540</span> Earn</p>
+							</div>
+						</div>
+						<div class="edit-profile-box">
+							<a href="{{ url('user/edit-profile') }}" class="btn edit-btn"><img src="/img/new/edit.png" alt="edit">EDIT</a>
+							<table>
+								<tbody>
+									<tr>
+										<td>User Name</td>
+										<td>:</td>
+										<td>{{ __(ucwords($user->user_name)) }}</td>
+									</tr>
+									<tr>
+										<td>Email</td>
+										<td>:</td>
+										<td>{{ $user->email }}</td>
+									</tr>
+									<tr>
+										<td>First Name</td>
+										<td>:</td>
+										<td>{{ __(ucwords($user->user_profiles->first_name)) }}</td>
+									</tr>
+									<tr>
+										<td>Last Name</td>
+										<td>:</td>
+										<td>{{ __(ucwords($user->user_profiles->last_name)) }}</td>
+									</tr>
+									<tr>
+										<td>Country</td>
+										<td>:</td>
+										<td>{{ $countries[$user->user_profiles->country_id]->name }}</td>
+									</tr>
+									<tr>
+										<td>Phone</td>
+										<td>:</td>
+										<td>{{ $user->user_profiles->icc }} {{ $user->user_profiles->phone }}</td>
+									</tr>
+									<tr>
+										<td>Preferred Language</td>
+										<td>:</td>
+										<td>{{ $language[$user->user_profiles->language] }}</td>
+									</tr>
+									<tr>
+										<td>Account Type</td>
+										<td>:</td>
+										<td>{{ $accountType[$user->account_type] }}</td>
+									</tr>
+									<tr>
+										<td>Paypal </td>
+										<td>:</td>
+										<td>abc@gmail.com</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+                @if (is_null($postsList))
+                <div class="post alert text-center alert-dismissible py-5" role="alert">
+                    {{ ucWords('no matches found') }}
+                </div>
+                @endif
+                @if (!empty($postsList))
+                @foreach ($postsList as $key => $posts)
+                <div class="news-feed">
+
+                    <div class="inner-news-feed">
+                        <div class="user-details">
+                            <div class="user-left">
+                                @if(file_exists(asset('storage/'.$posts->user->profile_photo_path)))
+                                <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
                                 @else
-                                <img src="{{ asset("/img/profile1.jpg")}}" class="img-fluid image" alt=""
-                                    id="category-img-tag">
+                                <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
-                            </div> -->
-                            <div class="imgWrap upload-btn-wrapper ">
-                                @if($user->profile_photo_path)
-                                <img src="{{ asset('storage/'.$user->profile_photo_path) }}" class="img-fluid image"
-                                    alt="" id="category-img-tag">
-                                @else
-                                <img src="{{ asset("/img/profile1.jpg")}}" class="img-fluid image" alt=""
-                                    id="category-img-tag">
-                                @endif
-                                <input type="file" accept=".png, .jpg, .jpeg" id="exampleInputProfileFile"
-                                    name="profile_photo_name" />
-                                <input type="hidden" accept=".png, .jpg, .jpeg" id="imagebase64"
-                                    name="profile_photo_blob" />
+                                <div>                                                            
+                                    <p class="name"><span>{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span> </p>
+                                    <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
+                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
+                                </div>
+                            </div>
+                            @if($posts->user_id != Auth::user()->id)
+                            <div class="user-right"> 
+                                <img src="/img/new/normal-user.png" alt="normal-user">
+
+                                <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
+                                    <img src="/img/new/follow-user.png"> FOLLOW
+                                </button>
+
 
                             </div>
-                            <div class="btnWrap">
-                                <h3>{{__(ucwords($user->user_profiles->first_name .' '. $user->user_profiles->last_name))}}
-                                </h3>
-                                <button id="myButton">Edit</button>
+                            @endif
+                        </div>
+                        @if(!empty($posts->upload->image))
+                        <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="Feed" class="w-100" id="myImage{{$posts->id}}">
+                        @elseif(!empty($posts->upload->video))
+                        @if (!File::exists($posts->upload->video))
+                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+                        </video>
+                        @else
+                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+                        </video>
+                        @endif
+                        @endif
+                        <div class="user-bottom-options">
+                            <div class="rating-flex">
+                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
+                                <span class="avg-rating">{{ round(floatval($posts->averageRating)) }} (<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span>)</span>
+
+                            </div>
+                            <div class="right-options">
+                                @if(Auth::user()->id != $posts->user_id)
+                                <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/new/save.png" alt="Save"></a>
+                                @endif
+                                @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'])
+                                <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
+                                @endif
+                                <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
+                                    <img src={{asset("img/location.png")}} alt="Location"></a>
+                                <a onclick="openFullscreen({{$posts->id}});"><img src={{asset("img/expand.png")}} alt="Expand"></a>
+                                <div class="d-inline-block info dropdown" title="Info">
+                                    <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <img src="/img/warning.png" alt="Info">
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="row">
+                                            <div class="col-5">Date</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">{{date('d-m-Y',strtotime($posts->surf_start_date))}}</div>
+                                            <div class="col-5">Surfer</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">{{$posts->surfer}}</div>
+                                            <div class="col-5">Posted By</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">{{ucfirst($posts->user->user_name)}}</div>
+                                            <div class="col-5">Beach/Break</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">{{$posts->beach_breaks->beach_name}}/{{$posts->beach_breaks->break_name}}</div>
+                                            <div class="col-5">Country</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">{{$posts->countries->name}}</div>
+                                            <div class="col-5">State</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">{{$posts->states->name??""}}</div>
+                                            <div class="col-5">Wave Size</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">@foreach($customArray['wave_size'] as $key => $value)
+                                                @if($key == $posts->wave_size)
+                                                {{$value}}
+                                                @endif
+                                                @endforeach</div>
+                                            <div class="col-5">Board Type</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">{{$posts->board_type}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-inline-block tag dropdown" title="Tag">
+                                    <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <img src="/img/tag.png" alt="Tag">
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        @if (count($posts->tags) >= 1)
+                                        <div class="username-tag">
+                                            @foreach ($posts->tags as $tags)
+                                            <div class="">
+                                                @if($tags->user->profile_photo_path)
+                                                <img src="{{ asset('storage/'.$tags->user->profile_photo_path) }}" class="profileImg" alt="">
+                                                @else
+                                                <span class="initial-name">{{ucwords(substr($tags->user->user_profiles->first_name,0,1))}}{{ucwords(substr($tags->user->user_profiles->last_name,0,1))}}</span>
+                                                @endif
+                                                <span>{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
+                                            </div>
+                                            @endforeach 
+                                        </div>
+                                        @endif
+                                        <div>
+                                            <input type="text" autofocus name="tag_user"
+                                                   placeholder="@ Search user" class="form-control ps-2 tag_user" required data-post_id="{{$posts->id}}">
+                                            <input type="hidden" value="{{ old('user_id')}}" name="user_id"
+                                                   id="user_id" class="form-control user_id">
+                                            <div class="auto-search tagSearch" id="tag_user_list{{$posts->id}}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if(Auth::user()->id != $posts->user_id)
+                                <div class="d-inline-block report dropdown" title="Report">
+                                    <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <img src="/img/flag.png" alt="Report">
+                                    </button>
+
+                                    <div class="dropdown-menu">
+                                        <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
+                                            @csrf    
+                                            <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
+                                            <h6 class="text-center fw-bold">Report Content</h6>
+
+                                            <div class="mb-3 form-check">
+                                                <input type="checkbox" class="form-check-input" id="incorrectInfo{{$posts->id}}" name="incorrect" value="1">
+                                                <label class="form-check-label" for="incorrectInfo{{$posts->id}}">Report Info as
+                                                    incorrect</label>
+                                            </div>
+                                            <div class="mb-3 form-check">
+                                                <input type="checkbox" class="form-check-input" name="inappropriate" value="1"
+                                                       id="incorrectContent{{$posts->id}}">
+                                                <label class="form-check-label" for="incorrectContent{{$posts->id}}">Report
+                                                    content as inappropriate</label>
+                                            </div>
+                                            <div class="mb-3 form-check">
+                                                <input type="checkbox" class="form-check-input" name="tolls" value="1" id="reportTrolls{{$posts->id}}">
+                                                <label class="form-check-label" for="reportTrolls{{$posts->id}}">Report
+                                                    tolls</label>
+                                            </div>
+                                            <div>
+                                                <textarea class="form-control ps-2" name="comments" id="{{$posts->id}}"
+                                                          placeholder="Additional Comments.."
+                                                          style="height: 80px"></textarea>
+                                            </div>
+                                            <button type="submit" id="submitReport{{$posts->id}}" class="btn blue-btn w-100">REPORT</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                @endif
                             </div>
                         </div>
-                        <span id="imageError" class="notDisplayed required">{{ __('Please upload files having
-                                            extensions: jpg, jpeg, png') }}</span>
-                        <form method="POST" name="update_profile" action="{{ route('storeProfile') }}">
-                            @csrf
-                            <div class="innerForm">
-                                <div class="row">
-                                    {{-- @if ($errors->any())
-                                    <div class="alert alert-danger alert-dismissible" id="msg" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert"
-                                            aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        @foreach ($errors->all() as $error)
-                                        <li>{{ ucfirst($error) }}</li>
-                                        @endforeach
+                    </div>
+                    <div class="comments-div">
+                        <a class="" data-bs-toggle="collapse" href="#collapseExample{{$posts->id}}" role="button"
+                           aria-expanded="false" aria-controls="collapseExample{{$posts->id}}">
+                            Say Something <img src="img/dropdwon.png" alt="dropdown" class="ms-1">
+                        </a>
+                        <div class="collapse" id="collapseExample{{$posts->id}}">
+                            <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
+                                @csrf
+                                <div class="comment-box">
+                                    <div class="form-group">
+                                        <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
+                                        <input type="hidden" name="parent_user_id" value="{{$posts->user_id}}">
+                                        <input type="text" name="comment" id="{{$posts->id}}" class="form-control ps-2 mb-0 h-100 commentOnPost">
                                     </div>
-                                    @endif
-                                    @if ($message = Session::get('success'))
-                                    <div class="alert alert-success alert-dismissible" role="alert" id="msg">
-                                        <button type="button" class="close" data-dismiss="alert"
-                                            aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        {{ ucfirst($message) }}
-                                    </div>
-                                    @endif --}}
-
-                                    <div id="error"></div>
+                                    <button type="submit" id="submitPost{{$posts->id}}" class="send-btn btn"><img src="img/send.png"></button>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-4 col-xl-3 pr-0">
-                                        <label>
-                                            <span><img src="{{ asset("/img/user-grey.png")}}" alt=""></span> User
-                                            Name</label>
-                                    </div>
-                                    <div class="col-md-8 col-xl-9">
-                                        <input type="text" name="user_name"
-                                            value="{{ old('user_name',$user->user_name) }}"
-                                            class="form-control @error('user_name') is-invalid @enderror" readonly
-                                            required>
-                                        @error('user_name')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                        <div class="id-error" id="id-error">
-                                            <label for="user_name" class="error" generated="true"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 col-xl-3 pr-0">
-                                        <label>
-                                            <span><img src="{{ asset("/img/email.png")}}" alt=""></span>
-                                            Email</label>
-                                    </div>
-                                    <div class="col-md-8 col-xl-9">
-                                        <input type="text" name="email" value="{{ old('email',$user->email) }}"
-                                            class="form-control @error('email') is-invalid @enderror" readonly required>
-                                        @error('email')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                        <div class="id-error" id="id-error">
-                                            <label for="email" class="error" generated="true"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 col-xl-3 pr-0">
-                                        <label>
-                                            <span><img src="{{ asset("/img/user-grey.png")}}" alt=""></span> First
-                                            Name</label>
-                                    </div>
-                                    <div class="col-md-8 col-xl-9">
-                                        <input type="text" name="first_name"
-                                            value="{{ old('first_name',$user->user_profiles->first_name) }}"
-                                            class="form-control @error('first_name') is-invalid @enderror" required>
-                                        @error('first_name')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                        <div class="id-error" id="id-error">
-                                            <label for="first_name" class="error" generated="true"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 col-xl-3 pr-0">
-                                        <label>
-                                            <span><img src="{{ asset("/img/user-grey.png")}}" alt=""></span> Last
-                                            Name</label>
-                                    </div>
-                                    <div class="col-md-8 col-xl-9">
-                                        <input type="text" name="last_name"
-                                            value="{{ old('last_name',$user->user_profiles->last_name) }}"
-                                            class="form-control @error('last_name') is-invalid @enderror" required>
-                                        @error('last_name')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                        <div class="id-error" id="id-error">
-                                            <label for="last_name" class="error" generated="true"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 col-xl-3 pr-0">
-                                        <label>
-                                            <span><img src="{{ asset("/img/url.png")}}" alt=""></span>
-                                            Country</label>
-                                    </div>
-                                    <div class="col-md-8 col-xl-9">
-                                        <select class="form-control @error('country_id') is-invalid @enderror country"
-                                            name="country_id" required>
-                                            <option value="" data-phone="">-- Country --</option>
-                                            @foreach($countries as $key => $value)
-                                            <option value="{{ $value->id }}" data-phone="{{$value->phone_code}}"
-                                                {{ ($value->id == $user->user_profiles->country_id) ? "selected" : "" }}>
-                                                {{ $value->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('country_id')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                        <div class="id-error" id="id-error">
-                                            <label for="country_id" class="error" generated="true"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 col-xl-3 pr-0">
-                                        <label>
-                                            <span><img src="{{ asset("/img/phone1.png")}}" alt=""></span> Phone
-                                            No.</label>
-                                    </div>
-                                    <div class="col-md-8 col-xl-9">
-                                        <div class="phoneWrap">
-                                        <input type="text" placeholder="ICC" class="form-control telephone_prefix2 phone" readonly
-                                            name="telephone_prefix" value="{{ old('telephone_prefix',$user->user_profiles->icc) }}">
-                                            <div class="pl-2">
-                                                    <input type="text" name="phone"
-                                                    value="{{ old('phone',$user->user_profiles->phone)}}"
-                                                    class="form-control @error('phone') is-invalid @enderror phone_number"
-                                                    minlength="8" maxlength="15" required>
-                                            </div>
-                                           
-                                        </div>
-                                        @error('phone')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                        <div class="id-error" id="id-error">
-                                            <label for="phone" class="error" generated="true"></label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-4 col-xl-3 pr-0">
-                                        <label>
-                                            <span><img src="{{ asset("/img/global.png")}}" alt=""></span>
-                                            Preferred Language
-                                        </label>
-                                    </div>
-                                    <div class="col-md-8 col-xl-9">
-                                        <!-- <input type="text" value="English" class="form-control"> -->
-                                        <select class="form-control @error('language') is-invalid @enderror"
-                                            name="language" required>
-                                            <option value="">-- Preferred Language --</option>
-                                            @foreach($language as $key => $value)
-                                            <option value="{{ $key }}"
-                                                {{ ($key == $user->user_profiles->language) ? "selected" : "" }}>
-                                                {{ $value }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                        <!-- <span class="arrow">
-                                            <img src="{{ asset("/img/select-downArrow.png")}}" alt="">
-                                        </span> -->
-                                        @error('language')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                        <div class="id-error" id="id-error">
-                                            <label for="language" class="error" generated="true"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- This -->
-                                <div class="row">
-                                    <div class="col-md-4 col-xl-3 pr-0">
-                                        <label>
-                                            <span><img src="{{ asset("/img/location.png")}}" alt=""></span>
-                                            Local Beach / Break
-                                        </label>
-                                    </div>
-                                    <div class="col-md-8 col-xl-9">
-                                        @php
-                                        $beachBreaksValue = ($user->user_profiles->beach_breaks) ?
-                                        $user->user_profiles->beach_breaks->beach_name.','.$user->user_profiles->beach_breaks->break_name.
-                                        ','.$user->user_profiles->beach_breaks->city_region.','.$user->user_profiles->beach_breaks->state.
-                                        ','.$user->user_profiles->beach_breaks->country : '';
-                                        @endphp
-
-                                        <!-- <input type="text" value="" name="local_beach_break"
-                                            placeholder="Search Beach Break " class="form-control search-box"> -->
-
-                                        <input type="text" value="{{ old('local_beach_break',$beachBreaksValue)}}"
-                                            name="local_beach_break" data-beachID="" placeholder="Search Beach Break "
-                                            class="form-control  @error('local_beach_break') is-invalid @enderror search-box">
-
-                                        <input type="hidden"
-                                            value="{{ old('local_beach_break_id',$user->user_profiles->local_beach_break_id)}}"
-                                            name="local_beach_break_id" id="local_beach_break_id" class="form-control">
-
-                                        <div class="auto-search search1" id="country_list"></div>
-                                        @error('local_beach_break')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                        <div class="id-error" id="id-error">
-                                            <label for="local_beach_break" class="error" generated="true"></label>
-                                        </div>
-                                        <!-- <input type="text" value="{{ old('local_beach_break')}}"
-                                            name="local_beach_break" data-beachID="" placeholder="Search Beach Break "
-                                            class="form-control  @error('local_beach_break') is-invalid @enderror">
-
-                                        @error('local_beach_break')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                        <div class="id-error" id="id-error">
-                                            <label for="local_beach_break" class="error" generated="true"></label>
-                                        </div> -->
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-4 col-xl-3 pr-0">
-                                        <label>
-                                            <span><img src="{{ asset("/img/user-grey.png")}}" alt=""></span>
-                                            Account
-                                            Type
-                                        </label>
-                                    </div>
-                                    <div class="col-md-8 col-xl-9">
-                                        <select class="form-control @error('account_type') is-invalid @enderror"
-                                            name="account_type" required>
-                                            <option value="">-- Account Type --</option>
-                                            @foreach($accountType as $key => $value)
-                                            <option value="{{ $key }}"
-                                                {{ ($key == $user->account_type) ? "selected" : "" }}>
-                                                {{ $value }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                        @error('account_type')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                        <div class="id-error" id="id-error">
-                                            <label for="account_type" class="error" generated="true"></label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-4 col-xl-3 pr-0">
-                                        <label>
-                                            <span><img src="{{ asset("/img/instagram-grey.png")}}" alt=""></span>
-                                            Instagram
-                                            Account
-                                        </label>
-                                    </div>
-                                    <div class="col-md-8 col-xl-9">
-                                        <input type="text" name="instagram"
-                                            value="{{ old('instagram',$user->user_profiles->instagram )}}"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 col-xl-3 pr-0">
-                                        <label>
-                                            <span><img src="{{ asset("/img/facebook-app-symbol.png")}}" alt="">
-                                            </span>
-                                            Facebook Account
-                                        </label>
-                                    </div>
-                                    <div class="col-md-8 col-xl-9">
-                                        <input type="text" name="facebook"
-                                            value="{{ old('facebook',$user->user_profiles->facebook )}}"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 col-xl-3 pr-0">
-                                    </div>
-                                    <div class="col-md-8 col-xl-9">
-                                        <input type="submit" id="next1" value="Update" class="loginBtn">
-                                    </div>
-                                </div>
+                            </form>
+                            @foreach ($posts->comments as $comments)
+                            <div class="comment-row">
+                                <span class="comment-name">{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :
+                                </span> 
+                                {{$comments->value}}
                             </div>
-                        </form>
-                        <img src="{{ asset("/img/logoMedium.png")}}" alt="" class="logo">
+                            @endforeach
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-3   text-center">
-                    <div class="adWrap">
-                        <img src="{{ asset("/img/add1.png")}}" alt="" class="img-fluid">
-                    </div>
-                </div>
+                @endforeach
+                @endif
+                <div class="justify-content-center ajax-load" style="display:none;margin-left: 40%">
+                    <img src="/images/spiner4.gif" alt="loading" height="90px;" width="170px;">
+              </div>
+            </div>
+            
+            <div class="right-advertisement">
+                <img src="/img/new/advertisement1.png" alt="advertisement">
+                <img src="/img/new/advertisement2.png" alt="advertisement">
             </div>
         </div>
     </div>
 </section>
-<div id="myModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><img src="{{ asset("/img/logo_small.png")}}"> &nbsp; Crop
-                    Image
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <img alt="" src="{{ asset("/img/close.png")}}">
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <div id="image"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer text-center justify-content-center">
-                <button class="btn btn-success crop_profile_image">Crop</button>
-            </div>
-        </div>
-    </div>
-</div>
+@include('elements/location_popup_model')
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+	var page = 1;
+
+    $(window).scroll(function() {
+        if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+            page++;
+            loadMoreData(page);
+        }
+    });
+
+    function loadMoreData(page) {
+        var url = window.location.href;
+        if(url.indexOf("?") !== -1) {
+            var url = window.location.href + '&page=' + page;
+        }else {
+            var url = window.location.href + '?page=' + page;
+        }
+        
+        $.ajax({
+            url: url,
+            type: "get",
+            async: false,
+            beforeSend: function() {
+                $('.ajax-load').show();
+            }
+        })
+        .done(function(data) {
+            if(data.html == "") {
+                $('.ajax-load').addClass('requests');
+                $('.ajax-load').html("No more records found");
+                return;
+            }
+
+            $('.ajax-load').removeClass('requests');
+            $('.ajax-load').hide();
+//            $("#post-data").insertBefore(data.html);
+            $(data.html).insertBefore(".ajax-load");
+        });
+    }
+        
+        $(document).on('click', '.editBtnVideo', function() {
+            var id = $(this).data('id');
+            
+            $.ajax({
+                url: '/getPostData/' + id,
+                type: "get", 
+                async: false,
+                success: function(data) {
+                    // console.log(data.html);
+                    $("#edit_image_upload_main").html("");
+                    $("#edit_image_upload_main").append(data.html);
+                    $("#edit_image_upload_main").modal('show');                
+                }
+            });
+        });
+        
+        $('.pos-rel a').each(function(){
+           $(this).on('hover, mouseover, click', function() {
+                $(this).children('.userinfoModal').find('input[type="text"]').focus();
+            });
+        });
+</script>
 @endsection

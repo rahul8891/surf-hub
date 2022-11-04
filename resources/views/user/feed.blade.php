@@ -1,5 +1,17 @@
 @extends('layouts.user.new_layout')
 @section('content')
+
+<style>
+    .newsFeedImgVideo img,.newsFeedImgVideo video {
+        height: 325px;
+    }
+
+    .newsFeedImgVideo {
+        background: #000;
+        text-align: center;
+    }
+</style>
+
 <section class="home-section">
     <div class="container">
         <div class="home-row">
@@ -44,7 +56,9 @@
                             @endif
                         </div>
                         @if(!empty($posts->upload->image))
-                        <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="Feed" class="w-100" id="myImage{{$posts->id}}">
+                        <div class="newsFeedImgVideo">    
+                            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="Feed" class="w-100" id="myImage{{$posts->id}}">
+                        </div>
                         @elseif(!empty($posts->upload->video))
                         @if (!File::exists($posts->upload->video))
                         <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
