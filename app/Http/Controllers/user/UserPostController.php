@@ -249,7 +249,6 @@ class UserPostController extends Controller
     } */
     public function store(Request $request)
     {
-        $postArray = [];
         try{
             $data = $request->all();   
 //    echo "<pre>";print_r($data);die;
@@ -259,11 +258,11 @@ class UserPostController extends Controller
                 $data['surfer'] = Auth::user()->user_name;
             } 
             
-            $imageArray = (isset($data['files'][0]) && !empty($data['files'][0]))?$data['files']:[];
-            $videoArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];
+            $postArray = (isset($data['files']) && !empty($data['files']))?$data['files']:[];
+//            $videoArray$postArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];
             
-            $postArray = array_filter(array_merge($imageArray, $videoArray));
-            
+//            $postArray = array_filter(array_merge($imageArray, $videoArray));
+//            echo '<pre>';print_r($postArray);die;
             $rules = array(
                 'post_type' => ['required'],
                 'user_id' => ['required'],
