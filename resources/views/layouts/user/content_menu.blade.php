@@ -3,7 +3,7 @@
     <div class="left-option">
         <div class="post">
             <img src="/img/new/post-white.png" alt="Post">
-            <a href="{{ url('dashboard')}}"><span>Posts</span></a>
+            <a href="{{ url('/user/myhub')}}"><span>Posts</span></a>
         </div>
         <div class="tag">
             <img src="/img/new/tag-white.png" alt="Tagged">
@@ -15,11 +15,11 @@
         </div>
         <div class="Reel">
             <img src="/img/new/reel-white.png" alt="reel">
-            <a href="{{ url('dashboard')}}"><span>Reel</span></a>
+            <a href="{{ url('/user/myhub')}}"><span>Reel</span></a>
         </div>
         <div class="Reel">
             <img src="/img/new/all-white.png" alt="All">
-            <span><a href="{{ url('dashboard')}}">All</a></span>
+            <span><a href="{{ url('/user/myhub')}}">All</a></span>
         </div>
 
         @include('layouts.user.sort_filter')
