@@ -1244,3 +1244,6 @@ header .notification {
     background: #000;
     text-align: center; 
 }
+.modal-dialog {
+    max-width : 700px !important;
+}
