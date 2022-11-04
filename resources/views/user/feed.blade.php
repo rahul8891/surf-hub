@@ -56,18 +56,22 @@
                             @endif
                         </div>
                         @if(!empty($posts->upload->image))
-                        <div class="newsFeedImgVideo">    
-                            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="Feed" class="w-100" id="myImage{{$posts->id}}">
+                        <div class="newsFeedImgVideo">
+                            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
                         </div>
                         @elseif(!empty($posts->upload->video))
                         @if (!File::exists($posts->upload->video))
+                        <div class="newsFeedImgVideo">
                         <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                             <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
                         </video>
+                        </div>    
                         @else
+                        <div class="newsFeedImgVideo">
                         <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                             <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
                         </video>
+                        </div>
                         @endif
                         @endif
                         <div class="user-bottom-options">
@@ -84,8 +88,8 @@
                                 <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
-                                    <img src={{asset("img/location.png")}} alt="Location"></a>
-                                <a onclick="openFullscreen({{$posts->id}});"><img src={{asset("img/expand.png")}} alt="Expand"></a>
+                                    <img src={{asset("/img/location.png")}} alt="Location"></a>
+                                <a onclick="openFullscreen({{$posts->id}});"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
                                 <div class="d-inline-block info dropdown" title="Info">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -124,6 +128,10 @@
                                         </div>
                                     </div>
                                 </div>
+                                @if(Auth::user() && $posts->user_id == Auth::user()->id)
+                                <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a>
+                                @endif
+                                <!--<a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}">EDIT</a>-->
                                 <div class="d-inline-block tag dropdown" title="Tag">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -198,7 +206,7 @@
                     <div class="comments-div">
                         <a class="" data-bs-toggle="collapse" href="#collapseExample{{$posts->id}}" role="button"
                            aria-expanded="false" aria-controls="collapseExample{{$posts->id}}">
-                            Say Something <img src="img/dropdwon.png" alt="dropdown" class="ms-1">
+                            Say Something <img src="/img/dropdwon.png" alt="dropdown" class="ms-1">
                         </a>
                         <div class="collapse" id="collapseExample{{$posts->id}}">
                             <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
@@ -209,7 +217,7 @@
                                         <input type="hidden" name="parent_user_id" value="{{$posts->user_id}}">
                                         <input type="text" name="comment" id="{{$posts->id}}" class="form-control ps-2 mb-0 h-100 commentOnPost">
                                     </div>
-                                    <button type="submit" id="submitPost{{$posts->id}}" class="send-btn btn"><img src="img/send.png"></button>
+                                    <button type="submit" id="submitPost{{$posts->id}}" class="send-btn btn"><img src="/img/send.png"></button>
                                 </div>
                             </form>
                             @foreach ($posts->comments as $comments)
@@ -237,6 +245,7 @@
     </div>
 </section>
 @include('elements/location_popup_model')
+@include('layouts/models/edit_image_upload')
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 	var page = 1;

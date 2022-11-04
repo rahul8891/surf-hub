@@ -42,12 +42,14 @@ function activeMainMenu($routeFor = '') {
 /**
  * Active User Feed menu
  */
-function userActiveMenu($uri = '') {       
+function userActiveMenu($uri = '') {
     $name = Route::currentRouteName();    
+    // echo $uri." -- ".$name;die('aa');
     $active = '';       
-    if($name === $uri ){
+    if($name == $uri ){
         $active = 'active';
-    }       
+    }  
+
     return $active;
 }
 

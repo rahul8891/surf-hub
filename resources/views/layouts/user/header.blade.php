@@ -7,21 +7,29 @@
         </button>
         <a class="navbar-brand" href="/"><img src="/img/new/logo.png" alt="Logo"></a>
         <div class="navbar-nav middle-menu">
-            <a class="nav-link" href="/"><img src="/img/new/home.png" alt="Feed" class="align-middle">
-                <span class="align-middle">FEED</span>
-            </a>
+            <div class="{{ userActiveMenu('dashboard') }}">
+                <a class="nav-link" href="/"><img src="/img/new/home.png" alt="Feed" class="align-middle">
+                    <span class="align-middle">FEED</span>
+                </a>
+            </div>
             @if (Auth::user())
+            <div class="{{ userActiveMenu('myhub') }}">
                 <a class="nav-link" href="{{ route('myhub') }}"><img src="/img/new/hub.png" alt="Hub" class="align-middle">
                     <span class="align-middle">MY HUB</span>
                 </a>
+            </div>
             @endif
-            <a class="nav-link" href="{{route('searchPosts')}}"><img src="/img/new/search.png" alt="Search" class="align-middle"> 
-                <span class="align-middle">SEARCH</span>
-            </a>
+            <div class="{{ userActiveMenu('searchPosts') }}">
+                <a class="nav-link" href="{{route('searchPosts')}}"><img src="/img/new/search.png" alt="Search" class="align-middle"> 
+                    <span class="align-middle">SEARCH</span>
+                </a>
+            </div>
             @if (Auth::user())
+            <div class="">
                 <a class="nav-link" href="#"><img src="/img/new/upload.png" alt="Upload" class="align-middle">
                     <span class="align-middle">UPLOAD</span>
                 </a>
+            </div>
             @endif
         </div>
         <div class="side-navbar">
