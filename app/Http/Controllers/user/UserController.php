@@ -34,7 +34,11 @@ class UserController extends Controller
     {
         $this->users = $users;    
         $this->post = $post;    
-        $this->common = config('customarray.common');   
+        $this->common = config('customarray.common');
+        $this->customArray = config('customarray');
+        $this->language = config('customarray.language'); 
+        $this->accountType = config('customarray.accountType');
+        $this->post_type = config('customarray.post_type');
     }
     
     /**
@@ -120,13 +124,29 @@ class UserController extends Controller
     /**
      * Show User Profile Page
      */
-    public function showProfile(){
+    public function showProfile() {
+        $customArray = $this->customArray;
+        $beaches = $states = $postsList = [];
         $countries = DB::table('countries')->select('id', 'name','phone_code')->orderBy('name','asc')->get();
         $beachBreaks = DB::table('beach_breaks')->orderBy('beach_name','asc')->get();
         $language = config('customarray.language'); 
         $accountType = config('customarray.accountType');         
         $user = $this->users->getUserDetailByID(Auth::user()->id);       
-        return view('user.profile',compact('user','countries','beachBreaks','language','accountType'));
+        return view('user.profile',compact('user','countries','beachBreaks','language','accountType', 'postsList','states','beaches','customArray'));
+    }
+
+    /**
+     * Show User Profile Page
+     */
+    public function editProfile() {
+        $customArray = $this->customArray;
+        $gender_type = $beaches = $states = $postsList = [];
+        $countries = DB::table('countries')->select('id', 'name','phone_code')->orderBy('name','asc')->get();
+        $beachBreaks = DB::table('beach_breaks')->orderBy('beach_name','asc')->get();
+        $language = config('customarray.language'); 
+        $accountType = config('customarray.accountType');         
+        $user = $this->users->getUserDetailByID(Auth::user()->id);       
+        return view('user.edit_profile',compact('user','countries','beachBreaks','language','accountType', 'postsList','states','beaches','customArray','gender_type'));
     }
 
     /**

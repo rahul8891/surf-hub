@@ -218,8 +218,8 @@ class MyHubController extends Controller
             $postMedia = Upload::where('post_id', $id)->get();
             $spiner = ($this->posts) ? true : false;
             
-            if(!empty($myHubs->local_beach_break_id)){
-                $bb = BeachBreak::where('id',$myHubs->local_beach_break_id)->first(); 
+            if(!empty($myHubs->local_beach_id)){
+                $bb = BeachBreak::where('id',$myHubs->local_beach_id)->first(); 
                 $beach_name=$bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;
             }
         }catch (\Exception $e){         

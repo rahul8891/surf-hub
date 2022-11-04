@@ -17,16 +17,22 @@
             </div>
         </div>
         @if(!empty($posts->upload->image))
-        <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="Feed" class="w-100" id="myImage{{$posts->id}}">
+        <div class="newsFeedImgVideo">
+            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+        </div>
         @elseif(!empty($posts->upload->video))
         @if (!File::exists($posts->upload->video))
-        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-        </video>
+        <div class="newsFeedImgVideo">
+            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+            </video>
+        </div>    
         @else
-        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-        </video>
+        <div class="newsFeedImgVideo">
+            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+            </video>
+        </div>
         @endif
         @endif
         <div class="user-bottom-options">
@@ -116,5 +122,5 @@
     $('.rating').rating({
     showClear:false,
             showCaption:false
-            });
+    });
 </script>
