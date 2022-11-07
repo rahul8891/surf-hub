@@ -80,43 +80,42 @@
             $("#My-Profile").click(function() {
                 $(".profileChangePswd").toggleClass("show");
             });
-
-            /* $(document).on('click.bs.dropdown.data-api', '.dropdown.keep-inside-clicks-open', function(e) {
-                 e.stopPropagation();
-             });*/
-
-            $('.dropdown.keep-inside-clicks-open').on({
-                "shown.bs.dropdown": function() {
-                    this.closable = false;
-                },
-                "click": function() {
-                    this.closable = false;
-                },
-                "hide.bs.dropdown": function() {
-                    return this.closable;
-                }
-            });
-
-            $(".nice-wrapper").niceScroll({
-                cursorwidth: '10px',
-                zindex: 999
-            });
-
-            $('#msg').delay(4000).fadeOut('slow');
-
-            $('#msg').delay(4000).fadeOut('slow');
-
-
-            $('.navbar-toggler-icon').click( function(event){
-                event.stopPropagation();
-                $('.navbar-collapse').toggle('fast');
-            });
-
-            $(document).click( function(){
-                $('.navbar-collapse').slideUp('fast');
-            });
+//            /* $(document).on('click.bs.dropdown.data-api', '.dropdown.keep-inside-clicks-open', function(e) {
+//                 e.stopPropagation();
+//             });
+//
+//            $('.dropdown.keep-inside-clicks-open').on({
+//                "shown.bs.dropdown": function() {
+//                    this.closable = false;
+//                },
+//                "click": function() {
+//                    this.closable = false;
+//                },
+//                "hide.bs.dropdown": function() {
+//                    return this.closable;
+//                }
+//            });
+//
+//            $(".nice-wrapper").niceScroll({
+//                cursorwidth: '10px',
+//                zindex: 999
+//            });
+//
+//            $('#msg').delay(4000).fadeOut('slow');
+//
+//            $('#msg').delay(4000).fadeOut('slow');
+//
+//
+//            $('.navbar-toggler-icon').click( function(event){
+//                event.stopPropagation();
+//                $('.navbar-collapse').toggle('fast');
+//            });
+//
+//            $(document).click( function(){
+//                $('.navbar-collapse').slideUp('fast');
+//            });
         });
-
+//
         function openFullscreen(id) {
             var elem = document.getElementById("myImage"+id);
             if (elem.requestFullScreen) {

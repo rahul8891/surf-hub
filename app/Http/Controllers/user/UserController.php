@@ -34,7 +34,11 @@ class UserController extends Controller
     {
         $this->users = $users;    
         $this->post = $post;    
-        $this->common = config('customarray.common');   
+        $this->common = config('customarray.common');
+        $this->customArray = config('customarray');
+        $this->language = config('customarray.language'); 
+        $this->accountType = config('customarray.accountType');
+        $this->post_type = config('customarray.post_type');
     }
     
     /**
@@ -120,13 +124,30 @@ class UserController extends Controller
     /**
      * Show User Profile Page
      */
-    public function showProfile(){
+    public function showProfile() {
+        $customArray = $this->customArray;
+        $beaches = $states = $postsList = [];
         $countries = DB::table('countries')->select('id', 'name','phone_code')->orderBy('name','asc')->get();
         $beachBreaks = DB::table('beach_breaks')->orderBy('beach_name','asc')->get();
         $language = config('customarray.language'); 
         $accountType = config('customarray.accountType');         
         $user = $this->users->getUserDetailByID(Auth::user()->id);       
-        return view('user.profile',compact('user','countries','beachBreaks','language','accountType'));
+        return view('user.profile',compact('user','countries','beachBreaks','language','accountType', 'postsList','states','beaches','customArray'));
+    }
+
+    /**
+     * Show User Profile Page
+     */
+    public function editProfile() {
+        $customArray = $this->customArray;
+        $beaches = $states = $postsList = [];
+        $gender_type = config('customarray.gender_type');
+        $countries = DB::table('countries')->select('id', 'name','phone_code')->orderBy('name','asc')->get();
+        $beachBreaks = DB::table('beach_breaks')->orderBy('beach_name','asc')->get();
+        $language = config('customarray.language'); 
+        $accountType = config('customarray.accountType');         
+        $user = $this->users->getUserDetailByID(Auth::user()->id);       
+        return view('user.edit_profile',compact('user','countries','beachBreaks','language','accountType', 'postsList','states','beaches','customArray','gender_type'));
     }
 
     /**
@@ -141,12 +162,13 @@ class UserController extends Controller
             'first_name' => ['required','min:3','string'],
             'last_name' => ['required','min:3','string'],
             'user_name' => ['required', 'string','min:5','alpha_dash'],
-            'email' => ['required', 'string', 'email:rfc,dns', 'max:255'],
+//            'email' => ['required', 'string', 'email:rfc,dns', 'max:255'],
             'phone' => ['required'],
             'language' => ['required', 'string'],
             'country_id' => ['required', 'numeric'],
             'account_type' => ['required', 'string'],           
-            'local_beach_break' => ['required', 'string'],         
+            'paypal' => ['required', 'string'],           
+//            'local_beach_break' => ['required', 'string'],         
         ])->validate();
         
         $result = $this->users->updateUserProfile($data,$message);        
@@ -196,11 +218,11 @@ class UserController extends Controller
             $returnObject = '';
             if(!$resultData->isEmpty()){
                 
-                $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1">';
+                $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1"  >';
                 foreach ($resultData as $key => $value) {
                     $first = ($value->beach_name) ? $value->beach_name.',' : '';
                     $val = $first.$value->break_name.','.$value->city_region.','.$value->state.','.$value->country;             
-                    $returnObject .= '<li class="list-group-item" data-id="'.$value->id.'">'.$val.'</li>';
+                    $returnObject .= '<li onclick="setBeach(this)" class="list-group-item" data-id="'.$value->id.'">'.$val.'</li>';
                 }
                 $returnObject .='</ul>';              
                 return response()->json($returnObject);       
@@ -325,7 +347,7 @@ class UserController extends Controller
 
     public function following()
     {
-        $following = $this->users->following();   
+        $following = $this->users->following(); 
         $common = $this->common;    
         return view('user.following',compact('following','common'));
     }
@@ -425,6 +447,40 @@ class UserController extends Controller
             return 'true';
         }
 
+    }
+    
+    public function searchFollwers(Request $request)
+    {
+        
+        $serachTerm = $request->searchTerm;
+        
+        $followers = $this->users->searchFollowers($serachTerm);  
+//        dd($followers);
+        $common = $this->common;
+        $view = view('elements/searchFollower', compact('followers', 'common'))->render();
+        return response()->json(['html' => $view]);
+    }
+    public function searchFollowing(Request $request)
+    {
+        
+        $serachTerm = $request->searchTerm;
+        
+        $following = $this->users->searchFollowing($serachTerm);  
+//        dd($followers);
+        $common = $this->common;
+        $view = view('elements/searchFollowing', compact('following', 'common'))->render();
+        return response()->json(['html' => $view]);
+    }
+    public function searchFollowRequest(Request $request)
+    {
+        
+        $serachTerm = $request->searchTerm;
+         
+        $followRequests = $this->users->searchFollowRequest($serachTerm);  
+//        dd($followers);
+        $common = $this->common;
+        $view = view('elements/searchFollowRequest', compact('followRequests', 'common'))->render();
+        return response()->json(['html' => $view]);
     }
 
 }

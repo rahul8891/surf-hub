@@ -218,16 +218,19 @@ class MyHubController extends Controller
             $postMedia = Upload::where('post_id', $id)->get();
             $spiner = ($this->posts) ? true : false;
             
-            if(!empty($myHubs->local_beach_break_id)){
-                $bb = BeachBreak::where('id',$myHubs->local_beach_break_id)->first(); 
+            if(!empty($myHubs->local_beach_id)){
+                $bb = BeachBreak::where('id',$myHubs->local_beach_id)->first(); 
                 $beach_name=$bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;
+            
+                $breaks = $this->masterService->getBreakByBeachName($bb->beach_name);
+                $breakId = $myHubs->local_break_id;
             }
         }catch (\Exception $e){         
             throw ValidationException::withMessages([$e->getMessage()]);
         }
         
         if ($request->ajax()) {
-            $view = view('elements/edit_image_upload',compact('customArray','countries','states','currentUserCountryId','myHubs','users','beach_name'))->render();
+            $view = view('elements/edit_image_upload',compact('customArray','countries','states','currentUserCountryId','myHubs','users','beach_name','breaks','breakId'))->render();
             return response()->json(['html' => $view]);
         }
         // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));    
@@ -242,62 +245,62 @@ class MyHubController extends Controller
      */
     public function update(Request $request)
     {
-        try{
+        try {
             $data = $request->all();
-            if(!empty($data['other_surfer'])){
+            if (!empty($data['other_surfer'])) {
                 $data['surfer'] = $data['other_surfer'];
+            } elseif (isset($data['surfer']) && ($data['surfer'] == 'Me')) {
+                $data['surfer'] = Auth::user()->user_name;
             }
-            
+
             $rules = array(
                 'post_type' => ['required'],
-                'user_id' => ['required','numeric'],
+                'user_id' => ['required', 'numeric'],
                 'post_text' => ['nullable', 'string', 'max:255'],
                 'surf_date' => ['required', 'string'],
                 'wave_size' => ['required', 'string'],
-                'state_id' => ['nullable', 'numeric'],
-                'board_type' => ['required', 'string'],
+//                'state_id' => ['nullable', 'numeric'],
+//                'board_type' => ['required', 'string'],
                 'surfer' => ['required'],
-                'country_id' => ['required','numeric'],
-                'local_beach_break_id' => ['nullable', 'string'],
-                'optional_info'=>['nullable'],
+//                'country_id' => ['required','numeric'],
+//                'local_beach_break_id' => ['nullable', 'string'],
+//                'optional_info'=>['nullable'],
             );
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
+
+                $postArray = (isset($data['files']) && !empty($data['files'])) ? $data['files'] : [];
+
                 $filePath = $type = "";
                 // $timeDate = strtotime(Carbon::now()->toDateTimeString());
-                
-                if($request->hasFile('files')) {
-                    $file = $request->file('files');
-                    $type = 'image';
-                    // $destinationPath = public_path('storage/images/');
-                    // $extension = $image->getClientOriginalExtension();
-                    // $filename = $timeDate.'.'.$extension;
-                    // $image->move($destinationPath, $filename);
-                } else if ($request->hasFile('videos')) {
-                    $file = $request->file('videos');
-                    $type = 'video';
-                    // $destinationPath = public_path('storage/fullVideos/');                     
-                    // $extension = $video->getClientOriginalExtension();
-                    // $filename = $timeDate.'.'.$extension;
-                    // $video->move($destinationPath, $filename);
-                }
+                if (!empty($postArray)) {
 
-                if(isset($type) && !empty($type)) {
-                    $fileFolder = $type . '/' . $request->user_id;
+                    
+                    $fileType = explode('/', $request->file('files')->getMimeType());
+                    if($fileType[0] == 'image'){
+                        $fileFolder = 'images/' . $request->user_id;
+                        // $destinationPath = public_path('storage/images/');
+                    } elseif ($fileType[0] == 'video') {
+                        $fileFolder = 'videos/' . $request->user_id;
+                        // $destinationPath = public_path('storage/fullVideos/');
+                    }
+                    $file = $request->file('files');
                     $path = Storage::disk('s3')->put($fileFolder, $file);
                     $filePath = Storage::disk('s3')->url($path);
 
                     $fileArray = explode("/", $filePath);
                     $filename = end($fileArray);
+
+                    $result = $this->postService->updatePostData($data, $filename, $fileType[0], $message);
+                } else {
+                    $result = $this->postService->updatePostData($data, '', '', $message);
                 }
-                
-                $result = $this->postService->updatePostData($data, $filename, $type, $message);
-                if($result['status'] === TRUE){
+                if ($result['status'] === TRUE) {
                     return Redirect()->route('myhub')->withSuccess($result['message']);
-                }else{
+                } else {
                     return Redirect()->route('myhub')->withErrors($result['message']);
                 }
             }

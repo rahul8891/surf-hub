@@ -84,13 +84,14 @@ class UserService {
                 $users->account_type = $dataRequest['account_type'];
                 $user_profiles->first_name = $dataRequest['first_name'];
                 $user_profiles->last_name = $dataRequest['last_name'];
-                $user_profiles->icc = $dataRequest['telephone_prefix'];
+//                $user_profiles->icc = $dataRequest['telephone_prefix'];
                 $user_profiles->phone = $dataRequest['phone'];
                 $user_profiles->country_id = $dataRequest['country_id'];
                 $user_profiles->language = $dataRequest['language'];
-                $user_profiles->facebook = $dataRequest['facebook'];
-                $user_profiles->instagram = $dataRequest['instagram'];
-                $user_profiles->local_beach_break_id = $dataRequest['local_beach_break_id'];
+                $user_profiles->paypal = $dataRequest['paypal'];
+//                $user_profiles->facebook = $dataRequest['facebook'];
+//                $user_profiles->instagram = $dataRequest['instagram'];
+//                $user_profiles->local_beach_break_id = $dataRequest['local_beach_break_id'];
                 if($users->save() && $user_profiles->save()){
                     $message = $this->checkUserType['success']['UPDATE_SUCCESS'];;
                     return true;  
@@ -250,10 +251,68 @@ class UserService {
     public function followers(){
         $followers = $this->userFollows->where('followed_user_id',Auth::user()->id)   
                     ->where('status','FOLLOW')   
-                    ->where('follower_request_status','0') 
+//                    ->where('follower_request_status','0') 
                     ->where('is_deleted','0')
                     ->orderBy('id','desc')->get();
         return $followers;
+    }
+    public function searchFollowRequest($string){
+        if($string != '') {
+        $followRequests = $this->userFollows
+            ->join('user_profiles', 'user_profiles.user_id', '=', 'user_follows.follower_user_id')
+            ->where('followed_user_id',Auth::user()->id)
+            ->where('user_follows.status','FOLLOW')
+            ->where('follower_request_status',1)     
+            ->where('user_follows.is_deleted','0') 
+            ->whereRaw("concat(first_name, ' ', last_name) like '%" .$string. "%' ")    
+            ->get();
+        } else {
+        $followRequests = $this->userFollows->where('followed_user_id',Auth::user()->id)   
+                    ->where('status','FOLLOW')   
+                    ->where('follower_request_status',1) 
+                    ->where('is_deleted','0')
+                    ->orderBy('id','desc')->get();   
+        }
+        //dd($result);
+        return $followRequests;
+    }
+    public function searchFollowers($string){
+        if($string != '') {
+        $followers = $this->userFollows
+            ->join('user_profiles', 'user_profiles.user_id', '=', 'user_follows.follower_user_id')
+            ->where('followed_user_id',Auth::user()->id)
+            ->where('user_follows.status','FOLLOW')    
+            ->where('user_follows.is_deleted','0')    
+            ->whereRaw("concat(first_name, ' ', last_name) like '%" .$string. "%' ")
+            ->get();
+        } else {
+        $followers = $this->userFollows->where('followed_user_id',Auth::user()->id)   
+                    ->where('status','FOLLOW')   
+//                    ->where('follower_request_status','0') 
+                    ->where('is_deleted','0')
+                    ->orderBy('id','desc')->get();    
+        }
+        //dd($result);
+        return $followers;
+    }
+    public function searchFollowing($string){
+        if($string != '') {
+        $following = $this->userFollows
+            ->join('user_profiles', 'user_profiles.user_id', '=', 'user_follows.followed_user_id')
+            ->where('follower_user_id',Auth::user()->id)
+            ->where('user_follows.status','FOLLOW')    
+            ->where('user_follows.is_deleted','0')    
+            ->whereRaw("concat(first_name, ' ', last_name) like '%" .$string. "%' ")
+            ->get();
+        } else {
+        $following = $this->userFollows->where('follower_user_id',Auth::user()->id)   
+                    ->where('status','FOLLOW')   
+//                    ->where('follower_request_status','0') 
+                    ->where('is_deleted','0')
+                    ->orderBy('id','desc')->get();    
+        }
+        //dd($result);
+        return $following;
     }
 
     public function following(){

@@ -7,7 +7,7 @@
                             <div class="user-left">
                                 <img src="/img/user-img.png" alt="USer">
                                 <div>
-                                    <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span> Shared by Upender (Upen001)
+                                    <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span>
                                     </p>
                                     <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y')}}</p>
                                     <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
@@ -24,16 +24,22 @@
                             @endif
                         </div>
                         @if(!empty($posts->upload->image))
-                        <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="Feed" class="w-100" id="myImage{{$posts->id}}">
+                        <div class="newsFeedImgVideo">
+                            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                        </div>
                         @elseif(!empty($posts->upload->video))
                         @if (!File::exists($posts->upload->video))
+                        <div class="newsFeedImgVideo">
                         <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                             <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
                         </video>
+                        </div>    
                         @else
+                        <div class="newsFeedImgVideo">
                         <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                             <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
                         </video>
+                        </div>
                         @endif
                         @endif
                         <div class="user-bottom-options">
@@ -43,7 +49,7 @@
 
                             </div>
                             <div class="right-options">
-                                @if($posts->user_id != Auth::user()->id)
+                                @if(Auth::user() && $posts->user_id != Auth::user()->id)
                                 <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/small-logo.png" alt="Logo"></a>
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
@@ -87,6 +93,10 @@
                                         </div>
                                     </div>
                                 </div>
+                                @if(Auth::user() && $posts->user_id == Auth::user()->id)
+                                <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a>
+                                <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
+                                @endif
                                 <div class="d-inline-block tag dropdown" title="Tag">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -116,7 +126,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if($posts->user_id != Auth::user()->id)
+                                @if(Auth::user() && $posts->user_id != Auth::user()->id)
                                 <div class="d-inline-block report dropdown" title="Report">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -158,6 +168,7 @@
                             </div>
                         </div>
                     </div>
+                    @if(Auth::user())
                     <div class="comments-div">
                         <a class="" data-bs-toggle="collapse" href="#collapseExample{{$posts->id}}" role="button"
                            aria-expanded="false" aria-controls="collapseExample{{$posts->id}}">
@@ -184,12 +195,13 @@
                             @endforeach
                         </div>
                     </div>
+                    @endif
                 </div>
                     @endif
     @endforeach
                     
     <script type="text/javascript">
-        $('.rating').rating({
+        $('.rating-flex').rating({
              showClear:false, 
              showCaption:false
          });
