@@ -84,13 +84,14 @@ class UserService {
                 $users->account_type = $dataRequest['account_type'];
                 $user_profiles->first_name = $dataRequest['first_name'];
                 $user_profiles->last_name = $dataRequest['last_name'];
-                $user_profiles->icc = $dataRequest['telephone_prefix'];
+//                $user_profiles->icc = $dataRequest['telephone_prefix'];
                 $user_profiles->phone = $dataRequest['phone'];
                 $user_profiles->country_id = $dataRequest['country_id'];
                 $user_profiles->language = $dataRequest['language'];
-                $user_profiles->facebook = $dataRequest['facebook'];
-                $user_profiles->instagram = $dataRequest['instagram'];
-                $user_profiles->local_beach_break_id = $dataRequest['local_beach_break_id'];
+                $user_profiles->paypal = $dataRequest['paypal'];
+//                $user_profiles->facebook = $dataRequest['facebook'];
+//                $user_profiles->instagram = $dataRequest['instagram'];
+//                $user_profiles->local_beach_break_id = $dataRequest['local_beach_break_id'];
                 if($users->save() && $user_profiles->save()){
                     $message = $this->checkUserType['success']['UPDATE_SUCCESS'];;
                     return true;  

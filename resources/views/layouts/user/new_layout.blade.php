@@ -80,10 +80,9 @@
             $("#My-Profile").click(function() {
                 $(".profileChangePswd").toggleClass("show");
             });
-
             /* $(document).on('click.bs.dropdown.data-api', '.dropdown.keep-inside-clicks-open', function(e) {
                  e.stopPropagation();
-             });*/
+             });
 
             $('.dropdown.keep-inside-clicks-open').on({
                 "shown.bs.dropdown": function() {

@@ -703,12 +703,15 @@ class PostService {
         $posts->updated_at = Carbon::now();
         if($posts->save()){ echo "Type = ".$type." -- File =".$filename."<pre>";
             //for store media into upload table
-            if (isset($type) && !empty($type)) {
+            if (isset($filename) && !empty($filename)) {
                 $upload = Upload::where('post_id', $posts->id)->first();
                 
                 if($upload) {
-                    $upload->image = ($type == 'image')? $filename : NULL;
-                    $upload->video = ($type == 'video')? $filename : NULL;
+                    if (isset($type) && ($type == 'image')) {
+                        $upload->image = $filename;
+                    } elseif (isset($type) && ($type == 'video')) {
+                        $upload->video = $filename;
+                    }
                     
                     $upload->save();
                 }

@@ -1,4 +1,5 @@
-<div class="modal-dialog">
+<div class="modal-dialog editPostM " role="document">
+    <div class="modal-content">
     <form id="updateVideoPostData" method="POST" name="updatePostData" action="{{ route('updatePostData') }}" class="upload-form" accept-charset="utf-8" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="id" value="{{ $myHubs->id }}">
@@ -22,7 +23,7 @@
                                 <span>Drag files to<br>upload</span>
                             </div>
                             <button class="blue-btn btn">CHOOSE FILE</button>
-                            <input type="file" id="input_multifileSelect2" name="files[]" multiple="multiple">
+                            <input type="file" id="input_multifileSelect2" name="files">
                         </div>
                         <div class="upload-file-name">
                             <!--                                    <div class="name-row">
@@ -98,8 +99,8 @@
                                 <input type="text" value="{{ old('local_beach_break', $beach_name) }}"
                                        class="form-control ps-2 mb-0 search-box" name="local_beach_break" autocomplete="off" required>
                                 <input type="hidden" name="local_beach_break_id"
-                                       id="local_beach_break_id" class="form-control" value="{{ old('local_beach_break', $myHubs->local_beach_break_id) }}">
-                                <div class="auto-search search1" id="country_list"></div>
+                                       id="local_beach_break_id" class="form-control" value="{{ old('local_beach_break', $myHubs->local_beach_id) }}">
+                                <div class="auto-search search12" id="country_list"></div>
                             </div>
                         </div>
                     </div>
@@ -126,6 +127,11 @@
                             <div class="col-md-8">
                                 <select class="form-select ps-2 mb-0" name="break_id" id="break_id">
                                     <option selected="selected" value="">-- Break --</option>
+                                    @foreach($breaks as $key => $value)
+                                    <option value="{{ $value->id }}"
+                                            {{ (isset($breakId) && ($breakId == $value->id)) ? "selected" : "" }}>
+                                        {{ $value->break_name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -142,7 +148,7 @@
                                 @endphp
                                 @foreach ($customArray['surfer'] as $key => $value)
                                 <div class="form-check d-inline-block me-3">
-                                    <input class="form-check-input" type="radio" name="surfer" value="{{$value}}"
+                                    <input class="form-check-input surfer-info" type="radio" name="surfer" value="{{$value}}"
                                            id="{{$value}}" required {{ ($surfer == $value) ? 'checked' : '' }} />
                                     <label for="{{$value}}" class="form-check-label">{{$value}}</label>
                                 </div>
@@ -151,17 +157,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" id="othersSurfer">
+                <div class="row d-none" id="othersSurferInfo">
                     <div class="col-md-6">
                         <div class="row mb-3 align-items-center">
-                            <label class="col-md-4 d-md-block d-none"></label>
+                            <label class="col-md-4 d-md-block  d-none"></label>
                             <div class="col-md-8">
 <!--                                        <input type="text" class="form-control ps-2 mb-0" placeholder="Search another user">-->
                                 <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
-                                       class="form-control ps-2 mb-0 other_surfer" placeholder="Search another user" required>
+                                       class="form-control ps-2 mb-0 edit_other_surfer" placeholder="Search another user" required>
                                 <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id"
-                                       id="surfer_id" class="form-control surfer_id">
-                                <div class="auto-search search2" id="other_surfer_list"></div>
+                                       id="edit_surfer_id" class="form-control surfer_id">
+                                <div class="auto-search searchOther" id="edit_other_surfer_list"></div>
                             </div>
                         </div>
                     </div>
@@ -256,6 +262,8 @@
         </div>
     </form>
 </div>
+</div>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script>
     $(document).ready(function () {
         /**
@@ -266,6 +274,8 @@
          * @param {type} immediate
          * @returns {Function}
          */
+       
+        
         var debounce = function (func, wait, immediate) {
             var timeout;
             return function () {
@@ -295,7 +305,7 @@
                     },
                     dataType: "json",
                     success: function (jsonResponse) {
-                        $('.country_list_beach').html(jsonResponse);
+                        $('#country_list').html(jsonResponse);
                     }
                 });
 
@@ -305,6 +315,9 @@
             }
 
         }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+
+        
+        
 
         // get application base url
         var base_url = window.location.origin;
@@ -352,9 +365,9 @@
 
         $('.surfer-info').click(function () {
             if ($(this).val() == "Others") {
-                $('.othersSurferInfo').show();
+                $('#othersSurferInfo').removeClass('d-none');
             } else {
-                $('.othersSurferInfo').hide();
+                $('#othersSurferInfo').addClass('d-none');
             }
         });
 
@@ -378,7 +391,8 @@
             }
         }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
-        $(document).on('click', '.search2 li', function () {
+       
+        $(document).on('click', '.searchOther li', function () {
             var value = $(this).text().trim();
             var dataId = $(this).attr("data-id");
             $('#edit_other_surfer_list').html("");
@@ -386,5 +400,64 @@
             $('#edit_surfer_id').val(dataId);
             $('#edit_other_surfer_list').html("");
         });
+        
+        $(document).on('click', '.search12', function () {
+            
+        var value = $(this).text();
+        var dataId = $(this).attr("data-id");
+        $('#country_list').html("");
+        $('.search-box').val(value);
+        $('#local_beach_break_id').val(dataId);
+        $('#country_list').html("");
     });
+    
+    
+    
+    });
+    
+     function setBeach(data) {
+        var dataId = data.getAttribute("data-id");
+        var value = $(data).text();
+        $('#country_list').html("");
+        $('.search-box').val(value);
+        $('#local_beach_break_id').val(dataId);
+        getBreak(dataId);
+        $('#country_list').html("");
+    }
+    function getBreak(beachValue) {
+//        var beachValue = $(this).val();
+        if (beachValue != 0) {
+            $.ajax({
+                type: "GET",
+                url: '/getBreak',
+                data: {
+                    beach_id: beachValue,
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    //console.log(jsonResponse);
+                    if (jsonResponse.status == 'success') {
+                        $("#break_id").empty();
+                        var myJsonData = jsonResponse.data;
+                        $("#break_id").append('<option value="">--Select--</option>');
+                        $.each(myJsonData, function (key, value) {
+                            if(value.break_name!='') {
+                            $("#break_id").append('<option value="' + value.id + '">' + value.break_name + '</option>');
+                            $("#break_id").rules( "add", {required: true,messages: { required: "Break is required"}});
+
+                        } else {
+                            $("#break_id").rules( "remove" );
+                        }
+                        });
+                    } else {
+                        $("#break_id").empty();
+                    }
+                }
+            });
+        } else {
+            $("#break_id").empty();
+        }
+    }
+    
 </script>

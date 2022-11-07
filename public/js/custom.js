@@ -1544,7 +1544,7 @@ $(document).ready(function () {
     });
    $(".dropdownmenuname").click(function(e){
    e.stopPropagation();
-})
+});
 
     // ajax form field data for filter
     $('.search-box2').keyup(debounce(function () {
