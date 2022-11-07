@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<!--<div class="container-fluid">
     <div class="d-flex">
         <div class="copyright">
             &copy; Copyright 2020, All rights reserved.
@@ -66,7 +66,22 @@
             </ul>
         </div>
     </div>
-</div>
+</div>-->
+<div class="container">
+            <div class="row align-items-lg-center">
+                <div class="col-lg-4">
+                    <p class="text-center text-lg-start"> Copyright 2020, All rights reserved.</p>
+                </div>
+                <div class="col-lg-8">
+                    <div class="justify-content-center justify-content-lg-end navbar-nav flex-wrap">
+                        <a class="nav-link" href="{{ route('privacy') }}">Privacy Policy</a>
+                        <a class="nav-link" href="{{ route('terms') }}">T&C's</a>
+                        <a class="nav-link" href="{{ route('faq') }}">Help/FAQ's</a>
+                        <a class="nav-link" href="{{ route('contact') }}">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 <a onclick="topFunction()" id="scrollToTop" title="Scroll to Top" style="display: none;">Top<span></span></a>
 <style>
 #scrollToTop {position:fixed;right:20px;bottom:28px;cursor:pointer;width:40px;height:40px;background-color:#000000;text-indent:-9999px;display:none;-webkit-border-radius:60px;-moz-border-radius:60px;border-radius:60px}

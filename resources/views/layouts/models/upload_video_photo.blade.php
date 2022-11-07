@@ -112,7 +112,7 @@
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label class="width-102">Beach / Break <span
+                                        <label class="width-102">Beach <span
                                                 class="mandatory">*</span></label>
                                     </div>
                                     <div class="col-md-8">
@@ -126,7 +126,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>  
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-md-4">
@@ -201,6 +201,23 @@
                 </div>
                 <div class="formWrap optionalFields">
                     <h2>Optional Info</h2>
+                    
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Break </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="selectWrap pos-rel">
+                                            <select class="form-control" name="break_id" id="break_id">
+                                                <option selected="selected" value="">-- Break --</option>
+                                                
+                                            </select>
+                                            <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>  
                     <div class="row">
                         <div class="col-md-3 align-self-end">
                             <img src="{{ asset("/img/img_4.jpg")}}" alt="" class="img-fluid">

@@ -4,6 +4,8 @@ namespace App\Services;
 use App\Models\Country;
 use App\Models\State;
 use App\Models\User;
+use App\Models\BeachBreak;
+use App\Models\UserFollow;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -26,6 +28,10 @@ class MasterService {
     protected $states;
 
     protected $users;
+    
+    protected $beach_break;
+    
+    protected $user_follow;
 
     public function __construct() {
        
@@ -38,6 +44,12 @@ class MasterService {
 
         // User model object
         $this->users = new User();
+       
+        // Beach break model object
+        $this->beach_break = new BeachBreak();
+       
+        // User Follow model object
+        $this->user_follow = new UserFollow();
        
         // get custom config file
         $this->checkUserType = config('customarray');
@@ -74,6 +86,23 @@ class MasterService {
             return $this->states->select('id', 'name')->where('country_id',$countryId)->orderBy('name','asc')->get();
         } else {
             return $this->states->select('id', 'name')->orderBy('name','asc')->get();
+        }
+    }
+    public function getBeachById($beach_id){
+        if(isset($beach_id) && !empty($beach_id)) {
+            return $this->beach_break->select('id', 'beach_name')->where('id',$beach_id)->orderBy('beach_name','asc')->get()->toArray();
+        } else {
+            return $this->beach_break->select('id', 'beach_name')->orderBy('beach_name','asc')->get()->toArray();
+        }
+    }
+    public function getBeaches(){
+            return $this->beach_break->select('id', 'beach_name')->groupBy('beach_name')->orderBy('beach_name','asc')->get()->toArray(); 
+    }
+    public function getBreakByBeachName($beach_name){
+        if(isset($beach_name) && !empty($beach_name)) {
+            return $this->beach_break->select('id', 'break_name')->where('beach_name',$beach_name)->orderBy('break_name','asc')->get();
+        } else {
+            return $this->beach_break->select('id', 'break_name')->orderBy('break_name','asc')->get();
         }
     }
 

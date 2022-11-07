@@ -31,6 +31,16 @@ class UserProfile extends Model
         'facebook',
         'instagram',
         'preferred_location',
+        'business_name',
+        'business_type',
+        'resort_name',
+        'resort_type',
+        'preferred_camera',
+        'paypal',
+        'website',
+        'company_name',
+        'company_address',
+        'industry',
     ];
 
     /************************************************************************************************************

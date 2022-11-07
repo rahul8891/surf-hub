@@ -77,7 +77,7 @@ class Post extends Model
      */
     public function beach_breaks()
     {
-        return $this->belongsTo(BeachBreak::class, 'local_beach_break_id', 'id');
+        return $this->belongsTo(BeachBreak::class, 'local_beach_id', 'id');
     }
 
     /**

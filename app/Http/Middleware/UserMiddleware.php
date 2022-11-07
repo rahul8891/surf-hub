@@ -25,7 +25,7 @@ class UserMiddleware
                 $user = Auth::user();
                 $checkUserType = config('customarray.userType');
                 if (in_array($user->user_type, $checkUserType)) {
-                    if($user->user_type == $checkUserType['USER']){
+                    if($user->user_type == ($checkUserType['USER'] || $checkUserType['PHOTOGRAPHER'] || $checkUserType['ADVERTISEMENT'] || $checkUserType['SURFER CAMP'])){
                         // return true and allow route to USER
                         return $next($request);
                     }else{
