@@ -347,7 +347,7 @@ class UserController extends Controller
 
     public function following()
     {
-        $following = $this->users->following();   
+        $following = $this->users->following(); 
         $common = $this->common;    
         return view('user.following',compact('following','common'));
     }
@@ -447,6 +447,40 @@ class UserController extends Controller
             return 'true';
         }
 
+    }
+    
+    public function searchFollwers(Request $request)
+    {
+        
+        $serachTerm = $request->searchTerm;
+        
+        $followers = $this->users->searchFollowers($serachTerm);  
+//        dd($followers);
+        $common = $this->common;
+        $view = view('elements/searchFollower', compact('followers', 'common'))->render();
+        return response()->json(['html' => $view]);
+    }
+    public function searchFollowing(Request $request)
+    {
+        
+        $serachTerm = $request->searchTerm;
+        
+        $following = $this->users->searchFollowing($serachTerm);  
+//        dd($followers);
+        $common = $this->common;
+        $view = view('elements/searchFollowing', compact('following', 'common'))->render();
+        return response()->json(['html' => $view]);
+    }
+    public function searchFollowRequest(Request $request)
+    {
+        
+        $serachTerm = $request->searchTerm;
+         
+        $followRequests = $this->users->searchFollowRequest($serachTerm);  
+//        dd($followers);
+        $common = $this->common;
+        $view = view('elements/searchFollowRequest', compact('followRequests', 'common'))->render();
+        return response()->json(['html' => $view]);
     }
 
 }

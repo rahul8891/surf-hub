@@ -7,7 +7,6 @@
                 @include('layouts.user.left_sidebar')
             </div>
             <div class="middle-content" id="post-data">
-                @include('layouts.user.content_menu')
 
                 <div class="profile-photo-edit">
                     <div class="profile-pic">

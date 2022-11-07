@@ -7,7 +7,6 @@
                 @include('layouts.user.left_sidebar')
             </div>
             <div class="middle-content" id="post-data">
-                @include('layouts.user.content_menu')
 
                 <div class="container mt-5">
                     <h2 class="text-center mb-4">Edit Profile</h2>

@@ -201,7 +201,7 @@
     @endforeach
                     
     <script type="text/javascript">
-        $('.rating').rating({
+        $('.rating-flex').rating({
              showClear:false, 
              showCaption:false
          });
