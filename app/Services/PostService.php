@@ -292,7 +292,7 @@ class PostService {
      * @param  
      * @return dataArray
      */
-    public function getFilteredData($params, $for) {
+    public function getFilteredData($params, $for, $type = null) {
         if ($for=='search'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
@@ -312,6 +312,12 @@ class PostService {
                         ->whereNull('posts.deleted_at')
                         ->where('posts.user_id', Auth::user()->id)
                         ->groupBy('posts.id');
+        }
+
+        if (($for ==' myhub') && ($type == 'posts')) {
+            $postArray->where('posts.post_type', 'PUBLIC');
+        } elseif (($for == 'myhub') && ($type == 'saved')) {
+            $postArray->where('posts.post_type', 'PRIVATE');
         }
         
         //************* applying conditions *****************/
