@@ -590,7 +590,6 @@ class UserPostController extends Controller
         try{
             $request_id = Crypt::decrypt($id);
             $surferRequest = SurferRequest::select("*")->where("id", "=", $request_id)->get()->toArray();
-//            echo '<pre>';            print_r($surferRequest);die;
             foreach ($surferRequest as $res) {
             $userName = User::select("user_name")->where("id", "=", $res['user_id'])->get();
             }
@@ -620,6 +619,24 @@ class UserPostController extends Controller
         }catch (\Exception $e){
             return redirect()->route('surferRequestList')->withErrors($e->getMessage());
         }
+    }
+    public function surferFollowRequest($id)
+    {
+            $request_id = Crypt::decrypt($id);
+            $customArray = $this->customArray;
+            $postsList = Post::where('is_deleted', '0')
+                ->join('surfer_requests', 'surfer_requests.post_id', '=', 'posts.id')    
+                ->where('surfer_requests.id', $request_id)
+                ->where('parent_id', '0')
+                ->where(function ($query) {
+                    $query->where('post_type', 'PUBLIC')
+                    ->orWhere('is_feed', '1');
+                })
+                ->orderBy('posts.created_at', 'DESC')
+                ->get('posts.*');
+//        echo '<pre>';        print_r($postsList);die;
+            return view('user.surfer-follow-request', compact('customArray','postsList','request_id'));
+
     }
 
     /**
@@ -735,11 +752,16 @@ class UserPostController extends Controller
                     $postIds = array_filter(array_column($posts, 'id'));
                     
                     $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
+//                    ->join('posts', 'posts.user_id', '=', 'surfer_requests.user_id')
                     ->whereIn("surfer_requests.post_id", $postIds)
                     ->where("surfer_requests.status", "=", 0)
-                    ->get(['surfer_requests.id','surfer_requests.post_id', 'user_profiles.first_name', 'user_profiles.last_name'])
-                    ->toArray();
+                    ->get(['surfer_requests.*', 'user_profiles.first_name', 'user_profiles.last_name']);
+                    
         return view('user.surfersRequestList',compact('surferRequest'));
+    }
+    public function notifications()
+    {      
+        return view('user.notifications');
     }
     public function upload(Request $request)
     {      

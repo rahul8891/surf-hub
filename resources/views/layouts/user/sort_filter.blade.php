@@ -268,3 +268,9 @@
     
 
 </div>
+<script type="text/javascript">
+        $('.start-rating-inner').rating({
+             showClear:false, 
+             showCaption:false
+         });
+    </script>

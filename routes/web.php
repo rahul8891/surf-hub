@@ -97,6 +97,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/following', [UserController::class, 'following'])->name('following');
     Route::post('/unfollow', [UserController::class, 'unfollow'])->name('unfollow');
     Route::post('/accept', [UserController::class, 'accept'])->name('accept');
+    Route::get('/searchFollwers', [UserController::class, 'searchFollwers'])->name('searchFollwers');
+    Route::get('/searchFollowing', [UserController::class, 'searchFollowing'])->name('searchFollowing');
+    Route::get('/searchFollowRequest', [UserController::class, 'searchFollowRequest'])->name('searchFollowRequest');
     Route::post('/reject', [UserController::class, 'reject'])->name('reject');
     Route::post('/remove', [UserController::class, 'remove'])->name('remove');
     Route::post('/follow', [UserController::class, 'follow'])->name('follow');
@@ -104,6 +107,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/posts/{post_id}/{notification_id}/{notification_type}', [UserPostController::class, 'posts'])->name('posts');
     Route::post('/user/updateNotificationCountStatus', [UserPostController::class, 'updateNotificationCountStatus'])->name('updateNotificationCountStatus');
     Route::post('updateNotificationCountStatus', [UserPostController::class, 'updateNotificationCountStatus'])->name('updateNotificationCountStatus');
+    Route::get('notifications', [UserPostController::class, 'notifications'])->name('notifications');
+    Route::get('surfer-follow-request/{id}', [UserPostController::class, 'surferFollowRequest'])->name('surferFollowRequest');
     
     
     Route::get('/surferRequest/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');

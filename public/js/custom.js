@@ -1313,6 +1313,76 @@ $(document).ready(function () {
         }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+    
+    $('#searchFollower').keyup(debounce(function () {
+        // the following function will be executed every half second	
+        var keyword = $('#searchFollower').val();
+//        if ($(this).val().length > 2) {
+            $.ajax({
+                type: "GET",
+                url: "/searchFollwers",
+                data: {
+                    searchTerm: keyword,
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    $('.list-followers').html(jsonResponse.html);
+                }
+            })
+
+//        } else {
+//            $('#local_beach_break_id').val('');
+//            $('#country_list').html("");
+//        }
+
+    }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+    $('#searchFollowing').keyup(debounce(function () {
+        // the following function will be executed every half second	
+        var keyword = $('#searchFollowing').val();
+//        if ($(this).val().length > 2) {
+            $.ajax({
+                type: "GET",
+                url: "/searchFollowing",
+                data: {
+                    searchTerm: keyword,
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    $('.list-followers').html(jsonResponse.html);
+                }
+            })
+
+//        } else {
+//            $('#local_beach_break_id').val('');
+//            $('#country_list').html("");
+//        }
+
+    }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+    $('#searchFollowRequest').keyup(debounce(function () {
+        // the following function will be executed every half second	
+        var keyword = $('#searchFollowRequest').val();
+//        if ($(this).val().length > 2) {
+            $.ajax({
+                type: "GET",
+                url: "/searchFollowRequest",
+                data: {
+                    searchTerm: keyword,
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    $('.list-followers').html(jsonResponse.html);
+                }
+            })
+
+//        } else {
+//            $('#local_beach_break_id').val('');
+//            $('#country_list').html("");
+//        }
+
+    }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
     $('.search-box4').keyup(debounce(function () {
         // the following function will be executed every half second	
@@ -1821,7 +1891,7 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '.accept', function () {
+    $(document).on('click', '.accept , .accept-follow', function () {
         var $this = $(this);
         var dataId = $(this).attr("data-id");
         $.ajax({

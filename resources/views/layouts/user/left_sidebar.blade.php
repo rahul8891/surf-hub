@@ -28,31 +28,31 @@
             </div>
             <div class="profile-row">
                 <img src="/img/followers.png" alt="Followers">
-                <span>Followers - <a class="blue-txt num" id="follwers" href="{{ route('followers') }}"></a></span>
+                 <a class=""  href="{{ route('followers') }}">Followers - <span class="blue-txt num" id="follwers"> </span></a>
             </div>
             <div class="profile-row">
                 <img src="/img/following.png" alt="Following">
-                <span>Following - <a class="blue-txt num" id="follwing" href="{{ route('following') }}"></a></span>
+                 <a class="" href="{{ route('following') }}">Following - <span class="blue-txt num" id="follwing"> </span></a>
             </div>
             <div class="profile-row">
                 <img src="/img/posts.png" alt="posts">
-                <span>Posts - <a class="blue-txt num" id="posts" href="{{ route('profile') }}"></a></span>
+                 <a class="" href="{{ route('profile') }}">Posts - <span class="blue-txt num" id="posts"> </span></a>
             </div>
             <div class="profile-row">
                 <img src="/img/upload.png" alt="Uploads">
-                <span>Uploads - <a class="blue-txt num" id="uploads" href="{{ route('profile') }}"></a></span>
+                 <a class="" href="{{ route('profile') }}">Uploads - <span class="blue-txt num" id="uploads"> </span></a>
             </div>
             <div class="profile-row">
                 <img src="/img/follow-request.png" alt="Follow Requests">
-                <span>Follow Requests <a class="notification" id="followRequest" href="{{ route('followRequests') }}"></a></span>
+                 <a class=""  href="{{ route('followRequests') }}">Follow Requests <span class="notification" id="followRequest"></span></a>
             </div>
             <div class="profile-row">
                 <img src="/img/small-logo.png" alt="Surfer Requests">
-                <span>Surfer Requests <a class="notification" id="surferRequest" href="{{ route('surferRequestList') }}"></a></span>
+                <a class="" href="{{ route('surferRequestList') }}">Surfer Requests <span class="notification" id="surferRequest"></span></a>
             </div>
             <div class="profile-row">
                 <img src="/img/notification.png" alt="Notifications" class="mr-2">
-                <span>Notifications <a class="notification" id="notification" href="{{ route('profile') }}"></a></span>
+                <a class="" href="{{ route('notifications') }}">Notifications <span class="notification" id="notification"></span></a>
             </div>
             <div class="profile-row">
                 <form method="POST" action="{{ route('logout') }}">
@@ -76,13 +76,13 @@
                                             url: "/follow-counts",
                                             dataType: "json",
                                             success: function (jsonResponse) {
-                                                $('#follwers').html(jsonResponse['follwers']);
-                                                $('#follwing').html(jsonResponse['follwing']);
-                                                $('#followRequest').html(jsonResponse['follwerRequest']);
-                                                $('#posts').html(jsonResponse['posts']);
-                                                $('#uploads').html(jsonResponse['uploads']);
+                                                $('#follwers').append(jsonResponse['follwers']);
+                                                $('#follwing').append(jsonResponse['follwing']);
+                                                $('#followRequest').append(jsonResponse['follwerRequest']);
+                                                $('#posts').append(jsonResponse['posts']);
+                                                $('#uploads').append(jsonResponse['uploads']);
                                                 $('#surferRequest').html(jsonResponse['surferRequest']);
-                                                $('.notification').html(jsonResponse['notification']);
+                                                $('.notification').append(jsonResponse['notification']);
 //                setInterval(myTimerUserMessage, 4000);
                                             }
                                         });
