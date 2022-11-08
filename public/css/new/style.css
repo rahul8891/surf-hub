@@ -1724,6 +1724,16 @@ header .notification {
     background: #000;
     text-align: center; 
 }
+.newsFeedImgVideoSlider img,.newsFeedImgVideoSlider video {
+    height: 700px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.newsFeedImgVideoSlider {
+    background: #000;
+    text-align: center; 
+}
 .modal-dialog {
     max-width : 700px !important;
 }

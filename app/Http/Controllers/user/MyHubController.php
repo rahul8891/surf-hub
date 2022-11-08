@@ -233,6 +233,29 @@ class MyHubController extends Controller
         }
         // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));    
     }
+    public function getPostFullScreen($id, Request $request)
+    {   try{
+           $postsList = Post::select('posts.*')
+                ->join('uploads', 'uploads.post_id', '=', 'posts.id')   
+//                ->where('post.is_deleted', '0')   
+                ->where('posts.id', '<=', $id)
+                ->where('parent_id', '0')
+                ->where(function ($query) {
+                    $query->where('uploads.image', '<>','')
+                    ->orWhere('uploads.video', '<>','');
+                })
+                ->orderBy('posts.created_at', 'DESC')
+                ->paginate(100);
+        }catch (\Exception $e){         
+            throw ValidationException::withMessages([$e->getMessage()]);
+        }
+        
+        if ($request->ajax()) {
+            $view = view('elements/full_screen_slider',compact('postsList'))->render();
+            return response()->json(['html' => $view]);
+        }
+        // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));    
+    }
 
     /**
      * Update the specified resource in storage.
