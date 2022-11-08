@@ -78,6 +78,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     // Route::get('/getPostData/{id}/{type}', [MyHubController::class, 'edit'])->name('getPostData');
     Route::post('/updatePostData', [MyHubController::class, 'update'])->name('updatePostData');
     Route::get('/getPostData/{id}', [MyHubController::class, 'edit'])->name('getPostData');
+    Route::get('/getPostFullScreen/{id}', [MyHubController::class, 'getPostFullScreen'])->name('getPostFullScreen');
     Route::get('/user/myhub/filter', [MyHubController::class, 'filter'])->name('myhubFilterIndex');
     
 //    Route::get('search',[SearchController::class, 'search'])->name('searchPosts');

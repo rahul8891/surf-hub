@@ -15,6 +15,8 @@
 	<script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
         <link rel="stylesheet" href="{{ asset("/css/new/croppie.css") }}" />
         <link rel="stylesheet" href="{{ asset("/css/new/star-rating.min.css") }}" />
+        <link rel="stylesheet" href="{{ asset("/css/new/slick.css") }}" />
+        <link rel="stylesheet" href="{{ asset("/css/new/slick-theme.css") }}" />
 </head>
 
 <body class="login-body">
@@ -66,6 +68,7 @@
     <script src="{{ asset("js/post.js")}}"></script>
     @endif
     <script src="{{ asset("js/new/star-rating.min.js")}}"></script>    
+    <script src="{{ asset("js/new/slick.js")}}"></script>        
     <script>
 
         $('.rating').rating({
