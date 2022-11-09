@@ -76,7 +76,7 @@ class MyHubController extends Controller
             return response()->json(['html' => $view]);
         }
         
-        return view('user.feed',compact('postsList','customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name','beaches'));
+        return view('user.myhub',compact('postsList','customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name','beaches','post_type'));
     }
     
     /**
@@ -87,6 +87,7 @@ class MyHubController extends Controller
     public function newIndex(Request $request) 
     {
         $beach_name="";
+        $post_type = 'all';
         $params = $request->all();
         $order = $request->input('order');
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
@@ -109,7 +110,7 @@ class MyHubController extends Controller
             return response()->json(['html' => $view]);
         }
         
-        return view('user.feed',compact('postsList','customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name','beaches'));
+        return view('user.myhub',compact('postsList','customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name','beaches','post_type'));
     }
 
 
