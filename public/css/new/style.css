@@ -591,7 +591,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     color: #FFFFFF;
     background-color: #325CFD;
     flex: 1 1 auto;
-    height: 40px;
     text-align: center;
     cursor: pointer;
     line-height: 40px;
@@ -1823,4 +1822,8 @@ header .notification {
 
 .modal-dialog {
     max-width: 700px !important;
+}
+.left-option .active a {
+    border-bottom: 3px solid #fff;
+    padding-bottom: 6px;
 }

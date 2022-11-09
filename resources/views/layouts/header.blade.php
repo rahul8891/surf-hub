@@ -30,7 +30,7 @@
                 </a>
             </div>
             @if (Auth::user())
-            <div class="">
+            <div class="{{ userActiveMenu('upload') }}">
                 <a class="nav-link" href="{{route('upload')}}">
                     <span class="header-icon upload"></span>
                     <span class="align-middle">UPLOAD</span>

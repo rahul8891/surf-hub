@@ -3,7 +3,6 @@
     <div class="inner-my-details">
         <div class="my-profile text-center">
             <div class="profile-pic">
-           
                 @if(Auth::user()->profile_photo_path)
                 <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}"
                     alt="profile-pic" class="rounded-circle">
@@ -12,9 +11,6 @@
                     {{ucwords(substr(Auth::user()->user_profiles->first_name,0,1))}}{{ucwords(substr(Auth::user()->user_profiles->last_name,0,1))}}
                 </div>
                 @endif
-                
-<!--                <img src="/img/profile-pic.png" alt="profile-pic">-->
-            
                 <span class="notification">0</span>
             </div>
             <div class="my-name">{{ ucwords(Auth::user()->user_profiles->first_name .' '.Auth::user()->user_profiles->last_name) }}</div>
