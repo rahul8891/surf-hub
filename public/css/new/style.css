@@ -118,14 +118,58 @@ header .navbar-nav .active .nav-link {
     color: #325CFD;
 }
 
-header .navbar-nav .nav-link span {
+header .navbar-nav .nav-link .header-icon {
+    background-image: url(/img/sprite.png);
+    display: inline-block;
+    vertical-align: middle;
     margin-right: 3px;
+}
+
+header .navbar-nav .nav-link .feed {
+    background-position: -18px -61px;
+    width: 23px;
+    height: 21px;
+}
+
+header .navbar-nav .active .nav-link  .feed {
+    background-position: -18px -96px;
+}
+
+header .navbar-nav .nav-link .my-hub {
+    background-position: -74px -94px;
+    width: 21px;
+    height: 23px;
+}
+
+header .navbar-nav .active .nav-link  .my-hub {
+    background-position: -74px -42px;
+}
+
+header .navbar-nav .nav-link .search {
+    background-position: -128px -45px;
+	width: 22px;
+	height: 23px;
+}
+
+header .navbar-nav .active .nav-link  .search {
+    background-position: -128px -97px;
+}
+
+header .navbar-nav .nav-link .upload {
+    background-position: -182px -40px;
+	width: 28px;
+	height: 28px;
+}
+
+header .navbar-nav .active .nav-link  .upload {
+    background-position: -182px -92px;
 }
 
 header .navbar-nav.middle-menu {
     justify-content: space-between;
     max-width: 100%;
     width: 600px;
+    align-items: center;
 }
 
 header .side-navbar .navbar-nav {
