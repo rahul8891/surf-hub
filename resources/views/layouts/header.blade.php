@@ -27,7 +27,7 @@
                 </a>
             </div>
             @if (Auth::user())
-            <div class="">
+            <div class="{{ userActiveMenu('upload') }}">
                 <a class="nav-link" href="{{route('upload')}}"><img src="/img/new/upload.png" alt="Upload" class="align-middle">
                     <span class="align-middle">UPLOAD</span>
                 </a>
