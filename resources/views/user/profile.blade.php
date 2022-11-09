@@ -12,7 +12,7 @@
                     <div class="profile-pic">
                         @if(Auth::user()->profile_photo_path)
                         <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}"
-                             alt="">
+                             alt="" class="rounded-circle">
                         @endif
                     </div>
                     <div class="name">
