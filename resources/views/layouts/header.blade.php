@@ -9,14 +9,30 @@
                 </button>
                 <a class="navbar-brand" href="#"><img src="/img/logo.png" alt="Logo"></a>
                 <div class="navbar-nav middle-menu" style="<?php echo !Auth::user()?'width:250px !important;margin-right:220px;':'' ?>">
-                    <a class="nav-link" href="/dashboard"><img src="{{ asset("/img/home.png")}}" alt="Feed" class="align-middle"> <span class="align-middle">FEED</span></a>
-                    @if(Auth::user()) 
-                    <a class="nav-link" href="{{ route('myhub') }}"><img src="{{ asset("/img/hub.png")}}" alt="Hub" class="align-middle"> <span class="align-middle">MY HUB</span></a>
-                    @endif
-                    <a class="nav-link" href="/search"><img src="{{ asset("/img/search.png")}}" alt="Search" class="align-middle"> <span class="align-middle">SEARCH</span></a>
-                   @if(Auth::user()) 
-                    <a class="nav-link" href="/upload"><img src="{{ asset("/img/upload.png")}}" alt="Upload" class="align-middle"> <span class="align-middle">UPLOAD</span></a>
-                    @endif
+                    <div class="{{ userActiveMenu('dashboard') }}">
+                <a class="nav-link" href="/"><img src="/img/new/home.png" alt="Feed" class="align-middle">
+                    <span class="align-middle">FEED</span>
+                </a>
+            </div>
+            @if (Auth::user())
+            <div class="{{ userActiveMenu('myhub') }}">
+                <a class="nav-link" href="{{ route('myhub') }}"><img src="/img/new/hub.png" alt="Hub" class="align-middle">
+                    <span class="align-middle">MY HUB</span>
+                </a>
+            </div>
+            @endif
+            <div class="{{ userActiveMenu('searchPosts') }}">
+                <a class="nav-link" href="{{route('searchPosts')}}"><img src="/img/new/search.png" alt="Search" class="align-middle"> 
+                    <span class="align-middle">SEARCH</span>
+                </a>
+            </div>
+            @if (Auth::user())
+            <div class="">
+                <a class="nav-link" href="{{route('upload')}}"><img src="/img/new/upload.png" alt="Upload" class="align-middle">
+                    <span class="align-middle">UPLOAD</span>
+                </a>
+            </div>
+            @endif
                 </div>
                 <div class="side-navbar">
                     <div class="navbar-nav">
