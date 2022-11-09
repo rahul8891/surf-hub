@@ -1832,3 +1832,8 @@ header .notification {
     border-bottom: 3px solid #fff;
     padding-bottom: 3px;
 }
+
+.profile-row.active a {
+    border-bottom: 1px solid #C0BCBC;
+    padding-bottom: 5px;
+}
