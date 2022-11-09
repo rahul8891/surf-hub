@@ -41,7 +41,7 @@
                             <div class="user-right">
                                 <img src="/img/normal-user.png" alt="normal-user">
                                 <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
-                                    <img src="/img/new/follow-user.png"> FOLLOW
+                                <span class="follow-icon"></span> FOLLOW
                                 </button>
                             </div>
                             @endif
