@@ -66,7 +66,6 @@ p {
 .blue-btn {
     border: 2px solid #325CFD;
     background: #325CFD;
-    border: #325CFD;
 }
 
 .red-btn {
@@ -1046,7 +1045,7 @@ header .notification {
     border: 1px solid #C0BCBC;
     font-weight: 600;
     font-size: 14px;
-    line-height: 19px;
+    line-height: 30px;
     width: 81px;
     height: 35px;
     border-radius: 0;
@@ -1813,8 +1812,8 @@ header .notification {
     height: 325px;
 }
 
-.newsFeedImgVideoSlider img,
-.newsFeedImgVideoSlider video {
+.newsFeedImgVideoSlider > img,
+.newsFeedImgVideoSlider > video {
     height: 700px;
     width: 100%;
     object-fit: cover;
@@ -1823,6 +1822,7 @@ header .notification {
 .newsFeedImgVideoSlider {
     background: #000;
     text-align: center;
+    position: relative;
 }
 
 .modal-dialog {
@@ -1836,4 +1836,10 @@ header .notification {
 .profile-row.active a {
     border-bottom: 1px solid #C0BCBC;
     padding-bottom: 5px;
+}
+.spotify-btn{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 1;
 }
