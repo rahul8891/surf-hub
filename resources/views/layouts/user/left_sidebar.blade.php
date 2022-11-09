@@ -72,13 +72,13 @@
                                             url: "/follow-counts",
                                             dataType: "json",
                                             success: function (jsonResponse) {
-                                                $('#follwers').append(jsonResponse['follwers']);
-                                                $('#follwing').append(jsonResponse['follwing']);
-                                                $('#followRequest').append(jsonResponse['follwerRequest']);
-                                                $('#posts').append(jsonResponse['posts']);
-                                                $('#uploads').append(jsonResponse['uploads']);
+                                                $('#follwers').html(jsonResponse['follwers']);
+                                                $('#follwing').html(jsonResponse['follwing']);
+                                                $('#followRequest').html(jsonResponse['follwerRequest']);
+                                                $('#posts').html(jsonResponse['posts']);
+                                                $('#uploads').html(jsonResponse['uploads']);
                                                 $('#surferRequest').html(jsonResponse['surferRequest']);
-                                                $('.notification').append(jsonResponse['notification']);
+                                                $('.notification').html(jsonResponse['notification']);
 //                setInterval(myTimerUserMessage, 4000);
                                             }
                                         });

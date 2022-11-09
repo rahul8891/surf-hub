@@ -410,7 +410,7 @@ class UserController extends Controller
     public function followCounts(Request $request)
     {
 //        $data = $request->all();
-        $followersCount = $this->users->getFollowDataCount('followed_user_id',array('0'));
+        $followersCount = $this->users->getFollowDataCount('followed_user_id',array('0','1'));
         $followingCount = $this->users->getFollowDataCount('follower_user_id',array('0','1'));
         $followRequestCount = $this->users->getFollowDataCount('followed_user_id',array('1'));
         $notification = $this->users->getNotificationCount();
