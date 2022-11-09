@@ -292,7 +292,7 @@ class PostService {
      * @param  
      * @return dataArray
      */
-    public function getFilteredData($params, $for) {
+    public function getFilteredData($params, $for, $type = null) {
         if ($for=='search'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
@@ -312,6 +312,12 @@ class PostService {
                         ->whereNull('posts.deleted_at')
                         ->where('posts.user_id', Auth::user()->id)
                         ->groupBy('posts.id');
+        }
+
+        if (($for ==' myhub') && ($type == 'posts')) {
+            $postArray->where('posts.post_type', 'PUBLIC');
+        } elseif (($for == 'myhub') && ($type == 'saved')) {
+            $postArray->where('posts.post_type', 'PRIVATE');
         }
         
         //************* applying conditions *****************/
@@ -697,12 +703,15 @@ class PostService {
         $posts->updated_at = Carbon::now();
         if($posts->save()){ echo "Type = ".$type." -- File =".$filename."<pre>";
             //for store media into upload table
-            if (isset($type) && !empty($type)) {
+            if (isset($filename) && !empty($filename)) {
                 $upload = Upload::where('post_id', $posts->id)->first();
                 
                 if($upload) {
-                    $upload->image = ($type == 'image')? $filename : NULL;
-                    $upload->video = ($type == 'video')? $filename : NULL;
+                    if (isset($type) && ($type == 'image')) {
+                        $upload->image = $filename;
+                    } elseif (isset($type) && ($type == 'video')) {
+                        $upload->video = $filename;
+                    }
                     
                     $upload->save();
                 }

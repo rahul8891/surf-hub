@@ -68,15 +68,19 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/user/change-password', [UserController::class, 'showChangePassword'])->name('showPassword');
 
     Route::get('/user/profile', [UserController::class, 'showProfile'])->name('profile');
+    Route::get('/user/edit-profile', [UserController::class, 'editProfile'])->name('edit-profile');
 
     Route::post('/post/profile', [UserController::class, 'storeProfile'])->name('storeProfile');
 
    // Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
     
     Route::get('/user/myhub', [MyHubController::class, 'newIndex'])->name('myhub');
+    Route::get('/user/myhub/{post_type?}', [MyHubController::class, 'index'])->name('myhubs');
+    
     // Route::get('/getPostData/{id}/{type}', [MyHubController::class, 'edit'])->name('getPostData');
     Route::post('/updatePostData', [MyHubController::class, 'update'])->name('updatePostData');
     Route::get('/getPostData/{id}', [MyHubController::class, 'edit'])->name('getPostData');
+    Route::get('/getPostFullScreen/{id}', [MyHubController::class, 'getPostFullScreen'])->name('getPostFullScreen');
     Route::get('/user/myhub/filter', [MyHubController::class, 'filter'])->name('myhubFilterIndex');
     
 //    Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
@@ -96,6 +100,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/following', [UserController::class, 'following'])->name('following');
     Route::post('/unfollow', [UserController::class, 'unfollow'])->name('unfollow');
     Route::post('/accept', [UserController::class, 'accept'])->name('accept');
+    Route::get('/searchFollwers', [UserController::class, 'searchFollwers'])->name('searchFollwers');
+    Route::get('/searchFollowing', [UserController::class, 'searchFollowing'])->name('searchFollowing');
+    Route::get('/searchFollowRequest', [UserController::class, 'searchFollowRequest'])->name('searchFollowRequest');
     Route::post('/reject', [UserController::class, 'reject'])->name('reject');
     Route::post('/remove', [UserController::class, 'remove'])->name('remove');
     Route::post('/follow', [UserController::class, 'follow'])->name('follow');
@@ -103,6 +110,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/posts/{post_id}/{notification_id}/{notification_type}', [UserPostController::class, 'posts'])->name('posts');
     Route::post('/user/updateNotificationCountStatus', [UserPostController::class, 'updateNotificationCountStatus'])->name('updateNotificationCountStatus');
     Route::post('updateNotificationCountStatus', [UserPostController::class, 'updateNotificationCountStatus'])->name('updateNotificationCountStatus');
+    Route::get('notifications', [UserPostController::class, 'notifications'])->name('notifications');
+    Route::get('surfer-follow-request/{id}', [UserPostController::class, 'surferFollowRequest'])->name('surferFollowRequest');
     
     
     Route::get('/surferRequest/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');

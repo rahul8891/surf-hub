@@ -15,6 +15,8 @@
 	<script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
         <link rel="stylesheet" href="{{ asset("/css/new/croppie.css") }}" />
         <link rel="stylesheet" href="{{ asset("/css/new/star-rating.min.css") }}" />
+        <link rel="stylesheet" href="{{ asset("/css/new/slick.css") }}" />
+        <link rel="stylesheet" href="{{ asset("/css/new/slick-theme.css") }}" />
 </head>
 
 <body class="login-body">
@@ -66,6 +68,7 @@
     <script src="{{ asset("js/post.js")}}"></script>
     @endif
     <script src="{{ asset("js/new/star-rating.min.js")}}"></script>    
+    <script src="{{ asset("js/new/slick.js")}}"></script>        
     <script>
 
         $('.rating').rating({
@@ -80,43 +83,42 @@
             $("#My-Profile").click(function() {
                 $(".profileChangePswd").toggleClass("show");
             });
-
-            /* $(document).on('click.bs.dropdown.data-api', '.dropdown.keep-inside-clicks-open', function(e) {
-                 e.stopPropagation();
-             });*/
-
-            $('.dropdown.keep-inside-clicks-open').on({
-                "shown.bs.dropdown": function() {
-                    this.closable = false;
-                },
-                "click": function() {
-                    this.closable = false;
-                },
-                "hide.bs.dropdown": function() {
-                    return this.closable;
-                }
-            });
-
-            $(".nice-wrapper").niceScroll({
-                cursorwidth: '10px',
-                zindex: 999
-            });
-
-            $('#msg').delay(4000).fadeOut('slow');
-
-            $('#msg').delay(4000).fadeOut('slow');
-
-
-            $('.navbar-toggler-icon').click( function(event){
-                event.stopPropagation();
-                $('.navbar-collapse').toggle('fast');
-            });
-
-            $(document).click( function(){
-                $('.navbar-collapse').slideUp('fast');
-            });
+//            /* $(document).on('click.bs.dropdown.data-api', '.dropdown.keep-inside-clicks-open', function(e) {
+//                 e.stopPropagation();
+//             });
+//
+//            $('.dropdown.keep-inside-clicks-open').on({
+//                "shown.bs.dropdown": function() {
+//                    this.closable = false;
+//                },
+//                "click": function() {
+//                    this.closable = false;
+//                },
+//                "hide.bs.dropdown": function() {
+//                    return this.closable;
+//                }
+//            });
+//
+//            $(".nice-wrapper").niceScroll({
+//                cursorwidth: '10px',
+//                zindex: 999
+//            });
+//
+//            $('#msg').delay(4000).fadeOut('slow');
+//
+//            $('#msg').delay(4000).fadeOut('slow');
+//
+//
+//            $('.navbar-toggler-icon').click( function(event){
+//                event.stopPropagation();
+//                $('.navbar-collapse').toggle('fast');
+//            });
+//
+//            $(document).click( function(){
+//                $('.navbar-collapse').slideUp('fast');
+//            });
         });
-
+//
         function openFullscreen(id) {
             var elem = document.getElementById("myImage"+id);
             if (elem.requestFullScreen) {
