@@ -583,6 +583,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     display: flex;
     align-items: center;
     gap: 0;
+    line-height: 40px;
+    background: #325CFD;
 }
 
 .filter-sort .sort,
@@ -593,6 +595,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     flex: 1 1 auto;
     text-align: center;
     cursor: pointer;
+}
+.filter-sort .sort,
+.filter-sort .filter{
     line-height: 40px;
 }
 
@@ -1798,14 +1803,14 @@ header .notification {
 
 .newsFeedImgVideo img,
 .newsFeedImgVideo video {
-    height: 325px;
-    /*width: 100%;*/
-    object-fit: cover;
+    height: 100%;
+    width: auto;
 }
 
 .newsFeedImgVideo {
     background: #000;
     text-align: center;
+    height: 325px;
 }
 
 .newsFeedImgVideoSlider img,
@@ -1825,5 +1830,5 @@ header .notification {
 }
 .left-option .active a {
     border-bottom: 3px solid #fff;
-    padding-bottom: 6px;
+    padding-bottom: 3px;
 }
