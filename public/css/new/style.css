@@ -103,7 +103,11 @@ header .navbar-nav .nav-link {
     color: #616161;
 }
 
-header .navbar-nav .nav-link img {
+header .navbar-nav .active .nav-link {
+    color: #325CFD;
+}
+
+header .navbar-nav .nav-link span {
     margin-right: 3px;
 }
 
@@ -270,7 +274,7 @@ header .side-navbar .dropdown .dropdown-menu {
 
 .form-select {
     cursor: pointer;
-    background-image: url(../img/dropdwon.png);
+    background-image: url(/img/dropdwon.png);
     background-size: 10px 6px;
     background-color: transparent;
 }
@@ -285,72 +289,72 @@ header .side-navbar .dropdown .dropdown-menu {
 }
 
 .user-icon {
-    background: url(../img/user.png) left 15px center no-repeat;
+    background: url(/img/user.png) left 15px center no-repeat;
 }
 
 .user-type-icon {
-    background: url(../img/user-type.png) left 15px center no-repeat;
+    background: url(/img/user-type.png) left 15px center no-repeat;
 
 }
 
 .email-icon {
-    background: url(../img/email.png) left 15px center no-repeat;
+    background: url(/img/email.png) left 15px center no-repeat;
 }
 
 .password-icon {
-    background: url(../img/password.png) left 15px center no-repeat;
+    background: url(/img/password.png) left 15px center no-repeat;
 }
 
 .gender-icon {
-    background: url(../img/gender.png) left 15px center no-repeat;
+    background: url(/img/gender.png) left 15px center no-repeat;
 }
 
 .country-icon {
-    background: url(../img/country.png) left 15px center no-repeat;
+    background: url(/img/country.png) left 15px center no-repeat;
 }
 
 .postal-code-icon {
-    background: url(../img/postal-code.png) left 15px center no-repeat;
+    background: url(/img/postal-code.png) left 15px center no-repeat;
 }
 
 .location-icon {
-    background: url(../img/location.png) left 15px center no-repeat;
+    background: url(/img/location.png) left 15px center no-repeat;
 }
 
 .board-icon {
-    background: url(../img/board.png) left 15px center no-repeat;
+    background: url(/img/board.png) left 15px center no-repeat;
 }
 
 .paypal-icon {
-    background: url(../img/paypal.png) left 15px center no-repeat;
+    background: url(/img/paypal.png) left 15px center no-repeat;
 }
 
 .phone-icon {
-    background: url(../img/phone.png) left 15px center no-repeat;
+    background: url(/img/phone.png) left 15px center no-repeat;
 }
 
 .calender-icon {
-    background: url(../img/calender.png) left 15px center no-repeat;
+    background: url(/img/calender.png) left 15px center no-repeat;
 }
 
 .photographer-icon {
-    background: url(../img/photographer.png) left 15px center no-repeat;
+    background: url(/img/photographer.png) left 15px center no-repeat;
 }
 
 .url-icon {
-    background: url(../img/url.png) left 15px center no-repeat;
+    background: url(/img/url.png) left 15px center no-repeat;
 }
 
 .global-icon {
-    background: url(../img/global.png) left 15px center no-repeat;
+    background: url(/img/global.png) left 15px center no-repeat;
 }
 
 .camera-icon {
-    background: url(../img/camera.png) left 15px center no-repeat;
+    background: url(/img/camera.png) left 15px center no-repeat;
 }
 
 .company-icon {
-    background: url(../img/company.png) left 15px center no-repeat;
+    background: url(/img/company.png) left 15px center no-repeat;
 }
 
 .login-wrap .form-check,
@@ -420,7 +424,7 @@ footer .navbar-nav .nav-link {
 }
 
 .upload-photo {
-    margin-bottom: 23px;
+    margin-bottom: 10px;
 }
 
 .upload-photo>div {
@@ -1191,11 +1195,23 @@ header .notification {
 .w-150 {
     width: 150px;
 }
-.clicked{
-    background: #325CFD !important;
-    color: #fff !important;
-    border: #fff !important;
+.user-details .follow-btn.clicked{
+    background: #325CFD;
+    color: #fff;
+    border: #fff;
     
+}
+.follow-icon{
+    background-image: url(/img/sprite.png);
+    background-position: -10px -9px;
+	width: 23px;
+	height: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+.follow-btn.clicked .follow-icon{
+    background-position: -10px -35px;
 }
 .rating-flex {
     display: flex;
@@ -1232,4 +1248,25 @@ header .notification {
 }
 .glyphicon-star-empty:before {
     content: "\e007";
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.alert-dismissible button.close {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    z-index: 2;
+    box-sizing: content-box;
+    border: 0;
+    border-radius: 0.25rem;
+    background: none;
+    font-size: 30px;
+    color: #842029;
+    transform: translateY(-50%);
 }
