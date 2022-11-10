@@ -890,6 +890,8 @@ header .profile-pic {
     height: 35px;
     position: relative;
     margin-left: 15px;
+    border: 2px solid #C0BCBC;
+    border-radius: 50%;
 }
 
 header .notification {

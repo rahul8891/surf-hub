@@ -3,8 +3,14 @@ $('.left-navbar-toggler').on('click', function (e) {
     $('.my-details-div').toggleClass('menu-slideIn');
 });
 
-$(".rating-flex .avg-rating").click(function(){
-  $(".rating-container").show(250);
+$(".rating-flex").click(function(){
+  $(this).children(".rating-container").show();
+  $(this).children(".avg-rating").hide();
+});
+
+$(".rating-stars").click(function(){
+  $(this).parents(".rating-container").hide();
+  $(this).parents(".rating-container").siblings(".avg-rating").show();
 });
 
 $(document).ready(function() { 
