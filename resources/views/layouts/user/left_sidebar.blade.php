@@ -17,36 +17,36 @@
             <div class="my-comp">Surfhub <span class="blue-txt">$2540</span> Earn</div>
         </div>
         <div class="profile-menu">
-            <div class="profile-row">
+            <div class="profile-row {{ userActiveMenu('profile') }}">
                 <img src="/img/hub.png" alt="User">
                 <!--<span>My Profile</span>-->
                 <a href="{{ route('profile') }}">My Profile</a>
             </div>
-            <div class="profile-row">
+            <div class="profile-row {{ userActiveMenu('followers') }}">
                 <img src="/img/followers.png" alt="Followers">
                  <a class=""  href="{{ route('followers') }}">Followers - <span class="blue-txt num" id="follwers"> </span></a>
             </div>
-            <div class="profile-row">
+            <div class="profile-row {{ userActiveMenu('following') }}">
                 <img src="/img/following.png" alt="Following">
                  <a class="" href="{{ route('following') }}">Following - <span class="blue-txt num" id="follwing"> </span></a>
             </div>
-            <div class="profile-row">
+            <div class="profile-row {{ ((userActiveMenu('myhubs') == 'active') && ($post_type == 'posts'))?'active':'' }}">
                 <img src="/img/posts.png" alt="posts">
-                 <a class="" href="{{ route('profile') }}">Posts - <span class="blue-txt num" id="posts"> </span></a>
+                 <a class="" href="{{ route('myhubs', 'posts') }}">Posts - <span class="blue-txt num" id="posts"> </span></a>
             </div>
-            <div class="profile-row">
+            <div class="profile-row {{ userActiveMenu('upload') }}">
                 <img src="/img/upload.png" alt="Uploads">
                  <a class="" href="{{ route('profile') }}">Uploads - <span class="blue-txt num" id="uploads"> </span></a>
             </div>
-            <div class="profile-row">
+            <div class="profile-row {{ userActiveMenu('followRequests') }}">
                 <img src="/img/follow-request.png" alt="Follow Requests">
                  <a class=""  href="{{ route('followRequests') }}">Follow Requests <span class="notification" id="followRequest"></span></a>
             </div>
-            <div class="profile-row">
+            <div class="profile-row {{ userActiveMenu('surferRequestList') }}">
                 <img src="/img/small-logo.png" alt="Surfer Requests">
                 <a class="" href="{{ route('surferRequestList') }}">Surfer Requests <span class="notification" id="surferRequest"></span></a>
             </div>
-            <div class="profile-row">
+            <div class="profile-row {{ userActiveMenu('notifications') }}">
                 <img src="/img/notification.png" alt="Notifications" class="mr-2">
                 <a class="" href="{{ route('notifications') }}">Notifications <span class="notification" id="notification"></span></a>
             </div>
