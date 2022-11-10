@@ -15,18 +15,9 @@
     <link rel="stylesheet" href="{{ asset("/css/new/slick-theme.css") }}" />
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/new/style.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/new/media.css') }}">	
-    <link rel="stylesheet" href="{{ asset("/css/new/croppie.css") }}" />
-    <link rel="stylesheet" href="{{ asset("/css/new/star-rating.min.css") }}" />
-    <link rel="stylesheet" href="{{ asset("/css/new/slick.css") }}" />
-    <link rel="stylesheet" href="{{ asset("/css/new/slick-theme.css") }}" />
-
     <script src="{{ asset('js/new/jquery-3.5.1.min.js') }}"></script>
 	<script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
-<<<<<<< HEAD
-
-=======
     <script src="{{ asset('js/new/script.js') }}"></script>
->>>>>>> development
 </head>
 
 <body class="login-body">
