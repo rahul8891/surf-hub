@@ -29,7 +29,7 @@
         margin-top: 10px;
     }
 
-    header .navbar-nav .nav-link img {
+    header .navbar-nav .nav-link .header-icon {
         display: block;
         text-align: center;
         margin: 0 auto 3px;

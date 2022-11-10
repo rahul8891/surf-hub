@@ -9,14 +9,15 @@
 	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
 		rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/new/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset("/css/new/croppie.css") }}" />
+    <link rel="stylesheet" href="{{ asset("/css/new/star-rating.min.css") }}" />
+    <link rel="stylesheet" href="{{ asset("/css/new/slick.css") }}" />
+    <link rel="stylesheet" href="{{ asset("/css/new/slick-theme.css") }}" />
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/new/style.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/new/media.css') }}">
 	<script src="{{ asset('js/new/jquery-3.5.1.min.js') }}"></script>
 	<script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
-        <link rel="stylesheet" href="{{ asset("/css/new/croppie.css") }}" />
-        <link rel="stylesheet" href="{{ asset("/css/new/star-rating.min.css") }}" />
-        <link rel="stylesheet" href="{{ asset("/css/new/slick.css") }}" />
-        <link rel="stylesheet" href="{{ asset("/css/new/slick-theme.css") }}" />
+
 </head>
 
 <body class="login-body">

@@ -692,7 +692,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     margin-top: 15px;
 }
 
-.rating,
 .highlight {
     background: #FFFAFA;
     border: 1px solid #C0BCBC;
@@ -1751,20 +1750,11 @@ header .notification {
 
 
 
-.clicked {
-    background: #325CFD !important;
-    color: #fff !important;
-    border: #fff !important;
-
-}
 
 .rating-flex {
     display: flex;
 }
 
-.avg-rating {
-    margin-top: 8px;
-}
 
 @font-face {
     font-family: 'Glyphicons Halflings';
@@ -1804,6 +1794,7 @@ header .notification {
 .newsFeedImgVideo video {
     height: 100%;
     width: auto;
+    max-width: 100%;
 }
 
 .newsFeedImgVideo {
@@ -1842,4 +1833,41 @@ header .notification {
     top: 15px;
     right: 15px;
     z-index: 1;
+}
+
+.rating-xs {
+    font-size: 18px;
+}
+
+.avg-rating {
+    background: #FFFAFA;
+    border: 1px solid #C0BCBC;
+    padding: 0 12px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.avg-rating::before {
+    content: "\2605";
+    color: #2861f7;
+    font-size: 18px;
+    margin-right: 5px;
+    line-height: initial;
+}
+.rating-container .filled-stars{
+    color: #2861f7;
+}
+.rating-container{
+    display: none;
+}
+.rating-loading {
+    display: none;
+}
+.left-navbar-toggler{
+    cursor: pointer;
 }

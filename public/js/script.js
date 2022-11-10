@@ -3,7 +3,9 @@ $('.left-navbar-toggler').on('click', function (e) {
     $('.my-details-div').toggleClass('menu-slideIn');
 });
 
-
+$(".avg-rating").click(function(){
+  $(".rating-container").show(2500);
+});
 $(document).ready(function() { 
     
     $('.slider').slick({
@@ -20,3 +22,4 @@ $(document).ready(function() {
     // $('.wrap-modal-slider').addClass('open');
   })
 });
+
