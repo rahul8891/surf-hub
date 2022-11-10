@@ -1,17 +1,6 @@
 @extends('layouts.user.new_layout')
 @section('content')
 
-<style>
-    .newsFeedImgVideo img,.newsFeedImgVideo video {
-        height: 325px;
-    }
-
-    .newsFeedImgVideo {
-        background: #000;
-        text-align: center;
-    }
-</style>
-
 <section class="home-section">
     <div class="container">
         <div class="home-row">
@@ -48,7 +37,7 @@
                                 <img src="/img/new/normal-user.png" alt="normal-user">
 
                                 <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
-                                    <img src="/img/new/follow-user.png"> FOLLOW
+                                <span class="follow-icon"></span> FOLLOW
                                 </button>
 
 

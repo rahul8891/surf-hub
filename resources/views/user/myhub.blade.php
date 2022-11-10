@@ -1,17 +1,6 @@
 @extends('layouts.user.new_layout')
 @section('content')
 
-<style>
-    .newsFeedImgVideo img,.newsFeedImgVideo video {
-        height: 325px;
-    }
-
-    .newsFeedImgVideo {
-        background: #000;
-        text-align: center;
-    }
-</style>
-
 <section class="home-section">
     <div class="container">
         <div class="home-row">

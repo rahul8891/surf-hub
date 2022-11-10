@@ -10,7 +10,8 @@
                 <a class="navbar-brand" href="#"><img src="/img/logo.png" alt="Logo"></a>
                 <div class="navbar-nav middle-menu" style="<?php echo !Auth::user()?'width:250px !important;margin-right:220px;':'' ?>">
                     <div class="{{ userActiveMenu('dashboard') }}">
-                <a class="nav-link" href="/"><img src="/img/new/home.png" alt="Feed" class="align-middle">
+                <a class="nav-link" href="/">
+                    <span class="header-icon feed"></span>
                     <span class="align-middle">FEED</span>
                 </a>
             </div>
@@ -22,13 +23,15 @@
             </div>
             @endif
             <div class="{{ userActiveMenu('searchPosts') }}">
-                <a class="nav-link" href="{{route('searchPosts')}}"><img src="/img/new/search.png" alt="Search" class="align-middle"> 
+                <a class="nav-link" href="{{route('searchPosts')}}">
+                    <span class="header-icon search"></span>
                     <span class="align-middle">SEARCH</span>
                 </a>
             </div>
             @if (Auth::user())
             <div class="{{ userActiveMenu('upload') }}">
-                <a class="nav-link" href="{{route('upload')}}"><img src="/img/new/upload.png" alt="Upload" class="align-middle">
+                <a class="nav-link" href="{{route('upload')}}">
+                    <span class="header-icon upload"></span>
                     <span class="align-middle">UPLOAD</span>
                 </a>
             </div>
