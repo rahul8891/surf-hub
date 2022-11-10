@@ -16,9 +16,8 @@
                 </a>
             </div>
             @if (Auth::user())
-            <div class="{{ userActiveMenu('myhub') }}">
-                <a class="nav-link" href="{{ route('myhub') }}">
-                    <span class="header-icon my-hub"></span>
+            <div class="{{ userActiveMenu('myhub') }}{{ userActiveMenu('myhubs') }}">
+                <a class="nav-link" href="{{ route('myhub') }}"><img src="/img/new/hub.png" alt="Hub" class="align-middle">
                     <span class="align-middle">MY HUB</span>
                 </a>
             </div>
