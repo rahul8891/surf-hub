@@ -15,20 +15,20 @@
 
             @if(!empty($posts->upload->image))
             <div class="newsFeedImgVideoSlider">
-                <button class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                <button onClick="play_song('{{$trackArray[0]['track_uri']}}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
                 <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
             </div>
             @elseif(!empty($posts->upload->video))
             @if (!File::exists($posts->upload->video))
             <div class="newsFeedImgVideoSlider">
-                <button class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                <button onClick="play_song('{{$trackArray[0]['track_uri']}}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
                 <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                     <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
                 </video>
             </div>    
             @else
             <div class="newsFeedImgVideoSlider">
-                <button class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                <button onClick="play_song('{{$trackArray[0]['track_uri']}}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
                 <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                     <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
                 </video>
@@ -52,7 +52,7 @@
 
 window.onSpotifyWebPlaybackSDKReady = () => {
     const device_id = '47e5b24b028ce85508d27a9f1961896ad413aed4';
-    const token = 'BQBb0xe-5ZNMjSaxZtPVBzrOAPTccUNdi6To3IwWeeChg0N8WV0X6MluQ9VMkj1C1t-dyRdYHSaH5p70xkWMsHi6oVyzLd7WBVpjt7GTDisRNws14BHMI1jgDgBe35iSbcFiXgyMrSy6xca0XOg31CMNMlHWf9KrdFCGMo78F6NCY5SYfFyUZOjnhBqC_5KsLouHclkPe75OSC1F6bAdBrc';
+    const token = @json($token);
     const player = new Spotify.Player({
         name: "Test",
         getOAuthToken: (cb) => {

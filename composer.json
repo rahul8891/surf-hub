@@ -51,7 +51,8 @@
         },
         "files": [
             "app/Helper/CustomHelpers.php",
-            "app/Helper/NotificationHelpers.php"
+            "app/Helper/NotificationHelpers.php",
+            "app/Helper/SpotifyHelpers.php"
         ]
     },
     "autoload-dev": {
