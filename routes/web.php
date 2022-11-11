@@ -13,6 +13,7 @@ use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\user\MyHubController;
 use App\Http\Controllers\user\SearchController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\SpotifyAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,11 @@ Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
 Route::get('search/filter', [SearchController::class, 'filter'])->name('searchFilterIndex');
 Route::post('upload/file', [UserPostController::class, 'uploadFiles'])->name('uploadFiles');
 Route::get('/getBreak', [DashboardController::class, 'getBreak'])->name('getBreak');
+
+
+$router->get('spotify-auth', [SpotifyAuthController::class, 'redirectToProvider'])->name('spotify-auth');
+$router->get('spotify-call-back', [SpotifyAuthController::class, 'handleProviderCallback'])->name('spotify-call-back');
+
 
 /*********************************************************************************************
  *                              User Route

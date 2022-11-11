@@ -22,6 +22,8 @@ use File, URL;
 use FFMpeg;
 use FFMpeg\Format\Video\X264;
 use FFMpeg\Filters\Video\VideoFilters;
+use Spotify;
+use App\Models\SpotifyUser;
 
 class MyHubController extends Controller
 {
@@ -248,12 +250,61 @@ class MyHubController extends Controller
                 })
                 ->orderBy('posts.created_at', 'DESC')
                 ->paginate(100);
-        }catch (\Exception $e){         
+                $spotifyUser = SpotifyUser::where('user_id',Auth::user()->id)->get()->toArray();
+                
+                
+                $client = new \GuzzleHttp\Client;
+
+                $response = $client->get('https://api.spotify.com/v1/me/top/tracks', [
+                    'headers' => [
+                        'Content-Type'=> 'application/json',
+                        'Authorization' => "Bearer ". $spotifyUser[0]['token'],
+                    ],
+                ]);
+                $top_user_tracks = json_decode($response->getBody(), true);
+//                $__cURL = new CurlServer();
+//
+//                // Set URL for request to obtain the user top tracks
+//                $req_url = 'https://api.spotify.com/v1/me/tracks';
+//
+//                // Start a GET request via cURL
+//                $top_user_tracks = $__cURL->get_request($req_url, $spotifyUser[0]['token']);
+                
+//                $spotifyUser = SpotifyUser::findOrFail(Auth::user()->id);
+//             $getSpotifyUser =  Spotify::user(2)->get();
+            $trackArray = array(); 
+            $counter = 0;
+            foreach ($top_user_tracks['items'] as $track) {
+                
+                $milliseconds = $track['duration_ms'];
+                $seconds = floor($milliseconds / 1000);
+                $minutes = floor($seconds / 60);
+                $sec = $seconds % 60;
+                $min = $minutes % 60;
+                $duration = $min.':'. $sec;
+//                echo '<pre>';
+//                    print_r($duration);
+//                    die;
+//                foreach ($val as $track) {
+                     
+                    $trackArray[$counter]['track_name'] = $track['name'];
+                    $trackArray[$counter]['track_link'] = $track['href'];
+                    $trackArray[$counter]['track_uri'] = $track['uri'];
+                    $trackArray[$counter]['duration'] = $duration;
+                    $counter++;
+                    
+//                }
+            }
+//            echo '<pre>';
+//                    print_r($trackArray);
+//                    die;
+        }catch (\Exception $e){    
+            echo '<pre>';print_r($e->getMessage());die;  
             throw ValidationException::withMessages([$e->getMessage()]);
         }
         
         if ($request->ajax()) {
-            $view = view('elements/full_screen_slider',compact('postsList'))->render();
+            $view = view('elements/full_screen_slider',compact('postsList','trackArray'))->render();
             return response()->json(['html' => $view]);
         }
         // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));    

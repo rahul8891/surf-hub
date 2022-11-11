@@ -35,6 +35,7 @@
                                 <li><a class="dropdown-item" href="/privacy-policy">Privacy Policy</a></li>
                                 <li><a class="dropdown-item" href="terms-and-conditions">T&C's</a></li>
                                 <li><a class="dropdown-item" href="/help-faqs">Help/FAQ's</a></li>
+                                <li><a class="dropdown-item" href="{{route('spotify-auth')}}">Spotify Login</a></li>
                             </ul>
                         </div>
                     </div>

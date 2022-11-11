@@ -119,6 +119,7 @@
                                 @if(Auth::user() && $posts->user_id == Auth::user()->id)
                                 <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a>
                                 <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
+                                
                                 @endif
                                 <div class="d-inline-block tag dropdown" title="Tag">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
@@ -308,6 +309,8 @@
         });
         
         function openFullscreenSilder(id) {
+          const myModal = new bootstrap.Modal(document.getElementById('full_screen_modal')); // creating modal object
+ 
           $.ajax({
                 url: '/getPostFullScreen/' + id,
                 type: "get", 
@@ -316,7 +319,8 @@
                     // console.log(data.html);
                     $("#full_screen_modal").html("");
                     $("#full_screen_modal").append(data.html);
-                    $("#full_screen_modal").modal('show');                
+                    
+                    $("#full_screen_modal").modal('show');
                 }
             });
       }

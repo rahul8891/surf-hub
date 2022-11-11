@@ -319,6 +319,7 @@
                     // console.log(data.html);
                     $("#full_screen_modal").html("");
                     $("#full_screen_modal").append(data.html);
+                    $("#full_screen_modal").modal('hide');                
                     $("#full_screen_modal").modal('show');                
                 }
             });
