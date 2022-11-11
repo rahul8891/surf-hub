@@ -52,12 +52,14 @@
                         <li><a class="dropdown-item" href="/privacy-policy">Privacy Policy</a></li>
                         <li><a class="dropdown-item" href="terms-and-conditions">T&C's</a></li>
                         <li><a class="dropdown-item" href="/help-faqs">Help/FAQ's</a></li>
+                        @if(Auth::user() && empty(SpotifyUserAuth::instance()->getSpotifyUser()))
                         <li><a class="dropdown-item" href="{{route('spotify-auth')}}">Spotify Login</a></li>
+                        @endif
                     </ul>
-
+                    @if(Auth::user())
                     <div class="left-navbar-toggler">
                         <div class="d-block d-lg-none profile-pic">
-                            @if(Auth::user()->profile_photo_path)
+                            @if(isset(Auth::user()->profile_photo_path) && !empty(Auth::user()->profile_photo_path))
                             <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}" class="rounded-circle">
                             @else
                             <div class="">
@@ -67,6 +69,7 @@
                             <span class="notification">0</span>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
