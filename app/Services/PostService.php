@@ -292,7 +292,7 @@ class PostService {
      * @param  
      * @return dataArray
      */
-    public function getFilteredData($params, $for) {
+    public function getFilteredData($params, $for, $type = null) {
         if ($for=='search'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
@@ -312,6 +312,21 @@ class PostService {
                         ->whereNull('posts.deleted_at')
                         ->where('posts.user_id', Auth::user()->id)
                         ->groupBy('posts.id');
+        }
+
+        if (($for ==' myhub') && ($type == 'posts')) {
+            $postArray->where('posts.post_type', 'PUBLIC');
+        } elseif (($for == 'myhub') && ($type == 'saved')) {
+            $postArray->where('posts.post_type', 'PRIVATE');
+        } elseif (($for == 'myhub') && ($type == 'tags')) {
+            $postArray =  $this->posts
+                        ->join('tags', 'posts.id', "=", 'tags.post_id')
+                        ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
+                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
+                        ->where('tags.is_deleted', '0')
+                        ->where('tags.user_id', Auth::user()->id)
+                        ->groupBy('posts.id');            
         }
         
         //************* applying conditions *****************/
@@ -442,8 +457,10 @@ class PostService {
         } else {
             $postArray->orderBy('posts.id','DESC');
         }
-        // dd($postArray->paginate(10));
+
         return $postArray->paginate(10);
+        // dd($postArray);
+        // dd($postArray->toSql());
     }
     
     

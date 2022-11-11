@@ -49,32 +49,8 @@ class MyHubController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index($post_type = null, Request $request)
     {
-        $beach_name ="";    
-        $el = $request->input('sort');
-        $currentUserCountryId = Auth::user()->user_profiles->country_id;      
-        $countries = $this->masterService->getCountries();
-        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
-        $customArray = $this->customArray;
-        $myHubs = $this->sort($el);
-        $userDetail=Auth::user()->user_profiles;
-//        dd($myHubs);
-        if ($request->ajax()) {
-            $view = view('elements/myhubdata',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'))->render();
-            return response()->json(['html' => $view]);
-        }
-        
-        return view('user.feed',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'));
-    }
-    
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function newIndex(Request $request)
-    {   
         $beach_name="";
         $params = $request->all();
         $order = $request->input('order');
@@ -83,7 +59,13 @@ class MyHubController extends Controller
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
         $userDetail = Auth::user()->user_profiles;
-        $postsList = $myHubs = $this->postService->getFilteredData($params,'myhub');
+
+        if(isset($post_type) && !empty($post_type)) {
+            $postsList = $myHubs = $this->postService->getFilteredData($params,'myhub', $post_type);
+        }else {
+            $postsList = $myHubs = $this->postService->getFilteredData($params,'myhub');
+        }
+        
         $beaches = $this->masterService->getBeaches();
         
         if(!empty($request->input('local_beach_break_id'))){
@@ -96,24 +78,41 @@ class MyHubController extends Controller
             return response()->json(['html' => $view]);
         }
         
-        /*$beach_name ="";
-        $params=$request->all();
-        $order=$request->input('order');
-        
-        $el = $request->input('sort');
+        return view('user.myhub',compact('postsList','customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name','beaches','post_type'));
+    }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function newIndex(Request $request) 
+    {
+        $beach_name="";
+        $post_type = 'all';
+        $params = $request->all();
+        $order = $request->input('order');
         $currentUserCountryId = Auth::user()->user_profiles->country_id;      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $customArray = $this->customArray;
-        $myHubs = $this->sort($el);
-        $userDetail=Auth::user()->user_profiles;
-//        dd($myHubs);
-        if ($request->ajax()) {
-            $view = view('elements/myhubdata',compact('customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name'))->render();
-            return response()->json(['html' => $view]);
-        }*/
+        $userDetail = Auth::user()->user_profiles;
+
+        $postsList = $myHubs = $this->postService->getFilteredData($params,'myhub');
+                
+        $beaches = $this->masterService->getBeaches();
         
-        return view('user.feed',compact('postsList','customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name','beaches'));
+        if(!empty($request->input('local_beach_break_id'))){
+            $bb = BeachBreak::where('id',$request->input('local_beach_break_id'))->first(); 
+            $beach_name=$bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;
+        }
+        
+        if ($request->ajax()) {
+            $view = view('elements/myhubdata',compact('postsList','customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name','beaches'))->render();
+            return response()->json(['html' => $view]);
+        }
+        
+        return view('user.myhub',compact('postsList','customArray','countries','states','currentUserCountryId','myHubs','userDetail','beach_name','beaches','post_type'));
     }
 
 
