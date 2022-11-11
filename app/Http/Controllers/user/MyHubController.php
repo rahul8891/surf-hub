@@ -242,7 +242,7 @@ class MyHubController extends Controller {
                 
 //                $user = Socialite::driver('spotify')->user($spotifyUser[0]['spotify_user_id']);
 //                echo '<pre>';print_r($user);die;  
-//            $client = new \GuzzleHttp\Client;
+            $client = new \GuzzleHttp\Client;
 //
 //            $getCode = $client->get('https://accounts.spotify.com/authorize', [
 //                'headers' => [
@@ -268,37 +268,37 @@ class MyHubController extends Controller {
             
             
             
-            $response = $client->get('https://api.spotify.com/v1/me/top/tracks', [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Authorization' => "Bearer " . $token,
-                ],
-            ]);
-            $top_user_tracks = json_decode($response->getBody(), true);
-
-            
-            $counter = 0;
-            foreach ($top_user_tracks['items'] as $track) {
-
-                $milliseconds = $track['duration_ms'];
-                $seconds = floor($milliseconds / 1000);
-                $minutes = floor($seconds / 60);
-                $sec = $seconds % 60;
-                $min = $minutes % 60;
-                $duration = $min . ':' . $sec;
-//                echo '<pre>';
-//                    print_r($duration);
-//                    die;
-//                foreach ($val as $track) {
-
-                $trackArray[$counter]['track_name'] = $track['name'];
-                $trackArray[$counter]['track_link'] = $track['href'];
-                $trackArray[$counter]['track_uri'] = $track['uri'];
-                $trackArray[$counter]['duration'] = $duration;
-                $counter++;
-
-//                }
-            }
+//            $response = $client->get('https://api.spotify.com/v1/me/top/tracks', [
+//                'headers' => [
+//                    'Content-Type' => 'application/json',
+//                    'Authorization' => "Bearer " . $token,
+//                ],
+//            ]);
+//            $top_user_tracks = json_decode($response->getBody(), true);
+//
+//            
+//            $counter = 0;
+//            foreach ($top_user_tracks['items'] as $track) {
+//
+//                $milliseconds = $track['duration_ms'];
+//                $seconds = floor($milliseconds / 1000);
+//                $minutes = floor($seconds / 60);
+//                $sec = $seconds % 60;
+//                $min = $minutes % 60;
+//                $duration = $min . ':' . $sec;
+////                echo '<pre>';
+////                    print_r($duration);
+////                    die;
+////                foreach ($val as $track) {
+//
+//                $trackArray[$counter]['track_name'] = $track['name'];
+//                $trackArray[$counter]['track_link'] = $track['href'];
+//                $trackArray[$counter]['track_uri'] = $track['uri'];
+//                $trackArray[$counter]['duration'] = $duration;
+//                $counter++;
+//
+////                }
+//            }
             
             }
 //            echo '<pre>';

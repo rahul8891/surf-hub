@@ -15,20 +15,20 @@
 
             @if(!empty($posts->upload->image))
             <div class="newsFeedImgVideoSlider">
-                <button onClick="play_song('{{$trackArray[0]['track_uri']}}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                <button onClick="play_song('{{ isset($trackArray[0]['track_uri'])?$trackArray[0]['track_uri']:'' }}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
                 <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
             </div>
             @elseif(!empty($posts->upload->video))
             @if (!File::exists($posts->upload->video))
             <div class="newsFeedImgVideoSlider">
-                <button onClick="play_song('{{$trackArray[0]['track_uri']}}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                <button onClick="play_song('{{ isset($trackArray[0]['track_uri'])?$trackArray[0]['track_uri']:'' }}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
                 <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                     <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
                 </video>
             </div>    
             @else
             <div class="newsFeedImgVideoSlider">
-                <button onClick="play_song('{{$trackArray[0]['track_uri']}}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                <button onClick="play_song('{{ isset($trackArray[0]['track_uri'])?$trackArray[0]['track_uri']:'' }}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
                 <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                     <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
                 </video>
