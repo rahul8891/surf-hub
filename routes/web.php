@@ -120,9 +120,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('surfer-follow-request/{id}', [UserPostController::class, 'surferFollowRequest'])->name('surferFollowRequest');
     
     
-    Route::get('/surferRequest/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');
-    Route::get('/surferRequestList', [UserPostController::class, 'surferRequestList'])->name('surferRequestList');
-    Route::get('/acceptRejectRequest/{id}/{type}', [UserPostController::class, 'acceptRejectRequest'])->name('acceptRejectRequest');
+    Route::get('/surfer-request/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');
+    Route::get('/surfer-request-list', [UserPostController::class, 'surferRequestList'])->name('surferRequestList');
+    Route::get('/accept-reject-request/{id}/{type}', [UserPostController::class, 'acceptRejectRequest'])->name('acceptRejectRequest');
 
     Route::post('/upload-media', [UserPostController::class, 'uploadMedia'])->name('uploadMedia');
     

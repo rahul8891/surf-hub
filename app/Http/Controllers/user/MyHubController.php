@@ -238,67 +238,57 @@ class MyHubController extends Controller {
             $token = '';
             $trackArray = array();
             if($spotifyUser) {
-                $token = $spotifyUser[0]['token'];
-                
-//                $user = Socialite::driver('spotify')->user($spotifyUser[0]['spotify_user_id']);
-//                echo '<pre>';print_r($user);die;  
             $client = new \GuzzleHttp\Client;
-//
-//            $getCode = $client->get('https://accounts.spotify.com/authorize', [
-//                'headers' => [
-//                    'Content-Type' => 'application/json',
-//                    'Authorization' => 'Basic ' . base64_encode(env('SPOTIFY_CLIENT_ID') . ':' . env('SPOTIFY_CLIENT_SECRET'))
-//                ],
-//            ]);
-//
-//            $getToken = $client->post('https://accounts.spotify.com/api/token', [
-//                'headers' => [
-//                    'Authorization' => 'Basic ' . base64_encode(env('SPOTIFY_CLIENT_ID') . ':' . env('SPOTIFY_CLIENT_SECRET'))
-//                ],
-//                'form_params'    => [
-//                    'code' => $getCode,
-//                    'grant_type' => 'authorization_code'
-//                    ]
-//            ]);
-//            echo '<pre>';print_r($getToken);die;  
             
-//            $this->getHttpClient()->post($this->getTokenUrl(), [
-//            'headers' => ['Authorization' => 'Basic ' . base64_encode(env('SPOTIFY_CLIENT_ID') . ':' . env('SPOTIFY_CLIENT_SECRET'))],
-//            'body'    => ['grant_type' => 'authorization_code',],
+            // get new access token in case if old is expire
+
+            $getToken = $client->post('https://accounts.spotify.com/api/token', [
+                'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'Authorization' => 'Basic ' . base64_encode(env('SPOTIFY_CLIENT_ID') . ':' . env('SPOTIFY_CLIENT_SECRET'))
+                ],
+                'form_params'    => [
+                    'refresh_token' => $spotifyUser[0]['refresh_token'],
+                    'grant_type' => 'refresh_token'
+                    ]
+            ]);
+//            echo '<pre>';print_r(json_decode($getToken->getBody(), true));die;  
+            $tokenArr = json_decode($getToken->getBody(), true);
+            $token = $tokenArr['access_token'];
             
+            // get tracks of the user
             
-            
-//            $response = $client->get('https://api.spotify.com/v1/me/top/tracks', [
-//                'headers' => [
-//                    'Content-Type' => 'application/json',
-//                    'Authorization' => "Bearer " . $token,
-//                ],
-//            ]);
-//            $top_user_tracks = json_decode($response->getBody(), true);
+            $response = $client->get('https://api.spotify.com/v1/me/top/tracks', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => "Bearer " . $token,
+                ],
+            ]);
+            $top_user_tracks = json_decode($response->getBody(), true);
 //
 //            
-//            $counter = 0;
-//            foreach ($top_user_tracks['items'] as $track) {
-//
-//                $milliseconds = $track['duration_ms'];
-//                $seconds = floor($milliseconds / 1000);
-//                $minutes = floor($seconds / 60);
-//                $sec = $seconds % 60;
-//                $min = $minutes % 60;
-//                $duration = $min . ':' . $sec;
-////                echo '<pre>';
-////                    print_r($duration);
-////                    die;
-////                foreach ($val as $track) {
-//
-//                $trackArray[$counter]['track_name'] = $track['name'];
-//                $trackArray[$counter]['track_link'] = $track['href'];
-//                $trackArray[$counter]['track_uri'] = $track['uri'];
-//                $trackArray[$counter]['duration'] = $duration;
-//                $counter++;
-//
-////                }
-//            }
+            $counter = 0;
+            foreach ($top_user_tracks['items'] as $track) {
+
+                $milliseconds = $track['duration_ms'];
+                $seconds = floor($milliseconds / 1000);
+                $minutes = floor($seconds / 60);
+                $sec = $seconds % 60;
+                $min = $minutes % 60;
+                $duration = $min . ':' . $sec;
+//                echo '<pre>';
+//                    print_r($duration);
+//                    die;
+//                foreach ($val as $track) {
+
+                $trackArray[$counter]['track_name'] = $track['name'];
+                $trackArray[$counter]['track_link'] = $track['href'];
+                $trackArray[$counter]['track_uri'] = $track['uri'];
+                $trackArray[$counter]['duration'] = $duration;
+                $counter++;
+
+//                }
+            }
             
             }
 //            echo '<pre>';

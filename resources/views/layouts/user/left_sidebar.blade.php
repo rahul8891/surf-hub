@@ -48,7 +48,7 @@
             </div>
             <div class="profile-row {{ userActiveMenu('notifications') }}">
                 <img src="/img/notification.png" alt="Notifications" class="mr-2">
-                <a class="" href="{{ route('notifications') }}">Notifications <span class="notification" id="notification"></span></a>
+                <a class="" href="{{ route('notifications') }}">Notifications <span class="notification" id="notification-count"></span></a>
             </div>
             <div class="profile-row">
                 <form method="POST" action="{{ route('logout') }}">
@@ -78,7 +78,7 @@
                                                 $('#posts').html(jsonResponse['posts']);
                                                 $('#uploads').html(jsonResponse['uploads']);
                                                 $('#surferRequest').html(jsonResponse['surferRequest']);
-                                                $('.notification').html(jsonResponse['notification']);
+                                                $('#notification-count').html(jsonResponse['notification']);
 //                setInterval(myTimerUserMessage, 4000);
                                             }
                                         });

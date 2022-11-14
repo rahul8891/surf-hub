@@ -111,9 +111,9 @@ class CreateNewUser implements CreatesNewUsers {
                 $this->deleteUplodedResortImages($input['resort_name']);
                 $this->deletUserRecord($user->id);
             }
-            echo '<pre>';
-            print_r($e->getMessage());
-            die;
+//            echo '<pre>';
+//            print_r($e->getMessage());
+//            die;
             throw ValidationException::withMessages([$e->getMessage()]);
         }
     }
