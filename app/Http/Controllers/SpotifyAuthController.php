@@ -12,7 +12,7 @@ class SpotifyAuthController extends Controller
 {
     public function redirectToProvider()
 {
-    return Socialite::driver('spotify')->scopes(['app-remote-control user-top-read user-read-currently-playing user-read-recently-played streaming app-remote-control user-read-playback-state user-modify-playback-state'])->redirect();
+    return Socialite::driver('spotify')->scopes(['user-read-email user-read-private app-remote-control user-top-read user-read-currently-playing user-read-recently-played streaming app-remote-control user-read-playback-state user-modify-playback-state'])->redirect();
 }
 
 public function handleProviderCallback()

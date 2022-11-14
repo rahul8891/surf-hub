@@ -51,7 +51,7 @@
 
 
 window.onSpotifyWebPlaybackSDKReady = () => {
-    const device_id = '47e5b24b028ce85508d27a9f1961896ad413aed4';
+//    const device_id = '47e5b24b028ce85508d27a9f1961896ad413aed4';
     const token = @json($token);
     const player = new Spotify.Player({
         name: "Test",
