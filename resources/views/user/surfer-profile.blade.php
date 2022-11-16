@@ -5,10 +5,9 @@
     <div class="container">
         <div class="home-row">
             <div class="my-details-div">
-                @include('layouts.user.left_sidebar')
+                @include('layouts.user.surfer_left_sidebar')
             </div>
             <div class="middle-content" id="post-data">
-                @include('layouts.user.content_menu')
                 @if (isset($postsList) && empty($postsList[0]))
                 <div class="post alert text-center alert-dismissible py-5" role="alert">
                     {{ ucWords('no matches found') }}
@@ -27,7 +26,7 @@
                                 <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
                                 <div>                                                            
-                                    <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
+                                    <p class="name"><span>{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span> </p>
                                     <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                                     <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
                                 </div>
@@ -117,10 +116,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if(Auth::user() && $posts->user_id == Auth::user()->id)
-                                <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a>
-                                @endif
-                                <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
                                 <div class="d-inline-block tag dropdown" title="Tag">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -234,7 +229,6 @@
     </div>
 </section>
 @include('elements/location_popup_model')
-@include('layouts/models/edit_image_upload')
 @include('layouts/models/full_screen_modal')
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
@@ -277,21 +271,6 @@
         });
     }
         
-        $(document).on('click', '.editBtnVideo', function() {
-            var id = $(this).data('id');
-            
-            $.ajax({
-                url: '/getPostData/' + id,
-                type: "get", 
-                async: false,
-                success: function(data) {
-                    // console.log(data.html);
-                    $("#edit_image_upload_main").html("");
-                    $("#edit_image_upload_main").append(data.html);
-                    $("#edit_image_upload_main").modal('show');                
-                }
-            });
-        });
         
         $('.pos-rel a').each(function(){
            $(this).on('hover, mouseover, click', function() {

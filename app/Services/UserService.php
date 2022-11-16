@@ -414,9 +414,9 @@ class UserService {
         return $count;
     }
     
-    public function getFollowDataCount($column=null,$status=null)
+    public function getFollowDataCount($column=null,$status=null,$user_id)
     {
-        $count = $this->userFollows->where($column,Auth::user()->id)
+        $count = $this->userFollows->where($column,$user_id)
                 ->where('status','FOLLOW')   
                 ->whereIn('follower_request_status',$status) 
                 ->where('is_deleted','0')
@@ -552,5 +552,25 @@ class UserService {
         $usernameExist =  $this->users->where('user_name',$dataRequest['user_name'])->count();
         return $usernameExist;
 
+    }
+    public function getUserDetail($surfer_id)
+    {
+        $userData = UserProfile::where('user_id', $surfer_id)->get();
+        $userProfile = array();
+        foreach ($userData as $val) {
+            $userProfile['user_id'] = $surfer_id;
+            $userProfile['surfer_name'] = $val->first_name . ' '. $val->last_name;
+            $userProfile['profile_photo_path'] = $val->user->profile_photo_path;
+            $userProfile['email'] = $val->user->email;
+            $userProfile['gender'] = isset($val->gender)?$this->checkUserType['gender_type'][$val->gender]:'-';
+            $userProfile['beach_break'] = isset($val->local_beach_break_id)?$val->beach_breaks->beach_name." ".$val->beach_breaks->break_name:'-';
+            $userProfile['country'] = isset($val->country_id)?$val->countries->name:'-';
+            $userProfile['dob'] = isset($val->dob)?$val->dob:'-';
+            $userProfile['preferred_board'] = isset($val->preferred_board)?$this->checkUserType['board_type'][$val->preferred_board]:'-';
+            $userProfile['postal_code'] = isset($val->postal_code)?$val->postal_code:'-';
+            $userProfile['phone'] = isset($val->phone)?$val->phone:'-';
+        
+        }
+        return $userProfile;
     }
 }

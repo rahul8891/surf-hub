@@ -208,6 +208,25 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-md-2"></label>
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            @foreach($customArray['optional'] as $key => $value)
+                                <div class="col-sm-4 col-6">
+                                    <div class="form-check d-inline-block">
+                                        <input type="checkbox" class="form-check-input" name="optional_info[]" value="{{ __($key) }}"
+                                               id="{{ __($key) }}" />
+                                        <label for="{{ __($key) }}" class="">{{ __($value) }}</label>
+                                    </div>
+                                </div>
+                                @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                     <div class="upload-header p-0"></div>
