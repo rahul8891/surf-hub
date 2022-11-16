@@ -66,20 +66,20 @@ window.onSpotifyWebPlaybackSDKReady = () => {
         console.log("Ready with Device ID", device_id);
 
         // After player is ready, change current device to this player
-        const connect_to_device = () => {
-            console.log("Changing to device");
-            let change_device = fetch("https://api.spotify.com/v1/me/player/play", {
-                method: "PUT",
-                body: JSON.stringify({
-                    device_ids: [device_id],
-                    play: false,
-                }),
-                headers: new Headers({
-                    Authorization: "Bearer " + token,
-                }),
-            }).then((response) => console.log(response));
-        };
-        connect_to_device();
+//        const connect_to_device = () => {
+//            console.log("Changing to device");
+//            let change_device = fetch("https://api.spotify.com/v1/me/player/play", {
+//                method: "PUT",
+//                body: JSON.stringify({
+//                    device_ids: [device_id],
+//                    play: false,
+//                }),
+//                headers: new Headers({
+//                    Authorization: "Bearer " + token,
+//                }),
+//            }).then((response) => console.log(response));
+//        };
+//        connect_to_device();
     });
 
     // Not Ready
@@ -120,7 +120,7 @@ const play_song = async (uri) => {
             {
                 method: "PUT",
                 body: JSON.stringify({
-                    uris: ['spotify:track:11dFghVXANMlKmJXsNCbNl'],
+                    uris: [uri],
                 }),
                 headers: new Headers({
                     Authorization: "Bearer " + token,

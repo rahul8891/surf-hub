@@ -107,6 +107,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::post('/unfollow', [UserController::class, 'unfollow'])->name('unfollow');
     Route::post('/accept', [UserController::class, 'accept'])->name('accept');
     Route::get('/searchFollwers', [UserController::class, 'searchFollwers'])->name('searchFollwers');
+    Route::get('/surfer-profile/{id}', [UserController::class, 'surferProfile'])->name('surfer-profile');
     Route::get('/searchFollowing', [UserController::class, 'searchFollowing'])->name('searchFollowing');
     Route::get('/searchFollowRequest', [UserController::class, 'searchFollowRequest'])->name('searchFollowRequest');
     Route::post('/reject', [UserController::class, 'reject'])->name('reject');

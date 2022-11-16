@@ -571,12 +571,13 @@ class UserPostController extends Controller
         try{
             $result = $this->posts->surferRequest(Crypt::decrypt($id),$message);
             if($result){
-                return redirect()->route('dashboard')->withSuccess($message);  
+//                echo '<pre>';            print_r($result);die;
+                return redirect()->route('dashboard')->withSuccess($result);  
             }else{
                 return redirect()->route('dashboard')->withErrors($message); 
             }
         }catch (\Exception $e){
-            return redirect()->route('dashboard', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
+            return redirect()->route('dashboard')->withErrors($e->getMessage());
         }
     }
     /**
