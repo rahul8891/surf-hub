@@ -32,11 +32,11 @@
         <div class="profile-menu">
             <div class="profile-row {{ userActiveMenu('followers') }}">
                 <img src="/img/followers.png" alt="Followers">
-                <a class=""  href="{{ route('followers') }}">Followers - <span class="blue-txt num" id="follwers">{{$fCounts['follwers']}} </span></a>
+                <a class=""  href="{{ route('surferFollowers', Crypt::encrypt($userProfile['user_id'])) }}">Followers - <span class="blue-txt num" id="follwers">{{$fCounts['follwers']}} </span></a>
             </div>
             <div class="profile-row {{ userActiveMenu('following') }}">
                 <img src="/img/following.png" alt="Following">
-                <a class="" href="{{ route('following') }}">Following - <span class="blue-txt num" id="follwing"> {{$fCounts['follwing']}}</span></a>
+                <a class="" href="{{ route('surferFollowing', Crypt::encrypt($userProfile['user_id'])) }}">Following - <span class="blue-txt num" id="follwing"> {{$fCounts['follwing']}}</span></a>
             </div>
             <div class="profile-row {{ ((userActiveMenu('myhubs') == 'active') && ($post_type == 'posts'))?'active':'' }}">
                 <img src="/img/posts.png" alt="posts">
@@ -95,20 +95,3 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script>
-$(document).ready(function () {
-    $.ajax({
-        type: "GET",
-        url: "/follow-counts",
-        dataType: "json",
-        success: function (jsonResponse) {
-            $('#follwers').html(jsonResponse['follwers']);
-            $('#follwing').html(jsonResponse['follwing']);
-            $('#posts').html(jsonResponse['posts']);
-            $('#uploads').html(jsonResponse['uploads']);
-//                setInterval(myTimerUserMessage, 4000);
-        }
-    });
-});
-</script>

@@ -103,12 +103,14 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
     Route::get('/followRequests', [UserController::class, 'followRequests'])->name('followRequests');
     Route::get('/followers', [UserController::class, 'followers'])->name('followers');
+    Route::get('/surfer-followers/{id}', [UserController::class, 'surferFollowers'])->name('surferFollowers');
+    Route::get('/surfer-following/{id}', [UserController::class, 'surferFollowing'])->name('surferFollowing');
     Route::get('/following', [UserController::class, 'following'])->name('following');
     Route::post('/unfollow', [UserController::class, 'unfollow'])->name('unfollow');
     Route::post('/accept', [UserController::class, 'accept'])->name('accept');
-    Route::get('/searchFollwers', [UserController::class, 'searchFollwers'])->name('searchFollwers');
+    Route::get('/searchFollwers/{id}', [UserController::class, 'searchFollwers'])->name('searchFollwers');
     Route::get('/surfer-profile/{id}', [UserController::class, 'surferProfile'])->name('surfer-profile');
-    Route::get('/searchFollowing', [UserController::class, 'searchFollowing'])->name('searchFollowing');
+    Route::get('/searchFollowing/{id}', [UserController::class, 'searchFollowing'])->name('searchFollowing');
     Route::get('/searchFollowRequest', [UserController::class, 'searchFollowRequest'])->name('searchFollowRequest');
     Route::post('/reject', [UserController::class, 'reject'])->name('reject');
     Route::post('/remove', [UserController::class, 'remove'])->name('remove');
@@ -127,7 +129,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
     Route::post('/upload-media', [UserPostController::class, 'uploadMedia'])->name('uploadMedia');
     
-    
+    Route::get('/get-additional-board-info', [UserController::class, 'getAdditionalBoardTypeInfo'])->name('getAdditionalBoardTypeInfo');
 });
 
 /*********************************************************************************************

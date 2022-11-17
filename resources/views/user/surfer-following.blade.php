@@ -4,7 +4,7 @@
 <section class="home-section">
     <div class="container">
         <div class="home-row">
-            @include('layouts.user.left_sidebar')
+            @include('layouts.user.surfer_left_sidebar')
             <div class="middle-content">
                 <div class="follow-wrap">
                     <div class="search-follower">
@@ -13,7 +13,7 @@
                                 <label class="">Following <span class="blue-txt">{{ count($following) }}</span></label>
                             </div>
                             <div class="col-sm-7">
-                                <input type="hidden" id="user_id" value="{{Auth::user()->id}}" >
+                                <input type="hidden" id="user_id" value="{{$userProfile['user_id']}}" >
                                 <input type="text" id="searchFollowing" class="form-control ps-2 pe-5 mb-0"
                                        placeholder="Search followers">
                             </div>
@@ -33,12 +33,6 @@
                                          class="align-middle bg-white notification-img">
                                     @endif
                                     <span class="align-middle">{{ucfirst($followings->followed->user_profiles->first_name)}} {{ucfirst($followings->followed->user_profiles->last_name)}}</span>
-                                </div>
-                                <div class="col-md-6 text-md-end">
-                                    <button class="btn grey-borderBtn me-3 unfollow" data-id="{{$followings->id}}">
-                                        <img src="/img/follow-user.png" class="me-1 align-middle" alt="Unfollow">
-                                        <span class="align-middle">UNFOLLOW</span>
-                                    </button>
                                 </div>
                             </div>
                         </div>
