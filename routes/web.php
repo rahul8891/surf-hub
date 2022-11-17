@@ -51,7 +51,7 @@ Route::get('/getBreak', [DashboardController::class, 'getBreak'])->name('getBrea
 
 $router->get('spotify-auth', [SpotifyAuthController::class, 'redirectToProvider'])->name('spotify-auth');
 $router->get('spotify-call-back', [SpotifyAuthController::class, 'handleProviderCallback'])->name('spotify-call-back');
-
+Route::get('/surfer-request/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');
 
 /*********************************************************************************************
  *                              User Route
@@ -123,7 +123,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('surfer-follow-request/{id}', [UserPostController::class, 'surferFollowRequest'])->name('surferFollowRequest');
     
     
-    Route::get('/surfer-request/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');
+    
     Route::get('/surfer-request-list', [UserPostController::class, 'surferRequestList'])->name('surferRequestList');
     Route::get('/accept-reject-request/{id}/{type}', [UserPostController::class, 'acceptRejectRequest'])->name('acceptRejectRequest');
 

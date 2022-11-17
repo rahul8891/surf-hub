@@ -4,7 +4,7 @@
     <div class="inner-news-feed">
         <div class="user-details">
             <div class="user-left">
-                @if(file_exists(asset('storage/'.$posts->user->profile_photo_path)))
+                @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
                 <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
                 @else
                 <img src="/img/logo_small.png" class="profileImg" alt="">

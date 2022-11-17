@@ -222,7 +222,7 @@ class UserController extends Controller {
                     if (!in_array($value->beach_name, $dupArr)) {
                         $dupArr[] = $value->beach_name;
                         $val = ($value->beach_name) ? $value->beach_name : '';
-                        $returnObject .= '<li onclick="setBeach(this)" class="list-group-item" data-id="' . $value->id . '">' . $val . '</li>';
+                        $returnObject .= '<li class="list-group-item" data-id="' . $value->id . '">' . $val . '</li>';
                     }
                 }
                 $returnObject .= '</ul>';
@@ -275,7 +275,7 @@ class UserController extends Controller {
 
             $returnObject = '';
             if (!$resultData->isEmpty()) {
-                $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1; width:100%">';
+                $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1; width:50%; height:25%;overflow: scroll;overflow-x: hidden;">';
                 foreach ($resultData as $key => $value) {
                     $val = $value->user_name;
                     $img = (!empty($value->profile_photo_path)) ? "/storage/$value->profile_photo_path" : '/img/img_4.jpg';
@@ -546,7 +546,7 @@ class UserController extends Controller {
         );
 //        echo '<pre>'; print_r($userProfile);die;
         if ($request->ajax()) {
-            $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches'))->render();
+            $view = view('elements/surferProfileData', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches'))->render();
             return response()->json(['html' => $view]);
         }
         return view('user.surfer-profile', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile', 'fCounts'));

@@ -12,7 +12,7 @@
             <div class="profile-pic">
                 @if($userProfile['profile_photo_path'])
                 <img src="{{ asset('storage/'.$userProfile['profile_photo_path']) }}"
-                     alt="profile-pic" class="rounded-circle">
+                     alt="" class="rounded-circle">
                 @else
                 <div class="">
                     {{ucwords(substr($userProfile['surfer_name'],0,1))}}
