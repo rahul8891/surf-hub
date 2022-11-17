@@ -6,13 +6,26 @@
                     <div class="inner-news-feed">
                         <div class="user-details">
                             <div class="user-left">
-                                @if(file_exists(asset('storage/'.$posts->user->profile_photo_path)))
+                                @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
+                                @if($posts->user_id != Auth::user()->id)
+                                <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                @else
                                 <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
+                                @endif
+                                @else
+                                @if($posts->user_id != Auth::user()->id)
+                                <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="/img/logo_small.png" class="profileImg" alt=""></a>
                                 @else
                                 <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
-                                <div>                                                            
-                                    <p class="name"><span>{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span> </p>
+                                @endif
+                                <div>     
+                                    @if($posts->user_id != Auth::user()->id)
+                                    <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
+                                    @else
+                                    <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span>
+                                    </p>
+                                    @endif
                                     <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                                     <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
                                 </div>
@@ -61,7 +74,7 @@
                                 @if(Auth::user()->id != $posts->user_id)
                                 <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/new/save.png" alt="Save"></a>
                                 @endif
-                                @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'])
+                                @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'] && empty($requestSurfer[$posts->id]))
                                 <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">

@@ -1,64 +1,31 @@
-@extends('layouts.user.new_layout')
-@section('content')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
-<link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
-
-<section class="home-section">
-
-    <div class="container">
-        <div class="home-row">
-            @if (Auth::user())
-            @include('layouts.user.left_sidebar')    
-            @else
-            <div class="left-advertisement">
-                        <img src="img/new/advertisement1.png" alt="advertisement">
-                        <img src="img/new/advertisement2.png" alt="advertisement">
-                </div>
-            @endif
-            <div class="middle-content" id="search-data">
-                @include('layouts/user/content_menu')
-
-                @if (is_null($postsList[0]))
-                <div class="post alert text-center alert-dismissible py-5" role="alert">
-                    {{ ucWords('no matches found') }}
-                </div>
-                @else
-                @foreach ($postsList as $key => $posts)
+@if(isset($postsList[0]->id) && !empty($postsList[0]->id))
+    @foreach ($postsList as $key => $posts)
+                    @if($posts->parent_id == 0)
                 <div class="news-feed">
+
                     <div class="inner-news-feed">
                         <div class="user-details">
                             <div class="user-left">
                                 @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
-                                @if($posts->user_id != Auth::user()->id)
-                                <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
-                                @else
                                 <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
-                                @endif
-                                @else
-                                @if($posts->user_id != Auth::user()->id)
-                                <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="/img/logo_small.png" class="profileImg" alt=""></a>
                                 @else
                                 <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
-                                @endif
-                                <div>     
-                                    @if($posts->user_id != Auth::user()->id)
-                                    <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
-                                    @else
-                                    <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span>
-                                    </p>
-                                    @endif
+                                <div>                                                            
+                                    <p class="name"><span>{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span> </p>
                                     <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                                     <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
                                 </div>
                             </div>
-                            @if (isset(Auth::user()->id) && ($posts->user_id != Auth::user()->id))
+                            @if($posts->user_id != Auth::user()->id)
+                            <div class="user-right"> 
+                                <img src="/img/new/normal-user.png" alt="normal-user">
 
-                            <div class="user-right">
-                                <img src="/img/normal-user.png" alt="normal-user">
                                 <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
                                 <span class="follow-icon"></span> FOLLOW
                                 </button>
+
+
                             </div>
                             @endif
                         </div>
@@ -88,12 +55,15 @@
 
                             </div>
                             <div class="right-options">
-                                @if(Auth::user() && $posts->user_id != Auth::user()->id)
-                                <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/save.png" alt="Save"></a>
+                                @if(Auth::user()->id != $posts->user_id)
+                                <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/new/save.png" alt="Save"></a>
+                                @endif
+                                @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'])
+                                <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
-                                    <img src={{asset("img/location.png")}} alt="Location"></a>
-                                <a onclick="openFullscreenSilder({{$posts->id}});"><img src={{asset("img/expand.png")}} alt="Expand"></a>
+                                    <img src={{asset("/img/location.png")}} alt="Location"></a>
+                                <a onclick="openFullscreenSilder({{$posts->id}});"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
                                 <div class="d-inline-block info dropdown" title="Info">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -132,11 +102,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if(Auth::user() && $posts->user_id == Auth::user()->id)
-                                <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a>
-                                <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
-                                
-                                @endif
                                 <div class="d-inline-block tag dropdown" title="Tag">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -166,7 +131,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if(Auth::user() && $posts->user_id != Auth::user()->id)
+                                @if(Auth::user()->id != $posts->user_id)
                                 <div class="d-inline-block report dropdown" title="Report">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -208,11 +173,10 @@
                             </div>
                         </div>
                     </div>
-                    @if(Auth::user())
                     <div class="comments-div">
                         <a class="" data-bs-toggle="collapse" href="#collapseExample{{$posts->id}}" role="button"
                            aria-expanded="false" aria-controls="collapseExample{{$posts->id}}">
-                            Say Something <img src="img/dropdwon.png" alt="dropdown" class="ms-1">
+                            Say Something <img src="/img/dropdwon.png" alt="dropdown" class="ms-1">
                         </a>
                         <div class="collapse" id="collapseExample{{$posts->id}}">
                             <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
@@ -223,7 +187,7 @@
                                         <input type="hidden" name="parent_user_id" value="{{$posts->user_id}}">
                                         <input type="text" name="comment" id="{{$posts->id}}" class="form-control ps-2 mb-0 h-100 commentOnPost">
                                     </div>
-                                    <button type="submit" id="submitPost{{$posts->id}}" class="send-btn btn"><img src="img/send.png"></button>
+                                    <button type="submit" id="submitPost{{$posts->id}}" class="send-btn btn"><img src="/img/send.png"></button>
                                 </div>
                             </form>
                             @foreach ($posts->comments as $comments)
@@ -235,111 +199,14 @@
                             @endforeach
                         </div>
                     </div>
-                    @endif
                 </div>
-                @endforeach
-                @endif
-                
-                <div class="justify-content-center ajax-load" style="display:none;margin-left: 40%">
-                    <img src="/images/spiner4.gif" alt="loading" height="90px;" width="170px;">
-              </div>
-                
-            </div>
+                    @endif
+                    @endforeach
 
-            <div class="right-advertisement">
-                <img src="img/advertisement1.png" alt="advertisement">
-                <img src="img/advertisement2.png" alt="advertisement">
-            </div>
-
-        </div>
-    </div>
-</section>
-
-@include('elements/location_popup_model')
-@include('layouts/models/upload_video_photo')
-@include('layouts/models/edit_image_upload')
-@include('layouts/models/full_screen_modal')
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-	var page = 1;
-
-    $(window).scroll(function() {
-        if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-            page++;
-            loadMoreData(page);
-        }
-    });
-
-    function loadMoreData(page) {
-        var url = window.location.href;
-        if(url.indexOf("?") !== -1) {
-            var url = window.location.href + '&page=' + page;
-        }else {
-            var url = window.location.href + '?page=' + page;
-        }
-        
-        $.ajax({
-            url: url,
-            type: "get",
-            async: false,
-            beforeSend: function() {
-                $('.ajax-load').show();
-            }
-        })
-        .done(function(data) {
-            if(data.html == "") {
-                $('.ajax-load').addClass('requests');
-                $('.ajax-load').html("No more records found");
-                return;
-            }
-
-            $('.ajax-load').removeClass('requests');
-            $('.ajax-load').hide();
-//            $("#search-data").append(data.html);
-            $(data.html).insertBefore(".ajax-load");
-        });
-    }
-        
-        $(document).on('click', '.editBtnVideo', function() {
-            var id = $(this).data('id');
-            
-            $.ajax({
-                url: '/getPostData/' + id,
-                type: "get", 
-                async: false,
-                success: function(data) {
-                    // console.log(data.html);
-                    $("#edit_image_upload_main").html("");
-                    $("#edit_image_upload_main").append(data.html);
-                    $("#edit_image_upload_main").modal('show');                
-                }
-            });
-        });
-        
-        $('.pos-rel a').each(function(){
-           $(this).on('hover, mouseover, click', function() {
-                $(this).children('.userinfoModal').find('input[type="text"]').focus();
-            });
-        });
-        
-        function openFullscreenSilder(id) {
-          const myModal = new bootstrap.Modal(document.getElementById('full_screen_modal')); // creating modal object
- 
-          $.ajax({
-                url: '/getPostFullScreen/' + id,
-                type: "get", 
-                async: false,
-                success: function(data) {
-                    // console.log(data.html);
-                    $("#full_screen_modal").html("");
-                    $("#full_screen_modal").append(data.html);
-                    
-                    $("#full_screen_modal").modal('show');
-                }
-            });
-      }
-        
-</script>
-@endsection
+    <script type="text/javascript">
+        $('.rating').rating({
+             showClear:false, 
+             showCaption:false
+         });
+    </script>
+@endif

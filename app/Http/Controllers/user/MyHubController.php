@@ -205,7 +205,7 @@ class MyHubController extends Controller {
 
             if (!empty($myHubs->local_beach_id)) {
                 $bb = BeachBreak::where('id', $myHubs->local_beach_id)->first();
-                $beach_name = $bb->beach_name . ',' . $bb->break_name . '' . $bb->city_region . ',' . $bb->state . ',' . $bb->country;
+                $beach_name = $bb->beach_name;
 
                 $breaks = $this->masterService->getBreakByBeachName($bb->beach_name);
                 $breakId = $myHubs->local_break_id;
@@ -265,7 +265,17 @@ class MyHubController extends Controller {
                 ],
             ]);
             $top_user_tracks = json_decode($response->getBody(), true);
-//
+            
+//            $device = $client->get('https://api.spotify.com/v1/me/player/devices', [
+//                'headers' => [
+//                    'Content-Type' => 'application/json',
+//                    'Authorization' => "Bearer " . $token,
+//                ],
+//            ]);
+//            $av_device = json_decode($device->getBody(), true);
+//            echo '<pre>';
+//                    print_r($av_device);
+//                    die;
 //            
             $counter = 0;
             foreach ($top_user_tracks['items'] as $track) {
