@@ -34,19 +34,10 @@
                                         <span>Drag files to<br>upload</span>
                                     </div>
                                     <button class="blue-btn btn">CHOOSE FILE</button>
-                                    <input type="file" id="input_multifileSelect2" name="files[]" multiple="multiple">
+                                    <input type="file" id="input_multifile" name="files[]" multiple="multiple">
                                 </div>
-                                <div class="upload-file-name">
-<!--                                    <div class="name-row">
-                                        <img src="img/img-upload.png">
-                                        <span>Photo.png 7.5 mb </span>
-                                        <a href="#" class="remove-photo"> &#x2715;</a>
-                                    </div>
-                                    <div class="name-row">
-                                        <img src="img/video-upload.png">
-                                        <span>Photo.png 7.5 mb </span>
-                                        <a href="#" class="remove-photo"> &#x2715;</a>
-                                    </div>-->
+                                <div class="upload-file-name" id="filesInfo">
+                                    
                                 </div>
                             </div>
                         </div>
@@ -184,11 +175,13 @@
                                 <div class="row mb-3 align-items-center">
                                     <label class="col-md-4">Fin Set Up<span class="red-txt">*</span></label>
                                     <div class="col-md-8">
-                                        <select class="form-select ps-2 mb-0">
-                                            <option selected=""></option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                        <select class="form-select ps-2 mb-0" name="fin_set_up">
+                                            <option value="">{{ __('-- Select --')}}</option>
+                                            @foreach($customArray['fin_set_up'] as $key => $value)
+                                                <option value="{{ $key }}"
+                                                        {{ old('fin_set_up') == $key ? "selected" : "" }}>{{ $value}}
+                                            </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -199,11 +192,10 @@
                                 <div class="row mb-3 align-items-center">
                                     <label class="col-md-4">Stance<span class="red-txt">*</span></label>
                                     <div class="col-md-8">
-                                        <select class="form-select ps-2 mb-0">
-                                            <option selected="">Goofy</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                        <select class="form-select ps-2 mb-0" name="stance">
+                                            <option value="">{{ __('-- Select --')}}</option>
+                                            <option value="GOOFY">Goofy</option>
+                                            <option value="REGULAR">Regular</option>
                                         </select>
                                     </div>
                                 </div>
@@ -236,7 +228,7 @@
                                 <div class="row mb-3 align-items-center">
                                     <label class="col-md-4">Board Type<span class="red-txt">*</span></label>
                                     <div class="col-md-8">
-                                        <select class="form-select ps-2 mb-0" name="board_type">
+                                        <select class="form-select ps-2 mb-0" id="board_type" name="board_type">
                                                 <option value="">{{ __('-- Select --')}}</option>
                                                 @foreach($customArray['board_type'] as $key => $value)
                                                 <option value="{{ $key }}"
@@ -248,25 +240,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row mb-3 align-items-center">
-                                    <label class="col-md-2"></label>
-                                    <div class="col-md-8">
-                                        <div class="row">
-                                            @foreach($customArray['optional'] as $key => $value)
-                                <div class="col-sm-4 col-6">
-                                    <div class="form-check d-inline-block">
-                                        <input type="checkbox" class="form-check-input" name="optional_info[]" value="{{ __($key) }}"
-                                               id="{{ __($key) }}" />
-                                        <label for="{{ __($key) }}" class="">{{ __($value) }}</label>
-                                    </div>
-                                </div>
-                                @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="row d-none" id="additional_optional_info">
+                            
                         </div>
                     </div>
                     <div class="row justify-content-end">

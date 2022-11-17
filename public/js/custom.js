@@ -1316,11 +1316,12 @@ $(document).ready(function () {
     
     $('#searchFollower').keyup(debounce(function () {
         // the following function will be executed every half second	
+        var user_id = $('#user_id').val();
         var keyword = $('#searchFollower').val();
 //        if ($(this).val().length > 2) {
             $.ajax({
                 type: "GET",
-                url: "/searchFollwers",
+                url: "/searchFollwers/"+user_id,
                 data: {
                     searchTerm: keyword,
                     _token: csrf_token
@@ -1340,10 +1341,11 @@ $(document).ready(function () {
     $('#searchFollowing').keyup(debounce(function () {
         // the following function will be executed every half second	
         var keyword = $('#searchFollowing').val();
+        var user_id = $('#user_id').val();
 //        if ($(this).val().length > 2) {
             $.ajax({
                 type: "GET",
-                url: "/searchFollowing",
+                url: "/searchFollowing/"+user_id,
                 data: {
                     searchTerm: keyword,
                     _token: csrf_token
@@ -1536,6 +1538,41 @@ $(document).ready(function () {
 //        var beachValue = $(this).val();
 ////        $("#break_filter").remove();
 //    }
+});
+
+    
+    $("#board_type").change(function(e){
+//    if ($('#beach_filter').is(":selected")) {
+//        $('#break_filter').find('option').remove();
+//        $("#break_filter").append('<option value=""> -- Break --</option>');
+        var board_type = $(this).val();
+        if(board_type !=='') {
+        $.ajax({
+            type: "GET",
+            url: '/get-additional-board-info',
+            data: {
+                board_type: board_type,
+                _token: csrf_token
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                //console.log(jsonResponse);
+//                if (jsonResponse.status == 'success') {
+                    var myJsonData = jsonResponse.data;
+                    
+                   $('#additional_optional_info').removeClass('d-none');
+                   $('#additional_optional_info').html(jsonResponse);
+//                } else {
+//                    $('#additional_optional_info').addClass('d-none');
+//                }
+            }
+        });
+    
+        }
+    else {
+        $('#additional_optional_info').addClass('d-none');
+//        $("#break_filter").remove();
+    }
 });
 
     

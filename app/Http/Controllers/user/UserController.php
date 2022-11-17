@@ -21,6 +21,7 @@ use Redirect;
 use App\Services\MasterService;
 use App\Models\Post;
 use App\Models\SurferRequest;
+use App\Models\BoardTypeAdditionalInfo;
 use App\Models\UserProfile;
 use Illuminate\Support\Facades\Crypt;
 
@@ -231,6 +232,32 @@ class UserController extends Controller {
             }
         }
     }
+    
+    public function getAdditionalBoardTypeInfo(Request $request) {
+        $data = $request->all();
+        $board_type = $data['board_type'];
+        if (!empty($board_type)) {
+            
+            $resultData = BoardTypeAdditionalInfo::where('board_type', $board_type)->get();
+            $returnObject = '';
+            if (!$resultData->isEmpty()) {
+
+                $returnObject = '<div class="col-md-12"><div class="row mb-3 align-items-center"><label class="col-md-2"></label><div class="col-md-8"><div class="row">';
+                foreach ($resultData as $key => $value) {
+                        $val = ($value->beach_name) ? $value->beach_name : '';
+                        $returnObject .= '<div class="col-sm-4 col-6"><div class="form-check d-inline-block">
+                                        <input type="checkbox" class="form-check-input" name="additional_info[]" value="'.$value->id.'"
+                                               id="'.$value->id.'" />
+                                        <label for="'.$value->id.'" class="">'.$value->info_name.'</label>
+                                    </div></div>';
+                }
+                $returnObject .= '</div></div></div></div>';
+                return response()->json($returnObject);
+            } else {
+                return response()->json($returnObject);
+            }
+        }
+    }
 
     public function getUsers(Request $request) {
         $data = $request->all();
@@ -336,13 +363,13 @@ class UserController extends Controller {
     }
 
     public function followers() {
-        $followers = $this->users->followers();
+        $followers = $this->users->followers(Auth::user()->id);
         $common = $this->common;
         return view('user.followers', compact('followers', 'common'));
     }
-
+   
     public function following() {
-        $following = $this->users->following();
+        $following = $this->users->following(Auth::user()->id);
         $common = $this->common;
         return view('user.following', compact('following', 'common'));
     }
@@ -435,22 +462,22 @@ class UserController extends Controller {
         }
     }
 
-    public function searchFollwers(Request $request) {
+    public function searchFollwers(Request $request,$id) {
 
         $serachTerm = $request->searchTerm;
 
-        $followers = $this->users->searchFollowers($serachTerm);
+        $followers = $this->users->searchFollowers($serachTerm,$id);
 //        dd($followers);
         $common = $this->common;
         $view = view('elements/searchFollower', compact('followers', 'common'))->render();
         return response()->json(['html' => $view]);
     }
 
-    public function searchFollowing(Request $request) {
+    public function searchFollowing(Request $request,$id) {
 
         $serachTerm = $request->searchTerm;
 
-        $following = $this->users->searchFollowing($serachTerm);
+        $following = $this->users->searchFollowing($serachTerm,$id);
 //        dd($followers);
         $common = $this->common;
         $view = view('elements/searchFollowing', compact('following', 'common'))->render();
@@ -523,6 +550,66 @@ class UserController extends Controller {
             return response()->json(['html' => $view]);
         }
         return view('user.surfer-profile', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile', 'fCounts'));
+    }
+    
+    public function surferFollowers($id) {
+        $surfer_id = Crypt::decrypt($id);
+        $followers = $this->users->followers($surfer_id);
+        $common = $this->common;
+        $postsList = Post::with('followPost')->where('is_deleted', '0')
+                ->where('parent_id', '0')
+                ->where('user_id', $surfer_id)
+                ->where(function ($query) {
+                    $query->where('post_type', 'PUBLIC')
+                    ->orWhere('is_feed', '1');
+                })
+                ->orderBy('posts.created_at', 'DESC')
+                ->paginate(10);
+        $userProfile = $this->users->getUserDetail($surfer_id);
+        $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $surfer_id);
+//        echo '<pre>'; print_r($followersCount);die;
+        $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $surfer_id);
+        $userPosts = $this->post->getPostByUserId($surfer_id);
+        $postIds = array_filter(array_column($userPosts, 'id'));
+        $uploads = $this->post->getUploads($postIds);
+        $fCounts = array(
+            'follwers' => $followersCount,
+            'follwing' => $followingCount,
+            'posts' => count($userPosts),
+            'uploads' => count($uploads),
+        );
+        
+        return view('user.surfer-followers', compact('followers', 'common', 'userProfile', 'fCounts','postsList'));
+    }
+    
+    public function surferFollowing($id) {
+        $surfer_id = Crypt::decrypt($id);
+        $following = $this->users->following($surfer_id);
+        $common = $this->common;
+        $postsList = Post::with('followPost')->where('is_deleted', '0')
+                ->where('parent_id', '0')
+                ->where('user_id', $surfer_id)
+                ->where(function ($query) {
+                    $query->where('post_type', 'PUBLIC')
+                    ->orWhere('is_feed', '1');
+                })
+                ->orderBy('posts.created_at', 'DESC')
+                ->paginate(10);
+        $userProfile = $this->users->getUserDetail($surfer_id);
+        $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $surfer_id);
+//        echo '<pre>'; print_r($followersCount);die;
+        $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $surfer_id);
+        $userPosts = $this->post->getPostByUserId($surfer_id);
+        $postIds = array_filter(array_column($userPosts, 'id'));
+        $uploads = $this->post->getUploads($postIds);
+        $fCounts = array(
+            'follwers' => $followersCount,
+            'follwing' => $followingCount,
+            'posts' => count($userPosts),
+            'uploads' => count($uploads),
+        );
+        
+        return view('user.surfer-following', compact('following', 'common', 'userProfile', 'fCounts','postsList'));
     }
 
 }

@@ -660,6 +660,9 @@ class PostService {
             $posts->local_break_id = $input['break_id'];
             $posts->surfer = $input['surfer'];
             $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
+            $posts->additional_info = (!empty($input['additional_info'])) ? implode(" ",$input['additional_info']) : null;
+            $posts->stance = (!empty($input['stance'])) ? $input['stance'] : null;
+            $posts->fin_set_up = (!empty($input['fin_set_up'])) ? $input['fin_set_up'] : null;
             $posts->created_at = Carbon::now();
             $posts->updated_at = Carbon::now();
 
