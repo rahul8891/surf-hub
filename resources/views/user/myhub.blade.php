@@ -1,5 +1,12 @@
 @extends('layouts.user.new_layout')
 @section('content')
+<style>
+    .highlight.blue {
+        background-color: #2861f7;
+        color: #fff;
+        border-color: #2861f7;
+    }
+</style>
 
 <section class="home-section">
     <div class="container">
@@ -67,7 +74,7 @@
                             <div class="rating-flex">
                                 <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
                                 <span class="avg-rating">{{ round(floatval($posts->averageRating)) }} (<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span>)</span>
-
+                                <div class="highlight {{ (isset($posts->is_highlight) && ($posts->is_highlight == "1"))?'blue':'highlightPost' }}" data-id="{{ $posts->id }}"><span>Highlights</span></div>
                             </div>
                             <div class="right-options">
                                 @if(Auth::user()->id != $posts->user_id)
@@ -299,8 +306,8 @@
             });
         });
         
-      function openFullscreenSilder(id) {
-          $.ajax({
+        function openFullscreenSilder(id) {
+            $.ajax({
                 url: '/getPostFullScreen/' + id,
                 type: "get", 
                 async: false,
@@ -311,7 +318,22 @@
                     $("#full_screen_modal").modal('show');                
                 }
             });
-      }
+        }
+
+        $(".highlightPost").on("click", function() {
+            var that = $(this);
+            var postID = $(this).data('id');
+
+            $.ajax({
+                url: '/highlight-post/' + postID,
+                type: "get", 
+                async: false,
+                success: function(data) {
+                    that.addClass('blue');
+                    that.removeClass('highlightPost');
+                }
+            });
+        });
         
 </script>
 @endsection

@@ -114,7 +114,7 @@ class MyHubController extends Controller
     }
 
 
-    /**
+    /**11
      * Display a listing of post with sorting.
      *
      * @return \Illuminate\Http\Response
@@ -338,9 +338,19 @@ class MyHubController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function highlightPost($id)
     {
-        //
+        $data = Post::where('id', $id)->first();
+
+        $data->is_highlight = "1";
+
+        if($data->save()) {
+            $result = ['status' => "success", "statuscode" => 200, "data" => $data];
+        } else {
+            $result = ['status' => "failure", "statuscode" => 205, "data" => ''];
+        }
+
+        return response()->json($result);
     }
 
 }
