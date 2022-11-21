@@ -5,7 +5,7 @@
             <div class="profile-pic">
                 @if(Auth::user()->profile_photo_path)
                 <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}"
-                    alt="profile-pic" class="rounded-circle">
+                    alt="" class="rounded-circle">
                 @else
                 <div class="">
                     {{ucwords(substr(Auth::user()->user_profiles->first_name,0,1))}}{{ucwords(substr(Auth::user()->user_profiles->last_name,0,1))}}
@@ -48,7 +48,7 @@
             </div>
             <div class="profile-row {{ userActiveMenu('notifications') }}">
                 <img src="/img/notification.png" alt="Notifications" class="mr-2">
-                <a class="" href="{{ route('notifications') }}">Notifications <span class="notification" id="notification"></span></a>
+                <a class="" href="{{ route('notifications') }}">Notifications <span class="notification" id="notification-count"></span></a>
             </div>
             <div class="profile-row">
                 <form method="POST" action="{{ route('logout') }}">
@@ -78,7 +78,7 @@
                                                 $('#posts').html(jsonResponse['posts']);
                                                 $('#uploads').html(jsonResponse['uploads']);
                                                 $('#surferRequest').html(jsonResponse['surferRequest']);
-                                                $('.notification').html(jsonResponse['notification']);
+                                                $('#notification-count').html(jsonResponse['notification']);
 //                setInterval(myTimerUserMessage, 4000);
                                             }
                                         });

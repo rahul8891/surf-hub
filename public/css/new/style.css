@@ -66,7 +66,6 @@ p {
 .blue-btn {
     border: 2px solid #325CFD;
     background: #325CFD;
-    border: #325CFD;
 }
 
 .red-btn {
@@ -656,6 +655,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     height: 60px;
     border-radius: 50%;
 }
+.user-details .user-left a>img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
 
 .user-details .follow-btn,
 .greyBorder-btn {
@@ -693,7 +697,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     margin-top: 15px;
 }
 
-.rating,
 .highlight {
     background: #FFFAFA;
     border: 1px solid #C0BCBC;
@@ -892,6 +895,8 @@ header .profile-pic {
     height: 35px;
     position: relative;
     margin-left: 15px;
+    border: 2px solid #C0BCBC;
+    border-radius: 50%;
 }
 
 header .notification {
@@ -1046,7 +1051,7 @@ header .notification {
     border: 1px solid #C0BCBC;
     font-weight: 600;
     font-size: 14px;
-    line-height: 19px;
+    line-height: 30px;
     width: 81px;
     height: 35px;
     border-radius: 0;
@@ -1557,14 +1562,14 @@ header .notification {
     padding-left: 15px;
 }
 
-.upload-wrap .form-check-input:checked {
+/* .upload-wrap .form-check-input:checked {
     background-color: #fff;
     border-color: #C0BCBC;
-}
+} */
 
-.upload-wrap .form-check-input:checked[type=radio] {
+/* .upload-wrap .form-check-input:checked[type=radio] {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23616161'/%3e%3c/svg%3e");
-}
+} */
 
 .previewAds {
     font-weight: 400;
@@ -1752,20 +1757,11 @@ header .notification {
 
 
 
-.clicked {
-    background: #325CFD !important;
-    color: #fff !important;
-    border: #fff !important;
-
-}
 
 .rating-flex {
     display: flex;
 }
 
-.avg-rating {
-    margin-top: 8px;
-}
 
 @font-face {
     font-family: 'Glyphicons Halflings';
@@ -1805,6 +1801,7 @@ header .notification {
 .newsFeedImgVideo video {
     height: 100%;
     width: auto;
+    max-width: 100%;
 }
 
 .newsFeedImgVideo {
@@ -1813,8 +1810,8 @@ header .notification {
     height: 325px;
 }
 
-.newsFeedImgVideoSlider img,
-.newsFeedImgVideoSlider video {
+.newsFeedImgVideoSlider > img,
+.newsFeedImgVideoSlider > video {
     height: 700px;
     width: 100%;
     object-fit: cover;
@@ -1823,6 +1820,7 @@ header .notification {
 .newsFeedImgVideoSlider {
     background: #000;
     text-align: center;
+    position: relative;
 }
 
 .modal-dialog {
@@ -1831,4 +1829,52 @@ header .notification {
 .left-option .active a {
     border-bottom: 3px solid #fff;
     padding-bottom: 3px;
+}
+
+.profile-row.active a {
+    border-bottom: 1px solid #C0BCBC;
+    padding-bottom: 5px;
+}
+.spotify-btn{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 1;
+}
+
+.rating-xs {
+    font-size: 18px;
+}
+
+.avg-rating {
+    background: #FFFAFA;
+    border: 1px solid #C0BCBC;
+    padding: 0 12px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.avg-rating::before {
+    content: "\2605";
+    color: #2861f7;
+    font-size: 18px;
+    margin-right: 5px;
+    line-height: initial;
+}
+.rating-container .filled-stars{
+    color: #2861f7;
+}
+.rating-container{
+    display: none;
+}
+.rating-loading {
+    display: none;
+}
+.left-navbar-toggler{
+    cursor: pointer;
 }

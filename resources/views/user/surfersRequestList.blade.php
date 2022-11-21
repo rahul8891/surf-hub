@@ -18,7 +18,7 @@
                                 <div class="col-xl-6">
                                     @if($val->user->profile_photo_path)
                                     <img src="{{ asset('storage/'.$val->user->profile_photo_path) }}" alt=""
-                                         class="align-middle bg-white">
+                                         class="align-middle bg-white notification-img">
                                     @else
                                     <img src="/img/follower-img.png" alt=""
                                          class="align-middle bg-white notification-img">

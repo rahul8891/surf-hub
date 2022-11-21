@@ -36,6 +36,8 @@ class UserProfile extends Model
         'resort_name',
         'resort_type',
         'preferred_camera',
+        'preferred_board',
+        'postal_code',
         'paypal',
         'website',
         'company_name',

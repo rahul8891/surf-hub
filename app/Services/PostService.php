@@ -12,6 +12,7 @@ use App\Models\Report;
 use App\Models\UserFollow;
 use App\Models\Notification;
 use App\Models\SurferRequest;
+use App\Models\BeachBreak;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -100,9 +101,9 @@ class PostService {
      * @param  
      * @return dataCount
      */
-    public function getPostByUserId(){
+    public function getPostByUserId($user_id){
 
-        $postArray =  $this->posts->where('user_id',Auth::user()->id)   
+        $postArray =  $this->posts->where('user_id',$user_id)   
                                   ->where('is_deleted','0')                            
                                   ->orderBy('created_at','ASC')
                                   ->get()
@@ -385,7 +386,7 @@ class PostService {
         }
 
         if (isset($params['country_id']) && !empty($params['country_id'])) {
-            $postArray->where('country_id',$params['country_id']);
+            $postArray->where('posts.country_id',$params['country_id']);
         }
         if (isset($params['local_beach_id']) && !empty($params['local_beach_id'])) {
             $postArray->where('local_beach_id', $params['local_beach_id']);
@@ -398,7 +399,7 @@ class PostService {
         }
         
         if (isset($params['state_id'])) {
-            $postArray->where('state_id',$params['state_id']);
+            $postArray->where('posts.state_id',$params['state_id']);
         }
         
         if (isset($params["user_type"])) {
@@ -422,15 +423,18 @@ class PostService {
             $postArray->where('dob', '>=', $to_age);
         }
         
-        if (isset($params['rating'])) {
+        if (isset($params['rating']) && $params['rating']>0) {
             $postArray->havingRaw('round(avg(ratings.rating)) = '. $params['rating']);
             // $postArray->where('avg(ratings.rating)', $params['rating']);
         }
         if (isset($params['beach']) && $params['beach']>0 && empty($params['break'])) {
-            $postArray->where('local_beach_id',$params['beach']);
+            
+            $beachBreak = BeachBreak::where('id', $params['beach'])->get()->toArray();
+            $beachName = $beachBreak[0]['beach_name'];
+            $postArray->where('beach_breaks.beach_name',$beachName);
         }
         if (isset($params['break']) && $params['break']>0) {
-            $postArray->where('local_break_id',$params['break']);
+            $postArray->where('beach_breaks.id',$params['break']);
         }
         if (isset($params['sort'])) {
             if($params['sort'] == "dateAsc"){
@@ -656,6 +660,9 @@ class PostService {
             $posts->local_break_id = $input['break_id'];
             $posts->surfer = $input['surfer'];
             $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
+            $posts->additional_info = (!empty($input['additional_info'])) ? implode(" ",$input['additional_info']) : null;
+            $posts->stance = (!empty($input['stance'])) ? $input['stance'] : null;
+            $posts->fin_set_up = (!empty($input['fin_set_up'])) ? $input['fin_set_up'] : null;
             $posts->created_at = Carbon::now();
             $posts->updated_at = Carbon::now();
 
@@ -710,6 +717,9 @@ class PostService {
         $posts->local_beach_id = $input['local_beach_break_id'];
         $posts->surfer = (isset($input['surfer']) && ($input['surfer'] == 'Me'))?Auth::user()->user_name:$input['surfer'];
         $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
+        $posts->additional_info = (!empty($input['additional_info'])) ? implode(" ",$input['additional_info']) : null;
+        $posts->stance = (!empty($input['stance'])) ? $input['stance'] : null;
+        $posts->fin_set_up = (!empty($input['fin_set_up'])) ? $input['fin_set_up'] : null;
         $posts->created_at = Carbon::now();
         $posts->updated_at = Carbon::now();
         if($posts->save()){ echo "Type = ".$type." -- File =".$filename."<pre>";
@@ -1255,6 +1265,8 @@ class PostService {
             $this->surferRequest->status = 0;
             $this->surferRequest->created_at = Carbon::now();
             $this->surferRequest->save();
+            
+            return 'Surfer request has been made successfully!';
         }
         catch (\Exception $e){     
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
