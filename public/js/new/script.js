@@ -8,11 +8,10 @@ $(document).on('click', '.rating-flex', function (e) {
   $(this).children(".avg-rating").hide();
 });
 
-
-$(".rating-stars").click(function(){
-  $(this).parents(".rating-container").hide();
-  $(this).parents(".rating-container").siblings(".avg-rating").show();
-});
+//$(document).on('click', '.rating-stars', function (e) {
+//  $(this).parents(".rating-container").hide();
+//  $(this).parents(".rating-container").siblings(".avg-rating").show();
+//});
 
 $(document).ready(function() { 
     
