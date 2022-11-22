@@ -72,9 +72,13 @@
                         @endif
                         <div class="user-bottom-options">
                             <div class="rating-flex">
-                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
-                                <span class="avg-rating">{{ round(floatval($posts->averageRating)) }} (<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span>)</span>
-                                <div class="highlight {{ (isset($posts->is_highlight) && ($posts->is_highlight == "1"))?'blue':'highlightPost' }}" data-id="{{ $posts->id }}"><span>Highlights</span></div>
+                                <div class="rating-flex-child">
+                                    <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">     
+                                    <span class="avg-rating">{{ round(floatval($posts->averageRating)) }} (<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span>)</span>
+                                </div>                       
+                                <div class="highlight highlightPost {{ (isset($posts->is_highlight) && ($posts->is_highlight == "1"))?'blue':'' }}" data-id="{{ $posts->id }}"  data-id="{{ $posts->is_highlight }}">
+                                    <span>Highlights</span>
+                                </div>
                             </div>
                             <div class="right-options">
                                 @if(Auth::user()->id != $posts->user_id)
@@ -328,9 +332,12 @@
                 url: '/highlight-post/' + postID,
                 type: "get", 
                 async: false,
-                success: function(data) {
-                    that.addClass('blue');
-                    that.removeClass('highlightPost');
+                success: function(result) {
+                    if(result.data.is_highlight == "1") {
+                        that.addClass('blue');
+                    } else {
+                        that.removeClass('blue');
+                    }
                 }
             });
         });

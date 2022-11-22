@@ -3,7 +3,7 @@ $('.left-navbar-toggler').on('click', function (e) {
     $('.my-details-div').toggleClass('menu-slideIn');
 });
 
-$(document).on('click', '.rating-flex', function (e) {
+$(document).on('click', '.rating-flex-child', function (e) {
   $(this).children(".rating-container").show();
   $(this).children(".avg-rating").hide();
 });

@@ -328,6 +328,8 @@ class PostService {
                         ->where('tags.is_deleted', '0')
                         ->where('tags.user_id', Auth::user()->id)
                         ->groupBy('posts.id');            
+        } elseif (($for == 'myhub') && ($type == 'reels')) {
+            $postArray->where('posts.is_highlight', '1');
         }
         
         //************* applying conditions *****************/
