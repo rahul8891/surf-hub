@@ -107,7 +107,7 @@
                                         @if (count($posts->tags) >= 1)
                                         <div class="username-tag">
                                             @foreach ($posts->tags as $tags)
-                                            <div class="">
+                                            <div class="tag-user-photo">
                                                 @if($tags->user->profile_photo_path)
                                                 <img src="{{ asset('storage/'.$tags->user->profile_photo_path) }}" class="profileImg" alt="">
                                                 @else
