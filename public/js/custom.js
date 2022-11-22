@@ -14,7 +14,7 @@ $(document).ready(function () {
     $('#register .phone').val('');
 
     /************** rating js ****************************/
-    $('.rating').on('change', function (e) {
+    $(document).on('change', '.rating', function () {
         var value = $(this).val();
         var id = $(this).attr("data-id");
 
@@ -33,6 +33,9 @@ $(document).ready(function () {
                 success: function (jsonResponse) {
                     $('#average-rating' + id).html(Math.floor(jsonResponse['averageRating']));
                     $('#users-rated' + id).html(Math.floor(jsonResponse['usersRated']));
+                    $(".rating-container").hide();
+                    $(".rating-container").siblings(".avg-rating").show();
+                    
                 }
             });
         } else {
