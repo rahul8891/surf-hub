@@ -1575,10 +1575,6 @@ $(document).ready(function () {
     }
 });
 
-   $(".dropdownmenuname").click(function(e){
-   e.stopPropagation();
-});
-
     // ajax form field data for filter
     $('.search-box2').keyup(debounce(function () {
         // the following function will be executed every half second	
@@ -1648,6 +1644,15 @@ $(document).ready(function () {
         $('#other_surfer_list').html("");
     });
 
+    $(document).on('click', '#filter_other_surfer_data li', function () {
+        var value = $(this).text().trim();
+        var dataId = $(this).attr("data-id");
+
+        $('.filter_other_surfer').val(value);
+        $('#surfer_id_filter').val(dataId);
+        $('#filter_other_surfer_data').html("");
+    });
+
 
     $('.filter_other_surfer').keyup(debounce(function () {
         // the following function will be executed every half second	
@@ -1661,23 +1666,16 @@ $(document).ready(function () {
                 },
                 dataType: "json",
                 success: function (jsonResponse) {
-                    $('#filter_other_surfer_list').html(jsonResponse);
+                    $('#filter_other_surfer_data').html(jsonResponse);
                 }
             });
         } else {
             $('#surfer_id_filter').val('');
-            $('#filter_other_surfer_list').html("");
+            $('#filter_other_surfer_data').html("");
         }
     }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
-    $(document).on('click', '#filter_other_surfer_list li', function () {
-        var value = $(this).text().trim();
-        var dataId = $(this).attr("data-id");
-
-        $('.filter_other_surfer').val(value);
-        $('#surfer_id').val(dataId);
-        $('#filter_other_surfer_list').html("");
-    });
+    
 
     $('.tag_user').keyup(debounce(function () {
         // the following function will be executed every half second	
@@ -2095,9 +2093,9 @@ $(document).on('click shown.bs.modal', '.locationMap', function () {
 
 $('#test-other').click(function () {
     if ($('#test-other').prop('checked')) {
-        $('#othersFilterSurfer').show();
+        $('#othersFilterSurfer').removeClass('d-none');
     } else {
-        $('#othersFilterSurfer').hide();
+        $('#othersFilterSurfer').addClass('d-none');
     }
 });
 

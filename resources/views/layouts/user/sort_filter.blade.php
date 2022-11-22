@@ -17,7 +17,7 @@
     </div>
 
     <div class="filter dropdown">
-        <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             <img src="/img/filter.png" alt="filter">
             <span>Filter</span>
         </button>
@@ -69,10 +69,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4" style="display:none" id="othersFilterSurfer">
+                                <div class="col-md-4 d-none" id="othersFilterSurfer">
                                     <input type="hidden" value="" name="surfer_id" id="surfer_id_filter" class="form-control surfer_id" />
                                     <input type="text" name="other_surfer" class="form-control ps-2 mb-0 filter_other_surfer">
-                                    <div class="auto-search" id="filter_other_surfer_list"></div>
+                                    <div class="auto-search" id="filter_other_surfer_data"></div>
                                 </div>
                             </div>
                             @endif
