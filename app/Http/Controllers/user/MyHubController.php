@@ -293,7 +293,7 @@ class MyHubController extends Controller {
 
 //                $trackArray[$counter]['track_name'] = $track['name'];
 //                $trackArray[$counter]['track_link'] = $track['href'];
-                $trackArray['track_uri'] = $track['uri'];
+                  $trackArray['track_uri'] = $track['uri'];
 //                $trackArray[$counter]['duration'] = $duration;
                 $counter++;
 

@@ -35,6 +35,7 @@
                 @if(!empty($token))
                 <button onClick="play_song('{{ isset($trackArray['track_uri'])?$trackArray['track_uri']:'' }}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
                 @endif
+                
                 <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                     <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
                 </video>
