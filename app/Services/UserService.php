@@ -562,15 +562,36 @@ class UserService {
             $userProfile['surfer_name'] = $val->first_name . ' '. $val->last_name;
             $userProfile['profile_photo_path'] = $val->user->profile_photo_path;
             $userProfile['email'] = $val->user->email;
-            $userProfile['gender'] = isset($val->gender)?$this->checkUserType['gender_type'][$val->gender]:'-';
+            $userProfile['gender'] = (isset($val->gender) && $val->gender!= 0)?$this->checkUserType['gender_type'][$val->gender]:'-';
             $userProfile['beach_break'] = isset($val->local_beach_break_id)?$val->beach_breaks->beach_name." ".$val->beach_breaks->break_name:'-';
             $userProfile['country'] = isset($val->country_id)?$val->countries->name:'-';
             $userProfile['dob'] = isset($val->dob)?$val->dob:'-';
-            $userProfile['preferred_board'] = isset($val->preferred_board)?$this->checkUserType['board_type'][$val->preferred_board]:'-';
+            $userProfile['preferred_board'] = (isset($val->preferred_board) && !empty($val->preferred_board))?$this->checkUserType['board_type'][$val->preferred_board]:'-';
+            $userProfile['website'] = (isset($val->website) && !empty($val->website))?$val->website:'-';
             $userProfile['postal_code'] = isset($val->postal_code)?$val->postal_code:'-';
             $userProfile['phone'] = isset($val->phone)?$val->phone:'-';
         
         }
         return $userProfile;
     }
+    public function getResortImages($resort_id) {
+        $userData = UserProfile::where('user_id', $resort_id)->get();
+        foreach ($userData as $val) {
+            $resortName = $val->resort_name;
+        }
+        $dir = public_path('storage/') . $resortName;
+        if ($handle = opendir($dir)) {
+            $file_display = [ 'jpg', 'jpeg', 'png', 'gif' ];
+            while (false !== ($file = readdir($handle))) {
+                $file_type = pathinfo($file, PATHINFO_EXTENSION);
+            if (in_array($file_type, $file_display) == true) {
+                $ImagesArray[$resortName][] = $file;
+            }
+            }
+
+            closedir($handle);
+        }
+        return $ImagesArray;
+    }
+
 }

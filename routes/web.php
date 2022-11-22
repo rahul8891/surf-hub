@@ -130,6 +130,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::post('/upload-media', [UserPostController::class, 'uploadMedia'])->name('uploadMedia');
     
     Route::get('/get-additional-board-info', [UserController::class, 'getAdditionalBoardTypeInfo'])->name('getAdditionalBoardTypeInfo');
+
+    Route::get('/resort-profile/{id}', [UserController::class, 'resortProfile'])->name('resort-profile');
+    
 });
 
 /*********************************************************************************************
