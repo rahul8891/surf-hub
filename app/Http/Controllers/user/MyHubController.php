@@ -355,8 +355,6 @@ class MyHubController extends Controller {
                 $filePath = $type = "";
                 // $timeDate = strtotime(Carbon::now()->toDateTimeString());
                 if (!empty($postArray)) {
-
-
                     $fileType = explode('/', $request->file('files')->getMimeType());
                     if ($fileType[0] == 'image') {
                         $fileFolder = 'images/' . $request->user_id;
@@ -398,8 +396,12 @@ class MyHubController extends Controller {
     {
         $data = Post::where('id', $id)->first();
 
-        $data->is_highlight = "1";
-
+        if($data->is_highlight == "1") {
+            $data->is_highlight = "0";
+        } else {
+            $data->is_highlight = "1";
+        }
+//dd($data);
         if($data->save()) {
             $result = ['status' => "success", "statuscode" => 200, "data" => $data];
         } else {
