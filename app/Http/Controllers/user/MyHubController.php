@@ -237,6 +237,7 @@ class MyHubController extends Controller {
             $spotifyUser = SpotifyUser::where('user_id', Auth::user()->id)->get()->toArray();
             $token = '';
             $trackArray = array();
+            $trackArray['track_uri'] = '';
             if($spotifyUser) {
             $client = new \GuzzleHttp\Client;
             
