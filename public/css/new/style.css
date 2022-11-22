@@ -1878,3 +1878,16 @@ header .notification {
 .left-navbar-toggler{
     cursor: pointer;
 }
+.tag-user-photo img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #C0BCBC;
+    margin-right: 9px;
+}
+
+.tag-user-photo span {
+    color: #616161;
+    font-weight: 500;
+    line-height: 20px;
+}
