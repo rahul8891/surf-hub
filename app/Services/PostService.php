@@ -377,6 +377,15 @@ class PostService {
         if(isset($optionalInfo[0]) && !empty($optionalInfo[0])) {
             $postArray->whereIn('optional_info', $optionalInfo);
         }        
+        if(isset($params['additional_info']) && !empty($params['additional_info'])) {
+            $postArray->where(function($q) use($params){
+                
+            foreach ($params['additional_info'] as $val) {
+            $q->orWhere('additional_info', 'LIKE',  '%' . $val .'%');
+            }
+            
+            });
+        }        
         
         if (isset($params['surf_date']) && !empty($params['surf_date'])) {
            $postArray->whereDate('surf_start_date','>=',$params['surf_date']);
@@ -462,9 +471,9 @@ class PostService {
             $postArray->orderBy('posts.id','DESC');
         }
 
+//         dd($postArray->toSql());
         return $postArray->paginate(10);
         // dd($postArray);
-        // dd($postArray->toSql());
     }
     
     

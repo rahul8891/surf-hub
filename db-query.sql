@@ -1,4 +1,30 @@
-ALTER TABLE `uploads` ADD `file_body` LONGBLOB NULL DEFAULT NULL AFTER `video`, ADD `aws_uploaded` TINYINT NOT NULL DEFAULT '0' AFTER `file_body`; 
+CREATE TABLE `spotify_users` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `spotify_user_id` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `refresh_token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `spotify_users`
+--
+
+INSERT INTO `spotify_users` (`id`, `user_id`, `spotify_user_id`, `token`, `refresh_token`, `created_at`, `updated_at`) VALUES
+(11, 45, '3126wrnqm7otcbe6movbyrhvcyvi', 'BQAEm8tQzg9IAMlIP_adfTTkITaCtpxVCHAqsCHxYKg_ZlIPdz-zLe5pldsJ87n8v1R9oxf1KmMY1tGzEm3Mc7b70wZFcaO5fN6COzNnNxUBUFTZIJJjL6wn9t1eXR7D5eEyha8IYZiGDfUz9BD_kBVh2eQNV2CIZn7xnKk87vk2HsbohwWR3SMwuMwvfJee95ih-zhk-PL77qdrzRiXcci9b2-r_5m5DVgCy1ZsSJSb-g', 'AQA4VSSBCBTIYD5vNm2TBXKJ0wJSi8ruHuk7l1_jsrYss4XhsFg2ZGKmv-RMqA03E4RkQDM4gO7RhYALQt5pEchWS76B5AWnRBrV3L3fT8yXZ5m6E5b_51zVsiT3NWyQSb0', '2022-11-17 07:36:53', '2022-11-17 07:36:53');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `spotify_users`
+--
+ALTER TABLE `spotify_users`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `spotify_users_user_id_foreign` (`user_id`);
 
 ALTER TABLE `user_profiles` ADD `preferred_board` INT NULL DEFAULT NULL AFTER `preferred_camera`; 
 ALTER TABLE `user_profiles` ADD `postal_code` VARCHAR(60) NULL DEFAULT NULL AFTER `paypal`; 

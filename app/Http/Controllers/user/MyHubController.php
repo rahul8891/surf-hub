@@ -266,6 +266,8 @@ class MyHubController extends Controller {
             ]);
             $top_user_tracks = json_decode($response->getBody(), true);
             
+//            echo '<pre>';print_r($top_user_tracks);die;
+            
 //            $device = $client->get('https://api.spotify.com/v1/me/player/devices', [
 //                'headers' => [
 //                    'Content-Type' => 'application/json',
@@ -273,9 +275,7 @@ class MyHubController extends Controller {
 //                ],
 //            ]);
 //            $av_device = json_decode($device->getBody(), true);
-//            echo '<pre>';
-//                    print_r($av_device);
-//                    die;
+            
 //            
             $counter = 0;
             foreach ($top_user_tracks['items'] as $track) {
@@ -301,9 +301,7 @@ class MyHubController extends Controller {
             }
             
             }
-//            echo '<pre>';
-//                    print_r($trackArray);
-//                    die;
+//            echo '<pre>';print_r($trackArray);die;
         } catch (\Exception $e) {
 //            echo '<pre>';print_r($e->getMessage());die;  
             throw ValidationException::withMessages([$e->getMessage()]);

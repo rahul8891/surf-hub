@@ -183,7 +183,7 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="white-bg">
-                                                <select class="form-control" name="board_type">
+                                                <select class="form-control" name="board_type" id="board_type">
                                                     <option value="">{{ __('-- Select --')}}</option>
                                                     @foreach($customArray['board_type'] as $key => $value)
                                                     <option value="{{ $key }}" {{ old('board_type',Request::get('board_type')) == $key ? "selected" : "" }}>{{ $value}}
@@ -193,7 +193,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
                                 </div>
+                                
                                 <div class="col-md-5">
                                     <div class="filter-checkbox mb-4">
                                         <label class="form-label">Floater</label>
@@ -253,6 +255,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row align-items-center mb-5 d-none" id="additional_optional_info">
+                            
+                        </div>
                             </div>
 
                         </div>

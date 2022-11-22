@@ -143,9 +143,23 @@ class UserController extends Controller {
         $countries = DB::table('countries')->select('id', 'name', 'phone_code')->orderBy('name', 'asc')->get();
         $beachBreaks = DB::table('beach_breaks')->orderBy('beach_name', 'asc')->get();
         $language = config('customarray.language');
+        $board_type = config('customarray.board_type');
         $accountType = config('customarray.accountType');
         $user = $this->users->getUserDetailByID(Auth::user()->id);
-        return view('user.edit_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type'));
+//        echo '<pre>';print_r($user->user_type);die;
+//        foreach ($user as $v) {
+//        }
+        if($user->user_type == 'USER') {
+        return view('user.edit_surfer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','board_type'));
+            
+        } elseif ($user->user_type == 'PHOTOGRAPHER') {
+        return view('user.edit_photographer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type'));
+        
+        } elseif ($user->user_type == 'SURFER CAMP') {
+        return view('user.edit_resort_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type'));
+        } elseif ($user->user_type == 'ADVERTISEMENT') {
+        return view('user.edit_advertiser_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type'));
+        }
     }
 
     /**
@@ -514,12 +528,13 @@ class UserController extends Controller {
                 ->orderBy('posts.created_at', 'DESC')
                 ->paginate(10);
         $requestSurfer = array();
+        $userType = '';
         foreach ($postsList as $val) {
 //            $surferRequest = SurferRequest::select("*")
 //                    ->where("post_id", "=", $val['id'])
 //                    ->where("status", "=", 0)
 //                    ->get();
-
+            $userType = $val->user->user_type;
             $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
                     ->where("surfer_requests.post_id", "=", $val['id'])
                     ->where("surfer_requests.status", "=", 0)
@@ -549,7 +564,66 @@ class UserController extends Controller {
             $view = view('elements/surferProfileData', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches'))->render();
             return response()->json(['html' => $view]);
         }
-        return view('user.surfer-profile', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile', 'fCounts'));
+        return view('user.surfer-profile', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile', 'fCounts','userType'));
+    }
+    
+    public function resortProfile(Request $request, $id) {
+        $resort_id = Crypt::decrypt($id);
+        $url = url()->current();
+//        print_r($resort_id);die;
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $beaches = $this->masterService->getBeaches();
+        $customArray = $this->customArray;
+        $postsList = Post::with('followPost')->where('is_deleted', '0')
+                ->where('parent_id', '0')
+                ->where('user_id', $resort_id)
+                ->where(function ($query) {
+                    $query->where('post_type', 'PUBLIC')
+                    ->orWhere('is_feed', '1');
+                })
+                ->orderBy('posts.created_at', 'DESC')
+                ->paginate(10);
+        $requestSurfer = array();
+        $userType = '';
+        foreach ($postsList as $val) {
+//            $surferRequest = SurferRequest::select("*")
+//                    ->where("post_id", "=", $val['id'])
+//                    ->where("status", "=", 0)
+//                    ->get();
+            $userType = $val->user->user_type;
+            $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
+                    ->where("surfer_requests.post_id", "=", $val['id'])
+                    ->where("surfer_requests.status", "=", 0)
+                    ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
+
+            foreach ($surferRequest as $res) {
+//                echo '<pre>'; print_r($res['id']);die;
+                $requestSurfer[$val['id']]['id'] = $res['id'];
+                $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
+            }
+        }
+        $userProfile = $this->users->getUserDetail($resort_id);
+        $resortImages = $this->users->getResortImages($resort_id);
+
+        $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $resort_id);
+        $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $resort_id);
+        $userPosts = $this->post->getPostByUserId($resort_id);
+        $postIds = array_filter(array_column($userPosts, 'id'));
+        $uploads = $this->post->getUploads($postIds);
+        $fCounts = array(
+            'follwers' => $followersCount,
+            'follwing' => $followingCount,
+            'posts' => count($userPosts),
+            'uploads' => count($uploads),
+        );
+//        echo '<pre>'; print_r($resortImages);die;
+        if ($request->ajax()) {
+            $view = view('elements/surferProfileData', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches'))->render();
+            return response()->json(['html' => $view]);
+        }
+        return view('user.resort-profile', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile', 'fCounts','userType','resortImages'));
     }
     
     public function surferFollowers($id) {
