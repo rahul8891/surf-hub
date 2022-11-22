@@ -15,20 +15,26 @@
 
             @if(!empty($posts->upload->image))
             <div class="newsFeedImgVideoSlider">
+                @if(!empty($token))
                 <button  class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                @endif
                 <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
             </div>
             @elseif(!empty($posts->upload->video))
             @if (!File::exists($posts->upload->video))
             <div class="newsFeedImgVideoSlider">
-                <button onClick="play_song('{{ isset($trackArray[0]['track_uri'])?$trackArray[0]['track_uri']:'' }}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                @if(!empty($token))
+                <button onClick="play_song('{{ isset($trackArray['track_uri'])?$trackArray['track_uri']:'' }}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                @endif
                 <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                     <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
                 </video>
             </div>    
             @else
             <div class="newsFeedImgVideoSlider">
-                <button onClick="play_song('{{ isset($trackArray[0]['track_uri'])?$trackArray[0]['track_uri']:'' }}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                @if(!empty($token))
+                <button onClick="play_song('{{ isset($trackArray['track_uri'])?$trackArray['track_uri']:'' }}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                @endif
                 <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                     <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
                 </video>
@@ -53,7 +59,7 @@
 //window.onSpotifyWebPlaybackSDKReady = () => {
 ////    const device_id = '47e5b24b028ce85508d27a9f1961896ad413aed4';
 //    const token = @json($token);
-//    const track_uri = @json($trackArray[0]['track_uri']);
+//    const track_uri = @json($trackArray['track_uri']);
 //    const player = new Spotify.Player({
 //        name: "Test",
 //        getOAuthToken: (cb) => {
@@ -132,7 +138,7 @@ const play_song = async (uri) => {
 
                     window.onSpotifyWebPlaybackSDKReady = () => {
                     const token = @json($token);
-                    const track_uri = @json($trackArray[0]['track_uri']);
+                    const track_uri = @json($trackArray['track_uri']);
                     // Define the Spotify Connect device, getOAuthToken has an actual token 
                     // hardcoded for the sake of simplicity
                     var player = new Spotify.Player({
