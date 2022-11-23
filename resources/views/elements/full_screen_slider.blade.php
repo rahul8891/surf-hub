@@ -17,6 +17,8 @@
             <div class="newsFeedImgVideoSlider">
                 @if(!empty($token))
                 <button  class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                @else
+                <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></a>
                 @endif
                 <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
             </div>
@@ -25,6 +27,8 @@
             <div class="newsFeedImgVideoSlider">
                 @if(!empty($token))
                 <button onClick="play_song('{{ isset($trackArray['track_uri'])?$trackArray['track_uri']:'' }}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                @else
+                <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></a>
                 @endif
                 
                 <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
@@ -35,6 +39,8 @@
             <div class="newsFeedImgVideoSlider">
                 @if(!empty($token))
                 <button onClick="play_song('{{ isset($trackArray['track_uri'])?$trackArray['track_uri']:'' }}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                @else
+                <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></a>
                 @endif
                 
                 <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
