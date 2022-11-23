@@ -93,10 +93,9 @@
                         @endif
                         @endif
                         <div class="user-bottom-options">
-                            <div class="rating-flex">
+                            <div class="rating-flex rating-flex-child">
                                 <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
                                 <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
-
                             </div>
                             <div class="right-options">
                                 @if(Auth::user()->id != $posts->user_id)
