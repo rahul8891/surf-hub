@@ -503,7 +503,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
 }
-
+.form-check-input{
+    margin-top: 0;
+}
 .form-check-input[type=radio] {
     margin-top: 1px;
     margin-right: 15px;

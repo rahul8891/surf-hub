@@ -256,10 +256,10 @@ class UserController extends Controller {
             $returnObject = '';
             if (!$resultData->isEmpty()) {
 
-                $returnObject = '<div class="col-md-12"><div class="row mb-3 align-items-center"><label class="col-md-2"></label><div class="col-md-8"><div class="row">';
+                $returnObject = '<div class="col-md-12"><div class="row mb-3 align-items-center"></label><div class="col-md-12"><div class="row">';
                 foreach ($resultData as $key => $value) {
                         $val = ($value->beach_name) ? $value->beach_name : '';
-                        $returnObject .= '<div class="col-sm-4 col-6"><div class="form-check d-inline-block">
+                        $returnObject .= '<div class="col-lg-4 col-md-6 col-sm-12 mb-3"><div class="form-check d-flex">
                                         <input type="checkbox" class="form-check-input" name="additional_info[]" value="'.$value->id.'"
                                                id="'.$value->id.'" />
                                         <label for="'.$value->id.'" class="">'.$value->info_name.'</label>
