@@ -1,17 +1,6 @@
 @extends('layouts.user.new_layout')
 @section('content')
 
-<style>
-    .newsFeedImgVideo img,.newsFeedImgVideo video {
-        height: 325px;
-    }
-
-    .newsFeedImgVideo {
-        background: #000;
-        text-align: center;
-    }
-</style>
-
 <section class="home-section">
     <div class="container">
         <div class="home-row">
@@ -20,7 +9,7 @@
             </div>
             <div class="middle-content" id="post-data">
                 @include('layouts.user.content_menu')
-                @if (is_null($postsList[0]))
+                @if (isset($postsList) && empty($postsList[0]))
                 <div class="post alert text-center alert-dismissible py-5" role="alert">
                     {{ ucWords('no matches found') }}
                 </div>
@@ -32,13 +21,42 @@
                     <div class="inner-news-feed">
                         <div class="user-details">
                             <div class="user-left">
-                                @if(file_exists(asset('storage/'.$posts->user->profile_photo_path)))
+                                
+                                @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
+                                @if($posts->user_id != Auth::user()->id)
+                                @if($posts->user->user_type == 'USER')
+                                <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                @elseif($posts->user->user_type == 'SURFER CAMP')
+                                <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                @endif
+                                @else
                                 <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
+                                @endif
+                                @else
+                                @if($posts->user_id != Auth::user()->id)
+                                @if($posts->user->user_type == 'USER')
+                                <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                @elseif($posts->user->user_type == 'SURFER CAMP')
+                                <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                @endif
                                 @else
                                 <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
-                                <div>                                                            
-                                    <p class="name"><span>{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span> </p>
+                                @endif
+                                <div>     
+                                    @if($posts->user_id != Auth::user()->id)
+                                    
+                                    @if($posts->user->user_type == 'USER')
+                                <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
+                                @elseif($posts->user->user_type == 'SURFER CAMP')
+                                <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
+                                @endif
+                                    
+                                    
+                                    @else
+                                    <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span>
+                                    </p>
+                                    @endif
                                     <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                                     <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
                                 </div>
@@ -48,7 +66,7 @@
                                 <img src="/img/new/normal-user.png" alt="normal-user">
 
                                 <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
-                                    <img src="/img/new/follow-user.png"> FOLLOW
+                                    <span class="follow-icon"></span> FOLLOW
                                 </button>
 
 
@@ -62,34 +80,33 @@
                         @elseif(!empty($posts->upload->video))
                         @if (!File::exists($posts->upload->video))
                         <div class="newsFeedImgVideo">
-                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-                        </video>
+                            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+                            </video>
                         </div>    
                         @else
                         <div class="newsFeedImgVideo">
-                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-                        </video>
+                            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+                            </video>
                         </div>
                         @endif
                         @endif
                         <div class="user-bottom-options">
-                            <div class="rating-flex">
+                            <div class="rating-flex rating-flex-child">
                                 <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
-                                <span class="avg-rating">{{ round(floatval($posts->averageRating)) }} (<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span>)</span>
-
+                                <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
                             </div>
                             <div class="right-options">
                                 @if(Auth::user()->id != $posts->user_id)
                                 <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/new/save.png" alt="Save"></a>
                                 @endif
-                                @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'])
+                                @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'] && empty($requestSurfer[$posts->id]))
                                 <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                                     <img src={{asset("/img/location.png")}} alt="Location"></a>
-                                <a onclick="openFullscreen({{$posts->id}});"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
+                                <a onclick="openFullscreenSilder({{$posts->id}});"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
                                 <div class="d-inline-block info dropdown" title="Info">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -130,8 +147,8 @@
                                 </div>
                                 @if(Auth::user() && $posts->user_id == Auth::user()->id)
                                 <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a>
-                                @endif
                                 <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
+                                @endif
                                 <div class="d-inline-block tag dropdown" title="Tag">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -234,9 +251,9 @@
                 @endif
                 <div class="justify-content-center ajax-load" style="display:none;margin-left: 40%">
                     <img src="/images/spiner4.gif" alt="loading" height="90px;" width="170px;">
-              </div>
+                </div>
             </div>
-            
+
             <div class="right-advertisement">
                 <img src="/img/new/advertisement1.png" alt="advertisement">
                 <img src="/img/new/advertisement2.png" alt="advertisement">
@@ -246,67 +263,78 @@
 </section>
 @include('elements/location_popup_model')
 @include('layouts/models/edit_image_upload')
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+@include('layouts/models/full_screen_modal')
 <script type="text/javascript">
-	var page = 1;
+                                    var page = 1;
+                                    $(window).scroll(function() {
+                                    if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                                    page++;
+                                    loadMoreData(page);
+                                    }
+                                    });
+                                    function loadMoreData(page) {
+                                    var url = window.location.href;
+                                    if (url.indexOf("?") !== - 1) {
+                                    var url = window.location.href + '&page=' + page;
+                                    } else {
+                                    var url = window.location.href + '?page=' + page;
+                                    }
 
-    $(window).scroll(function() {
-        if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-            page++;
-            loadMoreData(page);
-        }
-    });
+                                    $.ajax({
+                                    url: url,
+                                            type: "get",
+                                            async: false,
+                                            beforeSend: function() {
+                                            $('.ajax-load').show();
+                                            }
+                                    })
+                                            .done(function(data) {
+                                            if (data.html == "") {
+                                            $('.ajax-load').addClass('requests');
+                                            $('.ajax-load').html("No more records found");
+                                            return;
+                                            }
 
-    function loadMoreData(page) {
-        var url = window.location.href;
-        if(url.indexOf("?") !== -1) {
-            var url = window.location.href + '&page=' + page;
-        }else {
-            var url = window.location.href + '?page=' + page;
-        }
-        
-        $.ajax({
-            url: url,
-            type: "get",
-            async: false,
-            beforeSend: function() {
-                $('.ajax-load').show();
-            }
-        })
-        .done(function(data) {
-            if(data.html == "") {
-                $('.ajax-load').addClass('requests');
-                $('.ajax-load').html("No more records found");
-                return;
-            }
-
-            $('.ajax-load').removeClass('requests');
-            $('.ajax-load').hide();
+                                            $('.ajax-load').removeClass('requests');
+                                            $('.ajax-load').hide();
 //            $("#post-data").insertBefore(data.html);
-            $(data.html).insertBefore(".ajax-load");
-        });
-    }
-        
-        $(document).on('click', '.editBtnVideo', function() {
-            var id = $(this).data('id');
-            
-            $.ajax({
-                url: '/getPostData/' + id,
-                type: "get", 
-                async: false,
-                success: function(data) {
-                    // console.log(data.html);
-                    $("#edit_image_upload_main").html("");
-                    $("#edit_image_upload_main").append(data.html);
-                    $("#edit_image_upload_main").modal('show');                
-                }
-            });
-        });
-        
-        $('.pos-rel a').each(function(){
-           $(this).on('hover, mouseover, click', function() {
-                $(this).children('.userinfoModal').find('input[type="text"]').focus();
-            });
-        });
+                                            $(data.html).insertBefore(".ajax-load");
+                                            });
+                                    }
+
+                                    $(document).on('click', '.editBtnVideo', function() {
+                                    var id = $(this).data('id');
+                                    $.ajax({
+                                    url: '/getPostData/' + id,
+                                            type: "get",
+                                            async: false,
+                                            success: function(data) {
+                                            // console.log(data.html);
+                                            $("#edit_image_upload_main").html("");
+                                            $("#edit_image_upload_main").append(data.html);
+                                            $("#edit_image_upload_main").modal('show');
+                                            }
+                                    });
+                                    });
+                                    $('.pos-rel a').each(function(){
+                                    $(this).on('hover, mouseover, click', function() {
+                                    $(this).children('.userinfoModal').find('input[type="text"]').focus();
+                                    });
+                                    });
+                                    function openFullscreenSilder(id) {
+                                    $.ajax({
+                                    url: '/getPostFullScreen/' + id,
+                                            type: "get",
+                                            async: false,
+                                            success: function(data) {
+                                            // console.log(data.html);
+                                            $("#full_screen_modal").html("");
+                                            $("#full_screen_modal").append(data.html);
+                                            $("#full_screen_modal").modal('hide');
+                                            $("#full_screen_modal").modal('show');
+                                            }
+                                    });
+                                    }
+
 </script>
 @endsection

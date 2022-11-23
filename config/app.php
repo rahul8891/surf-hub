@@ -231,6 +231,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'FFMpeg' => ProtoneMedia\LaravelFFMpeg\Support\FFMpeg::class,
         'FollowNotification' => App\Helpers\FollowNotification::class,
+        'SpotifyUserAuth' => App\Helpers\SpotifyUserAuth::class,
 
     ],
 

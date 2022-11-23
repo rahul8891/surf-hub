@@ -14,7 +14,7 @@ $(document).ready(function () {
     $('#register .phone').val('');
 
     /************** rating js ****************************/
-    $('.rating').on('change', function (e) {
+    $(document).on('change', '.rating', function () {
         var value = $(this).val();
         var id = $(this).attr("data-id");
 
@@ -33,6 +33,9 @@ $(document).ready(function () {
                 success: function (jsonResponse) {
                     $('#average-rating' + id).html(Math.floor(jsonResponse['averageRating']));
                     $('#users-rated' + id).html(Math.floor(jsonResponse['usersRated']));
+                    $(".rating-container").hide();
+                    $(".rating-container").siblings(".avg-rating").show();
+                    
                 }
             });
         } else {
@@ -1316,11 +1319,12 @@ $(document).ready(function () {
     
     $('#searchFollower').keyup(debounce(function () {
         // the following function will be executed every half second	
+        var user_id = $('#user_id').val();
         var keyword = $('#searchFollower').val();
 //        if ($(this).val().length > 2) {
             $.ajax({
                 type: "GET",
-                url: "/searchFollwers",
+                url: "/searchFollwers/"+user_id,
                 data: {
                     searchTerm: keyword,
                     _token: csrf_token
@@ -1340,10 +1344,11 @@ $(document).ready(function () {
     $('#searchFollowing').keyup(debounce(function () {
         // the following function will be executed every half second	
         var keyword = $('#searchFollowing').val();
+        var user_id = $('#user_id').val();
 //        if ($(this).val().length > 2) {
             $.ajax({
                 type: "GET",
-                url: "/searchFollowing",
+                url: "/searchFollowing/"+user_id,
                 data: {
                     searchTerm: keyword,
                     _token: csrf_token
@@ -1539,81 +1544,38 @@ $(document).ready(function () {
 });
 
     
+    $("#board_type").change(function(e){
+//    if ($('#beach_filter').is(":selected")) {
+//        $('#break_filter').find('option').remove();
+//        $("#break_filter").append('<option value=""> -- Break --</option>');
+        var board_type = $(this).val();
+        if(board_type !=='') {
+        $.ajax({
+            type: "GET",
+            url: '/get-additional-board-info',
+            data: {
+                board_type: board_type,
+                _token: csrf_token
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                //console.log(jsonResponse);
+//                if (jsonResponse.status == 'success') {
+                    var myJsonData = jsonResponse.data;
+                    
+                   $('#additional_optional_info').removeClass('d-none');
+                   $('#additional_optional_info').html(jsonResponse);
+//                } else {
+//                    $('#additional_optional_info').addClass('d-none');
+//                }
+            }
+        });
     
-    $("#change-start5").mouseover(function () {
-        for (let i = 1; i <= 5; i++) {
-            $("#change-start" + i).attr("src", "img/blue-star.png");
         }
-    });
-    
-            
-      
-    $("#change-start5").mouseout(function () {
-        var filterRating = $('#filter-rating').val();
-//        if(filterRating == '') {
-        for (let i = 1; i <= 5; i++) {
-            $("#change-start" + i).attr("src", "img/star.png");
-        }
-//}
-    });
-    $("#change-start4").mouseover(function () {
-        for (let i = 1; i <= 4; i++) {
-            $("#change-start" + i).attr("src", "img/blue-star.png");
-        }
-    });
-    $("#change-start4").mouseout(function () {
-        var filterRating = $('#filter-rating').val();
-        for (let i = 1; i <= 4; i++) {
-            $("#change-start" + i).attr("src", "img/star.png");
-        }
-    });
-    $("#change-start3").mouseover(function () {
-        for (let i = 1; i <= 3; i++) {
-            $("#change-start" + i).attr("src", "img/blue-star.png");
-        }
-    });
-    $("#change-start3").mouseout(function () {
-        var filterRating = $('#filter-rating').val();
-        for (let i = 1; i <= 3; i++) {
-            $("#change-start" + i).attr("src", "img/star.png");
-        }
-    });
-    $("#change-start2").mouseover(function () {
-        for (let i = 1; i <= 2; i++) {
-            $("#change-start" + i).attr("src", "img/blue-star.png");
-        }
-    });
-    $("#change-start2").mouseout(function () {
-        var filterRating = $('#filter-rating').val();
-        for (let i = 1; i <= 2; i++) {
-            $("#change-start" + i).attr("src", "img/star.png");
-        }
-    });
-    $("#change-start1").mouseover(function () {
-      $("#change-start1").attr("src", "img/blue-star.png");
-    });
-    
-    $("#change-start1").mouseout(function () {
-      $("#change-start1").attr("src", "img/blue-star.png");
-    });
-    
-    $('#change-start5').on('click', function () {
-        $('#filter-rating').val('5');
-    });
-    $('#change-start4').on('click', function () {
-        $('#filter-rating').val('4');
-    });
-    $('#change-start3').on('click', function () {
-        $('#filter-rating').val('5');
-    });
-    $('#change-start2').on('click', function () {
-        $('#filter-rating').val('2');
-    });
-    $('#change-start1').on('click', function () {
-        $('#filter-rating').val('1');
-    });
-   $(".dropdownmenuname").click(function(e){
-   e.stopPropagation();
+    else {
+        $('#additional_optional_info').addClass('d-none');
+//        $("#break_filter").remove();
+    }
 });
 
     // ajax form field data for filter
@@ -1685,6 +1647,15 @@ $(document).ready(function () {
         $('#other_surfer_list').html("");
     });
 
+    $(document).on('click', '#filter_other_surfer_data li', function () {
+        var value = $(this).text().trim();
+        var dataId = $(this).attr("data-id");
+
+        $('.filter_other_surfer').val(value);
+        $('#surfer_id_filter').val(dataId);
+        $('#filter_other_surfer_data').html("");
+    });
+
 
     $('.filter_other_surfer').keyup(debounce(function () {
         // the following function will be executed every half second	
@@ -1698,23 +1669,16 @@ $(document).ready(function () {
                 },
                 dataType: "json",
                 success: function (jsonResponse) {
-                    $('#filter_other_surfer_list').html(jsonResponse);
+                    $('#filter_other_surfer_data').html(jsonResponse);
                 }
-            })
+            });
         } else {
             $('#surfer_id_filter').val('');
-            $('#filter_other_surfer_list').html("");
+            $('#filter_other_surfer_data').html("");
         }
     }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
-    $(document).on('click', '#filter_other_surfer_list li', function () {
-        var value = $(this).text().trim();
-        var dataId = $(this).attr("data-id");
-
-        $('.filter_other_surfer').val(value);
-        $('#surfer_id').val(dataId);
-        $('#filter_other_surfer_list').html("");
-    });
+    
 
     $('.tag_user').keyup(debounce(function () {
         // the following function will be executed every half second	
@@ -2131,10 +2095,10 @@ $(document).on('click shown.bs.modal', '.locationMap', function () {
 });
 
 $('#test-other').click(function () {
-    if ($(this).val() == "others") {
-        $('#othersFilterSurfer').show();
+    if ($('#test-other').prop('checked')) {
+        $('#othersFilterSurfer').removeClass('d-none');
     } else {
-        $('#othersFilterSurfer').hide();
+        $('#othersFilterSurfer').addClass('d-none');
     }
 });
 

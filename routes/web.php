@@ -13,6 +13,7 @@ use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\user\MyHubController;
 use App\Http\Controllers\user\SearchController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\SpotifyAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,7 @@ Route::get('/contact-us', [WelcomeFeedController::class, 'contact'])->name('cont
 Route::get('/getBeachBreach', [UserController::class, 'getBeachBreach'])->name('getBeachBreach');
 Route::get('/getState', [DashboardController::class, 'getState'])->name('getState');
 Route::get('/getUsers', [UserController::class, 'getUsers'])->name('getUsers');
+Route::get('/highlight-post/{post_id}', [MyHubController::class, 'highlightPost'])->name('highlight-post');
 Route::get('/getTagUsers', [UserController::class, 'getTagUsers'])->name('getTagUsers');
 Route::post('/setTagUsers', [UserController::class, 'setTagUsers'])->name('setTagUsers');
 Route::post('/checkUsername', [UserController::class, 'checkUsername'])->name('checkUsername');
@@ -46,6 +48,11 @@ Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
 Route::get('search/filter', [SearchController::class, 'filter'])->name('searchFilterIndex');
 Route::post('upload/file', [UserPostController::class, 'uploadFiles'])->name('uploadFiles');
 Route::get('/getBreak', [DashboardController::class, 'getBreak'])->name('getBreak');
+
+
+$router->get('spotify-auth', [SpotifyAuthController::class, 'redirectToProvider'])->name('spotify-auth');
+$router->get('spotify-call-back', [SpotifyAuthController::class, 'handleProviderCallback'])->name('spotify-call-back');
+Route::get('/surfer-request/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');
 
 /*********************************************************************************************
  *                              User Route
@@ -75,9 +82,12 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
    // Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
     
     Route::get('/user/myhub', [MyHubController::class, 'newIndex'])->name('myhub');
+    Route::get('/user/myhub/{post_type?}', [MyHubController::class, 'index'])->name('myhubs');
+    
     // Route::get('/getPostData/{id}/{type}', [MyHubController::class, 'edit'])->name('getPostData');
     Route::post('/updatePostData', [MyHubController::class, 'update'])->name('updatePostData');
     Route::get('/getPostData/{id}', [MyHubController::class, 'edit'])->name('getPostData');
+    Route::get('/getPostFullScreen/{id}', [MyHubController::class, 'getPostFullScreen'])->name('getPostFullScreen');
     Route::get('/user/myhub/filter', [MyHubController::class, 'filter'])->name('myhubFilterIndex');
     
 //    Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
@@ -94,11 +104,14 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
     Route::get('/followRequests', [UserController::class, 'followRequests'])->name('followRequests');
     Route::get('/followers', [UserController::class, 'followers'])->name('followers');
+    Route::get('/surfer-followers/{id}', [UserController::class, 'surferFollowers'])->name('surferFollowers');
+    Route::get('/surfer-following/{id}', [UserController::class, 'surferFollowing'])->name('surferFollowing');
     Route::get('/following', [UserController::class, 'following'])->name('following');
     Route::post('/unfollow', [UserController::class, 'unfollow'])->name('unfollow');
     Route::post('/accept', [UserController::class, 'accept'])->name('accept');
-    Route::get('/searchFollwers', [UserController::class, 'searchFollwers'])->name('searchFollwers');
-    Route::get('/searchFollowing', [UserController::class, 'searchFollowing'])->name('searchFollowing');
+    Route::get('/searchFollwers/{id}', [UserController::class, 'searchFollwers'])->name('searchFollwers');
+    Route::get('/surfer-profile/{id}', [UserController::class, 'surferProfile'])->name('surfer-profile');
+    Route::get('/searchFollowing/{id}', [UserController::class, 'searchFollowing'])->name('searchFollowing');
     Route::get('/searchFollowRequest', [UserController::class, 'searchFollowRequest'])->name('searchFollowRequest');
     Route::post('/reject', [UserController::class, 'reject'])->name('reject');
     Route::post('/remove', [UserController::class, 'remove'])->name('remove');
@@ -111,12 +124,15 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('surfer-follow-request/{id}', [UserPostController::class, 'surferFollowRequest'])->name('surferFollowRequest');
     
     
-    Route::get('/surferRequest/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');
-    Route::get('/surferRequestList', [UserPostController::class, 'surferRequestList'])->name('surferRequestList');
-    Route::get('/acceptRejectRequest/{id}/{type}', [UserPostController::class, 'acceptRejectRequest'])->name('acceptRejectRequest');
+    
+    Route::get('/surfer-request-list', [UserPostController::class, 'surferRequestList'])->name('surferRequestList');
+    Route::get('/accept-reject-request/{id}/{type}', [UserPostController::class, 'acceptRejectRequest'])->name('acceptRejectRequest');
 
     Route::post('/upload-media', [UserPostController::class, 'uploadMedia'])->name('uploadMedia');
     
+    Route::get('/get-additional-board-info', [UserController::class, 'getAdditionalBoardTypeInfo'])->name('getAdditionalBoardTypeInfo');
+
+    Route::get('/resort-profile/{id}', [UserController::class, 'resortProfile'])->name('resort-profile');
     
 });
 
