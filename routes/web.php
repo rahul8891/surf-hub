@@ -141,40 +141,40 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
  * ********************************************************************************************/
 
 
-Route::group(['middleware' => ['auth:sanctum', 'verified', 'photographerAuth']], function () {
-
-    Route::get('/photographer/dashboard', [DashboardController::class, 'photographerDashboard'])->name('dashboard');  
-     
-    
-    
-});
-
-/*********************************************************************************************
- *                              Advertise Route
- * ********************************************************************************************/
-
-
-Route::group(['middleware' => ['auth:sanctum', 'verified', 'advertiseAuth']], function () {
-
-    Route::get('/advertiser/dashboard', [DashboardController::class, 'advertiserDashboard'])->name('dashboard');  
-     
-    
-    
-});
-
-
-
-/*********************************************************************************************
- *                              Surfer camp Route
- * ********************************************************************************************/
-
-Route::group(['middleware' => ['auth:sanctum', 'verified', 'surfercampAuth']], function () {
-
-    Route::get('/surfercamp/dashboard', [DashboardController::class, 'surfercampDashboard'])->name('dashboard');  
-     
-    
-    
-});
+//Route::group(['middleware' => ['auth:sanctum', 'verified', 'photographerAuth']], function () {
+//
+//    Route::get('/photographer/dashboard', [DashboardController::class, 'photographerDashboard'])->name('dashboard');  
+//     
+//    
+//    
+//});
+//
+///*********************************************************************************************
+// *                              Advertise Route
+// * ********************************************************************************************/
+//
+//
+//Route::group(['middleware' => ['auth:sanctum', 'verified', 'advertiseAuth']], function () {
+//
+//    Route::get('/advertiser/dashboard', [DashboardController::class, 'advertiserDashboard'])->name('dashboard');  
+//     
+//    
+//    
+//});
+//
+//
+//
+///*********************************************************************************************
+// *                              Surfer camp Route
+// * ********************************************************************************************/
+//
+//Route::group(['middleware' => ['auth:sanctum', 'verified', 'surfercampAuth']], function () {
+//
+//    Route::get('/surfercamp/dashboard', [DashboardController::class, 'surfercampDashboard'])->name('dashboard');  
+//     
+//    
+//    
+//});
 
 
 
