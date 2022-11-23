@@ -172,7 +172,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="row mb-3 align-items-center">
-                                <label class="col-md-4">Fin Set Up<span class="red-txt">*</span></label>
+                                <label class="col-md-4">Fin Set Up</label>
                                 <div class="col-md-8">
                                     <select class="form-select ps-2 mb-0" name="fin_set_up">
                                         <option value="">{{ __('-- Select --')}}</option>
@@ -189,7 +189,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="row mb-3 align-items-center">
-                                <label class="col-md-4">Stance<span class="red-txt">*</span></label>
+                                <label class="col-md-4">Stance</label>
                                 <div class="col-md-8">
                                     <select class="form-select ps-2 mb-0" name="stance">
                                         <option value="">{{ __('-- Select --')}}</option>
@@ -225,7 +225,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="row mb-3 align-items-center">
-                                <label class="col-md-4">Board Type<span class="red-txt">*</span></label>
+                                <label class="col-md-4">Board Type</label>
                                 <div class="col-md-8">
                                     <select class="form-select ps-2 mb-0" id="board_type" name="board_type">
                                         <option value="">{{ __('-- Select --')}}</option>
