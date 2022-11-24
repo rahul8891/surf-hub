@@ -185,6 +185,34 @@ class UserService {
         //dd($result);
         return $result;
     }
+    public function getUsersFilterByUserType($string,$user_type)
+    {
+        $userProfiles =  new UserProfile();
+//        DB::enableQueryLog();
+        $result = $userProfiles
+            ->join('users', 'users.id', '=', 'user_profiles.user_id')
+            ->where('user_id','!=', Auth::user()->id)
+            ->whereIn('user_type', $user_type)
+                
+            ->where(function($q) use($string){
+                
+            $q->orWhere('first_name', 'LIKE',  '%' . $string .'%');
+            $q->orWhere('users.user_name', 'LIKE',  '%' . $string .'%');
+            $q->orWhere('last_name', 'LIKE',  '%' . $string .'%');
+            $q->orWhere(DB::raw('CONCAT_WS(" ", first_name, last_name)'), 'like', '%' . $string . '%');
+            $q->orWhere('resort_name', 'LIKE',  '%' . $string .'%');
+            $q->orWhere('business_name', 'LIKE',  '%' . $string .'%');
+            $q->orWhere('company_name', 'LIKE',  '%' . $string .'%');
+            
+            })   
+               
+            ->groupBy('users.id')
+            ->get();
+//         $quries = DB::getQueryLog();
+//         dd($quries);
+        //dd($result);
+        return $result;
+    }
 
     public function checkAlreadyTagged($dataRequest)
     {

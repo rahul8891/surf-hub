@@ -304,6 +304,45 @@ class UserController extends Controller {
             }
         }
     }
+    
+    public function getFilterUsers(Request $request) {
+        $data = $request->all();
+//        
+        $searchTerm = $data['searchTerm'];
+        if (!empty($searchTerm)) {
+            $searchTerm = explode(",", $searchTerm);
+            $string = $searchTerm['0'];
+
+            
+            /* $resultData = DB::Table('users')->Where(function ($query) use($string, $field) {
+              for ($i = 0; $i < count($field); $i++){
+              $query->orWhere($field[$i], 'LIKE',  '%' . $string .'%');
+              }
+              })->get(); */
+            
+            if(isset($data['user_type']) && !empty($data['user_type'])) {
+            $user_type = $data['user_type'];
+            $resultData = $this->users->getUsersFilterByUserType($string,$user_type);
+            } else {
+            $resultData = $this->users->getUsersForTagging($string);
+            }
+            $returnObject = '';
+            if (!$resultData->isEmpty()) {
+                $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1; width:50%; height:25%;overflow: scroll;overflow-x: hidden;">';
+                foreach ($resultData as $key => $value) {
+                    $val = $value->user_name;
+                    $img = (!empty($value->profile_photo_path)) ? "/storage/$value->profile_photo_path" : '/img/img_4.jpg';
+                    $returnObject .= '<li class="list-group-item" data-id="' . $value->id . '">
+                    <img src="' . $img . '" width="30px" style="float:right; border-radius: 50%; border: 1px solid #4c8df5;" class="img-fluid">' . $val . '
+                    </li>';
+                }
+                $returnObject .= '</ul>';
+                return response()->json($returnObject);
+            } else {
+                return response()->json($returnObject);
+            }
+        }
+    }
 
     public function getTagUsers(Request $request) {
         $data = $request->all();

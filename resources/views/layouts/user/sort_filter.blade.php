@@ -48,7 +48,7 @@
                         </div>
                         <div class="filter-body">
                             @if(Auth::user())
-                            <div class="row align-items-center mb-4 justify-content-between">
+<!--                            <div class="row align-items-center mb-4 justify-content-between">
                                 <div class="col-md-7">
                                     <div class="row align-items-center">
                                         <div class="col-md-4">
@@ -74,10 +74,64 @@
                                     <input type="text" name="other_surfer" class="form-control ps-2 mb-0 filter_other_surfer">
                                     <div class="auto-search" id="filter_other_surfer_data"></div>
                                 </div>
-                            </div>
+                            </div>-->
                             @endif
                             <div class="row">
                                 <div class="col-md-7">
+                                    <div class="row align-items-center mb-4">
+                                        <div class="col-md-4">
+                                            <label class="form-label">User Type</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="white-bg">
+                                                <select class="form-control select2 select2-hidden-accessible country local_beach_break_id"
+                                                        name="user_type" id="filter_user_type" multiple="multiple">
+                                                    <option value="USER">Surfer</option>
+                                                    <option value="PHOTOGRAPHER">Photographer</option>
+                                                    <option value="SURFER CAMP">Surf Camp</option>
+                                                    <option value="ADVERTISEMENT">Advertisement</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <div class="row align-items-center mb-4">
+                                        <!--<div class=" align-items-center">-->
+                                        <div class="col-md-4">
+                                            <label for="surfe" class="form-label">Surfer</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="d-inline-block form-check mb-0 me-3">
+                                                <input type="checkbox" class="form-check-input mt-0"
+                                                       id="me-surfe" name="filterUser" value="me">
+                                                <label class="form-check-label" for="me-surfe">Me</label>
+                                            </div>
+                                            <div class="d-inline-block form-check mb-0">
+                                                <input type="checkbox" class="form-check-input mt-0"
+                                                       id="test-other" name="filterUser" value="others">
+                                                <label class="form-check-label"
+                                                       for="test-other">Other</label>
+                                            </div>
+                                        </div>
+                                    <!--</div>-->
+                                        
+                                        
+                                        
+                                    </div>
+                                    <div class="row align-items-center d-none mb-4" id="othersFilterSurfer">
+                                        
+                                     <div class="col-md-4">
+                                            <label for="surfe" class="form-label"></label>
+                                        </div>   
+                                    <div class="col-md-8">    
+                                    <input type="hidden" value="" name="surfer_id" id="surfer_id_filter" class="form-control surfer_id" />
+                                    <input type="text" name="other_surfer" class="form-control ps-2 mb-0 filter_other_surfer" placeholder="Search">
+                                    <div class="auto-search" id="filter_other_surfer_data"></div>
+                                    </div>
+                                    
+                                    </div>
+                                    
                                     <div class="row align-items-center mb-4">
                                         <div class="col-md-4">
                                             <label class="form-label">Start Date</label>
@@ -193,9 +247,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
-                                
+
                                 <div class="col-md-5">
                                     <div class="filter-checkbox mb-4">
                                         <label class="form-label">Floater</label>
@@ -256,8 +310,8 @@
                                     </div>
                                 </div>
                                 <div class="row align-items-center mb-5 d-none" id="additional_optional_info">
-                            
-                        </div>
+
+                                </div>
                             </div>
 
                         </div>
@@ -276,14 +330,14 @@
 
                     </div>
                     <script type="text/javascript">
-                                            $('.rating-filter').rating({
-                                                showClear: false,
-                                                showCaption: false
-                                            });
+                        $('.rating-filter').rating({
+                            showClear: false,
+                            showCaption: false
+                        });
 
-                                            function ratingHideShow(e) {
-                                                $(e).children(".rating-container").show();
-                                                $(e).children(".avg-rating").hide();
-                                            }
+                        function ratingHideShow(e) {
+                            $(e).children(".rating-container").show();
+                            $(e).children(".avg-rating").hide();
+                        }
 
                     </script>

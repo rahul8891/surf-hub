@@ -333,15 +333,18 @@ class PostService {
         }
         
         //************* applying conditions *****************/
-        if (isset($params['filterUser']) && ($params['filterUser'] == 'me')){
-            $username = Auth::user()->user_name;
-            $postArray->where('surfer', $username);
-        }elseif (isset($params['filterUser']) && ($params['filterUser'] == 'others') && isset($params['other_surfer']) && !empty($params['other_surfer'])) {
-            $postArray->where('surfer', $params['other_surfer']);
-        }elseif (isset($params['filterUser']) && ($params['filterUser'] == 'unknown')) {
-            $postArray->where('surfer', 'Unknown');
+        if (isset($params['user_type']) && !empty($params['user_type'])) {
+            $postArray->where('posts.user_id', $params['surfer_id']);
+        } else {
+            if (isset($params['filterUser']) && ($params['filterUser'] == 'me')) {
+                $username = Auth::user()->user_name;
+                $postArray->where('surfer', $username);
+            } elseif (isset($params['filterUser']) && ($params['filterUser'] == 'others') && isset($params['other_surfer']) && !empty($params['other_surfer'])) {
+                $postArray->where('surfer', $params['other_surfer']);
+            } elseif (isset($params['filterUser']) && ($params['filterUser'] == 'unknown')) {
+                $postArray->where('surfer', 'Unknown');
+            }
         }
-        
         $optionalInfo = [];
         
         if(isset($params['FLOATER']) && ($params['FLOATER']=='on')){
