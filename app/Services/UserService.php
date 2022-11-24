@@ -570,6 +570,7 @@ class UserService {
             $userProfile['website'] = (isset($val->website) && !empty($val->website))?$val->website:'-';
             $userProfile['postal_code'] = isset($val->postal_code)?$val->postal_code:'-';
             $userProfile['phone'] = isset($val->phone)?$val->phone:'-';
+            $userProfile['user_type'] = $val->user->user_type;
         
         }
         return $userProfile;

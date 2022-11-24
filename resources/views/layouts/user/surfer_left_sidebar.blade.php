@@ -77,7 +77,7 @@
             @if($userType == 'SURFER CAMP')
             <div class="profile-row pt-0">
                 <label class="d-block">Website</label>
-                <span class="darkGrey-txt">{{ $userProfile['website'] }}</span>
+                <span class="darkGrey-txt"><a class="blue-txt num" href="{{ $userProfile['website'] }}" target="_blank" >{{ $userProfile['website'] }}</a></span>
             </div>
             @endif
             <div class="profile-row">

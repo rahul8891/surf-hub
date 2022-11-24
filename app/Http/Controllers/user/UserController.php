@@ -528,13 +528,11 @@ class UserController extends Controller {
                 ->orderBy('posts.created_at', 'DESC')
                 ->paginate(10);
         $requestSurfer = array();
-        $userType = '';
         foreach ($postsList as $val) {
 //            $surferRequest = SurferRequest::select("*")
 //                    ->where("post_id", "=", $val['id'])
 //                    ->where("status", "=", 0)
 //                    ->get();
-            $userType = $val->user->user_type;
             $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
                     ->where("surfer_requests.post_id", "=", $val['id'])
                     ->where("surfer_requests.status", "=", 0)
@@ -547,7 +545,7 @@ class UserController extends Controller {
             }
         }
         $userProfile = $this->users->getUserDetail($surfer_id);
-
+        $userType = $userProfile['user_type'];
         $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $surfer_id);
         $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $surfer_id);
         $userPosts = $this->post->getPostByUserId($surfer_id);
@@ -578,6 +576,7 @@ class UserController extends Controller {
         $customArray = $this->customArray;
         $postsList = Post::with('followPost')->where('is_deleted', '0')
                 ->where('parent_id', '0')
+                ->where('is_highlight', '1')
                 ->where('user_id', $resort_id)
                 ->where(function ($query) {
                     $query->where('post_type', 'PUBLIC')
@@ -586,25 +585,25 @@ class UserController extends Controller {
                 ->orderBy('posts.created_at', 'DESC')
                 ->paginate(10);
         $requestSurfer = array();
-        $userType = '';
         foreach ($postsList as $val) {
 //            $surferRequest = SurferRequest::select("*")
 //                    ->where("post_id", "=", $val['id'])
 //                    ->where("status", "=", 0)
 //                    ->get();
-            $userType = $val->user->user_type;
+            
             $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
                     ->where("surfer_requests.post_id", "=", $val['id'])
                     ->where("surfer_requests.status", "=", 0)
                     ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
 
             foreach ($surferRequest as $res) {
-//                echo '<pre>'; print_r($res['id']);die;
+               
                 $requestSurfer[$val['id']]['id'] = $res['id'];
                 $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
             }
         }
         $userProfile = $this->users->getUserDetail($resort_id);
+        $userType = $userProfile['user_type'];
         $resortImages = $this->users->getResortImages($resort_id);
 
         $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $resort_id);
