@@ -8,11 +8,6 @@
                 @include('layouts.user.surfer_left_sidebar')
             </div>
             <div class="middle-content" id="post-data">
-                @if (isset($postsList) && empty($postsList[0]))
-                <div class="post alert text-center alert-dismissible py-5" role="alert">
-                    {{ ucWords('no matches found') }}
-                </div>
-                @endif
                 @if (!empty($resortImages))
                 <div class="resort-profile">
                     @foreach ($resortImages as $rkey => $resortImg)
@@ -22,6 +17,13 @@
                     @endforeach
                 </div>
                 @endif
+                
+                @if (isset($postsList) && empty($postsList[0]))
+                <div class="post alert text-center alert-dismissible py-5" role="alert">
+                    {{ ucWords('no matches found') }}
+                </div>
+                @endif
+                
                 @if (!empty($postsList))
                 @foreach ($postsList as $key => $posts)
                 <div class="news-feed">

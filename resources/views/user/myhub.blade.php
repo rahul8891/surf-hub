@@ -324,7 +324,7 @@
             });
         }
 
-        $(".highlightPost").on("click", function() {
+          $(document).on('click', '.highlightPost', function (e) {
             var that = $(this);
             var postID = $(this).data('id');
 
