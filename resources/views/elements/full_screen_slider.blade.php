@@ -30,7 +30,7 @@
                 @else
                 <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></a>
                 @endif
-                
+
                 <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                     <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
                 </video>
@@ -42,7 +42,7 @@
                 @else
                 <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></a>
                 @endif
-                
+
                 <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
                     <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
                 </video>
@@ -56,10 +56,14 @@
             @endif
 
         </div>
+        <div class="col-md-12 text-center mb-2">
+            <button id="toggle" class="btn btn-primary col-md-2 text-white">Play</button>
+
+        </div>
+
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>    
 <script src="https://sdk.scdn.co/spotify-player.js"></script>
 <script>
 
@@ -127,23 +131,20 @@
 //};
 //
 //// Play selected song
-const play_song = async (uri) => {
-    console.log("Changing song");
-    let request_answer = fetch(
-            `https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
-            {
-                method: "PUT",
-                body: JSON.stringify({ uris: [uri] }),
+                    const play_song = async (uri) => {
+                    console.log("Changing song");
+                    let request_answer = fetch(
+                            `https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
+                    {
+                    method: "PUT",
+                            body: JSON.stringify({ uris: [uri] }),
                             headers: {
                             'Content-Type': 'application/json',
                                     'Authorization': `Bearer ${access_token}`
                             },
-            }
-    ).then((data) => console.log(data));
-};
-
-
-
+                    }
+                    ).then((data) => console.log(data));
+                    };
                     window.onSpotifyWebPlaybackSDKReady = () => {
                     const token = @json($token);
                     const track_uri = @json($trackArray['track_uri']);
@@ -188,7 +189,6 @@ const play_song = async (uri) => {
                     // creating a new device which will be visible for Spotify Connect
                     player.connect();
                     };
-                    
                     $(document).ready(function () {
                     var homeCarousel = $('.demo').slick({
                     dots: true,
@@ -197,24 +197,26 @@ const play_song = async (uri) => {
                             arrows: true,
                             infinite: true,
                             autoplay: false,
-                            autoplaySpeed: 1000,
+                            autoplaySpeed: 3000,
                             speed: 300,
                             slidesToShow: 1,
                             adaptiveHeight: false
                     });
-                    $('#pause').click(function () {
-                    $('.demo')
-                            .slick('slickPause')
+                    $(document).on('click', '#toggle', function () {
+                    if ($(this).html() == 'Pause'){
+                    $('.slider').slick('slickPause')
                             .slick('slickSetOption', 'pauseOnDotsHover', false)
                             .slick('slickSetOption', 'autoplay', false)
-                            .slick('slickSetOption', 'autoplaySpeed', 1000);
-                    });
-                    $('#play').click(function () {
-                    $('.demo')
+                            .slick('slickSetOption', 'autoplaySpeed', 3000);
+                    $(this).html('Play')
+                    } else {
+                    $('.slider')
                             .slick('slickPlay')
                             .slick('slickSetOption', 'pauseOnDotsHover', true)
                             .slick('slickSetOption', 'autoplay', true)
-                            .slick('slickSetOption', 'autoplaySpeed', 1000);
+                            .slick('slickSetOption', 'autoplaySpeed', 3000);
+                    $(this).html('Pause')
+                    }
                     });
                     });
 </script>
