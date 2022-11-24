@@ -1659,11 +1659,14 @@ $(document).ready(function () {
 
     $('.filter_other_surfer').keyup(debounce(function () {
         // the following function will be executed every half second	
+        var userType =  $('#filter_user_type').val();
+//        alert(userType);
         if ($(this).val().length > 1) {
             $.ajax({
                 type: "GET",
-                url: "/getUsers",
+                url: "/getFilterUsers",
                 data: {
+                    user_type: userType,
                     searchTerm: $(this).val(),
                     _token: csrf_token
                 },
