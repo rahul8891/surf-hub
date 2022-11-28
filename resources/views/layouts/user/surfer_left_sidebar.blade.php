@@ -51,14 +51,17 @@
     </div>
     <div class="profile-left-nav">
         <div class="profile-menu text-center mt-0">
+            @if($userType == 'USER')
             <div class="profile-row pt-0">
                 <label class="d-block">Gender</label>
                 <span class="darkGrey-txt">{{ $userProfile['gender'] }}</span>
             </div>
+            
             <div class="profile-row">
                 <label class="d-block">DOB</label>
                 <span class="darkGrey-txt">{{ $userProfile['dob'] }}</span>
             </div>
+            @endif
             <div class="profile-row pt-0">
                 <label class="d-block">Email</label>
                 <span class="darkGrey-txt">{{ $userProfile['email'] }}</span>
@@ -71,14 +74,22 @@
                 <label class="d-block">Postal Code</label>
                 <span class="darkGrey-txt">{{ $userProfile['postal_code'] }}</span>
             </div>
+            @if($userType == 'SURFER CAMP')
+            <div class="profile-row pt-0">
+                <label class="d-block">Website</label>
+                <span class="darkGrey-txt"><a class="blue-txt num" href="{{ $userProfile['website'] }}" target="_blank" >{{ $userProfile['website'] }}</a></span>
+            </div>
+            @endif
             <div class="profile-row">
                 <label class="d-block">Local Beach</label>
                 <span class="darkGrey-txt">{{ $userProfile['beach_break'] }} </span>
             </div>
+            @if($userType == 'USER')
             <div class="profile-row pt-0">
                 <label class="d-block">Preferred Board</label>
                 <span class="darkGrey-txt">{{ $userProfile['preferred_board'] }}</span>
             </div>
+            @endif
             <div class="profile-row">
                 <label class="d-block">Country</label>
                 <span class="darkGrey-txt">{{ $userProfile['country'] }} </span>

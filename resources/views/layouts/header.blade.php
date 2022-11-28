@@ -56,7 +56,9 @@
                         <li><a class="dropdown-item" href="{{route('spotify-auth')}}">Spotify Login</a></li>
                         @endif
                     </ul>
-                    @if(Auth::user())
+                    
+                </div>
+                @if(Auth::user())
                     <div class="left-navbar-toggler">
                         <div class="d-block d-lg-none profile-pic">
                             @if(isset(Auth::user()->profile_photo_path) && !empty(Auth::user()->profile_photo_path))
@@ -70,7 +72,6 @@
                         </div>
                     </div>
                     @endif
-                </div>
             </div>
         </div>
     </div>

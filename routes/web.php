@@ -38,6 +38,7 @@ Route::get('/contact-us', [WelcomeFeedController::class, 'contact'])->name('cont
 Route::get('/getBeachBreach', [UserController::class, 'getBeachBreach'])->name('getBeachBreach');
 Route::get('/getState', [DashboardController::class, 'getState'])->name('getState');
 Route::get('/getUsers', [UserController::class, 'getUsers'])->name('getUsers');
+Route::get('/getFilterUsers', [UserController::class, 'getFilterUsers'])->name('getFilterUsers');
 Route::get('/highlight-post/{post_id}', [MyHubController::class, 'highlightPost'])->name('highlight-post');
 Route::get('/getTagUsers', [UserController::class, 'getTagUsers'])->name('getTagUsers');
 Route::post('/setTagUsers', [UserController::class, 'setTagUsers'])->name('setTagUsers');
@@ -131,6 +132,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::post('/upload-media', [UserPostController::class, 'uploadMedia'])->name('uploadMedia');
     
     Route::get('/get-additional-board-info', [UserController::class, 'getAdditionalBoardTypeInfo'])->name('getAdditionalBoardTypeInfo');
+
+    Route::get('/resort-profile/{id}', [UserController::class, 'resortProfile'])->name('resort-profile');
+    
 });
 
 /*********************************************************************************************
@@ -138,40 +142,40 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
  * ********************************************************************************************/
 
 
-Route::group(['middleware' => ['auth:sanctum', 'verified', 'photographerAuth']], function () {
-
-    Route::get('/photographer/dashboard', [DashboardController::class, 'photographerDashboard'])->name('dashboard');  
-     
-    
-    
-});
-
-/*********************************************************************************************
- *                              Advertise Route
- * ********************************************************************************************/
-
-
-Route::group(['middleware' => ['auth:sanctum', 'verified', 'advertiseAuth']], function () {
-
-    Route::get('/advertiser/dashboard', [DashboardController::class, 'advertiserDashboard'])->name('dashboard');  
-     
-    
-    
-});
-
-
-
-/*********************************************************************************************
- *                              Surfer camp Route
- * ********************************************************************************************/
-
-Route::group(['middleware' => ['auth:sanctum', 'verified', 'surfercampAuth']], function () {
-
-    Route::get('/surfercamp/dashboard', [DashboardController::class, 'surfercampDashboard'])->name('dashboard');  
-     
-    
-    
-});
+//Route::group(['middleware' => ['auth:sanctum', 'verified', 'photographerAuth']], function () {
+//
+//    Route::get('/photographer/dashboard', [DashboardController::class, 'photographerDashboard'])->name('dashboard');  
+//     
+//    
+//    
+//});
+//
+///*********************************************************************************************
+// *                              Advertise Route
+// * ********************************************************************************************/
+//
+//
+//Route::group(['middleware' => ['auth:sanctum', 'verified', 'advertiseAuth']], function () {
+//
+//    Route::get('/advertiser/dashboard', [DashboardController::class, 'advertiserDashboard'])->name('dashboard');  
+//     
+//    
+//    
+//});
+//
+//
+//
+///*********************************************************************************************
+// *                              Surfer camp Route
+// * ********************************************************************************************/
+//
+//Route::group(['middleware' => ['auth:sanctum', 'verified', 'surfercampAuth']], function () {
+//
+//    Route::get('/surfercamp/dashboard', [DashboardController::class, 'surfercampDashboard'])->name('dashboard');  
+//     
+//    
+//    
+//});
 
 
 

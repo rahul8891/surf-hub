@@ -14,7 +14,7 @@ $(document).ready(function () {
     $('#register .phone').val('');
 
     /************** rating js ****************************/
-    $('.rating').on('change', function (e) {
+    $(document).on('change', '.rating', function () {
         var value = $(this).val();
         var id = $(this).attr("data-id");
 
@@ -33,6 +33,9 @@ $(document).ready(function () {
                 success: function (jsonResponse) {
                     $('#average-rating' + id).html(Math.floor(jsonResponse['averageRating']));
                     $('#users-rated' + id).html(Math.floor(jsonResponse['usersRated']));
+                    $(".rating-container").hide();
+                    $(".rating-container").siblings(".avg-rating").show();
+                    
                 }
             });
         } else {
@@ -1575,10 +1578,6 @@ $(document).ready(function () {
     }
 });
 
-   $(".dropdownmenuname").click(function(e){
-   e.stopPropagation();
-});
-
     // ajax form field data for filter
     $('.search-box2').keyup(debounce(function () {
         // the following function will be executed every half second	
@@ -1648,36 +1647,41 @@ $(document).ready(function () {
         $('#other_surfer_list').html("");
     });
 
+    $(document).on('click', '#filter_other_surfer_data li', function () {
+        var value = $(this).text().trim();
+        var dataId = $(this).attr("data-id");
+
+        $('.filter_other_surfer').val(value);
+        $('#surfer_id_filter').val(dataId);
+        $('#filter_other_surfer_data').html("");
+    });
+
 
     $('.filter_other_surfer').keyup(debounce(function () {
         // the following function will be executed every half second	
+        var userType =  $('#filter_user_type').val();
+//        alert(userType);
         if ($(this).val().length > 1) {
             $.ajax({
                 type: "GET",
-                url: "/getUsers",
+                url: "/getFilterUsers",
                 data: {
+                    user_type: userType,
                     searchTerm: $(this).val(),
                     _token: csrf_token
                 },
                 dataType: "json",
                 success: function (jsonResponse) {
-                    $('#filter_other_surfer_list').html(jsonResponse);
+                    $('#filter_other_surfer_data').html(jsonResponse);
                 }
             });
         } else {
             $('#surfer_id_filter').val('');
-            $('#filter_other_surfer_list').html("");
+            $('#filter_other_surfer_data').html("");
         }
     }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
-    $(document).on('click', '#filter_other_surfer_list li', function () {
-        var value = $(this).text().trim();
-        var dataId = $(this).attr("data-id");
-
-        $('.filter_other_surfer').val(value);
-        $('#surfer_id').val(dataId);
-        $('#filter_other_surfer_list').html("");
-    });
+    
 
     $('.tag_user').keyup(debounce(function () {
         // the following function will be executed every half second	
@@ -2095,9 +2099,9 @@ $(document).on('click shown.bs.modal', '.locationMap', function () {
 
 $('#test-other').click(function () {
     if ($('#test-other').prop('checked')) {
-        $('#othersFilterSurfer').show();
+        $('#othersFilterSurfer').removeClass('d-none');
     } else {
-        $('#othersFilterSurfer').hide();
+        $('#othersFilterSurfer').addClass('d-none');
     }
 });
 

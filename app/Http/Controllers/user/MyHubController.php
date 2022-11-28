@@ -237,6 +237,7 @@ class MyHubController extends Controller {
             $spotifyUser = SpotifyUser::where('user_id', Auth::user()->id)->get()->toArray();
             $token = '';
             $trackArray = array();
+            $trackArray['track_uri'] = '';
             if($spotifyUser) {
             $client = new \GuzzleHttp\Client;
             
@@ -266,6 +267,8 @@ class MyHubController extends Controller {
             ]);
             $top_user_tracks = json_decode($response->getBody(), true);
             
+//            echo '<pre>';print_r($top_user_tracks);die;
+            
 //            $device = $client->get('https://api.spotify.com/v1/me/player/devices', [
 //                'headers' => [
 //                    'Content-Type' => 'application/json',
@@ -273,37 +276,33 @@ class MyHubController extends Controller {
 //                ],
 //            ]);
 //            $av_device = json_decode($device->getBody(), true);
-//            echo '<pre>';
-//                    print_r($av_device);
-//                    die;
+            
 //            
             $counter = 0;
             foreach ($top_user_tracks['items'] as $track) {
 
-                $milliseconds = $track['duration_ms'];
-                $seconds = floor($milliseconds / 1000);
-                $minutes = floor($seconds / 60);
-                $sec = $seconds % 60;
-                $min = $minutes % 60;
-                $duration = $min . ':' . $sec;
+//                $milliseconds = $track['duration_ms'];
+//                $seconds = floor($milliseconds / 1000);
+//                $minutes = floor($seconds / 60);
+//                $sec = $seconds % 60;
+//                $min = $minutes % 60;
+//                $duration = $min . ':' . $sec;
 //                echo '<pre>';
 //                    print_r($duration);
 //                    die;
 //                foreach ($val as $track) {
 
-                $trackArray[$counter]['track_name'] = $track['name'];
-                $trackArray[$counter]['track_link'] = $track['href'];
-                $trackArray[$counter]['track_uri'] = $track['uri'];
-                $trackArray[$counter]['duration'] = $duration;
+//                $trackArray[$counter]['track_name'] = $track['name'];
+//                $trackArray[$counter]['track_link'] = $track['href'];
+                  $trackArray['track_uri'] = $track['uri'];
+//                $trackArray[$counter]['duration'] = $duration;
                 $counter++;
 
 //                }
             }
             
             }
-//            echo '<pre>';
-//                    print_r($trackArray);
-//                    die;
+//            echo '<pre>';print_r($trackArray);die;
         } catch (\Exception $e) {
 //            echo '<pre>';print_r($e->getMessage());die;  
             throw ValidationException::withMessages([$e->getMessage()]);
