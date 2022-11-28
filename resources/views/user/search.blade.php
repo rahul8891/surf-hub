@@ -29,24 +29,23 @@
                         <div class="user-details">
                             <div class="user-left">
                                 @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
-                                @if($posts->user_id != Auth::user()->id)
-                                <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                    @if(isset(Auth::user()->id) && ($posts->user_id != Auth::user()->id))
+                                        <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                    @else
+                                        <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
+                                    @endif
                                 @else
-                                <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
-                                @endif
-                                @else
-                                @if($posts->user_id != Auth::user()->id)
-                                <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="/img/logo_small.png" class="profileImg" alt=""></a>
-                                @else
-                                <img src="/img/logo_small.png" class="profileImg" alt="">
-                                @endif
+                                    @if($posts->user_id)
+                                        <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="/img/logo_small.png" class="profileImg" alt=""></a>
+                                    @else
+                                        <img src="/img/logo_small.png" class="profileImg" alt="">
+                                    @endif
                                 @endif
                                 <div>     
-                                    @if($posts->user_id != Auth::user()->id)
-                                    <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
+                                    @if(isset(Auth::user()->id) && ($posts->user_id != Auth::user()->id))
+                                        <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span></p>
                                     @else
-                                    <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span>
-                                    </p>
+                                        <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span></p>
                                     @endif
                                     <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                                     <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
