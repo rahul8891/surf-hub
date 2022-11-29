@@ -5,7 +5,11 @@
 		</div>
 		<div class="col-lg-8">
 			<div class="justify-content-center justify-content-lg-end navbar-nav flex-wrap">
-				<a class="nav-link" href="{{ route('privacy') }}">Privacy Policy</a>
+				@if (Auth::user())
+                                <a class="nav-link" href="{{ route('followRequests') }}">Follow Requests</a>
+				<a class="nav-link" href="{{ route('profile') }}">My Profile</a>
+				@endif
+                                <a class="nav-link" href="{{ route('privacy') }}">Privacy Policy</a>
 				<a class="nav-link" href="{{ route('terms') }}">T&C's</a>
 				<a class="nav-link" href="{{ route('faq') }}">Help/FAQ's</a>
 				<a class="nav-link" href="{{ route('contact') }}">Contact Us</a>
