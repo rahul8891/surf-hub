@@ -319,6 +319,7 @@ class PostService {
             $postArray->where('posts.post_type', 'PUBLIC');
         } elseif (($for == 'myhub') && ($type == 'saved')) {
             $postArray->where('posts.post_type', 'PRIVATE');
+            $postArray->where('posts.parent_id','<>', 0);
         } elseif (($for == 'myhub') && ($type == 'tags')) {
             $postArray =  $this->posts
                         ->join('tags', 'posts.id', "=", 'tags.post_id')
@@ -938,7 +939,7 @@ class PostService {
         $postMedia=Upload::select('*')->where('post_id',$id)->get();
 
         try{
-            $this->posts['post_type'] = $postSave->post_type;
+            $this->posts['post_type'] = 'PRIVATE';
             $this->posts['user_id'] = Auth::user()->id;
             $this->posts['post_text'] = $postSave->post_text;
             $this->posts['country_id'] =$postSave->country_id;
@@ -950,6 +951,10 @@ class PostService {
             $this->posts['surfer'] = $postSave->surfer;
             $this->posts['optional_info'] = $postSave->optional_info;
             $this->posts['parent_id'] = $postSave->user_id;
+            $this->posts['local_break_id'] = $postSave->local_break_id;
+            $this->posts['additional_info'] = $postSave->additional_info;
+            $this->posts['fin_set_up'] = $postSave->fin_set_up;
+            $this->posts['stance'] = $postSave->stance;
             $this->posts['created_at'] = Carbon::now();
             $this->posts['updated_at'] = Carbon::now();            
             

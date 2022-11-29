@@ -102,11 +102,13 @@
                                             <label for="surfe" class="form-label">Surfer</label>
                                         </div>
                                         <div class="col-md-8">
+                                            @if(Auth::user())
                                             <div class="d-inline-block form-check mb-0 me-3">
                                                 <input type="checkbox" class="form-check-input mt-0"
                                                        id="me-surfe" name="filterUser" value="me">
                                                 <label class="form-check-label" for="me-surfe">Me</label>
                                             </div>
+                                            @endif
                                             <div class="d-inline-block form-check mb-0">
                                                 <input type="checkbox" class="form-check-input mt-0"
                                                        id="test-other" name="filterUser" value="others">
@@ -283,7 +285,7 @@
                                         </div>
                                     </div>
                                     <div class="filter-checkbox mb-4">
-                                        <label class="form-label">Barrel Roll</label>
+                                        <label class="form-label">Barrel</label>
                                         <div class="form-check mb-0">
                                             <input type="checkbox" class="form-check-input mt-0"
                                                    id="barrelRoll" {{ Request::get('BARREL_ROLL') ? "checked" : "" }} name="BARREL_ROLL">
@@ -319,7 +321,7 @@
                             <div class="col-md-4">
                             </div>
                             <div class="col-md-4 text-center">
-                                <button type="submit" class="applyBtn btn-primary">apply filter</button>
+                                <button type="submit" class="applyBtn btn-primary">Apply Filter</button>
                             </div>
                         </div>
                     </form>

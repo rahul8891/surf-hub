@@ -86,7 +86,7 @@ return [
         'DROP_IN'=>'Drop In', 
         'CUTBACK'=>'Cutback', 
         'AIR'=>'Air', 
-        'BARREL_ROLL'=>'Barrel Roll', 
+        'BARREL_ROLL'=>'Barrel', 
         'SNAP'=>'Snap',
         '360'=>'360',
         'WIPEOUT'=>'Wipeout',
