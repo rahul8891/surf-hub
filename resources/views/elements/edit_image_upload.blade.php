@@ -11,6 +11,9 @@
                         <option value="{{ $key }}">{{ $value}}</option>
                         @endforeach
                     </select>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <img alt="" src="{{ asset("/img/close.png")}}">
+                    </button>
                 </div>
                 <div class="upload-body">
                     <input type="hidden" name="post_id" id="postIds" >
@@ -239,7 +242,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row d-none" id="additional_optional_info">
+                    <div class="row d-none" id="additional_optional_info_edit">
 
                     </div>
                 </div>
@@ -380,17 +383,16 @@ $(document).ready(function () {
                     //console.log(jsonResponse);
 //                if (jsonResponse.status == 'success') {
                     var myJsonData = jsonResponse.data;
-
-                    $('#additional_optional_info').removeClass('d-none');
-                    $('#additional_optional_info').html(jsonResponse);
+                    $('#additional_optional_info_edit').removeClass('d-none');
+                    $('#additional_optional_info_edit').html(jsonResponse);
 //                } else {
-//                    $('#additional_optional_info').addClass('d-none');
+//                    $('#additional_optional_info_edit').addClass('d-none');
 //                }
                 }
             });
 
         } else {
-            $('#additional_optional_info').addClass('d-none');
+            $('#additional_optional_info_edit').addClass('d-none');
         }
     });
     $(document).on('change', '#input_multifile', function (e) {

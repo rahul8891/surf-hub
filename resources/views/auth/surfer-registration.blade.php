@@ -73,7 +73,7 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <input type="date" class="form-control calender-icon" name="dob" value="{{ old('dob') }}" minlength="3"
+            <input type="text" placeholder="DOB" onfocus="(this.type='date')" class="form-control calender-icon" name="dob" value="{{ old('dob') }}" minlength="3"
                    autocomplete="dob" required>
             @error('dob')
             <div class="text-danger">{{ $message }}</div>
