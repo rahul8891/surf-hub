@@ -10,7 +10,7 @@
 
                 <div class="container mt-5">
                     <h2 class="text-center mb-4">Edit Profile</h2>
-                    <form method="POST" id="register" name="register-surfer" action="{{ route('register') }}"
+                    <form method="POST" id="edit-surfer" name="edit-surfer" action="{{ route('storeProfile') }}"
                           enctype="multipart/form-data">
                         @csrf
                         <div class="row">
@@ -83,7 +83,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="date" class="form-control calender-icon" name="dob" value="{{ old('dob') }}" minlength="3"
+                                <input type="date" class="form-control calender-icon" name="dob" value="{{ $user->user_profiles->dob }}" minlength="3"
                                        autocomplete="dob" required>
                                 @error('dob')
                                 <div class="text-danger">{{ $message }}</div>
@@ -91,7 +91,7 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="text" class="form-control paypal-icon" placeholder="Paypal" name="paypal"
-                                       autocomplete="paypal">
+                                       autocomplete="paypal" value="{{ $user->user_profiles->paypal }}">
                                 @error('paypal')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -104,7 +104,7 @@
                                         <option selected>Country</option>
                                         @foreach($countries as $key => $value)
                                         <option value="{{ $value->id }}" data-phone="{{$value->phone_code}}"
-                                                {{ old('country_id') == $value->id ? "selected" : "" }}>
+                                                {{ $user->user_profiles->country_id == $value->id ? "selected" : "" }}>
                                             {{ $value->name }}</option>
                                         @endforeach
                                     </select>
@@ -114,7 +114,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <input type="number" class="form-control postal-code-icon" placeholder="Postal Code" name="postal_code" value="{{ old('postal_code') }}"
+                                <input type="number" class="form-control postal-code-icon" placeholder="Postal Code" name="postal_code" value="{{ $user->user_profiles->postal_code }}"
                                        autocomplete="postal_code">
                                 @error('postal_code')
                                 <div class="text-danger">{{ $message }}</div>
@@ -123,7 +123,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="number" class="form-control phone-icon" placeholder="Phone" name="phone" value="{{ old('phone') }}" minlength="8"
+                                <input type="number" class="form-control phone-icon" placeholder="Phone" name="phone" value="{{ $user->user_profiles->phone }}" minlength="8"
                                        maxlength="15" autocomplete="phone" required>
                                 @error('phone')
                                 <div class="text-danger">{{ $message }}</div>
@@ -135,7 +135,7 @@
                                         <option selected>Account Type</option>
                                         @foreach($accountType as $key => $value)
                                         <option value="{{ $key }}"
-                                                {{ old('account_type') == $key ? "selected" : "" }}>
+                                                {{ $user->account_type == $key ? "selected" : "" }}>
                                             {{ $value }}
                                         </option>
                                         @endforeach
@@ -148,13 +148,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="text" value="{{ old('local_beach_break')}}"
+                                <input type="text" value="{{ $beach }}"
                                        name="local_beach_break" data-beachID=""
                                        placeholder="Local Beach"
                                        class="form-control location-icon  @error('local_beach_break') is-invalid @enderror search-box3">
 
                                 <input type="hidden" name="local_beach_break_id"
-                                       id="local_beach_break_id_surfer" class="form-control">
+                                       id="local_beach_break_id_surfer" class="form-control" value="{{ $user->user_profiles->local_beach_break_id}}">
 
                                 <div class="auto-search search3" id="country_list3"></div>
                                 @error('local_beach_break')
@@ -167,7 +167,7 @@
                                         <option selected>Preferred Board</option>
                                         @foreach($board_type as $key => $value)
                                         <option value="{{ $key }}"
-                                                {{ old('board_type') == $key ? "selected" : "" }}>
+                                                {{ $user->user_profiles->preferred_board == $key ? "selected" : "" }}>
                                             {{ $value }}
                                         </option>
                                         @endforeach
@@ -199,6 +199,31 @@
         </div>
     </div>
 </section>
+
+<div id="myModal" class="modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><img src="{{ asset("/img/logo_small.png")}}"> &nbsp; Crop
+                    Image
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <img alt="" src="{{ asset("/img/close.png")}}">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div id="image"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center justify-content-center">
+                <button class="btn btn-success crop_image">Crop</button>
+            </div>
+        </div>
+    </div>
+</div>
 @include('elements/location_popup_model')
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">

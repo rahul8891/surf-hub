@@ -23,6 +23,8 @@ use App\Models\Post;
 use App\Models\SurferRequest;
 use App\Models\BoardTypeAdditionalInfo;
 use App\Models\UserProfile;
+use App\Models\BeachBreak;
+use App\Models\State;
 use Illuminate\Support\Facades\Crypt;
 
 class UserController extends Controller {
@@ -146,19 +148,25 @@ class UserController extends Controller {
         $board_type = config('customarray.board_type');
         $accountType = config('customarray.accountType');
         $user = $this->users->getUserDetailByID(Auth::user()->id);
-//        echo '<pre>';print_r($user->user_type);die;
+        $states = State::select('id', 'name')->where('country_id',$user->user_profiles->country_id)->orderBy('name','asc')->get();
+        $beach = '';
+        if($user->user_profiles->local_beach_break_id) {
+        $beachData = BeachBreak::where('id',$user->user_profiles->local_beach_break_id)->get()->toArray();
+        $beach = $beachData[0]['beach_name'];
+        }
+//        echo '<pre>';dump($beach[0]['beach_name']);die;
 //        foreach ($user as $v) {
 //        }
         if($user->user_type == 'USER') {
-        return view('user.edit_surfer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','board_type'));
+        return view('user.edit_surfer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','board_type','beach'));
             
         } elseif ($user->user_type == 'PHOTOGRAPHER') {
-        return view('user.edit_photographer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type'));
+        return view('user.edit_photographer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','beach'));
         
         } elseif ($user->user_type == 'SURFER CAMP') {
-        return view('user.edit_resort_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type'));
+        return view('user.edit_resort_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','beach'));
         } elseif ($user->user_type == 'ADVERTISEMENT') {
-        return view('user.edit_advertiser_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type'));
+        return view('user.edit_advertiser_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray','states'));
         }
     }
 
@@ -173,16 +181,16 @@ class UserController extends Controller {
         Validator::make($data, [
             'first_name' => ['required', 'min:3', 'string'],
             'last_name' => ['required', 'min:3', 'string'],
-            'user_name' => ['required', 'string', 'min:5', 'alpha_dash'],
+//            'user_name' => ['required', 'string', 'min:5', 'alpha_dash'],
 //            'email' => ['required', 'string', 'email:rfc,dns', 'max:255'],
             'phone' => ['required'],
-            'language' => ['required', 'string'],
+//            'language' => ['required', 'string'],
             'country_id' => ['required', 'numeric'],
-            'account_type' => ['required', 'string'],
+//            'account_type' => ['required', 'string'],
             'paypal' => ['required', 'string'],
 //            'local_beach_break' => ['required', 'string'],         
         ])->validate();
-
+//        
         $result = $this->users->updateUserProfile($data, $message);
         if ($result) {
             return Redirect::to('dashboard')->withSuccess($message);
