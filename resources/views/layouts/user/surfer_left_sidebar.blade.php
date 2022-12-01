@@ -74,10 +74,16 @@
                 <label class="d-block">Postal Code</label>
                 <span class="darkGrey-txt">{{ $userProfile['postal_code'] }}</span>
             </div>
-            @if($userType == 'SURFER CAMP')
+            @if($userType == 'SURFER CAMP' || $userType == 'PHOTOGRAPHER')
             <div class="profile-row pt-0">
                 <label class="d-block">Website</label>
                 <span class="darkGrey-txt"><a class="blue-txt num" href="{{ $userProfile['website'] }}" target="_blank" >{{ $userProfile['website'] }}</a></span>
+            </div>
+            @endif
+            @if($userType == 'PHOTOGRAPHER')
+            <div class="profile-row pt-0">
+                <label class="d-block">Preferred Camera</label>
+                <span class="darkGrey-txt">{{ $userProfile['camera'] }}</span>
             </div>
             @endif
             <div class="profile-row">
