@@ -669,7 +669,66 @@ class UserController extends Controller {
             $view = view('elements/surferProfileData', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches'))->render();
             return response()->json(['html' => $view]);
         }
-        return view('user.resort-profile', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile', 'fCounts','userType','resortImages'));
+        return view('layouts.resort.resort-profile', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile', 'fCounts','userType','resortImages'));
+    }
+    
+    public function photographerProfile(Request $request, $id) {
+        $photographer_id = Crypt::decrypt($id);
+        $url = url()->current();
+//        print_r($photographer_id);die;
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $beaches = $this->masterService->getBeaches();
+        $customArray = $this->customArray;
+        $postsList = Post::with('followPost')->where('is_deleted', '0')
+                ->where('parent_id', '0')
+                ->where('is_highlight', '1')
+                ->where('user_id', $photographer_id)
+                ->where(function ($query) {
+                    $query->where('post_type', 'PUBLIC')
+                    ->orWhere('is_feed', '1');
+                })
+                ->orderBy('posts.created_at', 'DESC')
+                ->paginate(10);
+        $requestSurfer = array();
+        foreach ($postsList as $val) {
+//            $surferRequest = SurferRequest::select("*")
+//                    ->where("post_id", "=", $val['id'])
+//                    ->where("status", "=", 0)
+//                    ->get();
+            
+            $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
+                    ->where("surfer_requests.post_id", "=", $val['id'])
+                    ->where("surfer_requests.status", "=", 0)
+                    ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
+
+            foreach ($surferRequest as $res) {
+               
+                $requestSurfer[$val['id']]['id'] = $res['id'];
+                $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
+            }
+        }
+        $userProfile = $this->users->getUserDetail($photographer_id);
+        $userType = $userProfile['user_type'];
+
+        $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $photographer_id);
+        $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $photographer_id);
+        $userPosts = $this->post->getPostByUserId($photographer_id);
+        $postIds = array_filter(array_column($userPosts, 'id'));
+        $uploads = $this->post->getUploads($postIds);
+        $fCounts = array(
+            'follwers' => $followersCount,
+            'follwing' => $followingCount,
+            'posts' => count($userPosts),
+            'uploads' => count($uploads),
+        );
+//        echo '<pre>'; print_r($resortImages);die;
+        if ($request->ajax()) {
+            $view = view('elements/surferProfileData', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches'))->render();
+            return response()->json(['html' => $view]);
+        }
+        return view('layouts.photographer.photographer-profile', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile', 'fCounts','userType'));
     }
     
     public function surferFollowers($id) {

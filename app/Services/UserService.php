@@ -628,6 +628,7 @@ class UserService {
             $userProfile['preferred_board'] = (isset($val->preferred_board) && !empty($val->preferred_board)) ? $this->checkUserType['board_type'][$val->preferred_board] : '-';
             $userProfile['website'] = (isset($val->website) && !empty($val->website)) ? $val->website : '-';
             $userProfile['postal_code'] = isset($val->postal_code) ? $val->postal_code : '-';
+            $userProfile['camera'] = isset($val->preferred_camera) ? $val->preferred_camera : '-';
             $userProfile['phone'] = isset($val->phone) ? $val->phone : '-';
             $userProfile['user_type'] = $val->user->user_type;
         }

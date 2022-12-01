@@ -57,7 +57,13 @@
                             <tr>
                                 <td>Preferred Language</td>
                                 <td>:</td>
-                                <td>{{ $language[$user->user_profiles->language] }}</td>
+                                <td>
+                                    @if($user->user_profiles->language)
+                                    {{ $language[$user->user_profiles->language] }}
+                                    @else
+                                    -
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
                                 <td>Account Type</td>
