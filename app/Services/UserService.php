@@ -7,6 +7,8 @@ use App\Models\UserProfile;
 use App\Models\Tag;
 use App\Models\UserFollow;
 use App\Models\Notification;
+use App\Models\AdvertPost;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -633,6 +635,94 @@ class UserService {
             $userProfile['user_type'] = $val->user->user_type;
         }
         return $userProfile;
+    }
+
+    public function getAdvertPost($id) {
+        $advertPost = array();
+        $post = AdvertPost::where('post_id', $id)
+                ->get();
+        
+//        echo '<pre>';print_r($post);die;
+        foreach ($post as $val) {
+         $advertPost['ad_link']  = $val->ad_link;
+         $advertPost['surfhub_target']  = $val->surfhub_target;
+         $advertPost['profile_target']  = $val->profile_target;
+         $advertPost['search_target']  = $val->search_target;
+         $advertPost['gender']  = $val->gender;
+         $advertPost['optional_user_type']  = $val->optional_user_type;
+         $advertPost['optional_country_id']  = $val->optional_country_id;
+         $advertPost['optional_state_id']  = $val->optional_state_id;
+         $advertPost['optional_postcode']  = $val->optional_postcode;
+         $advertPost['optional_beach_id']  = $val->optional_beach_id;
+         $advertPost['optional_beach']  = $val->beach->beach_name;
+         $advertPost['optional_board_type']  = $val->optional_board_type;
+         $advertPost['optional_camera_brand']  = $val->optional_camera_brand;
+         $advertPost['optional_surf_resort']  = $val->optional_surf_resort;
+         $advertPost['search_user_type']  = $val->search_user_type;
+         $advertPost['search_surf_resort']  = $val->search_surf_resort;
+         $advertPost['currency_type']  = $val->currency_type;
+         $advertPost['your_budget']  = $val->your_budget;
+         $advertPost['per_view']  = $val->per_view;
+         $advertPost['start_date']  = $val->start_date;
+         $advertPost['end_date']  = $val->end_date;
+         $advertPost['country_id']  = $val->advert_post->country_id;
+         $advertPost['state_id']  = $val->advert_post->state_id;
+         $advertPost['local_beach_id']  = $val->advert_post->local_beach_id;
+         $advertPost['local_beach']  = $val->advert_post->beach_breaks->beach_name;
+         $advertPost['local_break']  = $val->advert_post->beach_breaks->break_name;
+         $advertPost['local_break_id']  = $val->advert_post->local_break_id;
+         $advertPost['board_type']  = $val->advert_post->board_type;
+         $advertPost['surfer']  = $val->advert_post->surfer;
+         $advertPost['fin_set_up']  = $val->advert_post->fin_set_up;
+         $advertPost['post_text']  = $val->advert_post->post_text;
+        }
+        return $advertPost;
+    }
+    
+    public function getMyAds() {
+        $advertPost = array();
+        $post = Post::where('user_id', Auth::user()->id)
+                ->where('is_deleted', '=','0')
+                ->get();
+        $counter = 0;
+        foreach ($post as $val) {
+            if (isset($val->advert->id)) {
+                $advertPost[$counter]['post_id'] = $val->id;
+                $advertPost[$counter]['post_text'] = $val->post_text;
+                $advertPost[$counter]['ad_link'] = $val->advert->ad_link;
+                $advertPost[$counter]['surfhub_target'] = $val->advert->surfhub_target;
+                $advertPost[$counter]['profile_target'] = $val->advert->profile_target;
+                $advertPost[$counter]['search_target'] = $val->advert->search_target;
+                $advertPost[$counter]['gender'] = $val->advert->gender;
+                $advertPost[$counter]['optional_user_type'] = $val->advert->optional_user_type;
+                $advertPost[$counter]['optional_country_id'] = $val->advert->optional_country_id;
+                $advertPost[$counter]['optional_state_id'] = $val->advert->optional_state_id;
+                $advertPost[$counter]['optional_postcode'] = $val->advert->optional_postcode;
+                $advertPost[$counter]['optional_beach_id'] = $val->advert->optional_beach_id;
+                $advertPost[$counter]['optional_beach'] = $val->advert->beach->beach_name;
+                $advertPost[$counter]['optional_board_type'] = $val->advert->optional_board_type;
+                $advertPost[$counter]['optional_camera_brand'] = $val->advert->optional_camera_brand;
+                $advertPost[$counter]['optional_surf_resort'] = $val->advert->optional_surf_resort;
+                $advertPost[$counter]['search_user_type'] = $val->advert->search_user_type;
+                $advertPost[$counter]['search_surf_resort'] = $val->advert->search_surf_resort;
+                $advertPost[$counter]['currency_type'] = $val->advert->currency_type;
+                $advertPost[$counter]['your_budget'] = $val->advert->your_budget;
+                $advertPost[$counter]['per_view'] = $val->advert->per_view;
+                $advertPost[$counter]['start_date'] = $val->advert->start_date;
+                $advertPost[$counter]['end_date'] = $val->advert->end_date;
+                $advertPost[$counter]['country_id'] = $val->country_id;
+                $advertPost[$counter]['state_id'] = $val->state_id;
+                $advertPost[$counter]['local_beach_id'] = $val->local_beach_id;
+                $advertPost[$counter]['local_beach'] = $val->beach_breaks->beach_name;
+                $advertPost[$counter]['local_break'] = $val->beach_breaks->break_name;
+                $advertPost[$counter]['local_break_id'] = $val->local_break_id;
+                $advertPost[$counter]['board_type'] = $val->board_type;
+                $advertPost[$counter]['surfer'] = $val->surfer;
+                $advertPost[$counter]['fin_set_up'] = $val->fin_set_up;
+                $counter++;
+            }
+        }
+        return $advertPost;
     }
 
     public function getResortImages($resort_id) {

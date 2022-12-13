@@ -20,6 +20,7 @@ use App\Services\PostService;
 use Redirect;
 use App\Services\MasterService;
 use App\Models\Post;
+use App\Models\AdvertPost;
 use App\Models\SurferRequest;
 use App\Models\BoardTypeAdditionalInfo;
 use App\Models\UserProfile;
@@ -729,6 +730,53 @@ class UserController extends Controller {
             return response()->json(['html' => $view]);
         }
         return view('layouts.photographer.photographer-profile', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile', 'fCounts','userType'));
+    }
+    
+    public function uploadAdvertisment(Request $request, $id = null) {
+        
+        $url = url()->current();
+        $gender_type = config('customarray.gender_type');
+        $countries = DB::table('countries')->select('id', 'name','phone_code')->orderBy('name','asc')->get();
+        $states = State::select('id', 'name')->where('country_id',1)->orderBy('name','asc')->get();
+        $customArray = $this->customArray; 
+//        echo '<pre>';print_r($post_id);die;$post_id
+        $advertPost = array();
+        $breaks = '';
+        $post_id = '';
+        if($id) {
+        $post_id = Crypt::decrypt($id);
+        $advertPost = $this->users->getAdvertPost($post_id);
+        $breaks = $this->masterService->getBreakByBeachName($advertPost['local_beach']);
+        }
+        
+        
+        return view('layouts.advertisment.upload-advertisment', compact('url','gender_type','countries','states','customArray','advertPost','breaks','post_id'));
+    }
+    
+    public function uploadPreview(Request $request, $id) {
+        $post_id = Crypt::decrypt($id);
+        $url = url()->current();
+        $gender_type = config('customarray.gender_type');
+        $countries = DB::table('countries')->select('id', 'name','phone_code')->orderBy('name','asc')->get();
+        $states = State::select('id', 'name')->orderBy('name','asc')->get();
+        $customArray = $this->customArray; 
+        $advertPost = $this->users->getAdvertPost($post_id);
+//        echo '<pre>';print_r($advertPost);die;
+        
+        return view('layouts.advertisment.upload-preview', compact('url','gender_type','countries','states','customArray','advertPost','post_id'));
+    }
+    
+    public function myAds(Request $request) {
+//        $post_id = Crypt::decrypt($id);
+        $url = url()->current();
+        $gender_type = config('customarray.gender_type');
+        $countries = DB::table('countries')->select('id', 'name','phone_code')->orderBy('name','asc')->get();
+        $states = State::select('id', 'name')->orderBy('name','asc')->get();
+        $customArray = $this->customArray; 
+        $advertPost = $this->users->getMyAds();
+//        echo '<pre>';print_r($advertPost);die;
+        
+        return view('layouts.advertisment.my-ads', compact('url','gender_type','countries','states','customArray','advertPost'));
     }
     
     public function surferFollowers($id) {

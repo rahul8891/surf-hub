@@ -69,6 +69,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
      
     Route::post('/create-post', [UserPostController::class, 'store'])->name('storeVideoImagePost');
     
+    Route::post('/create-advert-post', [UserPostController::class, 'storeAdvert'])->name('storeAdvert');
+    
     Route::get('/upload', [UserPostController::class, 'upload'])->name('upload');
 
     Route::post('/upload-large-files', [UserPostController::class, 'uploadLargeFiles'])->name('files.upload.large');
@@ -136,6 +138,11 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/resort-profile/{id}', [UserController::class, 'resortProfile'])->name('resort-profile');
     Route::get('/photographer-profile/{id}', [UserController::class, 'photographerProfile'])->name('photographer-profile');
     
+    Route::get('/upload-advertisment/{id?}', [UserController::class, 'uploadAdvertisment'])->name('uploadAdvertisment');
+    Route::get('/upload-preview/{id}', [UserController::class, 'uploadPreview'])->name('uploadPreview');
+    Route::get('/my-ads', [UserController::class, 'myAds'])->name('myAds');
+    Route::post('/publish-preview-advert-post', [UserPostController::class, 'publishAdvert'])->name('publishAdvert');
+    Route::get('/delete-advert-post/{id}', [UserPostController::class, 'deleteAdvert'])->name('deleteAdvert');
 });
 
 /*********************************************************************************************

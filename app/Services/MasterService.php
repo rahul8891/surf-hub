@@ -105,6 +105,13 @@ class MasterService {
             return $this->beach_break->select('id', 'break_name')->orderBy('break_name','asc')->get();
         }
     }
+    public function getBreakByBeachId($beach_id){
+        if(isset($beach_id) && !empty($beach_id)) {
+            return $this->beach_break->select('id', 'break_name')->where('id',$beach_id)->orderBy('break_name','asc')->get();
+        } else {
+            return $this->beach_break->select('id', 'break_name')->orderBy('break_name','asc')->get();
+        }
+    }
 
     /**
      * [getAllUsers] we are getiing all the users

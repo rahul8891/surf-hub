@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\Post;
 use App\Models\Upload;
+use App\Models\AdvertPost;
 use App\Models\Tag;
 use App\Models\Comment;
 use App\Models\Report;
@@ -707,6 +708,169 @@ class PostService {
         catch (\Exception $e){     
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message = '"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+    
+    
+    public function saveAdvertPost($input, $fileType = '', $filename = '', &$message=''){
+        try{
+//            $lines = [];
+//            $handle = fopen($file, "r");
+//            $content = file($file);
+//            echo '<pre>';  dump($input);die;
+            $posts = new Post();
+            $posts->post_type = 'PRIVATE';            
+            $posts->user_id = Auth::user()->id;
+            $posts->country_id =$input['search_country_id'];
+            $posts->post_text =$input['post_text'];
+            $posts->board_type = $input['search_board_type'];
+            $posts->state_id = $input['search_state_id'];
+            $posts->local_beach_id = $input['local_beach_break_id'];
+            $posts->local_break_id = $input['break_id'];
+            $posts->surfer = $input['other_surfer'];
+            $posts->fin_set_up = (!empty($input['fin_set_up'])) ? $input['fin_set_up'] : null;
+            $posts->created_at = Carbon::now();
+            $posts->updated_at = Carbon::now();
+
+            if($posts->save()){
+                if(isset($filename) && !empty($filename)) {                
+                    $upload = new Upload();
+                    
+
+                    if (isset($fileType) && ($fileType == 'image')) {
+                        $upload->image = $filename;
+                    } elseif (isset($fileType) && ($fileType == 'video')) {
+                        $upload->video = $filename;
+                    }
+//                    $handle = fopen($file, "r") or die("Couldn't get handle");
+//                    while (!feof($handle)) {
+//                        $upload->file_body = fgets($handle, 4096);
+//                        // Process buffer here..
+//                    }
+//                    $upload->file_body = file_get_contents($file);
+                    $upload->post_id = $posts->id;
+                    $upload->save();
+                    
+                }
+                
+                $advertPost = new AdvertPost();
+                $advertPost->post_id = $posts->id;
+                $advertPost->ad_link = $input['ad_link'];
+                $advertPost->surfhub_target = isset($input['surfHub'])?$input['surfHub']:0;
+                $advertPost->profile_target = isset($input['profile'])?$input['profile']:0;
+                $advertPost->search_target = isset($input['search'])?$input['search']:0;
+                $advertPost->gender = $input['gender'];
+                $advertPost->optional_user_type = $input['userType'];
+                $advertPost->optional_country_id = $input['country_id'];
+                $advertPost->optional_state_id = $input['state_id'];
+                $advertPost->optional_postcode = $input['postcode'];
+                $advertPost->optional_beach_id = $input['local_beach_id'];
+                $advertPost->optional_board_type = $input['board_type'];
+                $advertPost->optional_camera_brand = $input['camera_brand'];
+                $advertPost->optional_surf_resort = $input['resort'];
+                $advertPost->search_user_type = $input['search_user_type'];
+                $advertPost->search_surf_resort = $input['search_resort'];
+                $advertPost->currency_type = $input['currency_type'];
+                $advertPost->your_budget = $input['budget'];
+                $advertPost->per_view = $input['per_view'];
+                $advertPost->start_date = $input['start_date'];
+                $advertPost->end_date = $input['end_date'];
+                $advertPost->preview_ad = isset($input['preview'])?$input['preview']:0;
+                $advertPost->save();
+                
+                
+                
+            }
+            $result = array(
+                'post_id' => $posts->id,
+                'message' => 'Post has been updated successfully.!'
+            );
+            $message = 'Post has been updated successfully.!';
+            return $result;                
+        }
+        catch (\Exception $e){     
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message = '"'.$e->getMessage().'"';
+//            echo '<pre>';dump($message);die;
+            return $message;
+        }
+    }
+    
+    
+    public function updateAdvertPost($input, $fileType = '', $filename = '', &$message=''){
+        try{
+//            $lines = [];
+//            $handle = fopen($file, "r");
+//            $content = file($file);
+//            echo '<pre>';  dump($input);die;
+            $posts = Post::findOrFail($input['post_id']);
+            $posts->post_type = 'PRIVATE';            
+            $posts->user_id = Auth::user()->id;
+            $posts->post_text =$input['post_text'];
+            $posts->country_id =$input['search_country_id'];
+            $posts->board_type = $input['search_board_type'];
+            $posts->state_id = $input['search_state_id'];
+            $posts->local_beach_id = $input['local_beach_break_id'];
+            $posts->local_break_id = $input['break_id'];
+            $posts->surfer = $input['other_surfer'];
+            $posts->fin_set_up = (!empty($input['fin_set_up'])) ? $input['fin_set_up'] : null;
+            $posts->created_at = Carbon::now();
+            $posts->updated_at = Carbon::now();
+
+            if($posts->save()){
+                if(isset($filename) && !empty($filename)) {                
+                    $upload = Upload::where('post_id', $posts->id)->first();
+                    
+
+                    if (isset($fileType) && ($fileType == 'image')) {
+                        $upload->image = $filename;
+                    } elseif (isset($fileType) && ($fileType == 'video')) {
+                        $upload->video = $filename;
+                    }
+                    $upload->post_id = $posts->id;
+                    $upload->save();
+                    
+                }
+                $advertPost = AdvertPost::where('post_id', $posts->id)->first();
+                $advertPost->post_id = $posts->id;
+                $advertPost->ad_link = $input['ad_link'];
+                $advertPost->surfhub_target = isset($input['surfHub'])?$input['surfHub']:0;
+                $advertPost->profile_target = isset($input['profile'])?$input['profile']:0;
+                $advertPost->search_target = isset($input['search'])?$input['search']:0;
+                $advertPost->gender = $input['gender'];
+                $advertPost->optional_user_type = $input['userType'];
+                $advertPost->optional_country_id = $input['country_id'];
+                $advertPost->optional_state_id = $input['state_id'];
+                $advertPost->optional_postcode = $input['postcode'];
+                $advertPost->optional_beach_id = $input['local_beach_id'];
+                $advertPost->optional_board_type = $input['board_type'];
+                $advertPost->optional_camera_brand = $input['camera_brand'];
+                $advertPost->optional_surf_resort = $input['resort'];
+                $advertPost->search_user_type = $input['search_user_type'];
+                $advertPost->search_surf_resort = $input['search_resort'];
+                $advertPost->currency_type = $input['currency_type'];
+                $advertPost->your_budget = $input['budget'];
+                $advertPost->per_view = $input['per_view'];
+                $advertPost->start_date = $input['start_date'];
+                $advertPost->end_date = $input['end_date'];
+                $advertPost->preview_ad = !empty($input['preview'])?$input['preview']:0;
+                $advertPost->save();
+                
+                
+                
+            }
+            $result = array(
+                'post_id' => $posts->id,
+                'message' => 'Post has been updated successfully.!'
+            );
+            $message = 'Post has been updated successfully.!';
+            return $result;                
+        }
+        catch (\Exception $e){     
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message = '"'.$e->getMessage().'"';
+//            echo '<pre>';dump($message);die;
             return $message;
         }
     }
