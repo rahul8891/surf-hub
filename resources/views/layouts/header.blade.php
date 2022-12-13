@@ -27,10 +27,17 @@
             </div>
             @if (Auth::user())
             <div class="{{ userActiveMenu('upload') }}">
+                @if(Auth::user()->user_type == 'ADVERTISEMENT')
+                <a class="nav-link" href="{{route('uploadAdvertisment')}}">
+                    <span class="header-icon upload"></span>
+                    <span class="align-middle">UPLOAD</span>
+                </a>
+                @else
                 <a class="nav-link" href="{{route('upload')}}">
                     <span class="header-icon upload"></span>
                     <span class="align-middle">UPLOAD</span>
                 </a>
+                @endif
             </div>
             @endif
         </div>

@@ -35,7 +35,7 @@ $(document).ready(function () {
                     $('#users-rated' + id).html(Math.floor(jsonResponse['usersRated']));
                     $(".rating-container").hide();
                     $(".rating-container").siblings(".avg-rating").show();
-                    
+
                 }
             });
         } else {
@@ -97,7 +97,7 @@ $(document).ready(function () {
     $("form[name='register-advertiser'] #exampleInputFile").change(function () {
         readURL(this);
     });
-    
+
 
     var $image_crop;
     $image_crop = $('#image').croppie({
@@ -147,20 +147,20 @@ $(document).ready(function () {
             $("form[name='register-surfer'] #exampleInputFile").val("");
             $("form[name='register-resort'] #exampleInputFile").val("");
             $("form[name='register-advertiser'] #exampleInputFile").val("");
-            
+
             $("#category-img-tag").attr("src", "/img/image-file.png");
             $("#category-img-tag").attr("width", "auto");
-            
-            
+
+
             $("form[name='register-surfer'] #category-img-tag").attr("src", "/img/image-file.png");
             $("form[name='register-surfer'] #category-img-tag").attr("width", "auto");
-            
+
             $("form[name='register-resort'] #category-img-tag").attr("src", "/img/image-file.png");
             $("form[name='register-resort'] #category-img-tag").attr("width", "auto");
-            
+
             $("form[name='register-advertiser'] #category-img-tag").attr("src", "/img/image-file.png");
             $("form[name='register-advertiser'] #category-img-tag").attr("width", "auto");
-            
+
             $("#remove-img").hide();
             $("#imageError").show();
             $("form[name='register-surfer'] #remove-img").hide();
@@ -183,16 +183,16 @@ $(document).ready(function () {
             $("form[name='register-advertiser'] #imagebase64").val(response);
             $("#category-img-tag").attr("src", response);
             $("#category-img-tag").attr("width", "100%");
-            
+
             $("form[name='register-surfer'] #category-img-tag").attr("src", response);
             $("form[name='register-surfer'] #category-img-tag").attr("width", "100%");
-            
+
             $("form[name='register-resort'] #category-img-tag").attr("src", response);
             $("form[name='register-resort'] #category-img-tag").attr("width", "100%");
-            
+
             $("form[name='register-advertiser'] #category-img-tag").attr("src", response);
             $("form[name='register-advertiser'] #category-img-tag").attr("width", "100%");
-            
+
             $('#myModal').modal('hide');
         })
     });
@@ -529,7 +529,7 @@ $(document).ready(function () {
             form.submit();
         }
     });
-    
+
     $("form[name='register-resort']").validate({
         rules: {
             resort_name: {
@@ -687,18 +687,18 @@ $(document).ready(function () {
         },
         submitHandler: function (form) {
             var input = document.getElementById('formFile');
-   if(input.files.length>4){
-       $('.resort_pics_error').text('Please select only 5 pics');
-       return false;
-   }else{
-      $('.resort_pics_error').text('');
-   }  
+            if (input.files.length > 4) {
+                $('.resort_pics_error').text('Please select only 5 pics');
+                return false;
+            } else {
+                $('.resort_pics_error').text('');
+            }
             form.submit();
         }
     });
-    
-    
-    
+
+
+
     $("form[name='register-advertiser']").validate({
         rules: {
             company_name: {
@@ -817,7 +817,7 @@ $(document).ready(function () {
             form.submit();
         }
     });
-    
+
     $("form[name='register-surfer']").validate({
         rules: {
             gender: {
@@ -985,8 +985,8 @@ $(document).ready(function () {
             form.submit();
         }
     });
-    
-    
+
+
 //    $('#formFile').change(function(){
 //   //get the input and the file list
 //   var input = document.getElementById('formFile');
@@ -1316,24 +1316,24 @@ $(document).ready(function () {
         }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
-    
+
     $('#searchFollower').keyup(debounce(function () {
         // the following function will be executed every half second	
         var user_id = $('#user_id').val();
         var keyword = $('#searchFollower').val();
 //        if ($(this).val().length > 2) {
-            $.ajax({
-                type: "GET",
-                url: "/searchFollwers/"+user_id,
-                data: {
-                    searchTerm: keyword,
-                    _token: csrf_token
-                },
-                dataType: "json",
-                success: function (jsonResponse) {
-                    $('.list-followers').html(jsonResponse.html);
-                }
-            })
+        $.ajax({
+            type: "GET",
+            url: "/searchFollwers/" + user_id,
+            data: {
+                searchTerm: keyword,
+                _token: csrf_token
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                $('.list-followers').html(jsonResponse.html);
+            }
+        })
 
 //        } else {
 //            $('#local_beach_break_id').val('');
@@ -1346,18 +1346,18 @@ $(document).ready(function () {
         var keyword = $('#searchFollowing').val();
         var user_id = $('#user_id').val();
 //        if ($(this).val().length > 2) {
-            $.ajax({
-                type: "GET",
-                url: "/searchFollowing/"+user_id,
-                data: {
-                    searchTerm: keyword,
-                    _token: csrf_token
-                },
-                dataType: "json",
-                success: function (jsonResponse) {
-                    $('.list-followers').html(jsonResponse.html);
-                }
-            })
+        $.ajax({
+            type: "GET",
+            url: "/searchFollowing/" + user_id,
+            data: {
+                searchTerm: keyword,
+                _token: csrf_token
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                $('.list-followers').html(jsonResponse.html);
+            }
+        })
 
 //        } else {
 //            $('#local_beach_break_id').val('');
@@ -1369,18 +1369,18 @@ $(document).ready(function () {
         // the following function will be executed every half second	
         var keyword = $('#searchFollowRequest').val();
 //        if ($(this).val().length > 2) {
-            $.ajax({
-                type: "GET",
-                url: "/searchFollowRequest",
-                data: {
-                    searchTerm: keyword,
-                    _token: csrf_token
-                },
-                dataType: "json",
-                success: function (jsonResponse) {
-                    $('.list-followers').html(jsonResponse.html);
-                }
-            })
+        $.ajax({
+            type: "GET",
+            url: "/searchFollowRequest",
+            data: {
+                searchTerm: keyword,
+                _token: csrf_token
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                $('.list-followers').html(jsonResponse.html);
+            }
+        })
 
 //        } else {
 //            $('#local_beach_break_id').val('');
@@ -1437,7 +1437,39 @@ $(document).ready(function () {
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
+    $('.ad-search-box').keyup(debounce(function () {
+        // the following function will be executed every half second	
+        if ($(this).val().length > 2) {
+            $.ajax({
+                type: "GET",
+                url: "/getBeachBreach",
+                data: {
+                    searchTerm: $(this).val(),
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
 
+                    $('#beach_list').html(jsonResponse);
+                }
+            })
+
+        } else {
+            $('#local_beach_id').val('');
+            $('#beach_list').html("");
+        }
+
+    }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+
+
+    $(document).on('click', '#beach_list li', function () {
+        var value = $(this).text();
+        var dataId = $(this).attr("data-id");
+        $('#beach_list').html("");
+        $('.ad-search-box').val(value);
+        $('#local_beach_id').val(dataId);
+        $('#beach_list').html("");
+    });
     $(document).on('click', '.search1 li', function () {
         var value = $(this).text();
         var dataId = $(this).attr("data-id");
@@ -1468,6 +1500,13 @@ $(document).ready(function () {
         $('#country_list3').html("");
     });
 
+    $(document).on('click', '.previewAds', function () {
+//        alert('ggg');
+        var form = $('#storeAdvert').val();
+        $('#preview').val("1");
+        form.submit();
+    });
+
 
     function getBreak(beachValue) {
 //        var beachValue = $(this).val();
@@ -1487,13 +1526,13 @@ $(document).ready(function () {
                         var myJsonData = jsonResponse.data;
                         $("#break_id").append('<option value="">--Select--</option>');
                         $.each(myJsonData, function (key, value) {
-                            if(value.break_name!='') {
-                            $("#break_id").append('<option value="' + value.id + '">' + value.break_name + '</option>');
-                            $("#break_id").rules( "add", {required: true,messages: { required: "Break is required"}});
+                            if (value.break_name != '') {
+                                $("#break_id").append('<option value="' + value.id + '">' + value.break_name + '</option>');
+                                $("#break_id").rules("add", {required: true, messages: {required: "Break is required"}});
 
-                        } else {
-                            $("#break_id").rules( "remove" );
-                        }
+                            } else {
+                                $("#break_id").rules("remove");
+                            }
                         });
                     } else {
                         $("#break_id").empty();
@@ -1504,8 +1543,8 @@ $(document).ready(function () {
             $("#state_id").empty();
         }
     }
-    
-    $("#beach_filter").change(function(e){
+
+    $("#beach_filter").change(function (e) {
 //    if ($('#beach_filter').is(":selected")) {
         $('#break_filter').find('option').remove();
         $("#break_filter").append('<option value=""> -- Break --</option>');
@@ -1522,7 +1561,7 @@ $(document).ready(function () {
                 //console.log(jsonResponse);
                 if (jsonResponse.status == 'success') {
                     var myJsonData = jsonResponse.data;
-                    
+
                     $.each(myJsonData, function (key, value) {
                         if (value.break_name != '') {
                             $("#break_filter").append('<option value="' + value.id + '">' + value.break_name + '</option>');
@@ -1534,49 +1573,48 @@ $(document).ready(function () {
                 }
             }
         });
-    
+
 //        }
 //        alert("checked Score: " + $(this).val());
 //    else {
 //        var beachValue = $(this).val();
 ////        $("#break_filter").remove();
 //    }
-});
+    });
 
-    
-    $("#board_type").change(function(e){
+
+    $("#board_type").change(function (e) {
 //    if ($('#beach_filter').is(":selected")) {
 //        $('#break_filter').find('option').remove();
 //        $("#break_filter").append('<option value=""> -- Break --</option>');
         var board_type = $(this).val();
-        if(board_type !=='') {
-        $.ajax({
-            type: "GET",
-            url: '/get-additional-board-info',
-            data: {
-                board_type: board_type,
-                _token: csrf_token
-            },
-            dataType: "json",
-            success: function (jsonResponse) {
-                //console.log(jsonResponse);
+        if (board_type !== '') {
+            $.ajax({
+                type: "GET",
+                url: '/get-additional-board-info',
+                data: {
+                    board_type: board_type,
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    //console.log(jsonResponse);
 //                if (jsonResponse.status == 'success') {
                     var myJsonData = jsonResponse.data;
-                    
-                   $('#additional_optional_info').removeClass('d-none');
-                   $('#additional_optional_info').html(jsonResponse);
+
+                    $('#additional_optional_info').removeClass('d-none');
+                    $('#additional_optional_info').html(jsonResponse);
 //                } else {
 //                    $('#additional_optional_info').addClass('d-none');
 //                }
-            }
-        });
-    
-        }
-    else {
-        $('#additional_optional_info').addClass('d-none');
+                }
+            });
+
+        } else {
+            $('#additional_optional_info').addClass('d-none');
 //        $("#break_filter").remove();
-    }
-});
+        }
+    });
 
     // ajax form field data for filter
     $('.search-box2').keyup(debounce(function () {
@@ -1659,7 +1697,7 @@ $(document).ready(function () {
 
     $('.filter_other_surfer').keyup(debounce(function () {
         // the following function will be executed every half second	
-        var userType =  $('#filter_user_type').val();
+        var userType = $('#filter_user_type').val();
 //        alert(userType);
         if ($(this).val().length > 1) {
             $.ajax({
@@ -1681,7 +1719,7 @@ $(document).ready(function () {
         }
     }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
-    
+
 
     $('.tag_user').keyup(debounce(function () {
         // the following function will be executed every half second	
@@ -1788,7 +1826,37 @@ $(document).ready(function () {
             $("#state_id").empty();
         }
     });
-    
+
+    $(document).on('change', '#search_country_id', function (e) {
+        var currentcountryValue = $(this).val();
+        if (currentcountryValue != 0) {
+            $.ajax({
+                type: "GET",
+                url: '/getState',
+                data: {
+                    country_id: currentcountryValue,
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    //console.log(jsonResponse);
+                    if (jsonResponse.status == 'success') {
+                        $("#search_state_id").empty();
+                        var myJsonData = jsonResponse.data;
+                        $("#search_state_id").append('<option value="">--Select--</option>');
+                        $.each(myJsonData, function (key, value) {
+                            $("#search_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    } else {
+                        $("#search_state_id").empty();
+                    }
+                }
+            });
+        } else {
+            $("#search_state_id").empty();
+        }
+    });
+
 
 
     /**
@@ -2106,94 +2174,94 @@ $('#test-other').click(function () {
 });
 
 (function ($) {
-  var CheckboxDropdown = function (el) {
-    var _this = this;
-    this.isOpen = false;
-    this.areAllChecked = false;
-    this.$el = $(el);
-    this.$label = this.$el.find(".dropdown-label");
-    this.$option = this.$el.find(".dropdown-list");
-    this.$checkAll = this.$el.find('[data-toggle="check-all"]').first();
-    this.$inputs = this.$el.find('[type="checkbox"]');
-    this.$option.css({"transform": "scale(1, 0)","position": "absolute"});
-    this.onCheckBox();
+    var CheckboxDropdown = function (el) {
+        var _this = this;
+        this.isOpen = false;
+        this.areAllChecked = false;
+        this.$el = $(el);
+        this.$label = this.$el.find(".dropdown-label");
+        this.$option = this.$el.find(".dropdown-list");
+        this.$checkAll = this.$el.find('[data-toggle="check-all"]').first();
+        this.$inputs = this.$el.find('[type="checkbox"]');
+        this.$option.css({"transform": "scale(1, 0)", "position": "absolute"});
+        this.onCheckBox();
 
-    this.$label.on("click", function (e) {
-      e.preventDefault();
-      _this.toggleOpen();
-    });
+        this.$label.on("click", function (e) {
+            e.preventDefault();
+            _this.toggleOpen();
+        });
 
-    this.$checkAll.on("click", function (e) {
-      e.preventDefault();
-      _this.onCheckAll();
-    });
+        this.$checkAll.on("click", function (e) {
+            e.preventDefault();
+            _this.onCheckAll();
+        });
 
-    this.$inputs.on("change", function (e) {
-      _this.onCheckBox();
-    });
-  };
+        this.$inputs.on("change", function (e) {
+            _this.onCheckBox();
+        });
+    };
 
-  CheckboxDropdown.prototype.onCheckBox = function () {
-    this.updateStatus();
-  };
+    CheckboxDropdown.prototype.onCheckBox = function () {
+        this.updateStatus();
+    };
 
-  CheckboxDropdown.prototype.updateStatus = function () {
-    var checked = this.$el.find(":checked");
+    CheckboxDropdown.prototype.updateStatus = function () {
+        var checked = this.$el.find(":checked");
 
-    this.areAllChecked = false;
-    this.$checkAll.html("Check All");
+        this.areAllChecked = false;
+        this.$checkAll.html("Check All");
 
-    if (checked.length <= 0) {
-      this.$label.html("Select Options");
-    } else if (checked.length === 1) {
-      this.$label.html(checked.parent("label").text());
-    } else if (checked.length === this.$inputs.length) {
-      this.$label.html("All Selected");
-      this.areAllChecked = true;
-      this.$checkAll.html("Uncheck All");
-    } else {
-      this.$label.html(checked.length + " Selected");
-    }
-  };
-
-  CheckboxDropdown.prototype.onCheckAll = function (checkAll) {
-    if (!this.areAllChecked || checkAll) {
-      this.areAllChecked = true;
-      this.$checkAll.html("Uncheck All");
-      this.$inputs.prop("checked", true);
-    } else {
-      this.areAllChecked = false;
-      this.$checkAll.html("Check All");
-      this.$inputs.prop("checked", false);
-    }
-
-    this.updateStatus();
-  };
-
-  CheckboxDropdown.prototype.toggleOpen = function (forceOpen) {
-    var _this = this;
-
-    if (!this.isOpen || forceOpen) {
-      this.isOpen = true;
-      this.$el.addClass("on");
-      this.$option.css({transform: "","position": "relative"});
-      $(document).on("click", function (e) {
-        if (!$(e.target).closest("[data-control]").length) {
-          _this.toggleOpen();
+        if (checked.length <= 0) {
+            this.$label.html("Select Options");
+        } else if (checked.length === 1) {
+            this.$label.html(checked.parent("label").text());
+        } else if (checked.length === this.$inputs.length) {
+            this.$label.html("All Selected");
+            this.areAllChecked = true;
+            this.$checkAll.html("Uncheck All");
+        } else {
+            this.$label.html(checked.length + " Selected");
         }
-      });
-    } else {
-      this.isOpen = false;
-      this.$option.css({"transform": "scale(1, 0)","position": "absolute"});
-      this.$el.removeClass("on");
-      $(document).off("click");
-    }
-  };
+    };
 
-  var checkboxesDropdowns = document.querySelectorAll(
-    '[data-control="checkbox-dropdown"]'
-  );
-  for (var i = 0, length = checkboxesDropdowns.length; i < length; i++) {
-    new CheckboxDropdown(checkboxesDropdowns[i]);
-  }
+    CheckboxDropdown.prototype.onCheckAll = function (checkAll) {
+        if (!this.areAllChecked || checkAll) {
+            this.areAllChecked = true;
+            this.$checkAll.html("Uncheck All");
+            this.$inputs.prop("checked", true);
+        } else {
+            this.areAllChecked = false;
+            this.$checkAll.html("Check All");
+            this.$inputs.prop("checked", false);
+        }
+
+        this.updateStatus();
+    };
+
+    CheckboxDropdown.prototype.toggleOpen = function (forceOpen) {
+        var _this = this;
+
+        if (!this.isOpen || forceOpen) {
+            this.isOpen = true;
+            this.$el.addClass("on");
+            this.$option.css({transform: "", "position": "relative"});
+            $(document).on("click", function (e) {
+                if (!$(e.target).closest("[data-control]").length) {
+                    _this.toggleOpen();
+                }
+            });
+        } else {
+            this.isOpen = false;
+            this.$option.css({"transform": "scale(1, 0)", "position": "absolute"});
+            this.$el.removeClass("on");
+            $(document).off("click");
+        }
+    };
+
+    var checkboxesDropdowns = document.querySelectorAll(
+            '[data-control="checkbox-dropdown"]'
+            );
+    for (var i = 0, length = checkboxesDropdowns.length; i < length; i++) {
+        new CheckboxDropdown(checkboxesDropdowns[i]);
+    }
 })(jQuery);
