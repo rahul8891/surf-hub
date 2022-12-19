@@ -31,7 +31,7 @@
                 <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></a>
                 @endif
 
-                <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVid{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')">
                     <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
                 </video>
             </div>    
@@ -43,10 +43,9 @@
                 <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></a>
                 @endif
 
-                <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVid{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')" >
                     <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
                 </video>
-                <!--<audio controls src="{{ $getTrack['external_urls']['spotify']}}"></audio>-->
             </div>
             @endif
             @endif
@@ -67,6 +66,9 @@
 <script src="https://sdk.scdn.co/spotify-player.js"></script>
 <script>
 
+ function focusPlay(post_id) {
+    document.getElementById('myVid'+post_id).play();
+  }
 
 //window.onSpotifyWebPlaybackSDKReady = () => {
 ////    const device_id = '47e5b24b028ce85508d27a9f1961896ad413aed4';
