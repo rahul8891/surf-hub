@@ -59,7 +59,7 @@
                             <div class="right-options">
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                                     <img src={{asset("/img/location.png")}} alt="Location"></a>
-                                <a onclick="openFullscreen({{$posts->id}});"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
+                                <a onclick="openFullscreenSilder({{$posts->id}});"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
                                 <div class="d-inline-block info dropdown" title="Info">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -145,7 +145,7 @@
     </div>
 </section>
 @include('elements/location_popup_model')
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+@include('layouts/models/full_screen_modal')
 <script>
                                     var page = 1;
                                     $(window).scroll(function() {
@@ -182,6 +182,20 @@
 //            $("#search-data").append(data.html);
                                             $(data.html).insertBefore(".ajax-load");
                                             });
+                                    }
+                                    function openFullscreenSilder(id) {
+                                    $.ajax({
+                                    url: '/getPostFullScreen/' + id,
+                                            type: "get",
+                                            async: false,
+                                            success: function(data) {
+                                            // console.log(data.html);
+                                            $("#full_screen_modal").html("");
+                                            $("#full_screen_modal").append(data.html);
+                                            $("#full_screen_modal").modal('hide');
+                                            $("#full_screen_modal").modal('show');
+                                            }
+                                    });
                                     }
 </script>
 @endsection
