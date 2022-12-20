@@ -1818,7 +1818,10 @@ header .notification {
     height: 700px;
     width: auto;
 }
-
+.modal-dialog.editPostM {
+    max-width: initial !important;
+    width: calc(100% - 90px);
+  }
 .newsFeedImgVideoSlider {
     background: #000;
     text-align: center;
