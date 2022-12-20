@@ -15,20 +15,24 @@
 
             @if(!empty($posts->upload->image))
             <div class="newsFeedImgVideoSlider">
+                @if(Auth::user())
                 @if(!empty($token))
                 <button  class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></button>
                 @else
                 <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></a>
+                @endif
                 @endif
                 <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
             </div>
             @elseif(!empty($posts->upload->video))
             @if (!File::exists($posts->upload->video))
             <div class="newsFeedImgVideoSlider">
+                @if(Auth::user())
                 @if(!empty($token))
                 <button onClick="play_song('{{ isset($trackArray['track_uri'])?$trackArray['track_uri']:'' }}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
                 @else
                 <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></a>
+                @endif
                 @endif
 
                 <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVid{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')">
@@ -37,10 +41,12 @@
             </div>    
             @else
             <div class="newsFeedImgVideoSlider">
+                @if(Auth::user())
                 @if(!empty($token))
                 <button onClick="play_song('{{ isset($trackArray['track_uri'])?$trackArray['track_uri']:'' }}')" class="btn spotify-btn"><img src="/img/listen-on-spotify-button.png" alt=""></button>
                 @else
                 <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></a>
+                @endif
                 @endif
 
                 <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVid{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')" >
@@ -66,9 +72,9 @@
 <script src="https://sdk.scdn.co/spotify-player.js"></script>
 <script>
 
- function focusPlay(post_id) {
-    document.getElementById('myVid'+post_id).play();
-  }
+                     function focusPlay(post_id) {
+                    document.getElementById('myVid' + post_id).play();
+                      }
 
 //window.onSpotifyWebPlaybackSDKReady = () => {
 ////    const device_id = '47e5b24b028ce85508d27a9f1961896ad413aed4';
