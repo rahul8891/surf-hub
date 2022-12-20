@@ -54,6 +54,7 @@ Route::get('/getBreak', [DashboardController::class, 'getBreak'])->name('getBrea
 $router->get('spotify-auth', [SpotifyAuthController::class, 'redirectToProvider'])->name('spotify-auth');
 $router->get('spotify-call-back', [SpotifyAuthController::class, 'handleProviderCallback'])->name('spotify-call-back');
 Route::get('/surfer-request/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');
+Route::get('/getPostFullScreen/{id}', [MyHubController::class, 'getPostFullScreen'])->name('getPostFullScreen');
 
 /*********************************************************************************************
  *                              User Route
@@ -90,7 +91,6 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     // Route::get('/getPostData/{id}/{type}', [MyHubController::class, 'edit'])->name('getPostData');
     Route::post('/updatePostData', [MyHubController::class, 'update'])->name('updatePostData');
     Route::get('/getPostData/{id}', [MyHubController::class, 'edit'])->name('getPostData');
-    Route::get('/getPostFullScreen/{id}', [MyHubController::class, 'getPostFullScreen'])->name('getPostFullScreen');
     Route::get('/user/myhub/filter', [MyHubController::class, 'filter'])->name('myhubFilterIndex');
     
 //    Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
@@ -230,6 +230,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::get('/post/show/{id}', [PostController::class, 'show'])->name('postDetail');
     Route::get('/post/create', [PostController::class, 'create'])->name('postCreate');
     Route::post('/post/store', [PostController::class, 'store'])->name('postStore');
+    Route::post('/post/ads', [PostController::class, 'storeAdminAds'])->name('storeAdminAds');
     Route::get('/post/edit/{id}', [PostController::class, 'edit'])->name('postEdit');
     Route::post('/post/update/{id}', [PostController::class, 'update'])->name('postUpdate');
     Route::get('/post/delete/{id}', [PostController::class, 'destroy'])->name('deletePost');
