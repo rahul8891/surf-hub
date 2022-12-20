@@ -88,20 +88,6 @@
                         </div>
                         <div class="col-md-6">
                             <div class="row mb-3 align-items-center">
-                                <label class="col-md-4">Beach<span class="red-txt">*</span></label>
-                                <div class="col-md-8">
-                                    <input type="text" value="{{ old('local_beach_break', $beach_name) }}"
-                                           class="form-control ps-2 mb-0 search-box" name="local_beach_break" autocomplete="off" required>
-                                    <input type="hidden" name="local_beach_break_id"
-                                           id="local_beach_break_id" class="form-control" value="{{ old('local_beach_break', $myHubs->local_beach_id) }}">
-                                    <div class="auto-search search12" id="country_list"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="row mb-3 align-items-center">
                                 <label class="col-md-4">State<span class="red-txt">*</span></label>
                                 <div class="col-md-8">
                                     <select class="form-select ps-2 mb-0" name="state_id" id="state_id" required>
@@ -115,6 +101,22 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        
+                        <div class="col-md-6">
+                            <div class="row mb-3 align-items-center">
+                                <label class="col-md-4">Beach<span class="red-txt">*</span></label>
+                                <div class="col-md-8">
+                                    <input type="text" value="{{ old('local_beach_break', $beach_name) }}"
+                                           class="form-control ps-2 mb-0 search-box" name="local_beach_break" autocomplete="off" required>
+                                    <input type="hidden" name="local_beach_break_id"
+                                           id="local_beach_break_id" class="form-control" value="{{ old('local_beach_break', $myHubs->local_beach_id) }}">
+                                    <div class="auto-search search12" id="country_list"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="col-md-6">
                             <div class="row mb-3 align-items-center">
                                 <label class="col-md-4">Break<span class="red-txt">*</span></label>

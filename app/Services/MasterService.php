@@ -130,6 +130,7 @@ class MasterService {
         return $users;
     }
     public function getSpotifyTrack(){
+        $trackArray = array();
         $spotifyUser = SpotifyUser::where('user_id', Auth::user()->id)->get()->toArray();
         if ($spotifyUser) {
             $client = new \GuzzleHttp\Client;
