@@ -338,12 +338,12 @@ class UserPostController extends Controller {
                     foreach ($postArray as $value) {
 
                         $fileType = explode('/', $value->getMimeType());
-
+                        
                         if ($fileType[0] == 'image') {
-                            $fileFolder = 'images/' . $request->user_id;
+                            $fileFolder = 'images/' . Auth::user()->id;
                             // $destinationPath = public_path('storage/images/');
                         } elseif ($fileType[0] == 'video') {
-                            $fileFolder = 'videos/' . $request->user_id;
+                            $fileFolder = 'videos/' . Auth::user()->id;
                             // $destinationPath = public_path('storage/fullVideos/');
                         }
 

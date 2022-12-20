@@ -13,6 +13,7 @@ use App\Models\Report;
 use App\Models\UserFollow;
 use App\Models\Notification;
 use App\Models\SurferRequest;
+use App\Models\AdminAd;
 use App\Models\BeachBreak;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -713,6 +714,33 @@ class PostService {
     }
     
     
+    public function saveAdminAds($input, $fileType = '', $filename = '', &$message=''){
+        try{
+//            $lines = [];
+//            $handle = fopen($file, "r");
+//            $content = file($file);
+//            echo '<pre>';            print_r($input);die;
+            
+            $adminAd = new AdminAd();
+            $adminAd->ad_position = (!empty($input['position'])) ? implode(" ",$input['position']) : null;            
+            $adminAd->user_id = Auth::user()->id;
+            $adminAd->page_id = $input['page_id'];
+            $adminAd->image = $filename;
+            $adminAd->created_at = Carbon::now();
+            $adminAd->updated_at = Carbon::now();
+            $adminAd->save();
+            
+            $message = 'Ad has been updated successfully.!';
+            return $message;                
+        }
+        catch (\Exception $e){     
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message = '"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+    
+    
     public function saveAdvertPost($input, $fileType = '', $filename = '', &$message=''){
         try{
 //            $lines = [];
@@ -825,7 +853,9 @@ class PostService {
 
                     if (isset($fileType) && ($fileType == 'image')) {
                         $upload->image = $filename;
+                        $upload->video = null;
                     } elseif (isset($fileType) && ($fileType == 'video')) {
+                        $upload->image = null;
                         $upload->video = $filename;
                     }
                     $upload->post_id = $posts->id;

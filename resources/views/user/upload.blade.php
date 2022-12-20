@@ -93,21 +93,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="row mb-3 align-items-center">
-                                    <label class="col-md-4">Beach<span class="red-txt">*</span></label>
-                                    <div class="col-md-8">
-                                        <input type="text" value="{{ old('local_beach_break')}}"
-                                                  class="form-control ps-2 mb-0 search-box" name="local_beach_break" autocomplete="off" required>
-                                            <input type="hidden" name="local_beach_break_id"
-                                                   id="local_beach_break_id" class="form-control">
-                                            <div class="auto-search search1" id="country_list"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
+                             <div class="col-md-6">
                                 <div class="row mb-3 align-items-center">
                                     <label class="col-md-4">State<span class="red-txt">*</span></label>
                                     <div class="col-md-8">
@@ -119,6 +105,21 @@
                                                         {{ $value->name }}</option>
                                                 @endforeach
                                             </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                           
+                            <div class="col-md-6">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-md-4">Beach<span class="red-txt">*</span></label>
+                                    <div class="col-md-8">
+                                        <input type="text" value="{{ old('local_beach_break')}}"
+                                                  class="form-control ps-2 mb-0 search-box" name="local_beach_break" autocomplete="off" required>
+                                            <input type="hidden" name="local_beach_break_id"
+                                                   id="local_beach_break_id" class="form-control">
+                                            <div class="auto-search search1" id="country_list"></div>
                                     </div>
                                 </div>
                             </div>

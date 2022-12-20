@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Post;
+use App\Models\Page;
 
-class Upload extends Model
+class AdminAd extends Model
 {
     use HasFactory;
 
@@ -19,8 +19,8 @@ class Upload extends Model
      * Relationship between upload and post model    
      * @return object
      */
-    public function post()
+    public function page()
     {
-        return $this->belongsTo(Post::class, 'post_id', 'id');
+        return $this->belongsTo(Page::class, 'page_id', 'id');
     }
 }

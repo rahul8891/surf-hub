@@ -54,6 +54,14 @@ $(document).ready(function () {
 			}
 		});
 	});
+        
+        $(document).on('click', '.add-ads', function() {
+      var id = $(this).data('id');
+      $('#page_id').val(id);
+                                    
+    });
+        
+        
 });
 /**
  * remove message after time set hit

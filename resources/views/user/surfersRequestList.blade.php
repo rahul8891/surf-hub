@@ -26,7 +26,6 @@
                                     
                                     <div class="d-inline-block align-middle">
                                         <p class="name mb-0">{{$val->first_name.' '.$val->last_name }}</p>
-                                        <p class="address mb-0">Noosa Heads Main Beach , 03-01-2022</p>
 				        <p class="time mb-0">2 day ago</p>
                                     </div>
                                 </div>

@@ -89,7 +89,7 @@
                                                     <option value="USER">Surfer</option>
                                                     <option value="PHOTOGRAPHER">Photographer</option>
                                                     <option value="SURFER CAMP">Surf Camp</option>
-                                                    <option value="ADVERTISEMENT">Advertisement</option>
+                                                    <option value="ADVERTISEMENT">Advertiser</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -305,7 +305,7 @@
                                     </div>
                                     <div class="filter-checkbox start-rating mb-4">
                                         <label class="form-label">Start Rating</label>
-                                        <div class="rating-flex" onclick="ratingHideShow(this)">
+                                        <div class="rating-flex" onclick="ratingShow(this)">
                                             <input id="rating" name="rating" class="rating-filter rating-loading" data-min="0" data-max="5" data-step="1" data-size="xs" value="0">                            
                                             <span class="avg-rating"></span>
                                         </div>
@@ -337,9 +337,13 @@
                             showCaption: false
                         });
 
-                        function ratingHideShow(e) {
+                        function ratingShow(e) {
                             $(e).children(".rating-container").show();
                             $(e).children(".avg-rating").hide();
                         }
+                        $(document).on('click', '.rating-container', function (e) {
+                            $(e).children(".rating-container").hide();
+                            $(e).children(".avg-rating").hide();
+                        });
 
                     </script>

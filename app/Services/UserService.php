@@ -675,6 +675,8 @@ class UserService {
          $advertPost['surfer']  = $val->advert_post->surfer;
          $advertPost['fin_set_up']  = $val->advert_post->fin_set_up;
          $advertPost['post_text']  = $val->advert_post->post_text;
+         $advertPost['advert_img']  = $val->advert_post->upload->image;
+         $advertPost['advert_vid']  = $val->advert_post->upload->video;
         }
         return $advertPost;
     }

@@ -22,6 +22,7 @@ use App\Models\Upload;
 use Closure;
 use Redirect;
 use Session;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -181,6 +182,68 @@ class PostController extends Controller
         
     }
 
+    public function storeAdminAds(Request $request) {
+        try {
+            $data = $request->all();
+//    echo "<pre>";print_r($data);die;
+            
+
+            $postArray = (isset($data['file']) && !empty($data['file'])) ? $data['file'] : [];
+//            $videoArray$postArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];
+//            $postArray = array_filter(array_merge($imageArray, $videoArray));
+//            echo '<pre>';print_r($postArray);die;
+            $rules = array(
+//                'post_type' => ['required'],
+//                'user_id' => ['required'],
+//                'surf_date' => ['required'],
+//                'wave_size' => ['required'],
+//                'surfer' => ['required'],
+//                'country_id' => ['required'],
+            );
+            $validate = Validator::make($data, $rules);
+            if ($validate->fails()) {
+                // If validation falis redirect back to register.
+                return response()->json(['error' => $validate->errors()]);
+            } else {
+                
+                if (!empty($postArray)) {
+                    $fileData = [];
+//                    foreach ($postArray as $value) {
+//                    echo "<pre>";print_r($postArray);die;
+
+                        $fileType = explode('/', $postArray->getMimeType());
+
+                        if ($fileType[0] == 'image') {
+                            $fileFolder = 'images/' . Auth::user()->id;
+                            // $destinationPath = public_path('storage/images/');
+                        } 
+                        
+//                        elseif ($fileType[0] == 'video') {
+//                            $fileFolder = 'videos/' . $request->user_id;
+//                            // $destinationPath = public_path('storage/fullVideos/');
+//                        }
+
+                        $path = Storage::disk('s3')->put($fileFolder, $postArray);
+                        $filePath = Storage::disk('s3')->url($path);
+
+                        $fileArray = explode("/", $filePath);
+                        $filename = end($fileArray);
+
+                        $result = $this->posts->saveAdminAds($data, $fileType[0], $filename, $message);
+//                    }
+                } 
+
+                if ($result) {
+                    return Redirect()->route('adminPageIndex')->withSuccess($message);
+                } else {
+                    return Redirect()->route('adminPageIndex')->withErrors($message);
+                }
+            }
+        } catch (\Exception $e) {
+            throw ValidationException::withMessages([$e->getMessage()]);
+        }
+    }
+    
     /**
      * Display the specified resource.
      *
