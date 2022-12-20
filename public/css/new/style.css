@@ -1816,8 +1816,7 @@ header .notification {
 .newsFeedImgVideoSlider > img,
 .newsFeedImgVideoSlider > video {
     height: 700px;
-    width: 100%;
-    object-fit: cover;
+    width: auto;
 }
 
 .newsFeedImgVideoSlider {
