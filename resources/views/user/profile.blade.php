@@ -12,7 +12,7 @@
                     <div class="profile-pic">
                         @if(Auth::user()->profile_photo_path)
                         <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}"
-                             alt="">
+                             alt="" class="rounded-circle">
                         @endif
                     </div>
                     <div class="name">
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="edit-profile-box">
-                    <a href="{{ url('user/edit-profile') }}" class="btn edit-btn"><img src="/img/new/edit.png" alt="edit">EDIT</a>
+                    <a href="{{ url('user/edit-profile') }}" class="btn edit-btn"><img src="/img/new/edit.png" alt="edit" class="align-middle me-1"> <span class="align-middle">EDIT</span></a>
                     <table>
                         <tbody>
                             <tr>
@@ -57,7 +57,13 @@
                             <tr>
                                 <td>Preferred Language</td>
                                 <td>:</td>
-                                <td>{{ $language[$user->user_profiles->language] }}</td>
+                                <td>
+                                    @if($user->user_profiles->language)
+                                    {{ $language[$user->user_profiles->language] }}
+                                    @else
+                                    -
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
                                 <td>Account Type</td>

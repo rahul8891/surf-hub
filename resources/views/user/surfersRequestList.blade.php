@@ -18,7 +18,7 @@
                                 <div class="col-xl-6">
                                     @if($val->user->profile_photo_path)
                                     <img src="{{ asset('storage/'.$val->user->profile_photo_path) }}" alt=""
-                                         class="align-middle bg-white">
+                                         class="align-middle bg-white notification-img">
                                     @else
                                     <img src="/img/follower-img.png" alt=""
                                          class="align-middle bg-white notification-img">
@@ -26,7 +26,6 @@
                                     
                                     <div class="d-inline-block align-middle">
                                         <p class="name mb-0">{{$val->first_name.' '.$val->last_name }}</p>
-                                        <p class="address mb-0">Noosa Heads Main Beach , 03-01-2022</p>
 				        <p class="time mb-0">2 day ago</p>
                                     </div>
                                 </div>

@@ -1,4 +1,4 @@
-@extends('layouts.admin.master')
+@extends('layouts.admin.admin_layout')
 @section('content')
 <!-- Info boxes -->
 <div class="row">

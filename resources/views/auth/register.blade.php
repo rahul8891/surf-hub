@@ -12,7 +12,7 @@
                         <option value="2" selected="">Surfer</option>
                         <option value="3">Advertisement</option>
                         <option value="5">Photographer</option>
-                        <option value="6">Surfer Camp</option>
+                        <option value="6">Surf Camp</option>
                     </select>
                     @error('language')
                     <div class="text-danger">{{ $message }}</div>

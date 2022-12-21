@@ -28,12 +28,43 @@
                     <div class="inner-news-feed">
                         <div class="user-details">
                             <div class="user-left">
-                                <img src="/img/user-img.png" alt="USer">
-                                <div>
+                                
+                                @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
+                                @if(Auth::user() && $posts->user_id != Auth::user()->id)
+                                @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
+                                <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                @elseif($posts->user->user_type == 'SURFER CAMP')
+                                <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                @endif
+                                @else
+                                <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
+                                @endif
+                                @else
+                                @if(Auth::user() && $posts->user_id != Auth::user()->id)
+                                @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
+                                <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                @elseif($posts->user->user_type == 'SURFER CAMP')
+                                <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                @endif
+                                @else
+                                <img src="/img/logo_small.png" class="profileImg" alt="">
+                                @endif
+                                @endif
+                                <div>     
+                                    @if(Auth::user() && $posts->user_id != Auth::user()->id)
+                                    @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
+                                <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
+                                @elseif($posts->user->user_type == 'SURFER CAMP')
+                                <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
+                                @endif
+                                    
+                                    
+                                    @else
                                     <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span>
                                     </p>
-                                    <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y')}}</p>
-                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
+                                    @endif
+                                    <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
+                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
                                 </div>
                             </div>
                             @if (isset(Auth::user()->id) && ($posts->user_id != Auth::user()->id))
@@ -41,7 +72,7 @@
                             <div class="user-right">
                                 <img src="/img/normal-user.png" alt="normal-user">
                                 <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
-                                    <img src="/img/new/follow-user.png"> FOLLOW
+                                <span class="follow-icon"></span> FOLLOW
                                 </button>
                             </div>
                             @endif
@@ -66,18 +97,18 @@
                         @endif
                         @endif
                         <div class="user-bottom-options">
-                            <div class="rating-flex">
+                            <div class="rating-flex rating-flex-child">
                                 <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
-                                <span class="avg-rating">{{ round(floatval($posts->averageRating)) }} (<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span>)</span>
+                                <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
 
                             </div>
                             <div class="right-options">
                                 @if(Auth::user() && $posts->user_id != Auth::user()->id)
-                                <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/small-logo.png" alt="Logo"></a>
+                                <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/save.png" alt="Save"></a>
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                                     <img src={{asset("img/location.png")}} alt="Location"></a>
-                                <a onclick="openFullscreen({{$posts->id}});"><img src={{asset("img/expand.png")}} alt="Expand"></a>
+                                <a onclick="openFullscreenSilder({{$posts->id}});"><img src={{asset("img/expand.png")}} alt="Expand"></a>
                                 <div class="d-inline-block info dropdown" title="Info">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -119,6 +150,7 @@
                                 @if(Auth::user() && $posts->user_id == Auth::user()->id)
                                 <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a>
                                 <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
+                                
                                 @endif
                                 <div class="d-inline-block tag dropdown" title="Tag">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
@@ -241,6 +273,7 @@
 @include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
 @include('layouts/models/edit_image_upload')
+@include('layouts/models/full_screen_modal')
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
@@ -305,5 +338,23 @@
                 $(this).children('.userinfoModal').find('input[type="text"]').focus();
             });
         });
+        
+        function openFullscreenSilder(id) {
+          const myModal = new bootstrap.Modal(document.getElementById('full_screen_modal')); // creating modal object
+ 
+          $.ajax({
+                url: '/getPostFullScreen/' + id,
+                type: "get", 
+                async: false,
+                success: function(data) {
+                    // console.log(data.html);
+                    $("#full_screen_modal").html("");
+                    $("#full_screen_modal").append(data.html);
+                    
+                    $("#full_screen_modal").modal('show');
+                }
+            });
+      }
+        
 </script>
 @endsection

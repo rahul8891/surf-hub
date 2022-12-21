@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\BeachBreak;
 use App\Models\UserFollow;
 use App\Models\UserProfile;
+use App\Models\SpotifyUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -105,6 +106,13 @@ class MasterService {
             return $this->beach_break->select('id', 'break_name')->orderBy('break_name','asc')->get();
         }
     }
+    public function getBreakByBeachId($beach_id){
+        if(isset($beach_id) && !empty($beach_id)) {
+            return $this->beach_break->select('id', 'break_name')->where('id',$beach_id)->orderBy('break_name','asc')->get();
+        } else {
+            return $this->beach_break->select('id', 'break_name')->orderBy('break_name','asc')->get();
+        }
+    }
 
     /**
      * [getAllUsers] we are getiing all the users
@@ -120,5 +128,64 @@ class MasterService {
                     ->orderBy('id','asc')->get();
 
         return $users;
+    }
+    public function getSpotifyTrack(){
+        $trackArray['track_uri'] = '';
+        $spotifyUser = SpotifyUser::where('user_id', Auth::user()->id)->get()->toArray();
+        if ($spotifyUser) {
+            $client = new \GuzzleHttp\Client;
+
+            // get new access token in case if old is expire
+
+            $getToken = $client->post('https://accounts.spotify.com/api/token', [
+                'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'Authorization' => 'Basic ' . base64_encode(env('SPOTIFY_CLIENT_ID') . ':' . env('SPOTIFY_CLIENT_SECRET'))
+                ],
+                'form_params' => [
+                    'refresh_token' => $spotifyUser[0]['refresh_token'],
+                    'grant_type' => 'refresh_token'
+                ]
+            ]);
+//            echo '<pre>';print_r(json_decode($getToken->getBody(), true));die;  
+            $tokenArr = json_decode($getToken->getBody(), true);
+            $token = $tokenArr['access_token'];
+
+            // get tracks of the user
+
+            $response = $client->get('https://api.spotify.com/v1/me/top/tracks', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => "Bearer " . $token,
+                ],
+            ]);
+            $top_user_tracks = json_decode($response->getBody(), true);
+
+//            echo '<pre>';print_r($top_user_tracks);die;    
+//            
+            $counter = 0;
+            foreach ($top_user_tracks['items'] as $track) {
+
+//                $milliseconds = $track['duration_ms'];
+//                $seconds = floor($milliseconds / 1000);
+//                $minutes = floor($seconds / 60);
+//                $sec = $seconds % 60;
+//                $min = $minutes % 60;
+//                $duration = $min . ':' . $sec;
+//                echo '<pre>';
+//                    print_r($duration);
+//                    die;
+//                foreach ($val as $track) {
+//                $trackArray[$counter]['track_name'] = $track['name'];
+//                $trackArray[$counter]['track_link'] = $track['href'];
+                $trackArray['track_uri'] = $track['uri'];
+//                $trackArray[$counter]['duration'] = $duration;
+                $counter++;
+
+//                }
+            }
+        }
+
+        return $trackArray;
     }
 }

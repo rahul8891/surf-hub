@@ -13,6 +13,7 @@
                                 <label class="">Followers <span class="blue-txt">{{ count($followers) }}</span></label>
                             </div>
                             <div class="col-sm-7">
+                                <input type="hidden" id="user_id" value="{{Auth::user()->id}}" >
                                 <input type="text" id="searchFollower" class="form-control ps-2 pe-5 mb-0"
                                        placeholder="Search followers">
                             </div>
@@ -25,7 +26,7 @@
                             <div class="row align-items-center gap-2 gap-md-0">
                                 <div class="col-md-6 follwer-name">
                                     @if($follower->follower->profile_photo_path)
-                                    <img src="{{ asset('storage/'.$follower->follower->profile_photo_path) }}" alt="Upender Rawat"
+                                    <img src="{{ asset('storage/'.$follower->follower->profile_photo_path) }}" alt=""
                                          class="align-middle bg-white">
                                     @else
                                     <img src="/img/follower-img.png" alt=""
@@ -62,8 +63,8 @@
                 </div>
             </div>
             <div class="right-advertisement">
-                <img src="img/advertisement1.png" alt="advertisement">
-                <img src="img/advertisement2.png" alt="advertisement">
+                <img src="/img/advertisement1.png" alt="advertisement">
+                <img src="/img/advertisement2.png" alt="advertisement">
             </div>
         </div>
     </div>

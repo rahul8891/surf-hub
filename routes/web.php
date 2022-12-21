@@ -13,6 +13,7 @@ use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\user\MyHubController;
 use App\Http\Controllers\user\SearchController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\SpotifyAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,8 @@ Route::get('/contact-us', [WelcomeFeedController::class, 'contact'])->name('cont
 Route::get('/getBeachBreach', [UserController::class, 'getBeachBreach'])->name('getBeachBreach');
 Route::get('/getState', [DashboardController::class, 'getState'])->name('getState');
 Route::get('/getUsers', [UserController::class, 'getUsers'])->name('getUsers');
+Route::get('/getFilterUsers', [UserController::class, 'getFilterUsers'])->name('getFilterUsers');
+Route::get('/highlight-post/{post_id}', [MyHubController::class, 'highlightPost'])->name('highlight-post');
 Route::get('/getTagUsers', [UserController::class, 'getTagUsers'])->name('getTagUsers');
 Route::post('/setTagUsers', [UserController::class, 'setTagUsers'])->name('setTagUsers');
 Route::post('/checkUsername', [UserController::class, 'checkUsername'])->name('checkUsername');
@@ -46,6 +49,12 @@ Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
 Route::get('search/filter', [SearchController::class, 'filter'])->name('searchFilterIndex');
 Route::post('upload/file', [UserPostController::class, 'uploadFiles'])->name('uploadFiles');
 Route::get('/getBreak', [DashboardController::class, 'getBreak'])->name('getBreak');
+
+
+$router->get('spotify-auth', [SpotifyAuthController::class, 'redirectToProvider'])->name('spotify-auth');
+$router->get('spotify-call-back', [SpotifyAuthController::class, 'handleProviderCallback'])->name('spotify-call-back');
+Route::get('/surfer-request/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');
+Route::get('/getPostFullScreen/{id}', [MyHubController::class, 'getPostFullScreen'])->name('getPostFullScreen');
 
 /*********************************************************************************************
  *                              User Route
@@ -61,6 +70,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
      
     Route::post('/create-post', [UserPostController::class, 'store'])->name('storeVideoImagePost');
     
+    Route::post('/create-advert-post', [UserPostController::class, 'storeAdvert'])->name('storeAdvert');
+    
     Route::get('/upload', [UserPostController::class, 'upload'])->name('upload');
 
     Route::post('/upload-large-files', [UserPostController::class, 'uploadLargeFiles'])->name('files.upload.large');
@@ -75,6 +86,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
    // Route::post('/user/updateProfile', [UserController::class, 'updateProfileImage'])->name('updateProfileImage');   
     
     Route::get('/user/myhub', [MyHubController::class, 'newIndex'])->name('myhub');
+    Route::get('/user/myhub/{post_type?}', [MyHubController::class, 'index'])->name('myhubs');
+    
     // Route::get('/getPostData/{id}/{type}', [MyHubController::class, 'edit'])->name('getPostData');
     Route::post('/updatePostData', [MyHubController::class, 'update'])->name('updatePostData');
     Route::get('/getPostData/{id}', [MyHubController::class, 'edit'])->name('getPostData');
@@ -94,11 +107,14 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
     Route::get('/followRequests', [UserController::class, 'followRequests'])->name('followRequests');
     Route::get('/followers', [UserController::class, 'followers'])->name('followers');
+    Route::get('/surfer-followers/{id}', [UserController::class, 'surferFollowers'])->name('surferFollowers');
+    Route::get('/surfer-following/{id}', [UserController::class, 'surferFollowing'])->name('surferFollowing');
     Route::get('/following', [UserController::class, 'following'])->name('following');
     Route::post('/unfollow', [UserController::class, 'unfollow'])->name('unfollow');
     Route::post('/accept', [UserController::class, 'accept'])->name('accept');
-    Route::get('/searchFollwers', [UserController::class, 'searchFollwers'])->name('searchFollwers');
-    Route::get('/searchFollowing', [UserController::class, 'searchFollowing'])->name('searchFollowing');
+    Route::get('/searchFollwers/{id}', [UserController::class, 'searchFollwers'])->name('searchFollwers');
+    Route::get('/surfer-profile/{id}', [UserController::class, 'surferProfile'])->name('surfer-profile');
+    Route::get('/searchFollowing/{id}', [UserController::class, 'searchFollowing'])->name('searchFollowing');
     Route::get('/searchFollowRequest', [UserController::class, 'searchFollowRequest'])->name('searchFollowRequest');
     Route::post('/reject', [UserController::class, 'reject'])->name('reject');
     Route::post('/remove', [UserController::class, 'remove'])->name('remove');
@@ -111,13 +127,22 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('surfer-follow-request/{id}', [UserPostController::class, 'surferFollowRequest'])->name('surferFollowRequest');
     
     
-    Route::get('/surferRequest/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');
-    Route::get('/surferRequestList', [UserPostController::class, 'surferRequestList'])->name('surferRequestList');
-    Route::get('/acceptRejectRequest/{id}/{type}', [UserPostController::class, 'acceptRejectRequest'])->name('acceptRejectRequest');
+    
+    Route::get('/surfer-request-list', [UserPostController::class, 'surferRequestList'])->name('surferRequestList');
+    Route::get('/accept-reject-request/{id}/{type}', [UserPostController::class, 'acceptRejectRequest'])->name('acceptRejectRequest');
 
     Route::post('/upload-media', [UserPostController::class, 'uploadMedia'])->name('uploadMedia');
     
+    Route::get('/get-additional-board-info', [UserController::class, 'getAdditionalBoardTypeInfo'])->name('getAdditionalBoardTypeInfo');
+
+    Route::get('/resort-profile/{id}', [UserController::class, 'resortProfile'])->name('resort-profile');
+    Route::get('/photographer-profile/{id}', [UserController::class, 'photographerProfile'])->name('photographer-profile');
     
+    Route::get('/upload-advertisment/{id?}', [UserController::class, 'uploadAdvertisment'])->name('uploadAdvertisment');
+    Route::get('/upload-preview/{id}', [UserController::class, 'uploadPreview'])->name('uploadPreview');
+    Route::get('/my-ads', [UserController::class, 'myAds'])->name('myAds');
+    Route::post('/publish-preview-advert-post', [UserPostController::class, 'publishAdvert'])->name('publishAdvert');
+    Route::get('/delete-advert-post/{id}', [UserPostController::class, 'deleteAdvert'])->name('deleteAdvert');
 });
 
 /*********************************************************************************************
@@ -125,40 +150,40 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
  * ********************************************************************************************/
 
 
-Route::group(['middleware' => ['auth:sanctum', 'verified', 'photographerAuth']], function () {
-
-    Route::get('/photographer/dashboard', [DashboardController::class, 'photographerDashboard'])->name('dashboard');  
-     
-    
-    
-});
-
-/*********************************************************************************************
- *                              Advertise Route
- * ********************************************************************************************/
-
-
-Route::group(['middleware' => ['auth:sanctum', 'verified', 'advertiseAuth']], function () {
-
-    Route::get('/advertiser/dashboard', [DashboardController::class, 'advertiserDashboard'])->name('dashboard');  
-     
-    
-    
-});
-
-
-
-/*********************************************************************************************
- *                              Surfer camp Route
- * ********************************************************************************************/
-
-Route::group(['middleware' => ['auth:sanctum', 'verified', 'surfercampAuth']], function () {
-
-    Route::get('/surfercamp/dashboard', [DashboardController::class, 'surfercampDashboard'])->name('dashboard');  
-     
-    
-    
-});
+//Route::group(['middleware' => ['auth:sanctum', 'verified', 'photographerAuth']], function () {
+//
+//    Route::get('/photographer/dashboard', [DashboardController::class, 'photographerDashboard'])->name('dashboard');  
+//     
+//    
+//    
+//});
+//
+///*********************************************************************************************
+// *                              Advertise Route
+// * ********************************************************************************************/
+//
+//
+//Route::group(['middleware' => ['auth:sanctum', 'verified', 'advertiseAuth']], function () {
+//
+//    Route::get('/advertiser/dashboard', [DashboardController::class, 'advertiserDashboard'])->name('dashboard');  
+//     
+//    
+//    
+//});
+//
+//
+//
+///*********************************************************************************************
+// *                              Surfer camp Route
+// * ********************************************************************************************/
+//
+//Route::group(['middleware' => ['auth:sanctum', 'verified', 'surfercampAuth']], function () {
+//
+//    Route::get('/surfercamp/dashboard', [DashboardController::class, 'surfercampDashboard'])->name('dashboard');  
+//     
+//    
+//    
+//});
 
 
 
@@ -205,6 +230,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::get('/post/show/{id}', [PostController::class, 'show'])->name('postDetail');
     Route::get('/post/create', [PostController::class, 'create'])->name('postCreate');
     Route::post('/post/store', [PostController::class, 'store'])->name('postStore');
+    Route::post('/post/ads', [PostController::class, 'storeAdminAds'])->name('storeAdminAds');
     Route::get('/post/edit/{id}', [PostController::class, 'edit'])->name('postEdit');
     Route::post('/post/update/{id}', [PostController::class, 'update'])->name('postUpdate');
     Route::get('/post/delete/{id}', [PostController::class, 'destroy'])->name('deletePost');

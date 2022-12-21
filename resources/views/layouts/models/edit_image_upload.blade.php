@@ -5,6 +5,6 @@
 }
 </style>
     
-<div class="modal fade uploadModal" id="edit_image_upload_main" role="dialog" aria-labelledby="exampleModalLabel" onclick="event.stopPropagation();">
+<div class="modal fade uploadModal" id="edit_image_upload_main" role="dialog" aria-labelledby="exampleModalLabel">
     
 </div>

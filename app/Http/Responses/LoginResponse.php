@@ -19,23 +19,23 @@ class LoginResponse implements LoginResponseContract
                 // if user type belongs to ADMIN then redirect to the admin dashboard
                 $redirectRoute = config('customarray.adminhome');
             }else{
-                if ($user->user_type == $checkUserType['PHOTOGRAPHER']) {
-                    // if user type belongs to ADMIN then redirect to the admin dashboard
-                    $redirectRoute = config('customarray.photographerhome');
-                }
-                elseif ($user->user_type == $checkUserType['ADVERTISEMENT']) {
-                    // if user type belongs to ADMIN then redirect to the admin dashboard
-                    $redirectRoute = config('customarray.advertiserhome');
-                }
-                elseif ($user->user_type == $checkUserType['SURFER CAMP']) {
-                    // if user type belongs to ADMIN then redirect to the admin dashboard
-                    $redirectRoute = config('customarray.surfercamphome');
-                }
-                else {
+                // if ($user->user_type == $checkUserType['PHOTOGRAPHER']) {
+                //     // if user type belongs to ADMIN then redirect to the admin dashboard
+                //     $redirectRoute = config('customarray.photographerhome');
+                // }
+                // elseif ($user->user_type == $checkUserType['ADVERTISEMENT']) {
+                //     // if user type belongs to ADMIN then redirect to the admin dashboard
+                //     $redirectRoute = config('customarray.advertiserhome');
+                // }
+                // elseif ($user->user_type == $checkUserType['SURFER CAMP']) {
+                //     // if user type belongs to ADMIN then redirect to the admin dashboard
+                //     $redirectRoute = config('customarray.surfercamphome');
+                // }
+                // else {
 
                 // if user type belongs to USER then redirect to the admin dashboard
                 $redirectRoute = config('fortify.home');
-                }
+                // }
             }
         }else{
             Auth::logout();

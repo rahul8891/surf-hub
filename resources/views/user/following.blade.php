@@ -13,6 +13,7 @@
                                 <label class="">Following <span class="blue-txt">{{ count($following) }}</span></label>
                             </div>
                             <div class="col-sm-7">
+                                <input type="hidden" id="user_id" value="{{Auth::user()->id}}" >
                                 <input type="text" id="searchFollowing" class="form-control ps-2 pe-5 mb-0"
                                        placeholder="Search followers">
                             </div>
@@ -51,8 +52,8 @@
                 </div>
             </div>
             <div class="right-advertisement">
-                <img src="img/advertisement1.png" alt="advertisement">
-                <img src="img/advertisement2.png" alt="advertisement">
+                <img src="/img/advertisement1.png" alt="advertisement">
+                <img src="/img/advertisement2.png" alt="advertisement">
             </div>
         </div>
     </div>

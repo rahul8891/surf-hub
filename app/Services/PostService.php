@@ -6,12 +6,15 @@ use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\Post;
 use App\Models\Upload;
+use App\Models\AdvertPost;
 use App\Models\Tag;
 use App\Models\Comment;
 use App\Models\Report;
 use App\Models\UserFollow;
 use App\Models\Notification;
 use App\Models\SurferRequest;
+use App\Models\AdminAd;
+use App\Models\BeachBreak;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -100,9 +103,9 @@ class PostService {
      * @param  
      * @return dataCount
      */
-    public function getPostByUserId(){
+    public function getPostByUserId($user_id){
 
-        $postArray =  $this->posts->where('user_id',Auth::user()->id)   
+        $postArray =  $this->posts->where('user_id',$user_id)   
                                   ->where('is_deleted','0')                            
                                   ->orderBy('created_at','ASC')
                                   ->get()
@@ -292,7 +295,7 @@ class PostService {
      * @param  
      * @return dataArray
      */
-    public function getFilteredData($params, $for) {
+    public function getFilteredData($params, $for, $type = null) {
         if ($for=='search'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
@@ -313,17 +316,38 @@ class PostService {
                         ->where('posts.user_id', Auth::user()->id)
                         ->groupBy('posts.id');
         }
-        
-        //************* applying conditions *****************/
-        if (isset($params['filterUser']) && ($params['filterUser'] == 'me')){
-            $username = Auth::user()->user_name;
-            $postArray->where('surfer', $username);
-        }elseif (isset($params['filterUser']) && ($params['filterUser'] == 'others') && isset($params['other_surfer']) && !empty($params['other_surfer'])) {
-            $postArray->where('surfer', $params['other_surfer']);
-        }elseif (isset($params['filterUser']) && ($params['filterUser'] == 'unknown')) {
-            $postArray->where('surfer', 'Unknown');
+
+        if (($for ==' myhub') && ($type == 'posts')) {
+            $postArray->where('posts.post_type', 'PUBLIC');
+        } elseif (($for == 'myhub') && ($type == 'saved')) {
+            $postArray->where('posts.post_type', 'PRIVATE');
+            $postArray->where('posts.parent_id','<>', 0);
+        } elseif (($for == 'myhub') && ($type == 'tags')) {
+            $postArray =  $this->posts
+                        ->join('tags', 'posts.id', "=", 'tags.post_id')
+                        ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
+                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
+                        ->where('tags.is_deleted', '0')
+                        ->where('tags.user_id', Auth::user()->id)
+                        ->groupBy('posts.id');            
+        } elseif (($for == 'myhub') && ($type == 'reels')) {
+            $postArray->where('posts.is_highlight', '1');
         }
         
+        //************* applying conditions *****************/
+        if (isset($params['user_type']) && !empty($params['user_type'])) {
+            $postArray->where('posts.user_id', $params['surfer_id']);
+        } else {
+            if (isset($params['filterUser']) && ($params['filterUser'] == 'me')) {
+                $username = Auth::user()->user_name;
+                $postArray->where('surfer', $username);
+            } elseif (isset($params['filterUser']) && ($params['filterUser'] == 'others') && isset($params['other_surfer']) && !empty($params['other_surfer'])) {
+                $postArray->where('surfer', $params['other_surfer']);
+            } elseif (isset($params['filterUser']) && ($params['filterUser'] == 'unknown')) {
+                $postArray->where('surfer', 'Unknown');
+            }
+        }
         $optionalInfo = [];
         
         if(isset($params['FLOATER']) && ($params['FLOATER']=='on')){
@@ -361,6 +385,15 @@ class PostService {
         if(isset($optionalInfo[0]) && !empty($optionalInfo[0])) {
             $postArray->whereIn('optional_info', $optionalInfo);
         }        
+        if(isset($params['additional_info']) && !empty($params['additional_info'])) {
+            $postArray->where(function($q) use($params){
+                
+            foreach ($params['additional_info'] as $val) {
+            $q->orWhere('additional_info', 'LIKE',  '%' . $val .'%');
+            }
+            
+            });
+        }        
         
         if (isset($params['surf_date']) && !empty($params['surf_date'])) {
            $postArray->whereDate('surf_start_date','>=',$params['surf_date']);
@@ -370,7 +403,7 @@ class PostService {
         }
 
         if (isset($params['country_id']) && !empty($params['country_id'])) {
-            $postArray->where('country_id',$params['country_id']);
+            $postArray->where('posts.country_id',$params['country_id']);
         }
         if (isset($params['local_beach_id']) && !empty($params['local_beach_id'])) {
             $postArray->where('local_beach_id', $params['local_beach_id']);
@@ -383,7 +416,7 @@ class PostService {
         }
         
         if (isset($params['state_id'])) {
-            $postArray->where('state_id',$params['state_id']);
+            $postArray->where('posts.state_id',$params['state_id']);
         }
         
         if (isset($params["user_type"])) {
@@ -407,15 +440,18 @@ class PostService {
             $postArray->where('dob', '>=', $to_age);
         }
         
-        if (isset($params['rating'])) {
+        if (isset($params['rating']) && $params['rating']>0) {
             $postArray->havingRaw('round(avg(ratings.rating)) = '. $params['rating']);
             // $postArray->where('avg(ratings.rating)', $params['rating']);
         }
         if (isset($params['beach']) && $params['beach']>0 && empty($params['break'])) {
-            $postArray->where('local_beach_id',$params['beach']);
+            
+            $beachBreak = BeachBreak::where('id', $params['beach'])->get()->toArray();
+            $beachName = $beachBreak[0]['beach_name'];
+            $postArray->where('beach_breaks.beach_name',$beachName);
         }
         if (isset($params['break']) && $params['break']>0) {
-            $postArray->where('local_break_id',$params['break']);
+            $postArray->where('beach_breaks.id',$params['break']);
         }
         if (isset($params['sort'])) {
             if($params['sort'] == "dateAsc"){
@@ -442,8 +478,10 @@ class PostService {
         } else {
             $postArray->orderBy('posts.id','DESC');
         }
-        // dd($postArray->paginate(10));
+
+//         dd($postArray->toSql());
         return $postArray->paginate(10);
+        // dd($postArray);
     }
     
     
@@ -639,6 +677,9 @@ class PostService {
             $posts->local_break_id = $input['break_id'];
             $posts->surfer = $input['surfer'];
             $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
+            $posts->additional_info = (!empty($input['additional_info'])) ? implode(" ",$input['additional_info']) : null;
+            $posts->stance = (!empty($input['stance'])) ? $input['stance'] : null;
+            $posts->fin_set_up = (!empty($input['fin_set_up'])) ? $input['fin_set_up'] : null;
             $posts->created_at = Carbon::now();
             $posts->updated_at = Carbon::now();
 
@@ -673,6 +714,198 @@ class PostService {
     }
     
     
+    public function saveAdminAds($input, $fileType = '', $filename = '', &$message=''){
+        try{
+//            $lines = [];
+//            $handle = fopen($file, "r");
+//            $content = file($file);
+//            echo '<pre>';            print_r($input);die;
+            
+            $adminAd = new AdminAd();
+            $adminAd->ad_position = (!empty($input['position'])) ? implode(" ",$input['position']) : null;            
+            $adminAd->user_id = Auth::user()->id;
+            $adminAd->page_id = $input['page_id'];
+            $adminAd->image = $filename;
+            $adminAd->created_at = Carbon::now();
+            $adminAd->updated_at = Carbon::now();
+            $adminAd->save();
+            
+            $message = 'Ad has been updated successfully.!';
+            return $message;                
+        }
+        catch (\Exception $e){     
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message = '"'.$e->getMessage().'"';
+            return $message;
+        }
+    }
+    
+    
+    public function saveAdvertPost($input, $fileType = '', $filename = '', &$message=''){
+        try{
+//            $lines = [];
+//            $handle = fopen($file, "r");
+//            $content = file($file);
+//            echo '<pre>';  dump($input);die;
+            $posts = new Post();
+            $posts->post_type = 'PRIVATE';            
+            $posts->user_id = Auth::user()->id;
+            $posts->country_id =$input['search_country_id'];
+            $posts->post_text =$input['post_text'];
+            $posts->board_type = $input['search_board_type'];
+            $posts->state_id = $input['search_state_id'];
+            $posts->local_beach_id = $input['local_beach_break_id'];
+            $posts->local_break_id = $input['break_id'];
+            $posts->surfer = $input['other_surfer'];
+            $posts->fin_set_up = (!empty($input['fin_set_up'])) ? $input['fin_set_up'] : null;
+            $posts->created_at = Carbon::now();
+            $posts->updated_at = Carbon::now();
+
+            if($posts->save()){
+                if(isset($filename) && !empty($filename)) {                
+                    $upload = new Upload();
+                    
+
+                    if (isset($fileType) && ($fileType == 'image')) {
+                        $upload->image = $filename;
+                    } elseif (isset($fileType) && ($fileType == 'video')) {
+                        $upload->video = $filename;
+                    }
+//                    $handle = fopen($file, "r") or die("Couldn't get handle");
+//                    while (!feof($handle)) {
+//                        $upload->file_body = fgets($handle, 4096);
+//                        // Process buffer here..
+//                    }
+//                    $upload->file_body = file_get_contents($file);
+                    $upload->post_id = $posts->id;
+                    $upload->save();
+                    
+                }
+                
+                $advertPost = new AdvertPost();
+                $advertPost->post_id = $posts->id;
+                $advertPost->ad_link = $input['ad_link'];
+                $advertPost->surfhub_target = isset($input['surfHub'])?$input['surfHub']:0;
+                $advertPost->profile_target = isset($input['profile'])?$input['profile']:0;
+                $advertPost->search_target = isset($input['search'])?$input['search']:0;
+                $advertPost->gender = $input['gender'];
+                $advertPost->optional_user_type = $input['userType'];
+                $advertPost->optional_country_id = $input['country_id'];
+                $advertPost->optional_state_id = $input['state_id'];
+                $advertPost->optional_postcode = $input['postcode'];
+                $advertPost->optional_beach_id = $input['local_beach_id'];
+                $advertPost->optional_board_type = $input['board_type'];
+                $advertPost->optional_camera_brand = $input['camera_brand'];
+                $advertPost->optional_surf_resort = $input['resort'];
+                $advertPost->search_user_type = $input['search_user_type'];
+                $advertPost->search_surf_resort = $input['search_resort'];
+                $advertPost->currency_type = $input['currency_type'];
+                $advertPost->your_budget = $input['budget'];
+                $advertPost->per_view = $input['per_view'];
+                $advertPost->start_date = $input['start_date'];
+                $advertPost->end_date = $input['end_date'];
+                $advertPost->preview_ad = isset($input['preview'])?$input['preview']:0;
+                $advertPost->save();
+                
+                
+                
+            }
+            $result = array(
+                'post_id' => $posts->id,
+                'message' => 'Post has been updated successfully.!'
+            );
+            $message = 'Post has been updated successfully.!';
+            return $result;                
+        }
+        catch (\Exception $e){     
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message = '"'.$e->getMessage().'"';
+//            echo '<pre>';dump($message);die;
+            return $message;
+        }
+    }
+    
+    
+    public function updateAdvertPost($input, $fileType = '', $filename = '', &$message=''){
+        try{
+//            $lines = [];
+//            $handle = fopen($file, "r");
+//            $content = file($file);
+//            echo '<pre>';  dump($input);die;
+            $posts = Post::findOrFail($input['post_id']);
+            $posts->post_type = 'PRIVATE';            
+            $posts->user_id = Auth::user()->id;
+            $posts->post_text =$input['post_text'];
+            $posts->country_id =$input['search_country_id'];
+            $posts->board_type = $input['search_board_type'];
+            $posts->state_id = $input['search_state_id'];
+            $posts->local_beach_id = $input['local_beach_break_id'];
+            $posts->local_break_id = $input['break_id'];
+            $posts->surfer = $input['other_surfer'];
+            $posts->fin_set_up = (!empty($input['fin_set_up'])) ? $input['fin_set_up'] : null;
+            $posts->created_at = Carbon::now();
+            $posts->updated_at = Carbon::now();
+
+            if($posts->save()){
+                if(isset($filename) && !empty($filename)) {                
+                    $upload = Upload::where('post_id', $posts->id)->first();
+                    
+
+                    if (isset($fileType) && ($fileType == 'image')) {
+                        $upload->image = $filename;
+                        $upload->video = null;
+                    } elseif (isset($fileType) && ($fileType == 'video')) {
+                        $upload->image = null;
+                        $upload->video = $filename;
+                    }
+                    $upload->post_id = $posts->id;
+                    $upload->save();
+                    
+                }
+                $advertPost = AdvertPost::where('post_id', $posts->id)->first();
+                $advertPost->post_id = $posts->id;
+                $advertPost->ad_link = $input['ad_link'];
+                $advertPost->surfhub_target = isset($input['surfHub'])?$input['surfHub']:0;
+                $advertPost->profile_target = isset($input['profile'])?$input['profile']:0;
+                $advertPost->search_target = isset($input['search'])?$input['search']:0;
+                $advertPost->gender = $input['gender'];
+                $advertPost->optional_user_type = $input['userType'];
+                $advertPost->optional_country_id = $input['country_id'];
+                $advertPost->optional_state_id = $input['state_id'];
+                $advertPost->optional_postcode = $input['postcode'];
+                $advertPost->optional_beach_id = $input['local_beach_id'];
+                $advertPost->optional_board_type = $input['board_type'];
+                $advertPost->optional_camera_brand = $input['camera_brand'];
+                $advertPost->optional_surf_resort = $input['resort'];
+                $advertPost->search_user_type = $input['search_user_type'];
+                $advertPost->search_surf_resort = $input['search_resort'];
+                $advertPost->currency_type = $input['currency_type'];
+                $advertPost->your_budget = $input['budget'];
+                $advertPost->per_view = $input['per_view'];
+                $advertPost->start_date = $input['start_date'];
+                $advertPost->end_date = $input['end_date'];
+                $advertPost->preview_ad = !empty($input['preview'])?$input['preview']:0;
+                $advertPost->save();
+                
+                
+                
+            }
+            $result = array(
+                'post_id' => $posts->id,
+                'message' => 'Post has been updated successfully.!'
+            );
+            $message = 'Post has been updated successfully.!';
+            return $result;                
+        }
+        catch (\Exception $e){     
+            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+            $message = '"'.$e->getMessage().'"';
+//            echo '<pre>';dump($message);die;
+            return $message;
+        }
+    }
+    
+    
     /**
      * [updatePostData] we are storing the post Details from admin section 
      * @param  requestInput get all the requested input data
@@ -693,6 +926,9 @@ class PostService {
         $posts->local_beach_id = $input['local_beach_break_id'];
         $posts->surfer = (isset($input['surfer']) && ($input['surfer'] == 'Me'))?Auth::user()->user_name:$input['surfer'];
         $posts->optional_info = (!empty($input['optional_info'])) ? implode(" ",$input['optional_info']) : null;
+        $posts->additional_info = (!empty($input['additional_info'])) ? implode(" ",$input['additional_info']) : null;
+        $posts->stance = (!empty($input['stance'])) ? $input['stance'] : null;
+        $posts->fin_set_up = (!empty($input['fin_set_up'])) ? $input['fin_set_up'] : null;
         $posts->created_at = Carbon::now();
         $posts->updated_at = Carbon::now();
         if($posts->save()){ echo "Type = ".$type." -- File =".$filename."<pre>";
@@ -897,7 +1133,7 @@ class PostService {
         $postMedia=Upload::select('*')->where('post_id',$id)->get();
 
         try{
-            $this->posts['post_type'] = $postSave->post_type;
+            $this->posts['post_type'] = 'PRIVATE';
             $this->posts['user_id'] = Auth::user()->id;
             $this->posts['post_text'] = $postSave->post_text;
             $this->posts['country_id'] =$postSave->country_id;
@@ -909,6 +1145,10 @@ class PostService {
             $this->posts['surfer'] = $postSave->surfer;
             $this->posts['optional_info'] = $postSave->optional_info;
             $this->posts['parent_id'] = $postSave->user_id;
+            $this->posts['local_break_id'] = $postSave->local_break_id;
+            $this->posts['additional_info'] = $postSave->additional_info;
+            $this->posts['fin_set_up'] = $postSave->fin_set_up;
+            $this->posts['stance'] = $postSave->stance;
             $this->posts['created_at'] = Carbon::now();
             $this->posts['updated_at'] = Carbon::now();            
             
@@ -1238,6 +1478,8 @@ class PostService {
             $this->surferRequest->status = 0;
             $this->surferRequest->created_at = Carbon::now();
             $this->surferRequest->save();
+            
+            return 'Surfer request has been made successfully!';
         }
         catch (\Exception $e){     
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
