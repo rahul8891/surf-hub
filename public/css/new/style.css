@@ -130,7 +130,7 @@ header .navbar-nav .nav-link .feed {
     height: 21px;
 }
 
-header .navbar-nav .active .nav-link  .feed {
+header .navbar-nav .active .nav-link .feed {
     background-position: -18px -96px;
 }
 
@@ -140,27 +140,27 @@ header .navbar-nav .nav-link .my-hub {
     height: 23px;
 }
 
-header .navbar-nav .active .nav-link  .my-hub {
+header .navbar-nav .active .nav-link .my-hub {
     background-position: -74px -42px;
 }
 
 header .navbar-nav .nav-link .search {
     background-position: -128px -45px;
-	width: 22px;
-	height: 23px;
+    width: 22px;
+    height: 23px;
 }
 
-header .navbar-nav .active .nav-link  .search {
+header .navbar-nav .active .nav-link .search {
     background-position: -128px -97px;
 }
 
 header .navbar-nav .nav-link .upload {
     background-position: -182px -40px;
-	width: 28px;
-	height: 28px;
+    width: 28px;
+    height: 28px;
 }
 
-header .navbar-nav .active .nav-link  .upload {
+header .navbar-nav .active .nav-link .upload {
     background-position: -182px -92px;
 }
 
@@ -503,9 +503,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
 }
-.form-check-input{
+
+.form-check-input {
     margin-top: 0;
 }
+
 .form-check-input[type=radio] {
     margin-top: 1px;
     margin-right: 15px;
@@ -597,8 +599,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     text-align: center;
     cursor: pointer;
 }
+
 .filter-sort .sort,
-.filter-sort .filter{
+.filter-sort .filter {
     line-height: 40px;
 }
 
@@ -623,7 +626,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .inner-news-feed .user-details,
-.inner-news-feed .user-bottom-options{
+.inner-news-feed .user-bottom-options {
     padding: 15px;
 }
 
@@ -658,6 +661,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     height: 60px;
     border-radius: 50%;
 }
+
 .user-details .user-left a>img {
     width: 60px;
     height: 60px;
@@ -1813,15 +1817,19 @@ header .notification {
     height: 325px;
 }
 
-.newsFeedImgVideoSlider > img,
-.newsFeedImgVideoSlider > video {
-    height: 700px;
+.newsFeedImgVideoSlider>img,
+.newsFeedImgVideoSlider>video {
+    height: 100vh;
     width: auto;
+    margin: 0 auto;
+    display: block;
 }
+
 .modal-dialog.editPostM {
     max-width: initial !important;
     width: calc(100% - 90px);
-  }
+}
+
 .newsFeedImgVideoSlider {
     background: #000;
     text-align: center;
@@ -1831,6 +1839,7 @@ header .notification {
 .modal-dialog {
     max-width: 700px !important;
 }
+
 .left-option .active a {
     border-bottom: 3px solid #fff;
     padding-bottom: 3px;
@@ -1840,7 +1849,8 @@ header .notification {
     border-bottom: 1px solid #C0BCBC;
     padding-bottom: 5px;
 }
-.spotify-btn{
+
+.spotify-btn {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -1871,18 +1881,23 @@ header .notification {
     margin-right: 5px;
     line-height: initial;
 }
-.rating-container .filled-stars{
+
+.rating-container .filled-stars {
     color: #2861f7;
 }
-.rating-container{
+
+.rating-container {
     display: none;
 }
+
 .rating-loading {
     display: none;
 }
-.left-navbar-toggler{
+
+.left-navbar-toggler {
     cursor: pointer;
 }
+
 .tag-user-photo img {
     width: 50px;
     height: 50px;
@@ -1896,6 +1911,7 @@ header .notification {
     font-weight: 500;
     line-height: 20px;
 }
+
 .upload-file-name {
     max-height: 175px;
     overflow: auto;
@@ -1903,9 +1919,35 @@ header .notification {
 
 
 #full_screen_modal .modal-dialog {
-  width: 100vw !important;
-  height: 100vh !important;
-  max-width: initial !important;
-  max-height: initial !important;
-  margin: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: initial !important;
+    max-height: initial !important;
+    margin: 0;
+    overflow: hidden;
+}
+
+#full_screen_modal .slick-next {
+    right: 40px;
+}
+
+#full_screen_modal .slick-prev {
+    left: 40px;
+    z-index: 1;
+}
+
+#full_screen_modal .slick-slider {
+    margin-bottom: 0;
+}
+
+#full_screen_modal #toggle.btn {
+    position: absolute;
+    bottom: 46px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#full_screen_modal .btn-close{
+    position: absolute;
+    left: 15px;
+    top: 15px;
 }
