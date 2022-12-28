@@ -1816,10 +1816,12 @@ header .notification {
 .newsFeedImgVideoSlider > img,
 .newsFeedImgVideoSlider > video {
     height: 700px;
-    width: 100%;
-    object-fit: cover;
+    width: auto;
 }
-
+.modal-dialog.editPostM {
+    max-width: initial !important;
+    width: calc(100% - 90px);
+  }
 .newsFeedImgVideoSlider {
     background: #000;
     text-align: center;
@@ -1897,4 +1899,13 @@ header .notification {
 .upload-file-name {
     max-height: 175px;
     overflow: auto;
+}
+
+
+#full_screen_modal .modal-dialog {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: initial !important;
+  max-height: initial !important;
+  margin: 0;
 }
