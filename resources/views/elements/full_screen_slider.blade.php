@@ -7,6 +7,7 @@
 
 <div class="modal-dialog editPostM " role="document">
     <div class="modal-content">
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
         <!-- Carousel wrapper -->
         <div class="slider demo">
@@ -15,6 +16,7 @@
 
             @if(!empty($posts->upload->image))
             <div class="newsFeedImgVideoSlider">
+                
                 @if(Auth::user())
                 @if(!empty($token))
                 <button  class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></button>
@@ -199,7 +201,7 @@
                     };
                     $(document).ready(function () {
                     var homeCarousel = $('.demo').slick({
-                    dots: true,
+                    dots: false,
                             fade: true,
                             pauseOnHover: false,
                             arrows: true,
