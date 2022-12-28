@@ -1900,3 +1900,12 @@ header .notification {
     max-height: 175px;
     overflow: auto;
 }
+
+
+#full_screen_modal .modal-dialog {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: initial !important;
+  max-height: initial !important;
+  margin: 0;
+}
