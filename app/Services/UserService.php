@@ -485,11 +485,21 @@ class UserService {
     }
 
     public function getFollowDataCount($column = null, $status = null, $user_id) {
-        $count = $this->userFollows->where($column, $user_id)
+        if(isset($user_id) && ($user_id == 1)) {
+            $count = $this->userFollows->where('status', 'FOLLOW')
+                ->whereIn('follower_request_status', $status)
+                ->where('is_deleted', '0')
+                ->count();
+
+        } else {
+            $count = $this->userFollows->where($column, $user_id)
                 ->where('status', 'FOLLOW')
                 ->whereIn('follower_request_status', $status)
                 ->where('is_deleted', '0')
                 ->count();
+
+        }
+        
         return $count;
     }
 
@@ -564,6 +574,16 @@ class UserService {
 
         return $result;
     }
+
+    public function getActiveUserType($type) {
+        $result = $this->users->where('status', 'ACTIVE')
+                ->where('user_type', $type)
+                ->where('is_deleted', '0')
+                ->get();
+
+        return count($result);
+    }
+
 
     /**
      * [saveFollowRequestNotification] we are storing the follow request notifications

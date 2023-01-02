@@ -507,7 +507,7 @@ class UserController extends Controller {
             'follwerRequest' => $followRequestCount,
             'posts' => count($userPosts),
             'surferRequest' => count($surferRequests),
-            'uploads' => count($uploads),
+            'uploads' => $uploads,
             'notification' => $notification
         );
 

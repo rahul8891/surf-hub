@@ -110,7 +110,9 @@ class CreateNewUser implements CreatesNewUsers {
         } catch (\Exception $e) {
             if ($user->id) {
                 $this->deleteUplodedProfileImage($getImageArray['profile_photo_name']);
-                $this->deleteUplodedResortImages($input['resort_name']);
+                if (isset($input['resort_name']) && !empty($input['resort_name'])) {
+                    $this->deleteUplodedResortImages($input['resort_name']);
+                }
                 $this->deletUserRecord($user->id);
             }
 //            echo '<pre>';

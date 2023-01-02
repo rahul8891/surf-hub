@@ -10,6 +10,9 @@ use App\Services\PostService;
 use App\Services\MasterService;
 use App\Models\Post;
 use App\Models\SurferRequest;
+use App\Services\UserService;
+
+
 class AdminDashboard extends Controller
 {
     /**
@@ -25,13 +28,14 @@ class AdminDashboard extends Controller
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct(AdminUserService $users, PostService $posts,MasterService $masterService)
+    public function __construct(UserService $user,AdminUserService $users, PostService $posts,MasterService $masterService)
     {
+ 	$this->user = $user;   
         $this->users = $users;       
         $this->posts = $posts;  
         $this->masterService = $masterService;
         $this->customArray = config('customarray');
-    }
+
 
     /**
      * Display a listing of the resource.
@@ -39,11 +43,16 @@ class AdminDashboard extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {         
-        
+    {   
         $totalUser = $this->users->getUserTotal();
         $totalPost = $this->posts->getPostTotal();
-        return view('admin/dashboard.index', compact('totalPost','totalUser'));
+        $uploads = $this->posts->getUploads();
+        $resort = $this->user->getActiveUserType('SURFER CAMP');
+        $photographer = $this->user->getActiveUserType('PHOTOGRAPHER');
+        $advertiser = $this->user->getActiveUserType('ADVERTISEMENT');
+
+
+        return view('admin/dashboard.index', compact('totalPost','totalUser', 'uploads', 'resort', 'photographer', 'advertiser'));
     }
 
     public function feed(Request $request) {
