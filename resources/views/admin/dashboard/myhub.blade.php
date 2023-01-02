@@ -1,4 +1,4 @@
-@extends('layouts.user.new_layout')
+@extends('layouts.admin.admin_layout')
 @section('content')
 <style>
     .highlight.blue {
@@ -12,10 +12,10 @@
     <div class="container">
         <div class="home-row">
             <div class="my-details-div">
-                @include('layouts.user.left_sidebar')
+                @include('layouts.admin.admin_left_sidebar')
             </div>
             <div class="middle-content" id="post-data">
-                @include('layouts.user.content_menu')
+                @include('layouts/user/content_menu')
                 @if (isset($postsList) && empty($postsList[0]))
                 <div class="post alert text-center alert-dismissible py-5" role="alert">
                     {{ ucWords('no matches found') }}
@@ -230,6 +230,7 @@
                         </div>
                     </div>
                 </div>
+                
                 @endforeach
                 @endif
                 <div class="justify-content-center ajax-load" style="display:none;margin-left: 40%">
@@ -238,8 +239,6 @@
             </div>
             
             <div class="right-advertisement">
-                <img src="/img/new/advertisement1.png" alt="advertisement">
-                <img src="/img/new/advertisement2.png" alt="advertisement">
             </div>
         </div>
     </div>

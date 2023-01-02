@@ -179,6 +179,7 @@ class UserController extends Controller {
      */
     public function storeProfile(Request $request) {
         $data = $request->all();
+        $user_id = Auth::user()->id;
         Validator::make($data, [
             'first_name' => ['required', 'min:3', 'string'],
             'last_name' => ['required', 'min:3', 'string'],
@@ -192,7 +193,7 @@ class UserController extends Controller {
 //            'local_beach_break' => ['required', 'string'],         
         ])->validate();
 //        
-        $result = $this->users->updateUserProfile($data, $message);
+        $result = $this->users->updateUserProfile($data, $message,$user_id);
         if ($result) {
             return Redirect::to('dashboard')->withSuccess($message);
         } else {
@@ -797,6 +798,7 @@ class UserController extends Controller {
 //        echo '<pre>'; print_r($followersCount);die;
         $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $surfer_id);
         $userPosts = $this->post->getPostByUserId($surfer_id);
+        $userType = $userProfile['user_type'];
         $postIds = array_filter(array_column($userPosts, 'id'));
         $uploads = $this->post->getUploads($postIds);
         $fCounts = array(
@@ -806,7 +808,7 @@ class UserController extends Controller {
             'uploads' => count($uploads),
         );
         
-        return view('user.surfer-followers', compact('followers', 'common', 'userProfile', 'fCounts','postsList'));
+        return view('user.surfer-followers', compact('followers', 'common', 'userProfile', 'fCounts','postsList','userType'));
     }
     
     public function surferFollowing($id) {
@@ -829,6 +831,7 @@ class UserController extends Controller {
         $userPosts = $this->post->getPostByUserId($surfer_id);
         $postIds = array_filter(array_column($userPosts, 'id'));
         $uploads = $this->post->getUploads($postIds);
+        $userType = $userProfile['user_type'];
         $fCounts = array(
             'follwers' => $followersCount,
             'follwing' => $followingCount,
@@ -836,7 +839,7 @@ class UserController extends Controller {
             'uploads' => count($uploads),
         );
         
-        return view('user.surfer-following', compact('following', 'common', 'userProfile', 'fCounts','postsList'));
+        return view('user.surfer-following', compact('following', 'common', 'userProfile', 'fCounts','postsList','userType'));
     }
 
 }

@@ -17,19 +17,6 @@
             <div class="my-comp">Surfhub <span class="blue-txt">$2540</span> Earn</div>
         </div>
         <div class="profile-menu">
-            <div class="profile-row {{ userActiveMenu('profile') }}">
-                <img src="/img/hub.png" alt="User">
-                <!--<span>My Profile</span>-->
-                <a href="{{ route('profile') }}">My Profile</a>
-            </div>
-            <div class="profile-row {{ userActiveMenu('followers') }}">
-                <img src="/img/followers.png" alt="Followers">
-                 <a class=""  href="{{ route('followers') }}">Followers - <span class="blue-txt num" id="follwers"> </span></a>
-            </div>
-            <div class="profile-row {{ userActiveMenu('following') }}">
-                <img src="/img/following.png" alt="Following">
-                 <a class="" href="{{ route('following') }}">Following - <span class="blue-txt num" id="follwing"> </span></a>
-            </div>
             <div class="profile-row {{ ((userActiveMenu('myhubs') == 'active') && ($post_type == 'posts'))?'active':'' }}">
                 <img src="/img/posts.png" alt="posts">
                  <a class="" href="{{ route('myhubs', 'posts') }}">Posts - <span class="blue-txt num" id="posts"> </span></a>
@@ -39,16 +26,16 @@
                  <a class="" href="{{ route('profile') }}">Uploads - <span class="blue-txt num" id="uploads"> </span></a>
             </div>
             <div class="profile-row {{ userActiveMenu('followRequests') }}">
-                <img src="/img/follow-request.png" alt="Follow Requests">
-                 <a class=""  href="{{ route('followRequests') }}">Follow Requests <span class="notification" id="followRequest"></span></a>
+                <img src="/img/comments.png" alt="Comments">
+                 <a class=""  href="{{ route('followRequests') }}">Comments <span class="notification" id="comments"></span></a>
             </div>
             <div class="profile-row {{ userActiveMenu('surferRequestList') }}">
                 <img src="/img/small-logo.png" alt="Surfer Requests">
                 <a class="" href="{{ route('surferRequestList') }}">Surfer Requests <span class="notification" id="surferRequest"></span></a>
             </div>
-            <div class="profile-row {{ userActiveMenu('notifications') }}">
-                <img src="/img/notification.png" alt="Notifications" class="mr-2">
-                <a class="" href="{{ route('notifications') }}">Notifications <span class="notification" id="notification-count"></span></a>
+            <div class="profile-row {{ userActiveMenu('surferRequestList') }}">
+                <img src="/img/flag.png" alt="Reports">
+                <a class="" href="{{ route('surferRequestList') }}">Reports <span class="notification" id="reports"></span></a>
             </div>
             <div class="profile-row">
                 <form method="POST" action="{{ route('logout') }}">
@@ -61,23 +48,20 @@
 
     </div>
     <div class="left-advertisement">
-        <img src="/img/advertisement1.png" alt="advertisement">
     </div>
 </div>
 <script>
                                     $(document).ready(function () {
                                         $.ajax({
                                             type: "GET",
-                                            url: "/follow-counts",
+                                            url: "/admin/left-side-counts",
                                             dataType: "json",
                                             success: function (jsonResponse) {
-                                                $('#follwers').html(jsonResponse['follwers']);
-                                                $('#follwing').html(jsonResponse['follwing']);
-                                                $('#followRequest').html(jsonResponse['follwerRequest']);
+                                                $('#reports').html(jsonResponse['reports']);
                                                 $('#posts').html(jsonResponse['posts']);
                                                 $('#uploads').html(jsonResponse['uploads']);
                                                 $('#surferRequest').html(jsonResponse['surferRequest']);
-                                                $('#notification-count').html(jsonResponse['notification']);
+                                                $('#comments').html(jsonResponse['comments']);
 //                setInterval(myTimerUserMessage, 4000);
                                             }
                                         });

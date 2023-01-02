@@ -44,7 +44,7 @@ function activeMainMenu($routeFor = '') {
  */
 function userActiveMenu($uri = '') {
     $name = Route::currentRouteName();    
-    // echo $uri." -- ".$name;die('aa');
+//     echo $uri." -- ".$name;die('aa');
     $active = '';       
     if($name == $uri ){
         $active = 'active';

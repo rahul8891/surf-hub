@@ -104,7 +104,6 @@
 
         <script type="text/javascript">
     $(document).on('click', '.add-ads', function() {
-        alert('hh');
       var id = $(this).data('id');
       $('#page_id').val(id);
                                     

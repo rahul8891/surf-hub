@@ -57,12 +57,14 @@ class DashboardController extends Controller {
                 $requestSurfer[$res->post_id] = $res->user_id;
             }
         }
-//        echo '<pre>'; print_r($requestSurfer);die;
+        
         $url = url()->current();
         $usersList = $this->masterService->getAllUsers();
 
         if ($request->ajax()) {
-            $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches'))->render();
+            $data = $request->all();
+            $page = $data['page'];
+            $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches','page'))->render();
             return response()->json(['html' => $view]);
         }
         return view('user.feed', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches'));

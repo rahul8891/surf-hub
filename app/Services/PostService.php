@@ -1504,6 +1504,25 @@ class PostService {
         return $surferRequest;
         
     }
+    public function getReportsCount() {
+
+
+        $reports = $this->report
+                ->orderBy('id', 'ASC')
+                ->get()
+                ->count();
+        return $reports;
+    }
+    public function getCommentsCount() {
+
+
+        $comments = $this->comment
+                ->orderBy('id', 'ASC')
+                ->get()
+                ->count();
+        return $comments;
+    }
+    
     public function getUploads($ids = null){
         if(!empty($ids)) {
             $uploads =  $this->upload

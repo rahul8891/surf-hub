@@ -71,7 +71,9 @@ class MyHubController extends Controller {
         }
 
         if ($request->ajax()) {
-            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches'))->render();
+            $data = $request->all();
+            $page = $data['page'];
+            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches','page'))->render();
             return response()->json(['html' => $view]);
         }
 
@@ -104,7 +106,9 @@ class MyHubController extends Controller {
         }
 
         if ($request->ajax()) {
-            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches'))->render();
+            $data = $request->all();
+            $page = $data['page'];
+            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches','page'))->render();
             return response()->json(['html' => $view]);
         }
 

@@ -66,13 +66,13 @@ class UserService {
      * @param  string &$message    [description ]
      * @return [object]              [description]
      */
-    public function updateUserProfile($dataRequest, &$message = '') {
+    public function updateUserProfile($dataRequest, &$message = '',$user_id) {
 
-        $users = $this->users->find(Auth::user()->id);
+        $users = $this->users->find($user_id);
         $userProfiles = new UserProfile();
         try {
             if ($users) {
-                $user_profiles = $userProfiles->where('user_id', Auth::user()->id)->first();
+                $user_profiles = $userProfiles->where('user_id', $user_id)->first();
                 if ($users->status !== $this->checkUserType['status']['ACTIVE'] || $users->is_deleted == '1') {
                     $message = $this->checkUserType['common']['BLOCKED_USER'];
                     return false;

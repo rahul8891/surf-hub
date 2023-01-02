@@ -1,4 +1,4 @@
-@extends('layouts.user.new_layout')
+@extends('layouts.admin.admin_layout')
 @section('content')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
 <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
@@ -8,11 +8,9 @@
     <div class="container">
         <div class="home-row">
             @if (Auth::user())
-            @include('layouts.user.left_sidebar')    
+            @include('layouts.admin.admin_left_sidebar')    
             @else
             <div class="left-advertisement">
-                        <img src="img/new/advertisement1.png" alt="advertisement">
-                        <img src="img/new/advertisement2.png" alt="advertisement">
                 </div>
             @endif
             <div class="middle-content" id="search-data">
@@ -262,8 +260,6 @@
             </div>
 
             <div class="right-advertisement">
-                <img src="img/advertisement1.png" alt="advertisement">
-                <img src="img/advertisement2.png" alt="advertisement">
             </div>
 
         </div>

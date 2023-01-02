@@ -170,6 +170,12 @@ header .navbar-nav.middle-menu {
     width: 600px;
     align-items: center;
 }
+header .navbar-nav.admin-middle-menu {
+    justify-content: space-between;
+    max-width: 100%;
+    width: 1100px;
+    align-items: center;
+}
 
 header .side-navbar .navbar-nav {
     flex-direction: row;
@@ -1946,8 +1952,10 @@ header .notification {
     left: 50%;
     transform: translateX(-50%);
 }
-#full_screen_modal .btn-close{
-    position: absolute;
-    left: 15px;
-    top: 15px;
+#full_screen_modal .btn-close {
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  z-index: 1;
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FFFFFF'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
 }

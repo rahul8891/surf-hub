@@ -9,21 +9,6 @@
         <title>{{ config('customarray.siteTitle.admin') }}</title>
         <link rel="shortcut icon" href="{{ asset('images/logo_small.png') }}">
         <!-- Font Awesome Icons -->
-        <link href="{{ asset("/AdminLTE/plugins/fontawesome-free/css/all.min.css")}}" rel="stylesheet">
-        <!-- DataTables -->
-        <link rel="stylesheet" href="{{ asset("/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css")}}">
-        <link rel="stylesheet"
-              href="{{ asset("/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css")}}">
-        <!-- iCheck for checkboxes and radio inputs -->
-        <link rel="stylesheet" href="{{ asset("/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css")}}">
-        <!-- overlayScrollbars -->
-        <link href="{{ asset("/AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css")}}" rel="stylesheet">
-        <!-- Theme style -->
-        <link href="{{ asset("/AdminLTE/dist/css/adminlte.min.css")}}" rel="stylesheet">
-        <!-- Google Font: Source Sans Pro -->
-        <!-- summernote -->
-        <link rel="stylesheet" href="{{ asset("/AdminLTE/plugins/summernote/summernote-bs4.css")}}">
-
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
         <link rel="stylesheet" type="text/css" href="{{ asset("/css/loader.css")}}">
@@ -42,6 +27,7 @@
         <!-- script -->
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js"></script>
+        <script src="{{ asset('js/new/jquery-3.5.1.min.js') }}"></script>
     </head>
 
     <body class="login-body">
@@ -79,34 +65,18 @@
         <!-- ./wrapper -->
         <!-- REQUIRED SCRIPTS -->
         <!-- jQuery -->
-        <script src="{{ asset('js/new/jquery-3.5.1.min.js') }}"></script>
-
+        
+        <script src="{{ asset("js/croppie.js")}}"></script>
         <!-- ddslick -->
         <script type="text/javascript" src="https://cdn.rawgit.com/prashantchaudhary/ddslick/master/jquery.ddslick.min.js" ></script>
         <!-- Bootstrap -->
-        <script src="{{ asset("/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
-        <!-- overlayScrollbars -->
-        <script src="{{ asset("/AdminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js")}}"></script>
-        <script src="{{ asset("/AdminLTE/plugins/bootstrap-switch/js/bootstrap-switch.min.js")}}"></script>
-        <!-- AdminLTE App -->
-        <script src="{{ asset("/AdminLTE/dist/js/adminlte.js")}}"></script>
-        <!-- PAGE SCRIPTS 
-        <script src="{{ asset("/AdminLTE/dist/js/pages/dashboard2.js")}}"></script>-->
-        <script src="{{ asset("/AdminLTE/plugins/datatables/jquery.dataTables.min.js")}}"></script>
-        <script src="{{ asset("/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js")}}"></script>
-        <script src="{{ asset("/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js")}}"></script>
-        <script src="{{ asset("/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")}}"></script>
-        <!-- Ekko Lightbox -->
-        <script src="{{ asset("/AdminLTE/plugins/ekko-lightbox/ekko-lightbox.min.js")}}"></script>
-        <script src="{{ asset("/AdminLTE/plugins/bs-custom-file-input/bs-custom-file-input.min.js")}}"></script>
-        <!-- Summernote -->
-        <script src="{{ asset("/AdminLTE/plugins/summernote/summernote-bs4.min.js")}}"></script>
         <script src="{{ asset("/js/admin_custom.js")}}"></script>
         <script src="{{ asset('/js/bootstrap.js') }}"></script>
         <script src="{{ asset("js/jquery.validate.min.js") }}"></script>
         @if (Auth::user())
         <script src="{{ asset("js/post.js")}}"></script>
         @endif
+        <script src="{{ asset("js/new/script.js")}}"></script>
         <script src="{{ asset("js/new/star-rating.min.js")}}"></script>    
         <script src="{{ asset("js/new/slick.js")}}"></script>
         

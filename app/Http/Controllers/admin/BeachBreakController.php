@@ -14,13 +14,17 @@ use App\Services\AdminUserService;
 use App\Services\MasterService;
 use App\Traits\PasswordTrait;
 use App\Models\User;
+use App\Models\BeachBreak;
 use Carbon\Carbon;
 use Closure;
 use Redirect;
 use Session;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
-
-class AdminUserController extends Controller
+class BeachBreakController extends Controller
 {   
     use PasswordTrait;
     /**
@@ -56,26 +60,33 @@ class AdminUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = $this->users->getUsersListing();
-        $spiner = ($users) ? true : false;
-        return view('admin/admin_user/index', compact('users','spiner'));     
+        $params=$request->all();
+        $currentUserCountryId = (isset(Auth::user()->user_profiles->country_id) && !empty(Auth::user()->user_profiles->country_id))?Auth::user()->user_profiles->country_id:'';      
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $gender_type = config('customarray.gender_type');
+        $beach_break = $this->users->getBeachBreakListing($params);
+//        dd($beach_break);
+        $spiner = ($beach_break) ? true : false;
+        return view('admin/beach_break/index', compact('beach_break','spiner','countries','states','gender_type'));     
     }
+    
 
     /**
-     * Show the form for creating a new resource.
+     * Display a Beach Break Detail of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function getBeachBreakDetail($id)
     {
-        $countries = $this->masterService->getCountries();
-        $language = $this->language;
-        $accountType = $this->accountType;       
-        return view('admin/admin_user/create', compact('countries','language','accountType'));
+        $beach_break = BeachBreak::where('id', $id)->get()->toArray();
+//        dd($beach_break);
+        $view = view('admin/beach_break/beach_break_data', compact('beach_break','id'))->render();
+        return response()->json(['html' => $view]);  
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -87,18 +98,13 @@ class AdminUserController extends Controller
         try{
             $data = $request->all();
             $rules = array(
-                'profile_photo_name' => ['nullable','image','mimes:jpeg,jpg,png'],
-                'user_name' => ['required', 'string', 'max:255','unique:users','alpha_dash'],
-                'first_name' => ['required', 'string'],
-                'last_name' => ['nullable','string'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'phone' => ['required'],
-                'country_id' => ['required','numeric'],
-                'language' => ['required','string'],
-                'local_beach_break_id' => ['required', 'string'],
-                'account_type'=>['required','string'],
-                'password' => $this->passwordRules(),
-                'terms' => ['required'],
+                'beach_name' => ['required', 'string'],
+                'break_name' => ['required','string'],
+                'city_region' => ['required','string'],
+                'state' => ['required','string'],
+                'country' => ['required','string'],
+                'longitude' => ['required'],
+                'latitude' => ['required'],
             );
             
             $validate = Validator::make($data, $rules);
@@ -106,11 +112,11 @@ class AdminUserController extends Controller
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-                $result = $this->users->saveAdminUser($data,$message);
+                $result = $this->users->saveBeachBreak($data,$message);
                 if($result){  
-                    return Redirect::to('admin/users/index')->withSuccess($message);
+                    return Redirect::to('admin/breachbreak/index')->withSuccess($message);
                 }else{
-                    return Redirect::to('admin/users/index')->withErrors($message);
+                    return Redirect::to('admin/breachbreak/index')->withErrors($message);
                 }
             }
         }catch (\Exception $e){ 
@@ -118,123 +124,118 @@ class AdminUserController extends Controller
         }
         
     }
-
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {   
-        try{
-            $users = new User();    
-            $users = $users::findOrFail(Crypt::decrypt($id));
-            $spiner = ($users) ? true : false;
-        }catch (\Exception $e){ 
-            throw ValidationException::withMessages([$e->getMessage()]);
-        }
-        return view('admin/admin_user/show', compact('users','spiner'));  
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {           
-        try{
-            $users = new User();
-            $countries = $this->masterService->getCountries();
-            $language = $this->language;
-            $accountType = $this->accountType;
-            $users = $users::findOrFail(Crypt::decrypt($id));
-            $spiner = ($users) ? true : false;
-        }catch (\Exception $e){         
-            throw ValidationException::withMessages([$e->getMessage()]);
-        }
-        
-        return view('admin/admin_user/edit', compact('users','countries','language','accountType','spiner'));
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * importBeachBreak a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {           
+    public function importBeachBreak(Request $request)
+    {    
+        
+        try{
+            $reqdata = $request->all();
+            $file = $request->file('excel_file');
+//            dd($file);
+            $rules = array(
+//                'beach_name' => ['required', 'string'],
+//                'break_name' => ['required','string'],
+//                'city_region' => ['required','string'],
+//                'state' => ['required','string'],
+//                'country' => ['required','string'],
+//                'longitude' => ['required'],
+//                'latitude' => ['required'],
+            );
+            
+            $validate = Validator::make($reqdata, $rules);
+            if ($validate->fails()) {
+                // If validation falis redirect back to register.
+                return redirect()->back()->withErrors($validate)->withInput();
+            } else {
+                
+           $spreadsheet = IOFactory::load($file->getRealPath());
+           $sheet        = $spreadsheet->getActiveSheet();
+           $row_limit    = $sheet->getHighestDataRow();
+           $column_limit = $sheet->getHighestDataColumn();
+           $row_range    = range( 2, $row_limit );
+           $column_range = range( 'F', $column_limit );
+           $data = array();
+           foreach ( $row_range as $row ) {
+               $data[] = [
+                   'beach_name' =>$sheet->getCell( 'A' . $row )->getValue(),
+                   'break_name' =>$sheet->getCell( 'B' . $row )->getValue(),
+                   'city_region' =>$sheet->getCell( 'C' . $row )->getValue(),
+                   'country' =>$sheet->getCell( 'D' . $row )->getValue(),
+                   'state' =>$sheet->getCell( 'E' . $row )->getValue(),
+                   'latitude' =>$sheet->getCell( 'F' . $row )->getValue(),
+                   'longitude' =>$sheet->getCell( 'G' . $row )->getValue()
+               ];
+           }
+       
+            $result = $this->users->importBeachBreak($data,$message);
+            return json_encode(array('status' => 'success', 'responsData' => $result));    
+            }
+        }catch (\Exception $e){ 
+            throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
+        }
+        
+    }
+    
+    /**
+     * update a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {    
         try{
             $data = $request->all();
             $rules = array(
-                'profile_photo_name' => ['nullable','image','mimes:jpeg,jpg,png'],            
-                'first_name' => ['required', 'string'],
-                'last_name' => ['nullable','string'],
-                'user_name' => ['required', 'string','alpha_dash'],
-                'email' => ['required', 'string', 'email', 'max:255'],
-                'phone' => ['required', 'string'],
-                'account_type'=>['required','string'],
-                'language' => ['required','string'],
-                'local_beach_break' => ['required', 'string'],
-                'country_id' => ['required','numeric'],
-            );       
+                'beach_name' => ['required', 'string'],
+                'break_name' => ['required','string'],
+                'city_region' => ['required','string'],
+                'state' => ['required','string'],
+                'country' => ['required','string'],
+                'longitude' => ['required'],
+                'latitude' => ['required'],
+            );
+            
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-                $result = $this->users->updateAdminUser($data,Crypt::decrypt($id),$message);
-                if($result){
-                    return redirect()->route('adminUserListIndex', ['id' => $id])->withSuccess($message);  
+                $result = $this->users->updateBeachBreak($data,$message);
+                if($result){  
+                    return Redirect::to('admin/breachbreak/index')->withSuccess($message);
                 }else{
-                    return redirect()->route('adminUserEdit', ['id' => $id])->withErrors($message); 
+                    return Redirect::to('admin/breachbreak/index')->withErrors($message);
                 }
             }
-        }catch (\Exception $e){
-            return redirect()->route('adminUserEdit', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage()); 
+        }catch (\Exception $e){ 
+            throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         }
-    }
-
-
-    /**
-     * Activate /Deactivate user.
-     *
-     * @param  json object  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function updateUserStatus(Request $request){
-        $data = $request->all();
-        $rules = array(
-            'id' => ['required'],
-            'status' => ['required'] 
-        );
-        $inputArry = ['id' => $data['user_id'], 'status' => $data['status']];
-        $validate = Validator::make($inputArry, $rules);
-        if ($validate->fails()) {
-            echo json_encode(array('status'=>'failure', 'message'=>'Invalid param.'));
-            die;
-        } else {
-            $result = $this->users->updateUserStatus($inputArry,$message);
-            if($result){
-                 echo json_encode(array('status'=>'success', 'message'=>$message));
-             }else{
-                 echo json_encode(array('status'=>'failure', 'message'=>$message));
-             }
-            die;
-        }
+        
     }
     /**
-     * Remove the specified resource from storage.
+     * Delete a newly created resource in storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
+    {    
+        try {
+            $result = $this->users->deleteBeachBreak(Crypt::decrypt($id), $message);
+            if ($result) {
+                return redirect()->route('beachBreakListIndex')->withSuccess($message);
+            } else {
+                return redirect()->route('beachBreakListIndex')->withErrors($message);
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('beachBreakListIndex')->withErrors($e->getMessage());
+        }
+        
     }
 }
