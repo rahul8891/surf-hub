@@ -1,4 +1,4 @@
-@extends('layouts.user.new_layout')
+@extends( Auth::user() && Auth::user()->user_type == 'ADMIN'  ?  'layouts.admin.admin_layout' : 'layouts.user.new_layout' )
 @section('content')
 
 <section class="home-section">

@@ -372,7 +372,7 @@ class UserPostController extends Controller {
                     if ($data['preview'] == 1) {
                         return Redirect()->route('uploadPreview', Crypt::encrypt($result['post_id']))->withSuccess($message);
                     } else {
-                        return Redirect()->route('myhub')->withSuccess($message);
+                        return Redirect()->route('payment', Crypt::encrypt($result['post_id']))->withSuccess($message);
                     }
                 } else {
                     return Redirect()->route('myhub')->withErrors($message);
@@ -392,7 +392,7 @@ class UserPostController extends Controller {
                             $advertPost->preview_ad = 0;
                             $advertPost->save();
                         } 
-                        return Redirect()->route('myhub')->withSuccess('Advertisment has been published successfully!');
+                        return Redirect()->route('payment', Crypt::encrypt($data['post_id']))->withSuccess('Advertisment has been published successfully!');     
         } catch (\Exception $e) {
             throw ValidationException::withMessages([$e->getMessage()]);
         }

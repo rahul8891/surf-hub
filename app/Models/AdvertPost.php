@@ -10,6 +10,7 @@ use App\Models\Country;
 use App\Models\BeachBreak;
 use App\Models\State;
 use App\Models\Post;
+use App\Models\Upload;
 use Illuminate\Support\Facades\Auth;
 
 class AdvertPost extends Model
@@ -28,6 +29,10 @@ class AdvertPost extends Model
     public function advert_post()
     {
         return $this->belongsTo(Post::class, 'post_id', 'id');
+    }
+    public function get_media()
+    {
+        return $this->belongsTo(Upload::class, 'post_id', 'post_id');
     }
     public function beach()
     {

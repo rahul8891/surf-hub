@@ -85,7 +85,9 @@ class SearchController extends Controller
         }
        // print_r($postsList);die;
         if ($request->ajax()) {
-            $view = view('elements/searchdata', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name','beaches'))->render();
+            $data = $request->all();
+            $page = $data['page'];
+            $view = view('elements/searchdata', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name','beaches','page'))->render();
             return response()->json(['html' => $view]);
         }
         

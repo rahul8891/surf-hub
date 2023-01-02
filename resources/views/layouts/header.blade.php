@@ -4,7 +4,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="#"><img src="/img/logo.png" alt="Logo"></a>
-        <div class="navbar-nav middle-menu" style="<?php echo!Auth::user() ? 'width:250px !important;margin-right:220px;' : '' ?>">
+        <div class="navbar-nav middle-menu" style="<?php echo!Auth::user() ? 'width:400px !important;margin-right:220px;' : '' ?>">
             <div class="{{ userActiveMenu('dashboard') }}">
                 <a class="nav-link" href="/">
                     <span class="header-icon feed"></span>
@@ -12,7 +12,7 @@
                 </a>
             </div>
             @if (Auth::user())
-            <div class="{{ userActiveMenu('myhub') }}{{ userActiveMenu('myhubs') }}">
+            <div class="{{ userActiveMenu('myhub') }}">
                 <a class="nav-link" href="{{ route('myhub') }}">
                     <span class="header-icon my-hub"></span>
                     <span class="align-middle">MY HUB</span>
@@ -25,19 +25,27 @@
                     <span class="align-middle">SEARCH</span>
                 </a>
             </div>
-            @if (Auth::user())
-            <div class="{{ userActiveMenu('upload') }}">
-                @if(Auth::user()->user_type == 'ADVERTISEMENT')
+            @if (Auth::user() && Auth::user()->user_type == 'ADVERTISEMENT')
+            <div class="{{ userActiveMenu('myAds') }}">
+                <a class="nav-link" href="{{route('myAds')}}">
+                    <span class="header-icon upload"></span>
+                    <span class="align-middle">My Ads</span>
+                </a>
+            </div>
+            @endif
+            @if (Auth::user() && Auth::user()->user_type == 'ADVERTISEMENT')
+            <div class="{{ userActiveMenu('uploadAdvertisment') }}">
                 <a class="nav-link" href="{{route('uploadAdvertisment')}}">
                     <span class="header-icon upload"></span>
                     <span class="align-middle">UPLOAD</span>
                 </a>
-                @else
+            </div>
+            @else
+            <div class="{{ userActiveMenu('upload') }}">
                 <a class="nav-link" href="{{route('upload')}}">
                     <span class="header-icon upload"></span>
                     <span class="align-middle">UPLOAD</span>
                 </a>
-                @endif
             </div>
             @endif
         </div>

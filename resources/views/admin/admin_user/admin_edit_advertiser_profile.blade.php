@@ -1,16 +1,16 @@
-@extends('layouts.user.new_layout')
+@extends('layouts.admin.admin_layout')
 @section('content')
 <section class="home-section">
     <div class="container">
         <div class="home-row">
             <div class="my-details-div">
-                @include('layouts.user.left_sidebar')
+                @include('layouts.admin.admin_left_sidebar')
             </div>
             <div class="middle-content" id="post-data">
 
                 <div class="container mt-5">
                     <h2 class="text-center mb-4">Edit Profile</h2>
-                    <form method="POST" id="storeProfile" name="c" action="{{ route('storeProfile') }}"
+                    <form method="POST" id="storeProfile" name="edit-advertiser" action="{{ route('adminUserUpdate',Crypt::encrypt($user->id)) }}"
                           enctype="multipart/form-data">
                         @csrf
                         <div class="row">
@@ -59,7 +59,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control user-icon" placeholder="Contact Last Name" name="last_name" value="{{ $user->user_profiles->first_name }}" minlength="3"
+                                <input type="text" class="form-control user-icon" placeholder="Contact Last Name" name="last_name" value="{{ $user->user_profiles->last_name }}" minlength="3"
                                        autocomplete="last_name" required>
                                 @error('last_name')
                                 <div class="text-danger">{{ $message }}</div>
@@ -162,8 +162,6 @@
             </div>
 
             <div class="right-advertisement">
-                <img src="/img/new/advertisement1.png" alt="advertisement">
-                <img src="/img/new/advertisement2.png" alt="advertisement">
             </div>
         </div>
     </div>

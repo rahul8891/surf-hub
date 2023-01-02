@@ -23,6 +23,8 @@
                     {{ ucWords('no matches found') }}
                 </div>
                 @else
+                @php ($c = 0)
+                @php ($i = 0)
                 @foreach ($postsList as $key => $posts)
                 <div class="news-feed">
                     <div class="inner-news-feed">
@@ -252,6 +254,35 @@
                     </div>
                     @endif
                 </div>
+                
+                @php ($c++)
+                @if($c == 5 && showAdvertisment::instance()->getAdvertisment())
+                @foreach (showAdvertisment::instance()->getAdvertisment() as $key => $requests)
+                @if($i != $key)
+                @continue
+                @endif
+                @if(!empty($requests['image']))
+                <div class="news-feed">
+                    <div class="inner-news-feed">
+                        <img src="{{ env('FILE_CLOUD_PATH').'images/'.$requests['user_id'].'/'.$requests['image'] }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                    </div>
+                </div>
+                @elseif(!empty($requests['video']))
+                <div class="news-feed">
+                    <div class="inner-news-feed">
+                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$requests['user_id'].'/'.$requests['video'] }}" >    
+                        </video>
+                    </div>    
+                </div>    
+                @endif
+
+                @php ($c = 0)
+                @break 
+                @endforeach
+                @php ($i++)
+                @endif
+                
                 @endforeach
                 @endif
                 

@@ -1,136 +1,67 @@
-@extends('layouts.admin.admin_layout')
-@section('content')
-<section class="home-section">
-    <div class="container">
-        <div class="home-row">
-            <div class="middle-content">
-                <div class="table-strip-wrap">
-                    <div class="strip-table-header">
-                        <h2>Users</h2>
-                        <div class="filter dropdown searchByFilter">
-                            <form class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                <div class="row">
-                                    <label for="serachBy" class="col-sm-4 col-form-label" >Search by</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control mb-0" id="serachBy">
-                                    </div>
-                                </div>
-                            </form>
-                            <div class="dropdown-menu">
-                                <div class="filter-header">
-                                    <h5>Search by</h5>
-                                    <a href="#">Clear</a>
-                                </div>
-                                <div class="filter-body">
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Edit</h5>
+        </div>
+        <div class="modal-body">
+            <div class="map-details">
+                <form class="filterWrap" action="{{route('beachBreakUpdate')}}" name="beachBreakUpdate" method="POST">
+                    @csrf
+                    <div class="map-body">
+                        <div class="row">
+                            <div class="col-md-6">
 
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="align-items-center d-flex mb-4">
-                                                <label class="form-label me-3 w-150" >User Name</label>
-                                                <input type="text" class="form-control mb-0">
-                                            </div>
-                                            <div class="align-items-center d-flex mb-4">
-                                                <label class="form-label me-3 w-150" >First Name</label>
-                                                <input type="text" class="form-control mb-0">
-                                            </div>
-                                            <div class="align-items-center d-flex mb-4">
-                                                <label class="form-label me-3 w-150" >Sur Name</label>
-                                                <input type="text" class="form-control mb-0">
-                                            </div>
-                                            <div class="align-items-center d-flex mb-4">
-                                                <label class="form-label me-3 w-150" >Age</label>
-                                                <div class="d-flex w-100">
-                                                    <div class="align-items-center d-flex">
-                                                        <label class="form-label me-3" >From</label>
-                                                        <input type="text" class="form-control mb-0">
-                                                    </div>
-                                                    <div class="align-items-center d-flex ms-2">
-                                                        <label class="form-label me-3" >To</label>
-                                                        <input type="text" class="form-control mb-0">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="align-items-center d-flex mb-4">
-                                                <label class="form-label me-3 w-150" >#of Uploads</label>
-                                                <input type="text" class="form-control mb-0">
-                                            </div>
-                                            <div class="align-items-center d-flex mb-4">
-                                                <label class="form-label me-3 w-150" >User Type</label>
-                                                <input type="text" class="form-control mb-0">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="align-items-center d-flex mb-4">
-                                                <label class="form-label me-3 w-150" >#of Posts</label>
-                                                <input type="text" class="form-control mb-0">
-                                            </div>
-                                            <div class="align-items-center d-flex mb-4">
-                                                <label class="form-label me-3 w-150" >Status</label>
-                                                <input type="text" class="form-control mb-0">
-                                            </div>
-                                            <div class="align-items-center d-flex mb-4">
-                                                <label class="form-label me-3 w-150" >Country</label>
-                                                <input type="text" class="form-control mb-0">
-                                            </div>
-                                            <div class="align-items-center d-flex mb-4">
-                                                <label class="form-label me-3 w-150" >State</label>
-                                                <input type="text" class="form-control mb-0">
-                                            </div>
-                                            <div class="align-items-center d-flex mb-4">
-                                                <label class="form-label me-3 w-150" >Postcode</label>
-                                                <input type="text" class="form-control mb-0">
-                                            </div>
-                                            <div class="align-items-center d-flex mb-4">
-                                                <label class="form-label me-3 w-150" >Gender</label>
-                                                <input type="text" class="form-control mb-0">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <button class="btn blue-btn w-150">Search</button>
-                                    </div>
+                                <div class="align-items-center d-flex mb-4">
+                                    <label class="form-label me-3 w-150">Beach Name</label>
+                                    <input type="text" value="{{$beach_break[0]['beach_name']}}" class="form-control mb-0" name="beach_name" required="required">
                                 </div>
+                                <div class="align-items-center d-flex mb-4">
+                                    <label class="form-label me-3 w-150">Break Name</label>
+                                    <input type="text" class="form-control mb-0" name="break_name" required="required" value="{{$beach_break[0]['break_name']}}">
+                                </div>
+                                <div class="align-items-center d-flex mb-4">
+                                    <label class="form-label me-3 w-150">City/Region</label>
+                                    <input type="text" class="form-control mb-0" name="city_region" required="required" value="{{$beach_break[0]['city_region']}}">
+                                </div>
+                                <div class="align-items-center d-flex mb-4">
+                                    <label class="form-label me-3 w-150">State</label>
+                                    <input type="text" class="form-control mb-0" name="state" required="required" value="{{$beach_break[0]['state']}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="align-items-center d-flex mb-4">
+                                    <label class="form-label me-3 w-150">Country</label>
+                                    <input type="text" class="form-control mb-0" name="country" required="required" value="{{$beach_break[0]['country']}}">
+                                </div>
+
+                                <div class="align-items-center d-flex mb-4">
+                                    <label class="form-label me-3 w-150">Latitude</label>
+                                    <input type="text" class="form-control mb-0" name="latitude" required="required" value="{{$beach_break[0]['latitude']}}">
+                                </div>
+                                <div class="align-items-center d-flex mb-4">
+                                    <label class="form-label me-3 w-150">Longitude</label>
+                                    <input type="text" class="form-control mb-0" name="longitude" required="required" value="{{$beach_break[0]['longitude']}}">
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10 ms-auto ps-0">
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7562068.0941798575!2d-24.222649315868658!3d22.262223951848174!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94b5bf5683236db%3A0x5865a017e6166526!2sSurf%20Hub%20Cabo%20Verde!5e0!3m2!1sen!2sin!4v1667312190058!5m2!1sen!2sin"
+                                    height="200" style="border:0;width: 100%;" allowfullscreen="" loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                <input type="hidden" name="beach_break_id" value="{{$id}}" >
+                                <button type="submit" class="btn blue-btn rounded-0">Update</button>
+                                <a href="{{route('deleteBeachBreak', Crypt::encrypt($id))}}"  onclick="return confirm('Do you really want to delete this Beach/Break?')" class="btn red-btn rounded-0">Delete</a>
                             </div>
                         </div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped">
+                </form>
 
-                            <thead>
-                                <tr>
-                                    <th>User #</th>
-                                    <th>User Name</th>
-                                    <th>Name</th>
-                                    <th>Age</th>
-                                    <th>#Of Uploads</th>
-                                    <th>#Of Posts</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($users as $key => $value)
-                                <tr>
-                                    <td>{{ ($users->currentpage()-1) * $users->perpage() + $key + 1  }}</td>
-                                    <td>{{$value->user_name}}</td>
-                                    <td>{{ __(ucwords($value->user_profiles->first_name .' '.$value->user_profiles->last_name)) }}</td>
-                                    <td>45</td>
-                                    <td>231</td>
-                                    <td>221</td>
-                                    <td>{{$value->status}}</td>
-                                    <td>
-                                        <a href="{{route('adminUserDetails', Crypt::encrypt($value->id))}}" class="blue-txt">View</a>
-                                        |
-                                        <a href="{{route('adminUserEdit', Crypt::encrypt($value->id))}}" class="blue-txt">Edit</a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
             </div>
         </div>
+
     </div>
-</section>
-@endsection
+</div>

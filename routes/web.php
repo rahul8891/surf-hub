@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminDashboard;
 use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\admin\ReportController;
+use App\Http\Controllers\admin\BeachBreakController;
 use App\Http\Controllers\WelcomeFeedController;
 use App\Http\Controllers\admin\AdminPageController;
 use App\Http\Controllers\user\UserPostController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\user\MyHubController;
 use App\Http\Controllers\user\SearchController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\SpotifyAuthController;
+use App\Http\Controllers\PayPalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -143,6 +145,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/my-ads', [UserController::class, 'myAds'])->name('myAds');
     Route::post('/publish-preview-advert-post', [UserPostController::class, 'publishAdvert'])->name('publishAdvert');
     Route::get('/delete-advert-post/{id}', [UserPostController::class, 'deleteAdvert'])->name('deleteAdvert');
+    Route::get('payment-index/{id}', [PayPalController::class, 'paymentIndex'])->name('payment');
+    
 });
 
 /*********************************************************************************************
@@ -208,6 +212,11 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
 
     // Admin Dashboard Route
     Route::get('/dashboard/index', [AdminDashboard::class, 'index'])->name('adminIndex');
+    
+    Route::get('/feed', [AdminDashboard::class, 'feed'])->name('adminFeed');
+    Route::get('/left-side-counts', [AdminDashboard::class, 'leftSideCounts'])->name('leftSideCounts');
+    Route::get('/myhub', [AdminDashboard::class, 'myHub'])->name('adminMyHub');
+    Route::get('/search',[AdminDashboard::class, 'search'])->name('adminSearchPosts');
 
     // user Route
     Route::get('/users/index', [AdminUserController::class, 'index'])->name('adminUserListIndex');
@@ -218,7 +227,8 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::post('/users/update/{id}', [AdminUserController::class, 'update'])->name('adminUserUpdate');
     Route::post('/users/updateUserStatus', [AdminUserController::class, 'updateUserStatus'])->name('updateUserStatus');
     Route::post('/users/updateActivateStatus', ['as' => 'users.updateActivateStatus', 'uses' => 'UserController@updateActivateStatus', 'middleware' => ['permission:user_activate']]);
-
+    
+    
     // pages Route
     Route::get('/pages/index', [AdminPageController::class, 'index'])->name('adminPageIndex');
     Route::get('/pages/edit/{id}',  [AdminPageController::class, 'edit'])->name('adminPageEdit');
@@ -238,7 +248,16 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     
     /************ Report url **********/
     Route::get('/report/index', [ReportController::class, 'index'])->name('reportIndex');
-
+    
+    
+    
+    /*********** Beach break ******/
+    Route::get('/breachbreak/index', [BeachBreakController::class, 'index'])->name('beachBreakListIndex');
+    Route::post('/breachbreak/store', [BeachBreakController::class, 'store'])->name('beachBreakStore');
+    Route::post('/breachbreak/update', [BeachBreakController::class, 'update'])->name('beachBreakUpdate');    
+    Route::post('/breachbreak/import-excel', [BeachBreakController::class, 'importBeachBreak'])->name('importBeachBreak');    
+    Route::get('/deleteBeachBreak/{id}', [BeachBreakController::class, 'destroy'])->name('deleteBeachBreak');
+    Route::get('/get-beach-break-detail/{id}', [BeachBreakController::class, 'getBeachBreakDetail'])->name('getBeachBreakDetail');
 });
 
 /***************** S3 Bucket *************/

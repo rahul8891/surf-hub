@@ -4,40 +4,58 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="#"><img src="/img/logo.png" alt="Logo"></a>
-        <div class="navbar-nav middle-menu" style="<?php echo!Auth::user() ? 'width:250px !important;margin-right:220px;' : '' ?>">
-            <div class="{{ userActiveMenu('dashboard') }}">
-                <a class="nav-link" href="/">
+        <div class="navbar-nav admin-middle-menu" style="<?php echo!Auth::user() ? 'width:250px !important;margin-right:220px;' : '' ?>">
+            
+            <div class="{{ userActiveMenu('adminFeed') }}">
+                <a class="nav-link" href="{{ route('adminFeed') }}">
                     <span class="header-icon feed"></span>
                     <span class="align-middle">FEED</span>
                 </a>
             </div>
             @if (Auth::user())
-            <div class="{{ userActiveMenu('myhub') }}{{ userActiveMenu('myhubs') }}">
-                <a class="nav-link" href="{{ route('myhub') }}">
+            <div class="{{ userActiveMenu('adminMyHub') }}">
+                <a class="nav-link" href="{{ route('adminMyHub') }}">
                     <span class="header-icon my-hub"></span>
                     <span class="align-middle">MY HUB</span>
                 </a>
             </div>
             @endif
+            <div class="{{ userActiveMenu('adminMyHub') }}">
+                <a class="nav-link" href="{{ route('adminMyHub') }}">
+                    <span class="header-icon my-hub"></span>
+                    <span class="align-middle">DASHBOARD</span>
+                </a>
+            </div>
+            <div class="{{ userActiveMenu('adminUserListIndex') }}">
+                <a class="nav-link" href="{{ route('adminUserListIndex') }}">
+                    <span class="header-icon my-hub"></span>
+                    <span class="align-middle">USER</span>
+                </a>
+            </div>
+            <div class="{{ userActiveMenu('beachBreakListIndex') }}">
+                <a class="nav-link" href="{{ route('beachBreakListIndex') }}">
+                    <span class="header-icon my-hub"></span>
+                    <span class="align-middle">BEACH/BREAKS</span>
+                </a>
+            </div>
+            <div class="{{ userActiveMenu('adminPageIndex') }}">
+                <a class="nav-link" href="{{ route('adminPageIndex') }}">
+                    <span class="header-icon my-hub"></span>
+                    <span class="align-middle">PAGES</span>
+                </a>
+            </div>
             <div class="{{ userActiveMenu('searchPosts') }}">
-                <a class="nav-link" href="{{route('searchPosts')}}">
+                <a class="nav-link" href="{{route('adminSearchPosts')}}">
                     <span class="header-icon search"></span>
                     <span class="align-middle">SEARCH</span>
                 </a>
             </div>
             @if (Auth::user())
-            <div class="{{ userActiveMenu('upload') }}">
-                @if(Auth::user()->user_type == 'ADVERTISEMENT')
-                <a class="nav-link" href="{{route('uploadAdvertisment')}}">
+            <div class="{{ userActiveMenu('postCreate') }}">
+                <a class="nav-link" href="{{route('postCreate')}}">
                     <span class="header-icon upload"></span>
                     <span class="align-middle">UPLOAD</span>
                 </a>
-                @else
-                <a class="nav-link" href="{{route('upload')}}">
-                    <span class="header-icon upload"></span>
-                    <span class="align-middle">UPLOAD</span>
-                </a>
-                @endif
             </div>
             @endif
         </div>

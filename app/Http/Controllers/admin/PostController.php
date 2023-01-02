@@ -98,82 +98,60 @@ class PostController extends Controller
     {   
         try{
             $data = $request->all();
-            
-            $data = $request->all();   
-            if(!empty($data['other_surfer'])){
+//    echo "<pre>";print_r($data);die;
+            if (!empty($data['other_surfer'])) {
                 $data['surfer'] = $data['other_surfer'];
             } elseif (isset($data['surfer']) && ($data['surfer'] == 'Me')) {
                 $data['surfer'] = Auth::user()->user_name;
-            } 
-            
-            $imageArray = (isset($data['files'][0]) && !empty($data['files'][0]))?$data['files']:[];
-            $videoArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];
-            
-            $postArray = array_filter(array_merge($imageArray, $videoArray));
-            /* dd($request->file());
-            $imageArray=$request->file('files');
-            $videoArray=$request->file('videos');*/
-            
+            }
+
+            $postArray = (isset($data['files']) && !empty($data['files'])) ? $data['files'] : [];
+//            $videoArray$postArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];
+//            $postArray = array_filter(array_merge($imageArray, $videoArray));
+//            echo '<pre>';print_r($postArray);die;
             $rules = array(
                 'post_type' => ['required'],
-                'user_id' => ['required','numeric'],
-                'post_text' => ['nullable', 'string', 'max:255'],
-                'surf_date' => ['required', 'string'],
-                'wave_size' => ['required', 'string'],
-                'state_id' => ['nullable', 'numeric'],
-                'board_type' => ['required', 'string'],
+                'user_id' => ['required'],
+                'surf_date' => ['required'],
+                'wave_size' => ['required'],
                 'surfer' => ['required'],
-                'country_id' => ['required','numeric'],
-                'local_beach_break_id' => ['nullable', 'string'],
-                'optional_info'=>['nullable'],
+                'country_id' => ['required'],
             );
-            
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
-                return redirect()->back()->withErrors($validate)->withInput();
+                return response()->json(['error' => $validate->errors()]);
             } else {
-                /*$result = $this->posts->savePost($data, $imageArray, $videoArray, $message);
-                if($result){  
-                    return redirect()->route('postIndex')->withSuccess($message);
-                }else{
-                    return redirect()->route('postCreate')->withErrors($message);
-                }*/
-                
-                if(!empty($postArray)) {
+                if (!empty($postArray)) {
                     $fileData = [];
-                    foreach ($postArray as $value) { 
-                        $fileName = "";
-                        
+                    foreach ($postArray as $value) {
+
                         $fileType = explode('/', $value->getMimeType());
-                        
-                        if($fileType[0] == 'image'){
-                            $destinationPath = public_path('storage/images/');
+
+                        if ($fileType[0] == 'image') {
+                            $fileFolder = 'images/' . $request->user_id;
+                            // $destinationPath = public_path('storage/images/');
                         } elseif ($fileType[0] == 'video') {
-                            $destinationPath = public_path('storage/fullVideos/');
+                            $fileFolder = 'videos/' . $request->user_id;
+                            // $destinationPath = public_path('storage/fullVideos/');
                         }
-                        
-                        $timeDate = strtotime(Carbon::now()->toDateTimeString());
-                        $filenameWithExt= $value->getClientOriginalName();
-                        $extension = $value->getClientOriginalExtension();
-                        while (in_array($timeDate, $fileData)) {
-                            $timeDate = $timeDate . 1;
-                        }
-                        
-                        $fileData[] = $timeDate;
-                        $fileName = $timeDate.'.'.$extension;
-                        $value->move($destinationPath, $fileName);
-                        
-                        $result = $this->posts->savePost($data, $fileType[0], $fileName, $message);
-                    }                    
+
+                        $path = Storage::disk('s3')->put($fileFolder, $value);
+                        $filePath = Storage::disk('s3')->url($path);
+
+                        $fileArray = explode("/", $filePath);
+                        $filename = end($fileArray);
+
+                        $result = $this->posts->savePost($data, $fileType[0], $filename, $message);
+                    }
                 } else {
                     $result = $this->posts->savePost($data, '', '', $message);
                 }
-                
-                if($result){  
-                    return redirect()->route('postIndex')->withSuccess($message);
-                }else{
-                    return redirect()->route('postCreate')->withErrors($message);
+
+                if ($result) {
+                    return Redirect()->route('adminMyHub')->withSuccess($message);
+                } else {
+                    return Redirect()->route('adminMyHub')->withErrors($message);
                 }
             }
         }catch (\Exception $e){ 
