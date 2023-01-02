@@ -1504,15 +1504,20 @@ class PostService {
         return $surferRequest;
         
     }
-    public function getUploads($ids){
-        
-   
-        $uploads =  $this->upload
+    public function getUploads($ids = null){
+        if(!empty($ids)) {
+            $uploads =  $this->upload
                                   ->whereIn('post_id', $ids)                          
                                   ->orderBy('id','ASC')
                                   ->get()
                                   ->toArray();
-        return $uploads;
-        
+        } else {
+            $uploads =  $this->upload                  
+                        ->orderBy('id','ASC')
+                        ->get()
+                        ->toArray();
+        }
+   
+        return count($uploads);
     }
 }
