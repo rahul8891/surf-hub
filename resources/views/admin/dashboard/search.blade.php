@@ -2,7 +2,6 @@
 @section('content')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
 <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
-
 <section class="home-section">
 
     <div class="container">
@@ -14,7 +13,7 @@
                 </div>
             @endif
             <div class="middle-content" id="search-data">
-                @include('layouts/user/content_menu')
+                @include('layouts/admin/admin_content_menu')
 
                 @if (is_null($postsList[0]))
                 <div class="post alert text-center alert-dismissible py-5" role="alert">
@@ -95,10 +94,17 @@
                         @endif
                         @endif
                         <div class="user-bottom-options">
-                            <div class="rating-flex rating-flex-child">
+                            <div class="rating-flex">
+                            <div class="rating-flex-child">
                                 <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
                                 <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
 
+                            </div>
+                            @if($posts->is_feed == 0)    
+                            <div class="highlight">
+                                <a class="add-to-feed" data-id="{{ $posts->id }}">Add to Feed</a>
+                            </div>
+                            @endif
                             </div>
                             <div class="right-options">
                                 @if(Auth::user() && $posts->user_id != Auth::user()->id)

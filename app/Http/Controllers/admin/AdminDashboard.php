@@ -36,7 +36,7 @@ class AdminDashboard extends Controller
         $this->masterService = $masterService;
         $this->customArray = config('customarray');
 
-
+    }   
     /**
      * Display a listing of the resource.
      *
@@ -159,18 +159,16 @@ class AdminDashboard extends Controller
     
     public function leftSideCounts(Request $request) {
 //        $data = $request->all();
-        $userPosts = $this->posts->getPostByUserId(Auth::user()->id);
-
-        $postIds = array_filter(array_column($userPosts, 'id'));
         $userPostsUnknown = $this->posts->getPostUnknownByUserId();
         $postUnIds = array_filter(array_column($userPostsUnknown, 'id'));
         $surferRequests = $this->posts->getSurferRequest($postUnIds, 0);
         $reports = $this->posts->getReportsCount();
         $comments = $this->posts->getCommentsCount();
 //          echo '<pre>';        print_r($notification);die;
-        $uploads = $this->posts->getUploads($postIds);
+        $uploads = $this->posts->getUploads();
+        $totalPost = $this->posts->getPostTotal();
         $fCounts = array(
-            'posts' => count($userPosts),
+            'posts' => $totalPost,
             'surferRequest' => count($surferRequests),
             'uploads' => count($uploads),
             'reports' => $reports,

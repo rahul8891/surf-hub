@@ -132,7 +132,13 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
                                 <h2>Beach/Breaks</h2>
                                 <div>
                                     <div class="dropdown d-inline-block map-details">
-                                        <button class="btn greyBorder-btn ms-0 "><input type="file" name="beach_break_excel" id="beach_break_excel">IMPORT EXCEL</button>
+                                        <div class="btn greyBorder-btn ms-0 " >
+                                            <input type="file" name="beach_break_excel" id="beach_break_excel">
+                                            <span>IMPORT EXCEL</span> 
+                                        </div>
+<!--                                        <button class="btn greyBorder-btn ms-0 ">
+                                            <input type="file" name="beach_break_excel" id="beach_break_excel">IMPORT EXCEL
+                                        </button>-->
                                         <button class="btn greyBorder-btn ms-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">MANUALLY ADD</button>
                                         <div class="dropdown-menu ">
                                             <div class="map-header">
@@ -281,7 +287,9 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
                                             <td>{{ $value->latitude }}</td>
                                             <td>{{ $value->longitude }}</td>
                                             <td>
-                                                <a href="#">View Map</a>
+                                                
+                                                <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$value->latitude ?? ''}}" data-long="{{$value->longitude ?? ''}}" data-id="" class="locationMap">
+                                                View Map</a>
                                                 |
                                                 <a data-id="{{ $value->id }}" class="beachbreakmodal">Edit</a>
                                             </td>
@@ -297,6 +305,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
             </div>
         </section>
+@include('elements/location_popup_model')    
 @include('admin/beach_break/edit_beach_break_modal')
 <script type="text/javascript">
     

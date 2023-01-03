@@ -33,9 +33,9 @@
                 <img src="/img/small-logo.png" alt="Surfer Requests">
                 <a class="" href="{{ route('surferRequestList') }}">Surfer Requests <span class="notification" id="surferRequest"></span></a>
             </div>
-            <div class="profile-row {{ userActiveMenu('surferRequestList') }}">
+            <div class="profile-row {{ userActiveMenu('reportIndex') }}">
                 <img src="/img/flag.png" alt="Reports">
-                <a class="" href="{{ route('surferRequestList') }}">Reports <span class="notification" id="reports"></span></a>
+                <a class="" href="{{ route('reportIndex') }}">Reports <span class="notification" id="reports"></span></a>
             </div>
             <div class="profile-row">
                 <form method="POST" action="{{ route('logout') }}">

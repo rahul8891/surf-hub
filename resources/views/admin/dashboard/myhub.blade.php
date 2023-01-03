@@ -15,7 +15,7 @@
                 @include('layouts.admin.admin_left_sidebar')
             </div>
             <div class="middle-content" id="post-data">
-                @include('layouts/user/content_menu')
+                @include('layouts/admin/admin_content_menu')
                 @if (isset($postsList) && empty($postsList[0]))
                 <div class="post alert text-center alert-dismissible py-5" role="alert">
                     {{ ucWords('no matches found') }}

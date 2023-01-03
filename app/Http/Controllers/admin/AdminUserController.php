@@ -12,6 +12,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Crypt;
 use App\Services\AdminUserService;
 use App\Services\MasterService;
+use App\Services\PostService;
 use App\Traits\PasswordTrait;
 use App\Models\User;
 use App\Models\State;
@@ -45,13 +46,14 @@ class AdminUserController extends Controller
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct(AdminUserService $users,MasterService $masterService)
+    public function __construct(AdminUserService $users,MasterService $masterService, PostService $post)
     {
         $this->users = $users;
         $this->masterService = $masterService;
         $this->language = config('customarray.language'); 
         $this->accountType = config('customarray.accountType');
         $this->customArray = config('customarray');
+        $this->post = $post;
     }
 
 
@@ -60,16 +62,29 @@ class AdminUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
-        $params=$request->all();
-        $currentUserCountryId = (isset(Auth::user()->user_profiles->country_id) && !empty(Auth::user()->user_profiles->country_id))?Auth::user()->user_profiles->country_id:'';      
+    public function index(Request $request) {
+        $params = $request->all();
+        $currentUserCountryId = (isset(Auth::user()->user_profiles->country_id) && !empty(Auth::user()->user_profiles->country_id)) ? Auth::user()->user_profiles->country_id : '';
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $gender_type = config('customarray.gender_type');
         $users = $this->users->getUsersList($params);
+        $postArr = array();
+        foreach ($users as $val) {
+            $userPosts = $this->post->getPostByUserId($val->user_id);
+            $postIds = array_filter(array_column($userPosts, 'id'));
+
+            $postArr[$val->user_id]['nPost'] = count($userPosts);
+            if (!empty($postIds)) {
+                $uploads = $this->post->getUploads($postIds);
+                $postArr[$val->user_id]['nUpload'] = count($uploads);
+            } else {
+                $postArr[$val->user_id]['nUpload'] = 0;
+            }
+        }
+
         $spiner = ($users) ? true : false;
-        return view('admin/admin_user/index', compact('users','spiner','countries','states','gender_type'));     
+        return view('admin/admin_user/index', compact('users', 'spiner', 'countries', 'states', 'gender_type', 'postArr'));
     }
 
     /**

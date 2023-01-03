@@ -69,6 +69,8 @@
         <script src="{{ asset("js/croppie.js")}}"></script>
         <!-- ddslick -->
         <script type="text/javascript" src="https://cdn.rawgit.com/prashantchaudhary/ddslick/master/jquery.ddslick.min.js" ></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5JiYXogWVNPfX_L4uA0oWb-qiNSfKfYk"
+        type="text/javascript"></script>
         <!-- Bootstrap -->
         <script src="{{ asset("/js/admin_custom.js")}}"></script>
         <script src="{{ asset('/js/bootstrap.js') }}"></script>

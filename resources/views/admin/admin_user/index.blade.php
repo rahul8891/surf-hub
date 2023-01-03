@@ -147,12 +147,26 @@
                                     <td>{{ ($users->currentpage()-1) * $users->perpage() + $key + 1  }}</td>
                                     <td>{{$value->user_name}}</td>
                                     <td>{{ __(ucwords($value->first_name .' '.$value->last_name)) }}</td>
-                                    <td>45</td>
-                                    <td>231</td>
-                                    <td>221</td>
+                                        @if($value->dob && $value->dob != '0000-00-00')
+                                    <td>
+                                        {{date('Y') - date('Y',strtotime($value->dob))}}
+                                    </td>
+                                        @else
+                                        <td>--</td>
+                                        @endif
+                                    <td>{{ $postArr[$value->user_id]['nUpload'] }}</td>
+                                    <td>{{ $postArr[$value->user_id]['nPost'] }}</td>
                                     <td>{{$value->status}}</td>
                                     <td>
+                                        @if($value->user_type == 'USER')
                                         <a href="{{route('surfer-profile', Crypt::encrypt($value->user_id))}}" class="blue-txt">View</a>
+                                        @elseif($value->user_type == 'SURFER CAMP')
+                                        <a href="{{route('resort-profile', Crypt::encrypt($value->user_id))}}" class="blue-txt">View</a>
+                                        @elseif($value->user_type == 'PHOTOGRAPHER')
+                                        <a href="{{route('photographer-profile', Crypt::encrypt($value->user_id))}}" class="blue-txt">View</a>
+                                        @elseif($value->user_type == 'ADVERTISEMENT')
+                                        <a href="{{route('surfer-profile', Crypt::encrypt($value->user_id))}}" class="blue-txt">View</a>
+                                        @endif
                                         |
                                         <a href="{{route('adminUserEdit', Crypt::encrypt($value->user_id))}}" class="blue-txt">Edit</a>
                                     </td>

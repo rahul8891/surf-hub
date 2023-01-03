@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\Upload;
 use App\Models\BeachBreak;
+use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -32,6 +33,8 @@ class AdminUserService {
     protected $checkUserType;
     
     protected $beach_break;
+    
+    protected $report;
 
     public function __construct() {
         // Current user object
@@ -45,6 +48,8 @@ class AdminUserService {
         $this->userProfile = new UserProfile();
         
         $this->beach_break = new BeachBreak();
+        
+        $this->report = new Report();
 
         // get custom config file
         $this->checkUserType = config('customarray');
@@ -98,6 +103,7 @@ class AdminUserService {
 
         $userArray = $this->users
                 ->join('user_profiles', 'user_profiles.user_id', '=', 'users.id')
+                ->whereNotNull('users.user_type')
                 ->whereNull('users.deleted_at')
                 ->orderBy('users.id', 'DESC');
         if (isset($params['user_type']) && !empty($params['user_type'])) {
@@ -120,6 +126,19 @@ class AdminUserService {
         }
         if (isset($params['state_id']) && !empty($params['state_id'])) {
             $userArray->where('user_profiles.state_id', $params['state_id']);
+        }
+        if (isset($params['age_from']) && $params['age_from'] > 0 && empty($params['age_to'])) {
+            $from = date('Y-m-d', strtotime('-'.$params['age_from'].' year'));
+            $userArray->where('user_profiles.dob','<=', $from);
+        }
+        if (isset($params['age_to']) && $params['age_to'] > 0 && empty($params['age_from'])) {
+            $to = date('Y-m-d', strtotime('-'.$params['age_to'].' year'));
+            $userArray->where('user_profiles.dob','>=', $to);
+        }
+        if (isset($params['age_to']) && $params['age_to'] > 0 && isset($params['age_from']) && $params['age_from'] > 0) {
+            $from = date('Y-m-d', strtotime('-'.($params['age_from']-1).' year'));
+            $to = date('Y-m-d', strtotime('-'.$params['age_to'].' year'));
+            $userArray->whereBetween('user_profiles.dob', [$to, $from]);
         }
         if (isset($params['fName']) && !empty($params['fName'])) {
             $userArray->where('user_profiles.first_name', 'LIKE',  '%' . $params['fName'] .'%');
@@ -491,5 +510,21 @@ class AdminUserService {
         return $this->users->find($id);
     }
 
+    public function searchReport($string) {
+        if ($string != '') {
+            $report = $this->report
+                    ->join('users', 'users.id', '=', 'reports.user_id')
+                    ->join('user_profiles', 'user_profiles.user_id', '=', 'users.id')
+                    ->whereRaw("concat(first_name, ' ', last_name) like '%" . $string . "%' ")
+                    ->get();
+        } else {
+            $report = $this->report
+                            ->join('users', 'users.id', '=', 'reports.user_id')
+                            ->join('user_profiles', 'user_profiles.user_id', '=', 'users.id')
+                            ->get();
+        }
+        //dd($result);
+        return $report;
+    }
     
 }

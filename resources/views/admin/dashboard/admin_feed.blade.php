@@ -94,9 +94,11 @@
                                     <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">     
                                     <span class="avg-rating">{{ round(floatval($posts->averageRating)) }} (<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span>)</span>
                                 </div>                       
-                                <div class="highlight highlightPost">
-                                    <a  href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')">Remove</a>
-                                </div>
+                                @if($posts->is_feed == 1)    
+                            <div class="highlight">
+                                <a class="remove-from-feed" data-id="{{ $posts->id }}">Remove</a>
+                            </div>
+                            @endif
                             </div>
                             <div class="right-options">
                                 @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'] && empty($requestSurfer[$posts->id]))

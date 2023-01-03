@@ -20,8 +20,8 @@
                 </a>
             </div>
             @endif
-            <div class="{{ userActiveMenu('adminMyHub') }}">
-                <a class="nav-link" href="{{ route('adminMyHub') }}">
+            <div class="{{ userActiveMenu('adminIndex') }}">
+                <a class="nav-link" href="{{ route('adminIndex') }}">
                     <span class="header-icon my-hub"></span>
                     <span class="align-middle">DASHBOARD</span>
                 </a>
