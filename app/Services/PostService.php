@@ -1537,6 +1537,6 @@ class PostService {
                         ->toArray();
         }
    
-        return count($uploads);
+        return $uploads;
     }
 }

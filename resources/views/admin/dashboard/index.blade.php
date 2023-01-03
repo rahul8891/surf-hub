@@ -5,48 +5,7 @@
     <div class="container">
         <div class="home-row">
             <div class="my-details-div">
-                <div class="inner-my-details">
-                    <div class="my-profile text-center">
-                        <div class="profile-pic">
-                            <img src="img/profile-pic.png" alt="profile-pic">
-                            <span class="notification">6</span>
-                        </div>
-                        <div class="my-name">John Ward</div>
-                        <div class="my-comp">Surfhub <span class="blue-txt">$0</span> Earn</div>
-                    </div>
-                    <div class="profile-menu">
-                        <div class="profile-row">
-                            <a href="#">
-                                <img src="/img/new/posts.png" alt="posts">
-                                <span>Posts - <span class="blue-txt num">585</span></span>
-                            </a>
-                        </div>
-                        <div class="profile-row">
-                            <a href="#">
-                                <img src="/img/new/upload.png" alt="Uploads">
-                                <span>Uploads - <span class="blue-txt num">585</span></span>
-                            </a>
-                        </div>
-                        <div class="profile-row">
-                            <a href="#">
-                                <img src="/img/new/comments.png" alt="Comments">
-                                <span>Comments <span class="notification">6</span></span>
-                            </a>
-                        </div>
-                        <div class="profile-row">
-                            <a href="#">
-                                <img src="/img/new/small-logo.png" alt="Surfer Requests">
-                                <span>Surfer Requests <span class="notification">6</span></span>
-                            </a>
-                        </div>
-                        <div class="profile-row">
-                            <a href="#">
-                                <img src="/img/new/flag.png" alt="Reports" class="mr-2">
-                                <span>Reports <span class="notification">6</span></span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                    @include('layouts.admin.admin_left_sidebar')
             </div>
 
             <div class="middle-content">
@@ -57,7 +16,7 @@
                             <tbody>
                                 <tr>
                                     <td>Uploads</td>
-                                    <td class="value-table-col">{{ _( number_format($uploads ?? 0) ) }}</td>
+                                    <td class="value-table-col">{{ _( number_format(count($uploads) ?? 0) ) }}</td>
                                 </tr>
                                 <tr>
                                     <td>Active Surf Resorts</td>

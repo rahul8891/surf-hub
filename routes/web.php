@@ -248,6 +248,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     
     /************ Report url **********/
     Route::get('/report/index', [ReportController::class, 'index'])->name('reportIndex');
+    Route::get('/report/search', [ReportController::class, 'searchReport'])->name('searchReport');
     
     
     

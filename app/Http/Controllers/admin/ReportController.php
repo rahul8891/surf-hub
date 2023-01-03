@@ -31,9 +31,10 @@ class ReportController extends Controller
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct()
+    public function __construct(AdminUserService $users)
     {
-        
+        $this->users = $users;
+        $this->common = config('customarray.common');
     }
 
 
@@ -49,6 +50,16 @@ class ReportController extends Controller
                 }])->get();
         
         return view('admin/report/index', compact('data'));     
+    }
+    public function searchReport(Request $request) {
+
+        $serachTerm = $request->searchTerm;
+
+        $data = $this->users->searchReport($serachTerm);
+//        dd($followers);
+        $common = $this->common;
+        $view = view('elements/searchReport', compact('data', 'common'))->render();
+        return response()->json(['html' => $view]);
     }
     
 }

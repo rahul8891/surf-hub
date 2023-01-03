@@ -436,6 +436,113 @@ $(document).ready(function () {
 //        $("#break_filter").remove();
         }
     });
+    /* Beach Break Location Popup */
+function initializeMap(lat, long) {
+    var map;
+    var geocoder;
+    var latlng = new google.maps.LatLng(lat, long);
+    var myOptions =
+            {
+                zoom: 14,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                mapTypeControl: false,
+                mapTypeControlOptions: {
+                    style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
+                },
+                scrollwheel: false,
+                navigationControl: false,
+                scaleControl: false,
+                disableDoubleClickZoom: true,
+                zoomControl: true,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.RIGHT_TOP,
+                },
+            };
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    new google.maps.Marker({
+        position: latlng,
+        map: map
+    });
+
+}
+    //show map on modal
+$(document).on('click shown.bs.modal', '.locationMap', function () {
+    var id = $(this).attr("data-id");
+    var lat = $(this).attr("data-lat");
+    var long = $(this).attr("data-long");
+    initializeMap(lat, long);
+});
+
+$('#searchReports').keyup(debounce(function () {
+        // the following function will be executed every half second	
+        var keyword = $('#searchReports').val();
+//        if ($(this).val().length > 2) {
+        $.ajax({
+            type: "GET",
+            url: "/admin/report/search",
+            data: {
+                searchTerm: keyword,
+                _token: csrf_token
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                $('.list-followers').html(jsonResponse.html);
+            }
+        })
+
+//        } else {
+//            $('#local_beach_break_id').val('');
+//            $('#country_list').html("");
+//        }
+
+    }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+    
+    $('.add-to-feed').click(function () { 
+            let status =  1;
+            let postId = $(this).data('id');
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "/admin/post/status",
+                data: {'status': status, 'post_id': postId},
+                success: function (data) {
+                    if(data.statuscode == 200) {
+                        $("#errorSuccessmsg").removeClass('alert-danger');
+                        $("#errorSuccessmsg").addClass('alert-success');
+                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                    } else {
+                        $("#errorSuccessmsg").removeClass('alert-success');
+                        $("#errorSuccessmsg").addClass('alert-danger');
+                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>'); 
+                    }
+                    console.log(data.message);
+                }
+            });
+        });
+    $('.remove-from-feed').click(function () { 
+            let status =  0;
+            let postId = $(this).data('id');
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "/admin/post/status",
+                data: {'status': status, 'post_id': postId},
+                success: function (data) {
+                    if(data.statuscode == 200) {
+                        $("#errorSuccessmsg").removeClass('alert-danger');
+                        $("#errorSuccessmsg").addClass('alert-success');
+                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                    } else {
+                        $("#errorSuccessmsg").removeClass('alert-success');
+                        $("#errorSuccessmsg").addClass('alert-danger');
+                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>'); 
+                    }
+                    console.log(data.message);
+                }
+            });
+        });
+    
 });
 /**
  * remove message after time set hit

@@ -25,7 +25,7 @@
                                         <tr>
                                             <td>{{$key+1}}</td>
                                             <td>{{ __($value->title) }}</td>
-                                            <td><a class="blue-txt add-ads" data-bs-toggle="modal" data-bs-target="#editAdsModal" data-id="{{ $value->id }}">Add ads</a></td>
+                                            <td><a class="blue-txt add-ads" data-bs-toggle="modal" data-bs-target="#editAdsModal" data-id="{{ $value->id }}">Add Ads</a></td>
                                             <td><a class="blue-txt" href="{{route('adminPageEdit', Crypt::encrypt($value->id))}}">Edit</a></td>
                                         </tr>
                                         @endforeach
