@@ -271,17 +271,7 @@
 
 var bucketName = 'surfhub';
 var bucketRegion = 'ap-southeast-2';
-var IdentityPoolId = '';
-
-
-//var s3 = new AWS.S3({
-//    accessKeyId: 'AKIAWSJPCUXSFGODK7MC', 
-//    secretAccessKey: 'dlkKEceYX5HzHjX0qaUyMHOhMLuuBZDAupFDjn8',
-//    region: bucketRegion
-//});
-
-
-
+var IdentityPoolId = 'ap-southeast-2:8cbd8e79-bff8-488e-ab00-d580948e68e7';
 
 AWS.config.update({
     region: bucketRegion,
@@ -290,54 +280,33 @@ AWS.config.update({
     })
 });
 //
-//var s3 = new AWS.S3({
-//    apiVersion: 'latest',
-//    params: {Bucket: bucketName}
-//});
+var s3 = new AWS.S3({
+    apiVersion: '2006-03-01',
+    params: {Bucket: bucketName}
+});
 
 $(document).on('change', '#input_multifile', function () {
     var files = document.getElementById('input_multifile').files;
     var file = files[0];
     var fileName = file.name;
-    var filePath = 'images/' + fileName;
-    var fileUrl = 'https://' + bucketRegion + '.amazonaws.com/images/' + filePath;
+    var filePath = 'videos/' + fileName;
+    var fileUrl = 'https://d1d39qm6rlhacy.cloudfront.net/' + filePath;
     alert(fileUrl);
     
         s3.upload({
         Key: filePath,
         Body: file,
-        ACL: 'public-read'
+//        ACL: 'public-read'
     }, function (err, data) {
         if (err) {
             alert(err);
         }
         alert('Successfully Uploaded!');
     }).on('httpUploadProgress', function (progress) {
+        
 //        var uploaded = parseInt((progress.loaded * 100) / progress.total);
 //        $("progress").attr('value', uploaded);
-    });
-    
-//    var upload = new AWS.S3.ManagedUpload({
-//      service: s3,
-//      params: {
-//        Body: file,
-//        Bucket: bucketName,
-//        Key: filePath,
-//        ContentType: file.fileType,
-//      },
-//    });
-//
-//    //  start the upload
-//    upload.send(function (err, data) {
-//      if (err) {
-//        console.log("Error", err.code, err.message);
-//        alert(err.message);
-//      } else {
-//        messageSection.html("File successfully uploaded to S3");
-//      }
-//    });
-    
-    
+    }); 
 
 });
 
