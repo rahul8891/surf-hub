@@ -266,136 +266,81 @@
 @include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
 
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1.0/resumable.min.js"></script>
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.828.0.min.js"></script>
 <script type="text/javascript">
-    
-//    let browseFile = $('#input_multifileSelect2');
-//    let resumable = new Resumable({
-//        target: '{{ route('files.upload.large') }}',
-//        query:{_token:'{{ csrf_token() }}'} ,// CSRF token
-//        fileType: ['mp4','png','jpeg'],
-//        headers: {
-//            'Accept' : 'application/json'
-//        },
-//        chunkSize: (15 * 1024 * 1024),
-//        forceChunkSize: true,
-//        method: "POST",
-//        simultaneousUploads: 1,
-////        testChunks: false,
-//        throttleProgressCallbacks: 1,
-//    });
-//    
-//    resumable.assignBrowse(browseFile[0]);
-//
-//    resumable.on('fileAdded', function (file) { // trigger when file picked
-////        showProgress();
-//        resumable.upload() // to actually start uploading.
-//    });
-//
-//    resumable.on('fileProgress', function (file) { // trigger when file progress update
-////        alert(resumable.files.length);
-////        let per = Math.floor(file.progress() * 100);
-////        updateProgress(per);
-//    });
-//
-//    resumable.on('fileSuccess', function (file, response) { // trigger when file upload complete
-////        response = JSON.parse(response)
-////        var s3Val = $('#test_name').val()
-////        $('#test_name').val(response.path +', '+ s3Val);
-//        alert('success');
-//        $('#videoPreview').attr('src', response.path);
-//        $('.card-footer').show();
-//    });
-//
-//    resumable.on('fileError', function (file, response) { // trigger when there is any error
-//        alert(response)
-//    });
-//
-//
-//    let progress = $('.progress');
-//    function showProgress() {
-//        progress.find('.progress-bar').css('width', '0%');
-//        progress.find('.progress-bar').html('0%');
-//        progress.find('.progress-bar').removeClass('bg-success');
-//        progress.show();
-//    }
-//
-//    function updateProgress(value) {
-//        progress.find('.progress-bar').css('width', `${value}%`)
-//        progress.find('.progress-bar').html(`${value}%`)
-//    }
-//
-//    function hideProgress() {
-//        progress.hide();
-//    }
-    
-    
-    
-    Dropzone.options.myGreatDropzone =
-         {
-            maxFilesize: 500,
-            renameFile: function(file) {
-                var dt = new Date();
-                var time = dt.getTime();
-               return time+file.name;
-            },
-//            acceptedFiles: ".jpeg,.jpg,.png,.gif",
-            addRemoveLinks: true,
-            timeout: 0,
-            success: function(file, response) 
-            {
-                var obj = JSON.parse(response);
-                const arr = $('#postIds').val();
-                if(arr) {
-                 $('#postIds').val(arr+','+obj.data);   
-                } else {
-                 $('#postIds').val(obj.data);   
-                }
-            },
-            error: function(file, response)
-            {
-               alert(response);
-            }
-};
-    
-    var page = 1;
 
-    $(window).scroll(function () {
-        if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-            page++;
-            loadMoreData(page);
+var bucketName = 'surfhub';
+var bucketRegion = 'ap-southeast-2';
+var IdentityPoolId = '';
+
+
+//var s3 = new AWS.S3({
+//    accessKeyId: 'AKIAWSJPCUXSFGODK7MC', 
+//    secretAccessKey: 'dlkKEceYX5HzHjX0qaUyMHOhMLuuBZDAupFDjn8',
+//    region: bucketRegion
+//});
+
+
+
+
+AWS.config.update({
+    region: bucketRegion,
+    credentials: new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: IdentityPoolId
+    })
+});
+//
+//var s3 = new AWS.S3({
+//    apiVersion: 'latest',
+//    params: {Bucket: bucketName}
+//});
+
+$(document).on('change', '#input_multifile', function () {
+    var files = document.getElementById('input_multifile').files;
+    var file = files[0];
+    var fileName = file.name;
+    var filePath = 'images/' + fileName;
+    var fileUrl = 'https://' + bucketRegion + '.amazonaws.com/images/' + filePath;
+    alert(fileUrl);
+    
+        s3.upload({
+        Key: filePath,
+        Body: file,
+        ACL: 'public-read'
+    }, function (err, data) {
+        if (err) {
+            alert(err);
         }
+        alert('Successfully Uploaded!');
+    }).on('httpUploadProgress', function (progress) {
+//        var uploaded = parseInt((progress.loaded * 100) / progress.total);
+//        $("progress").attr('value', uploaded);
     });
+    
+//    var upload = new AWS.S3.ManagedUpload({
+//      service: s3,
+//      params: {
+//        Body: file,
+//        Bucket: bucketName,
+//        Key: filePath,
+//        ContentType: file.fileType,
+//      },
+//    });
+//
+//    //  start the upload
+//    upload.send(function (err, data) {
+//      if (err) {
+//        console.log("Error", err.code, err.message);
+//        alert(err.message);
+//      } else {
+//        messageSection.html("File successfully uploaded to S3");
+//      }
+//    });
+    
+    
 
-    function loadMoreData(page) {
-        var url = window.location.href;
-        if (url.indexOf("?") !== -1) {
-            var url = window.location.href + '&page=' + page;
-        } else {
-            var url = window.location.href + '?page=' + page;
-        }
+});
 
-        $.ajax({
-            url: url,
-            type: "get",
-            async: false,
-            beforeSend: function () {
-                $('.ajax-load').show();
-            }
-        })
-                .done(function (data) {
-                    if (data.html == "") {
-                        $('.ajax-load').addClass('requests');
-                        $('.ajax-load').html("No more records found");
-                        return;
-                    }
 
-                    $('.ajax-load').removeClass('requests');
-                    $('.ajax-load').hide();
-                    $("#search-data").append(data.html);
-                });
-    }
 </script>
 @endsection
