@@ -72,11 +72,11 @@
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5JiYXogWVNPfX_L4uA0oWb-qiNSfKfYk"
         type="text/javascript"></script>
         <!-- Bootstrap -->
-        <script src="{{ asset("/js/admin_custom.js")}}"></script>
-        <script src="{{ asset('/js/bootstrap.js') }}"></script>
-        <script src="{{ asset("js/jquery.validate.min.js") }}"></script>
+        <script src="{{ asset("/js/new/admin_custom.js")}}"></script>
+        <script src="{{ asset('/js/new/bootstrap.js') }}"></script>
+        <script src="{{ asset("js/new/jquery.validate.min.js") }}"></script>
         @if (Auth::user())
-        <script src="{{ asset("js/post.js")}}"></script>
+        <script src="{{ asset("js/new/post.js")}}"></script>
         @endif
         <script src="{{ asset("js/new/script.js")}}"></script>
         <script src="{{ asset("js/new/star-rating.min.js")}}"></script>    

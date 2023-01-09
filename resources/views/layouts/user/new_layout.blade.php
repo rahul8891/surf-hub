@@ -55,17 +55,17 @@
             @include('layouts/user/footer')
         </footer>
 
-        <script src="{{ asset("js/croppie.js")}}"></script>
+        <script src="{{ asset("js/new/croppie.js")}}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.5.1/jquery.nicescroll.min.js"></script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5JiYXogWVNPfX_L4uA0oWb-qiNSfKfYk"
         type="text/javascript"></script>
 
-        <script src="{{ asset('/js/bootstrap.js') }}"></script>
-        <script src="{{ asset("js/jquery.validate.min.js") }}"></script>
-        <script src="{{ asset("js/custom.js") }}"></script>
+        <script src="{{ asset('/js/new/bootstrap.js') }}"></script>
+        <script src="{{ asset("js/new/jquery.validate.min.js") }}"></script>
+        <script src="{{ asset("js/new/custom.js") }}"></script>
         @if (Auth::user())
-        <script src="{{ asset("js/post.js")}}"></script>
+        <script src="{{ asset("js/new/post.js")}}"></script>
         @endif
         <script src="{{ asset("js/new/star-rating.min.js")}}"></script>    
         <script src="{{ asset("js/new/slick.js")}}"></script>        

@@ -51,9 +51,9 @@ $(document).ready(function () {
         readVideoURL(this);
     });
 
-//    $("#input_multifile").change(function () {
-//        previewFile(this);
-//    });
+    $("#input_multifile").change(function () {
+        previewFile(this);
+    });
 
     function previewFile(input) {
         var newFileList = Array.from(input.files);
@@ -69,7 +69,7 @@ $(document).ready(function () {
                 i=0;while(_size>900){_size/=1024;i++;}
                 var exactSize = (Math.round(_size*100)/100)+' '+fSExt[i];
                 
-                $("#filesInfo").append('<div class="name-row pip"><img src="/img/video-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div>');
+                $("#filesInfo").append('<div class="name-row pip"><img src="/img/video-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo target' + index + '" data-index=' + index + '> &#x2715;</a></div>');
                 $(".remove-photo").click(function () {
                     var indexRemoved = $(this).data('index');
                     dataImage.splice(indexRemoved, 1);
@@ -85,7 +85,7 @@ $(document).ready(function () {
                 i=0;while(_size>900){_size/=1024;i++;}
                 var exactSize = (Math.round(_size*100)/100)+' '+fSExt[i];
                 
-                $("#filesInfo").append('<div class="name-row pip"><img src="/img/img-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div>');
+                $("#filesInfo").append('<div class="name-row pip"><img src="/img/img-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo target' + index + '" data-index=' + index + '> &#x2715;</a></div>');
                 $(".remove-photo").click(function () {
                     var indexRemoved = $(this).data('index');
                     dataImage.splice(indexRemoved, 1);
@@ -284,11 +284,11 @@ $(document).ready(function () {
             // Manage Form Data 
             e.preventDefault();
             var formData = new FormData(form);
-            $.each($("#input_multifile"), function (i, obj) {
-                $.each(obj.files, function (j, file) {
-                    formData.append('files[' + i + ']', file); // is the var i against the var j, because the i is incremental the j is ever 0
-                });
-            });
+//            $.each($("#input_multifile"), function (i, obj) {
+//                $.each(obj.files, function (j, file) {
+//                    formData.append('files[' + i + ']', file); // is the var i against the var j, because the i is incremental the j is ever 0
+//                });
+//            });
             $.ajax({
                 type: "POST",
                 url: "/create-post",
@@ -298,9 +298,10 @@ $(document).ready(function () {
                 cache: false,
                 contentType: false,
                 success: function (jsonResponse) {
-                    alert(jsonResponse.message);
+                    var res = JSON.parse(jsonResponse);
+                    alert(res.message);
+//                    console.log(jsonResponse);
                     location.reload();
-//                    console.log('here');
 //                    x[0].setAttribute('style', 'display: none !important');
 //                    postResult(jsonResponse);
                 }
