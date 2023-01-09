@@ -283,7 +283,12 @@ $(document).ready(function () {
 //            form.submit();
             // Manage Form Data 
             e.preventDefault();
+            $("#input_multifile").val('');
             var formData = new FormData(form);
+            
+            console.log(formData);
+//            console.log(formData.files);
+//            return false;
 //            $.each($("#input_multifile"), function (i, obj) {
 //                $.each(obj.files, function (j, file) {
 //                    formData.append('files[' + i + ']', file); // is the var i against the var j, because the i is incremental the j is ever 0
