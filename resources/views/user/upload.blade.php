@@ -26,6 +26,7 @@
                     <div class="upload-body">
                        <input type="hidden" name="post_id" id="postIds" >
                        <input type="hidden" name="user_id" value="{{auth()->user()->id ?? ''}}">
+                       <div id="progress"></div>
                         <div class="multiple-photo-upload">
                             <div class=" align-items-start d-flex flex-wrap gap-4">
                                 <div class="upload-photo-multiple" >
@@ -41,6 +42,17 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- <div id="app">  
+                            <file-uploader  
+                                    :unlimited="true"  
+                                    collection="avatars"  
+                                    name="media"  
+                                    :tokens="{{ json_encode(old('media', [])) }}"  
+                                    label="Upload Avatar"  
+                                    notes="Supported types: jpeg, png,jpg,gif"
+                                    :display-validation-messages="true"  
+                            ></file-uploader>  
+                        </div>  -->
                         <div class="mt-3">
                             <textarea class="form-control ps-2" placeholder="Share your surf experience..."
                                       style="height: 80px" name="post_text"></textarea>
@@ -267,6 +279,14 @@
 @include('layouts/models/upload_video_photo')
 
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.828.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>  
+<script src="https://cdn.jsdelivr.net/npm/laravel-file-uploader"></script>  
+<script>  
+//   new Vue({  
+//     el: '#app'  
+//   })  
+</script> 
 <script type="text/javascript">
 
 var bucketName = 'surfhub';
@@ -287,13 +307,20 @@ var s3 = new AWS.S3({
 
 $(document).on('change', '#input_multifile', function () {
     var files = document.getElementById('input_multifile').files;
-    var file = files[0];
+    var len = files.length;
+
+    for (var i = 0; i < len; i++) {
+        uploadFiles(files[i]);
+    }
+});
+
+function uploadFiles(file) {
     var fileName = file.name;
     var filePath = 'videos/' + fileName;
     var fileUrl = 'https://d1d39qm6rlhacy.cloudfront.net/' + filePath;
     alert(fileUrl);
     
-        s3.upload({
+    s3.upload({
         Key: filePath,
         Body: file,
 //        ACL: 'public-read'
@@ -301,15 +328,12 @@ $(document).on('change', '#input_multifile', function () {
         if (err) {
             alert(err);
         }
-        alert('Successfully Uploaded!');
-    }).on('httpUploadProgress', function (progress) {
-        
-//        var uploaded = parseInt((progress.loaded * 100) / progress.total);
-//        $("progress").attr('value', uploaded);
+        console.log('Successfully Uploaded!'+ data);
+    }).on('httpUploadProgress', function (progress) {        
+       var uploaded = parseInt((progress.loaded * 100) / progress.total)+'%';
+       $("#progress").html(uploaded);
     }); 
-
-});
-
+}
 
 </script>
 @endsection
