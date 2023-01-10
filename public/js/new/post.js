@@ -313,6 +313,109 @@ $(document).ready(function () {
             });
         }
     });
+    
+    $("form[name='adminCreatePostForm']").validate({
+        rules: {
+            post_type: {
+                required: true,
+            },
+            post_text: {
+                required: false,
+                noSpace: true
+            },
+            surf_date: {
+                required: true,
+            },
+            wave_size: {
+                required: true,
+            },
+            country_id: {
+                required: true
+            },
+            local_beach_break: {
+                required: true
+            },
+            state_id: {
+                required: false
+            },
+            board_type: {
+                required: false
+            },
+            surfer: {
+                required: true
+            }
+        },
+        errorPlacement: function (error, element) {
+            if (element.is(":radio")) {
+                error.insertAfter(element.parent().parent());
+            } else {
+                // This is the default behavior of the script for all fields
+                error.insertAfter(element);
+            }
+        },
+        messages: {
+            post_type: {
+                required: "Please select post type"
+            },
+            post_text: {
+                required: "Please enter post text"
+            },
+            surf_date: {
+                required: "Please select surf date"
+            },
+            wave_size: {
+                required: "Please select wave size"
+            },
+            country_id: {
+                required: "Please select your country"
+            },
+            local_beach_break: {
+                required: "Please enter beach break"
+            },
+            state_id: {
+                required: "Please select state"
+            },
+            board_type: {
+                required: "Please select board type"
+            },
+            surfer: {
+                required: "Please select surfer"
+            }
+        },
+        submitHandler: function (form, e) {
+//            form.submit();
+            // Manage Form Data 
+            e.preventDefault();
+            $("#input_multifile").val('');
+            var formData = new FormData(form);
+            
+            console.log(formData);
+//            console.log(formData.files);
+//            return false;
+//            $.each($("#input_multifile"), function (i, obj) {
+//                $.each(obj.files, function (j, file) {
+//                    formData.append('files[' + i + ']', file); // is the var i against the var j, because the i is incremental the j is ever 0
+//                });
+//            });
+            $.ajax({
+                type: "POST",
+                url: "/admin/post/store",
+//                enctype: 'multipart/form-data',
+                data: formData,
+                processData: false,
+                cache: false,
+                contentType: false,
+                success: function (jsonResponse) {
+                    var res = JSON.parse(jsonResponse);
+                    alert(res.message);
+//                    console.log(jsonResponse);
+                    location.reload();
+//                    x[0].setAttribute('style', 'display: none !important');
+//                    postResult(jsonResponse);
+                }
+            });
+        }
+    });
 
     function postResult(jsonResponse) {
         if ($.isEmptyObject(jsonResponse.error)) {

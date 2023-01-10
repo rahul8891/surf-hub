@@ -12,7 +12,7 @@
             @include('layouts.admin.admin_left_sidebar')    
 
             <div class="middle-content">
-            <form method="POST" name="createPostForm" action="{{ route('postStore') }}" class="upload-form" enctype="multipart/form-data">
+            <form method="POST" name="adminCreatePostForm" action="{{ route('postStore') }}" class="upload-form" enctype="multipart/form-data">
             @csrf
                 <div class="upload-wrap">
                     <div class="upload-header">
@@ -25,7 +25,9 @@
                     </div>
                     <div class="upload-body">
                        <input type="hidden" name="post_id" id="postIds" >
-                       <input type="hidden" name="user_id" value="{{auth()->user()->id ?? ''}}">
+                       <input type="hidden" name="imagesHid_input[]" id="imagesHid_input" >
+                        <input type="hidden" name="videosHid_input[]" id="videosHid_input" >
+                        <input type="hidden" id="user_id" name="user_id" value="{{auth()->user()->id ?? ''}}">
                         <div class="multiple-photo-upload">
                             <div class=" align-items-start d-flex flex-wrap gap-4">
                                 <div class="upload-photo-multiple" >
