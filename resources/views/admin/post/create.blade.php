@@ -12,7 +12,7 @@
             @include('layouts.admin.admin_left_sidebar')    
 
             <div class="middle-content">
-            <form class="" id="my-great-dropzone" method="POST" name="postForm" action="{{ route('postStore') }}" class="upload-form" accept-charset="utf-8" enctype="multipart/form-data">
+            <form method="POST" name="createPostForm" action="{{ route('postStore') }}" class="upload-form" enctype="multipart/form-data">
             @csrf
                 <div class="upload-wrap">
                     <div class="upload-header">
@@ -264,8 +264,77 @@
 @include('elements/location_popup_model')
 @include('layouts/models/upload_video_photo')
 
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.828.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>  
+<script src="https://cdn.jsdelivr.net/npm/laravel-file-uploader"></script>  
+
 <script type="text/javascript">
-    
+
+    var bucketName = 'surfhub';
+    var bucketRegion = 'ap-southeast-2';
+    var IdentityPoolId = 'ap-southeast-2:8cbd8e79-bff8-488e-ab00-d580948e68e7';
+
+    AWS.config.update({
+        region: bucketRegion,
+        credentials: new AWS.CognitoIdentityCredentials({
+            IdentityPoolId: IdentityPoolId
+        })
+    });
+//
+    var s3 = new AWS.S3({
+        apiVersion: '2006-03-01',
+        params: {Bucket: bucketName}
+    });
+    var imgElems = [];
+    var vidElems = [];
+    $(document).on('change', '#input_multifile', function () {
+
+        var files = document.getElementById('input_multifile').files;
+        var len = files.length;
+
+        for (var i = 0; i < len; i++) {
+            var ext = files[i].name.substring(files[i].name.lastIndexOf(".") + 1).toLowerCase();
+//        uploadFiles(files[i],ext);
+            var user_id = $('#user_id').val();
+            var timeStamp = Date.now();
+            var fileName = timeStamp + '.' + ext;
+            if (ext == "png" || ext == "jpeg" || ext == "jpg") {
+
+                imgElems.push(fileName);
+                $("<div id='progress" + timeStamp + "' class='px-4'></div>").insertAfter(".target" + i);
+                var filePath = 'images/' + user_id + '/' + fileName;
+            } else {
+                var filePath = 'videos/' + user_id + '/' + fileName;
+                vidElems.push(fileName);
+                $("<div id='progress" + timeStamp + "' class='px-4'></div>").insertAfter(".target" + i);
+            }
+            var fileUrl = 'https://d1d39qm6rlhacy.cloudfront.net/' + filePath;
+//    alert(fileUrl);
+
+            s3.upload({
+                Key: filePath,
+                Body: files[i],
+//        ACL: 'public-read'
+            }, function (err, data) {
+                if (err) {
+                    alert(err);
+                }
+                console.log('Successfully Uploaded!' + data);
+                $('#imagesHid_input').val(JSON.stringify(imgElems));
+                $('#videosHid_input').val(JSON.stringify(vidElems));
+            }).on('httpUploadProgress', function (progress) {
+                const key = progress.key.split("/");
+                const check = key[2].split(".");
+                console.log(check);
+                var uploaded = parseInt((progress.loaded * 100) / progress.total) + '%';
+                $("#progress" + check[0]).html(uploaded);
+
+            });
+
+
+        }
+    });
 
 </script>
 @endsection
