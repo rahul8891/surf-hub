@@ -12,12 +12,16 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Crypt;
 use App\Services\AdminUserService;
 use App\Services\MasterService;
+use App\Services\PostService;
 use App\Traits\PasswordTrait;
 use App\Models\User;
+use App\Models\State;
+use App\Models\BeachBreak;
 use Carbon\Carbon;
 use Closure;
 use Redirect;
 use Session;
+use Illuminate\Support\Facades\DB;
 
 
 class AdminUserController extends Controller
@@ -42,12 +46,14 @@ class AdminUserController extends Controller
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct(AdminUserService $users,MasterService $masterService)
+    public function __construct(AdminUserService $users,MasterService $masterService, PostService $post)
     {
         $this->users = $users;
         $this->masterService = $masterService;
         $this->language = config('customarray.language'); 
         $this->accountType = config('customarray.accountType');
+        $this->customArray = config('customarray');
+        $this->post = $post;
     }
 
 
@@ -56,11 +62,29 @@ class AdminUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $users = $this->users->getUsersListing();
+    public function index(Request $request) {
+        $params = $request->all();
+        $currentUserCountryId = (isset(Auth::user()->user_profiles->country_id) && !empty(Auth::user()->user_profiles->country_id)) ? Auth::user()->user_profiles->country_id : '';
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $gender_type = config('customarray.gender_type');
+        $users = $this->users->getUsersList($params);
+        $postArr = array();
+        foreach ($users as $val) {
+            $userPosts = $this->post->getPostByUserId($val->user_id);
+            $postIds = array_filter(array_column($userPosts, 'id'));
+
+            $postArr[$val->user_id]['nPost'] = count($userPosts);
+            if (!empty($postIds)) {
+                $uploads = $this->post->getUploads($postIds);
+                $postArr[$val->user_id]['nUpload'] = count($uploads);
+            } else {
+                $postArr[$val->user_id]['nUpload'] = 0;
+            }
+        }
+
         $spiner = ($users) ? true : false;
-        return view('admin/admin_user/index', compact('users','spiner'));     
+        return view('admin/admin_user/index', compact('users', 'spiner', 'countries', 'states', 'gender_type', 'postArr'));
     }
 
     /**
@@ -146,17 +170,50 @@ class AdminUserController extends Controller
     public function edit($id)
     {           
         try{
-            $users = new User();
-            $countries = $this->masterService->getCountries();
-            $language = $this->language;
-            $accountType = $this->accountType;
-            $users = $users::findOrFail(Crypt::decrypt($id));
-            $spiner = ($users) ? true : false;
+//            $users = new User();
+//            $countries = $this->masterService->getCountries();
+//            $language = $this->language;
+//            $accountType = $this->accountType;
+//            $users = $users::findOrFail(Crypt::decrypt($id));
+//            $spiner = ($users) ? true : false;
+            
+            
+        $customArray = $this->customArray;
+        $beaches = $states = $postsList = [];
+        $gender_type = config('customarray.gender_type');
+        $countries = DB::table('countries')->select('id', 'name', 'phone_code')->orderBy('name', 'asc')->get();
+        $beachBreaks = DB::table('beach_breaks')->orderBy('beach_name', 'asc')->get();
+        $language = config('customarray.language');
+        $board_type = config('customarray.board_type');
+        $accountType = config('customarray.accountType');
+        $user = $this->users->getUserDetailByID(Crypt::decrypt($id));
+        $states = State::select('id', 'name')->where('country_id',$user->user_profiles->country_id)->orderBy('name','asc')->get();
+        $beach = '';
+        if($user->user_profiles->local_beach_break_id) {
+        $beachData = BeachBreak::where('id',$user->user_profiles->local_beach_break_id)->get()->toArray();
+        $beach = $beachData[0]['beach_name'];
+        }
+//        echo '<pre>';dump($beach[0]['beach_name']);die;
+//        foreach ($user as $v) {
+//        }
+        if($user->user_type == 'USER') {
+        return view('admin/admin_user/admin_edit_surfer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','board_type','beach'));
+            
+        } elseif ($user->user_type == 'PHOTOGRAPHER') {
+        return view('admin/admin_user/admin_edit_photographer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','beach'));
+        
+        } elseif ($user->user_type == 'SURFER CAMP') {
+        return view('admin/admin_user/admin_edit_resort_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','beach'));
+        } elseif ($user->user_type == 'ADVERTISEMENT') {
+        return view('admin/admin_user/admin_edit_advertiser_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray','states'));
+        }
+            
+            
         }catch (\Exception $e){         
             throw ValidationException::withMessages([$e->getMessage()]);
         }
         
-        return view('admin/admin_user/edit', compact('users','countries','language','accountType','spiner'));
+//        return view('admin/admin_user/edit', compact('users','countries','language','accountType','spiner'));
     }
 
     /**
@@ -174,13 +231,13 @@ class AdminUserController extends Controller
                 'profile_photo_name' => ['nullable','image','mimes:jpeg,jpg,png'],            
                 'first_name' => ['required', 'string'],
                 'last_name' => ['nullable','string'],
-                'user_name' => ['required', 'string','alpha_dash'],
-                'email' => ['required', 'string', 'email', 'max:255'],
-                'phone' => ['required', 'string'],
-                'account_type'=>['required','string'],
-                'language' => ['required','string'],
-                'local_beach_break' => ['required', 'string'],
-                'country_id' => ['required','numeric'],
+//                'user_name' => ['required', 'string','alpha_dash'],
+//                'email' => ['required', 'string', 'email', 'max:255'],
+//                'phone' => ['required', 'string'],
+//                'account_type'=>['required','string'],
+//                'language' => ['required','string'],
+//                'local_beach_break' => ['required', 'string'],
+//                'country_id' => ['required','numeric'],
             );       
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {

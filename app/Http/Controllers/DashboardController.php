@@ -49,23 +49,22 @@ class DashboardController extends Controller {
 //                    ->where("status", "=", 0)
 //                    ->get();
 
-            $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
-                    ->where("surfer_requests.post_id", "=", $val['id'])
-                    ->where("surfer_requests.status", "=", 0)
-                    ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
-
+            $surferRequest = SurferRequest::where("post_id", "=", $val['id'])
+                    ->where("user_id", "=", Auth::user()->id)
+                    ->get();
             foreach ($surferRequest as $res) {
 //                echo '<pre>'; print_r($res['id']);die;
-                $requestSurfer[$val['id']]['id'] = $res['id'];
-                $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
+                $requestSurfer[$res->post_id] = $res->user_id;
             }
         }
-//        echo '<pre>'; print_r($postsList);die;
+        
         $url = url()->current();
         $usersList = $this->masterService->getAllUsers();
 
         if ($request->ajax()) {
-            $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches'))->render();
+            $data = $request->all();
+            $page = $data['page'];
+            $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches','page'))->render();
             return response()->json(['html' => $view]);
         }
         return view('user.feed', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches'));

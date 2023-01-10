@@ -83,10 +83,7 @@
     
     <script>
 
-        $('.rating').rating({
-            showClear:false, 
-            showCaption:false
-        });
+        
         $(document).ready(function() {
             $("#My-Profile").click(function() {
                 $(".profileChangePswd").toggleClass("show");

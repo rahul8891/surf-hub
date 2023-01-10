@@ -1,414 +1,323 @@
-@extends('layouts.user.user')
+@extends('layouts.user.new_layout')
 @section('content')
-@include('layouts/user/user_feed_menu')
-
 <style>
-    .imageWrap {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-    }
-
-    .imageWrap .overlay {
-        position: absolute;
-        right: 0;
-        z-index: 5;
-        background-color: lightgrey;
-        border-radius: 5px; 
+    .highlight.blue {
+        background-color: #2861f7;
+        color: #fff;
+        border-color: #2861f7;
     }
 </style>
-<link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
-<section class="postsWrap">
+
+<section class="home-section">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12" id="myhub-data-main">
-            <div class="col-lg-12 pos-rel" id="myhub-data">
-                @include('layouts/user/upload_layout')
-                @if (is_null($myHubs[0]))
-                <div class="post alert text-center alert-dismissible py-5" role="alert" id="msg">
-                    {{ ucWords('no post found') }}
+        <div class="home-row">
+            <div class="my-details-div">
+                @include('layouts.user.left_sidebar')
+            </div>
+            <div class="middle-content" id="post-data">
+                @include('layouts.user.content_menu')
+                @if (isset($postsList) && empty($postsList[0]))
+                <div class="post alert text-center alert-dismissible py-5" role="alert">
+                    {{ ucWords('no matches found') }}
                 </div>
-                @elseif (!is_null($myHubs[0]))
-                    @foreach ($myHubs as $key => $myHub)
-                <div class="post">
-                    @if($key==0)
-                    <h2>My Hub</h2>
-                    @endif
-                    <div class="inner">
-                        <div class="post-head">
-                            <div class="userDetail">
-                                @if(file_exists(asset('storage/'.$myHub->user->profile_photo_path)))
-                                    <img src="{{ asset('storage/'.$myHub->user->profile_photo_path) }}" class="profileImg" alt="">
+                @endif
+                @if (!empty($postsList))
+                @php ($c = 0)
+                @php ($i = 0)
+                @foreach ($postsList as $key => $posts)
+                <div class="news-feed">
+
+                    <div class="inner-news-feed">
+                        <div class="user-details">
+                            <div class="user-left">
+                                @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
+                                <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
                                 @else
-                                    <img src="/img/logo_small.png" class="profileImg" alt="">
+                                <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
-                                <div class="pl-3">
-                                    <h4>{{ucfirst($myHub->user->user_profiles->first_name)}} {{ucfirst($myHub->user->user_profiles->last_name)}} ( {{ (isset($myHub->user->user_name) && !empty($myHub->user->user_name))?ucfirst($myHub->user->user_name):"SurfHub" }} )</h4>
-                                    <span>{{ $myHub->beach_breaks->beach_name ?? '' }} {{ $myHub->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($myHub->surf_start_date)->format('d-m-Y')}}</span><br>
-                                    <span>{{ postedDateTime($myHub->created_at) }}</span>
+                                <div>                                                            
+                                    <p class="name"><span>{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span> </p>
+                                    <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
+                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
                                 </div>
                             </div>
+                            @if($posts->user_id != Auth::user()->id)
+                            <div class="user-right"> 
+                                <img src="/img/new/normal-user.png" alt="normal-user">
 
-                            <!-- <button href="#" class="followBtn" data-id="{{ $myHub->user_id }}" data-post_id="{{ $myHub->id }}">
-                                <img src="/img/user.png" alt=""> FOLLOW
-                            </button> -->
-                            
+                                <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
+                                    <img src="/img/new/follow-user.png"> FOLLOW
+                                </button>
+
+
+                            </div>
+                            @endif
                         </div>
-                        <p class=" description">{{$myHub->post_text}}</p>
-                                <div class="imgRatingWrap">
-                                    @if(!empty($myHub->upload->image)) 
-                                        <div class="pos-rel editBtnWrap">
-                                            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$myHub->user->id.'/'.$myHub->upload->image }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
-                                        </div>
-                                    @elseif(!empty($myHub->upload->video))
-                                        <div class="pos-rel editBtnWrap">
-                                            @if ($myHub->upload->video)
-                                            <video width="100%" preload="auto" data-setup="{}" controls  autoplay playsinline muted class="video-js" id="myImage{{$myHub->id}}">
-                                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$myHub->user->id.'/'.$myHub->upload->video }}" >    
-                                            </video>
-                                            @else
-                                            <video width="100%" preload="auto" data-setup="{}" controls  autoplay playsinline muted class="video-js" id="myImage{{$myHub->id}}">
-                                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$myHub->user->id.'/'.$myHub->upload->video }}" >    
-                                            </video>
-                                            @endif
-                                        </div>
-                                    @endif
-
-                                    <div class="ratingShareWrap">
-                                        <ul class="pl-0 mb-0 d-flex align-items-center">
-                                            <li>
-                                                <input id="rating{{$myHub->id}}" name="rating" class="rating rating-loading" data-id="{{$myHub->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($myHub->averageRating) }}">   
-                                            </li>
-                                            <li class="ratingCount">
-                                                <span id="average-rating{{$myHub->id}}">{{ round(floatval($myHub->averageRating)) }}</span>
-                                                (<span id="users-rated{{$myHub->id}}">{{ $myHub->usersRated() }}</span>)
-                                                
-                                            </li>
-                                        </ul>
-                                        <div>
-                                            <ul class="pl-0 mb-0 d-flex">
-                                                <li>
-                                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ url('/')."/postData/".$myHub->id }}">                                                
-                                                        <img src="{{ asset("/img/facebook.png") }}" alt="">
-                                                    </a> 
-                                                </li>
-                                                <li>
-                                                    <span class="divider"></span>
-                                                </li>
-                                                <li>
-                                                    <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$myHub->beach_breaks->latitude ?? ''}}" data-long="{{$myHub->beach_breaks->longitude ?? ''}}" data-id="{{$myHub->id}}" class="locationMap">
-                                                        <img src="{{ asset("/img/maps-and-flags.png") }}" alt="">
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <span class="divider"></span>
-                                                </li>
-                                                <li>
-                                                    <a onclick="openFullscreen({{ $myHub->id }});"><img src="{{ asset("/img/full_screen.png")}}"
-                                                            alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <span class="divider"></span>
-                                                </li>
-                                                <li>
-                                                <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $myHub->id }}">EDIT</a>
-                                                </li>
-                                                <li>
-                                                    <span class="divider"></span>
-                                                </li>
-                                                <li class="pos-rel">
-                                                    <a href="javascript:void(0)">INFO
-                                                        <div class="saveInfo infoHover">
-                                                            <div class="pos-rel">
-                                                                <img src="{{ asset("img/tooltipArrowDown.png") }}" alt="">
-                                                                <div class="row">
-                                                                    <div class="col-4">
-                                                                        Date
-                                                                    </div>
-                                                                    <div class="col-1 text-center">:</div>
-                                                                    <div class="col-6">
-                                                                        {{date('d-m-Y',strtotime($myHub->surf_start_date))}}
-                                                                    </div>
-                                                                    <div class="col-4">
-                                                                        Surfer
-                                                                    </div>
-                                                                    <div class="col-1 text-center">:</div>
-                                                                    <div class="col-6">
-                                                                        {{$myHub->surfer}}
-                                                                    </div>
-                                                                    <div class="col-4">
-                                                                        Posted By
-                                                                    </div>
-                                                                    <div class="col-1 text-center">:</div>
-                                                                    <div class="col-6">
-                                                                        {{ ucfirst($myHub->user->user_name) }}
-                                                                    </div>
-                                                                    <div class="col-4">
-                                                                        Beach/Break
-                                                                    </div>
-                                                                    <div class="col-1 text-center">:</div>
-                                                                    <div class="col-6">
-                                                                        {{ $myHub->beach_breaks->beach_name ?? '' }}/{{ $myHub->beach_breaks->break_name ?? '' }}
-                                                                    </div> 
-                                                                    <div class="col-4">
-                                                                        Country
-                                                                    </div>
-                                                                    <div class="col-1 text-center">:</div>
-                                                                    <div class="col-6">
-                                                                        {{$myHub->countries->name}}
-                                                                    </div>
-                                                                    <div class="col-4">
-                                                                        State
-                                                                    </div>
-                                                                    <div class="col-1 text-center">:</div>
-                                                                    <div class="col-6">
-                                                                        {{$myHub->states->name??""}}
-                                                                    </div>
-                                                                    <div class="col-4">
-                                                                        Wave Size
-                                                                    </div>
-                                                                    <div class="col-1 text-center">:</div>
-                                                                    <div class="col-6">
-                                                                        @foreach($customArray['wave_size'] as $key => $value)
-                                                                            @if($key == $myHub->wave_size)
-                                                                                {{$value}}
-                                                                            @endif
-                                                                        @endforeach
-                                                                    </div>
-                                                                    <div class="col-4">
-                                                                        Board Type
-                                                                    </div>
-                                                                    <div class="col-1 text-center">:</div>
-                                                                    <div class="col-6">
-                                                                        {{$myHub->board_type}}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li> 
-                                                <li>
-                                                    <span class="divider"></span>
-                                                </li>
-                                                <li>
-                                                    <a href="{{route('deleteUserPost', Crypt::encrypt($myHub->id))}}"  onclick="return confirm('Do you really want to delete this footage?')">DELETE</a>
-                                                </li>
-                                                <li>
-                                                    <span class="divider"></span>
-                                                </li>
-                                                <li class="pos-rel">
-                                                    @if (count($myHub->tags) >= 1)
-                                                    <div class="modal" id="postTag{{$myHub->id}}">
-                                                      <div class="modal-dialog">
-                                                        <div class="modal-content">
-
-                                                          <!-- Modal Header -->
-                                                          <div class="modal-header">
-                                                            <h4 class="modal-title">Tagged Users</h4>
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                          </div>
-
-                                                          <!-- Modal body -->
-                                                          <div class="modal-body">
-                                                            @foreach ($myHub->tags as $tags)
-                                                            <p class="comment ">
-                                                                <div class="post-head"> 
-                                                                <div class="userDetail">
-                                                                @if($tags->user->profile_photo_path)
-                                                                <img src="{{ asset('storage/'.$tags->user->profile_photo_path) }}" class="profileImg" alt="">
-                                                                @else
-                                                                <div class="profileImg no-image">
-                                                                    {{ucwords(substr($tags->user->user_profiles->first_name,0,1))}}{{ucwords(substr($tags->user->user_profiles->last_name,0,1))}}
-                                                                </div>
-                                                                @endif
-                                                                <span>{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
-                                                                </div>
-                                                            </div>
-                                                            </p>
-                                                            @endforeach
-                                                          </div>
-
-                                                          <!-- Modal footer -->
-                                                          <div class="modal-footer">
-                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                          </div>
-
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                    @endif
-                                                    <!-- <a data-toggle="modal" data-target="#postTag{{$myHub->id}}">TAG -->
-                                                    <a href="javascript:void(0)">TAG
-                                                        
-                                                        <div class="saveInfo infoHover userinfoModal">
-                                                            <div class="pos-rel">
-                                                                <img src="../../../img/tooltipArrowDown.png" alt="">
-                                                                <div class="scrollWrap">
-                                                                    @foreach ($myHub->tags->reverse() as $tags)
-                                                                    <div class="post-head">
-                                                                        <div class="userDetail">
-                                                                            <div class="imgWrap">
-                                                                            @if($tags->user->profile_photo_path)
-                                                                                <img src="{{ asset('storage/'.$tags->user->profile_photo_path) }}" class="taggedUserImg" alt="">
-                                                                                
-                                                                            @else
-                                                                                <div class="taggedUserImg no-image">
-                                                                                    {{ucwords(substr($tags->user->user_profiles->first_name,0,1))}}{{ucwords(substr($tags->user->user_profiles->last_name,0,1))}}
-                                                                                </div>
-                                                                            @endif
-                                                                            </div>
-                                                                            <span class="userName">{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>                                                                         
-                                                                        </div>
-                                                                    </div>
-                                                                    @endforeach
-                                                                </div>
-                                                                <div class="col-md-12 col-sm-4" id="tagUser">
-                                                                    <div class="selectWrap pos-rel">
-                                                                        <div class="selectWrap pos-rel">
-                                                                            <input type="text" autofocus value="{{ old('tag_user')}}" name="tag_user"
-                                                                                placeholder="@ Search user" class="form-control tag_user" required data-post_id="{{$myHub->id}}">
-                                                                                <input type="hidden" value="{{ old('user_id')}}" name="user_id"
-                                                                                id="user_id" class="form-control user_id">
-                                                                            <div class="auto-search tagSearch" id="tag_user_list{{$myHub->id}}"></div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-
-                                                            
-                                                        </div>
-                                                        
-                                                    </a>
-                                                </li>
-                                            </ul>
+                        @if(!empty($posts->upload->image))
+                        <div class="newsFeedImgVideo">
+                            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                        </div>
+                        @elseif(!empty($posts->upload->video))
+                        @if (!File::exists($posts->upload->video))
+                        <div class="newsFeedImgVideo">
+                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+                        </video>
+                        </div>    
+                        @else
+                        <div class="newsFeedImgVideo">
+                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+                        </video>
+                        </div>
+                        @endif
+                        @endif
+                        <div class="user-bottom-options">
+                            <div class="rating-flex">
+                                <div class="rating-flex-child">
+                                    <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">     
+                                    <span class="avg-rating">{{ round(floatval($posts->averageRating)) }} (<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span>)</span>
+                                </div>                       
+                                <div class="highlight highlightPost {{ (isset($posts->is_highlight) && ($posts->is_highlight == "1"))?'blue':'' }}" data-id="{{ $posts->id }}"  data-id="{{ $posts->is_highlight }}">
+                                    <span>Highlights</span>
+                                </div>
+                            </div>
+                            <div class="right-options">
+                                @if(Auth::user()->id != $posts->user_id)
+                                <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/new/save.png" alt="Save"></a>
+                                @endif
+                                @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'])
+                                <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
+                                @endif
+                                <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
+                                    <img src={{asset("/img/location.png")}} alt="Location"></a>
+                                <a onclick="openFullscreenSilder({{$posts->id}});"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
+                                <div class="d-inline-block info dropdown" title="Info">
+                                    <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <img src="/img/warning.png" alt="Info">
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="row">
+                                            <div class="col-5">Date</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">{{date('d-m-Y',strtotime($posts->surf_start_date))}}</div>
+                                            <div class="col-5">Surfer</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">{{$posts->surfer}}</div>
+                                            <div class="col-5">Posted By</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">{{ucfirst($posts->user->user_name)}}</div>
+                                            <div class="col-5">Beach/Break</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">{{$posts->beach_breaks->beach_name}}/{{$posts->beach_breaks->break_name}}</div>
+                                            <div class="col-5">Country</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">{{$posts->countries->name}}</div>
+                                            <div class="col-5">State</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">{{$posts->states->name??""}}</div>
+                                            <div class="col-5">Wave Size</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">@foreach($customArray['wave_size'] as $key => $value)
+                                                @if($key == $posts->wave_size)
+                                                {{$value}}
+                                                @endif
+                                                @endforeach</div>
+                                            <div class="col-5">Board Type</div>
+                                            <div class="col-2 text-center">:</div>
+                                            <div class="col-5">{{$posts->board_type}}</div>
                                         </div>
                                     </div>
-                                    @if (count($myHub->comments) > 0)
-                                    <div class="viewAllComments">
-                                        @if (count($myHub->comments) > 5)
-                                        <div class="modal" id="commentPopup">
-                                          <div class="modal-dialog">
-                                            <div class="modal-content">
-
-                                              <!-- Modal Header -->
-                                              <div class="modal-header">
-                                                <h4 class="modal-title">Comments</h4>
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                              </div>
-
-                                              <!-- Modal body -->
-                                              <div class="modal-body">
-                                                @foreach ($myHub->comments as $comments)
-                                                <p class="comment ">
-                                                    <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
-                                                </p>
-                                                @endforeach
-                                              </div>
-
-                                              <!-- Modal footer -->
-                                              <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                              </div>
-
+                                </div>
+                                @if(Auth::user() && $posts->user_id == Auth::user()->id)
+                                <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a>
+                                @endif
+                                <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
+                                <div class="d-inline-block tag dropdown" title="Tag">
+                                    <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <img src="/img/tag.png" alt="Tag">
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        @if (count($posts->tags) >= 1)
+                                        <div class="username-tag">
+                                            @foreach ($posts->tags as $tags)
+                                            <div class="">
+                                                @if($tags->user->profile_photo_path)
+                                                <img src="{{ asset('storage/'.$tags->user->profile_photo_path) }}" class="profileImg" alt="">
+                                                @else
+                                                <span class="initial-name">{{ucwords(substr($tags->user->user_profiles->first_name,0,1))}}{{ucwords(substr($tags->user->user_profiles->last_name,0,1))}}</span>
+                                                @endif
+                                                <span>{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
                                             </div>
-                                          </div>
+                                            @endforeach 
                                         </div>
-                                        <p class="viewCommentTxt" data-toggle="modal" data-target="#commentPopup">View all comments</p>
                                         @endif
-                                        @foreach ($myHub->comments->slice(0, 5) as $comments)
-                                        <p class="comment ">
-                                            <span>{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :</span> {{$comments->value}}
-                                        </p>
-                                        @endforeach
+                                        <div>
+                                            <input type="text" autofocus name="tag_user"
+                                                   placeholder="@ Search user" class="form-control ps-2 tag_user" required data-post_id="{{$posts->id}}">
+                                            <input type="hidden" value="{{ old('user_id')}}" name="user_id"
+                                                   id="user_id" class="form-control user_id">
+                                            <div class="auto-search tagSearch" id="tag_user_list{{$posts->id}}"></div>
+                                        </div>
                                     </div>
-                                    @endif
-                                    <div class="WriteComment">
-                                        <form role="form" method="POST" name="comment{{$myHub->id}}" action="{{ route('comment') }}">
-                                        @csrf
-                                        <input type="hidden" class="postID" name="post_id" value="{{$myHub->id}}">
-                                        <input type="hidden" name="parent_user_id" value="{{$myHub->user_id}}">
-                                        <textarea placeholder="Write a comment.." name="comment" class="commentOnPost" id="{{$myHub->id}}" style="outline: none;"></textarea>
-                                        <button type="submit" class="btn btn-info postComment" id="submitPost{{$myHub->id}}">Submit</button>
+                                </div>
+                                @if(Auth::user()->id != $posts->user_id)
+                                <div class="d-inline-block report dropdown" title="Report">
+                                    <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <img src="/img/flag.png" alt="Report">
+                                    </button>
+
+                                    <div class="dropdown-menu">
+                                        <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
+                                            @csrf    
+                                            <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
+                                            <h6 class="text-center fw-bold">Report Content</h6>
+
+                                            <div class="mb-3 form-check">
+                                                <input type="checkbox" class="form-check-input" id="incorrectInfo{{$posts->id}}" name="incorrect" value="1">
+                                                <label class="form-check-label" for="incorrectInfo{{$posts->id}}">Report Info as
+                                                    incorrect</label>
+                                            </div>
+                                            <div class="mb-3 form-check">
+                                                <input type="checkbox" class="form-check-input" name="inappropriate" value="1"
+                                                       id="incorrectContent{{$posts->id}}">
+                                                <label class="form-check-label" for="incorrectContent{{$posts->id}}">Report
+                                                    content as inappropriate</label>
+                                            </div>
+                                            <div class="mb-3 form-check">
+                                                <input type="checkbox" class="form-check-input" name="tolls" value="1" id="reportTrolls{{$posts->id}}">
+                                                <label class="form-check-label" for="reportTrolls{{$posts->id}}">Report
+                                                    tolls</label>
+                                            </div>
+                                            <div>
+                                                <textarea class="form-control ps-2" name="comments" id="{{$posts->id}}"
+                                                          placeholder="Additional Comments.."
+                                                          style="height: 80px"></textarea>
+                                            </div>
+                                            <button type="submit" id="submitReport{{$posts->id}}" class="btn blue-btn w-100">REPORT</button>
                                         </form>
                                     </div>
                                 </div>
-                        </div>
-                    </div>
-                    @endforeach
-                    @endif                    
-                    </div> 
-                    <div class=""></div>
-                    <div class="ajax-load ajax-loadBtm" style="display:none">
-                        <div class="letter-holder">
-                            <div class="load-6">
-                                <div class="letter-holder">
-                                <div class="l-1 letter">L</div>
-                                <div class="l-2 letter">o</div>
-                                <div class="l-3 letter">a</div>
-                                <div class="l-4 letter">d</div>
-                                <div class="l-5 letter">i</div>
-                                <div class="l-6 letter">n</div>
-                                <div class="l-7 letter">g</div>
-                                <div class="l-8 letter">.</div>
-                                <div class="l-9 letter">.</div>
-                                <div class="l-10 letter">.</div>
-                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="adWrap">
-                        <img src="{{ asset("/img/add1.png")}}" alt="" class="img-fluid">
+                    <div class="comments-div">
+                        <a class="" data-bs-toggle="collapse" href="#collapseExample{{$posts->id}}" role="button"
+                           aria-expanded="false" aria-controls="collapseExample{{$posts->id}}">
+                            Say Something <img src="/img/dropdwon.png" alt="dropdown" class="ms-1">
+                        </a>
+                        <div class="collapse" id="collapseExample{{$posts->id}}">
+                            <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
+                                @csrf
+                                <div class="comment-box">
+                                    <div class="form-group">
+                                        <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
+                                        <input type="hidden" name="parent_user_id" value="{{$posts->user_id}}">
+                                        <input type="text" name="comment" id="{{$posts->id}}" class="form-control ps-2 mb-0 h-100 commentOnPost">
+                                    </div>
+                                    <button type="submit" id="submitPost{{$posts->id}}" class="send-btn btn"><img src="/img/send.png"></button>
+                                </div>
+                            </form>
+                            @foreach ($posts->comments as $comments)
+                            <div class="comment-row">
+                                <span class="comment-name">{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :
+                                </span> 
+                                {{$comments->value}}
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
-                    <div class="adWrap">
-                        <img src="{{ asset("/img/add2.png")}}" alt="" class="img-fluid">
+                </div>
+                
+                @php ($c++)
+                @if($c == 5 && showAdvertisment::instance()->getAdvertisment())
+                @foreach (showAdvertisment::instance()->getAdvertisment() as $key => $requests)
+                @if($i != $key)
+                @continue
+                @endif
+                @if(!empty($requests['image']))
+                <div class="news-feed">
+                    <div class="inner-news-feed">
+                        <img src="{{ env('FILE_CLOUD_PATH').'images/'.$requests['user_id'].'/'.$requests['image'] }}" alt="" id="myImage{{$posts->id}}" class="postImg">
                     </div>
                 </div>
+                @elseif(!empty($requests['video']))
+                <div class="news-feed">
+                    <div class="inner-news-feed">
+                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$requests['user_id'].'/'.$requests['video'] }}" >    
+                        </video>
+                    </div>    
+                </div>    
+                @endif
+
+                @php ($c = 0)
+                @break 
+                @endforeach
+                @php ($i++)
+                @endif
+                
+                @endforeach
+                @endif
+                <div class="justify-content-center ajax-load" style="display:none;margin-left: 40%">
+                    <img src="/images/spiner4.gif" alt="loading" height="90px;" width="170px;">
+              </div>
+            </div>
+            
+            <div class="right-advertisement">
+                <img src="/img/new/advertisement1.png" alt="advertisement">
+                <img src="/img/new/advertisement2.png" alt="advertisement">
             </div>
         </div>
+    </div>
 </section>
 @include('elements/location_popup_model')
-@include('layouts/models/upload_video_photo')
 @include('layouts/models/edit_image_upload')
-
+@include('layouts/models/full_screen_modal')
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 	var page = 1;
-        
-	$(window).scroll(function() {
-	    if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-	        page++;
-	        loadMoreData(page);
-	    }
-	});
 
-	function loadMoreData(page) {
-            var url = window.location.href;
-            if(url.indexOf("?") !== -1) {
-                var url = window.location.href + '&page=' + page;
-            }else {
-                var url = window.location.href + '?page=' + page;
+    $(window).scroll(function() {
+        if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+            page++;
+            loadMoreData(page);
+        }
+    });
+
+    function loadMoreData(page) {
+        var url = window.location.href;
+        if(url.indexOf("?") !== -1) {
+            var url = window.location.href + '&page=' + page;
+        }else {
+            var url = window.location.href + '?page=' + page;
+        }
+        
+        $.ajax({
+            url: url,
+            type: "get",
+            async: false,
+            beforeSend: function() {
+                $('.ajax-load').show();
             }
-            
-            $.ajax({
-                url: url,
-                type: "get",
-                async: false,
-                beforeSend: function() {
-                    $('.ajax-load').delay(5000).show();
-                }
-            })
-            .done(function(data) {
-                if(data.html == "") {
-                    $('.ajax-load').html("No more records found");
-                    return;
-                }
-                
-                $("#myhub-data").append(data.html);
-            });
-	}
+        })
+        .done(function(data) {
+            if(data.html == "") {
+                $('.ajax-load').addClass('requests');
+                $('.ajax-load').html("No more records found");
+                return;
+            }
+
+            $('.ajax-load').removeClass('requests');
+            $('.ajax-load').hide();
+//            $("#post-data").insertBefore(data.html);
+            $(data.html).insertBefore(".ajax-load");
+        });
+    }
         
         $(document).on('click', '.editBtnVideo', function() {
             var id = $(this).data('id');
@@ -431,5 +340,38 @@
                 $(this).children('.userinfoModal').find('input[type="text"]').focus();
             });
         });
+        
+        function openFullscreenSilder(id) {
+            $.ajax({
+                url: '/getPostFullScreen/' + id,
+                type: "get", 
+                async: false,
+                success: function(data) {
+                    // console.log(data.html);
+                    $("#full_screen_modal").html("");
+                    $("#full_screen_modal").append(data.html);
+                    $("#full_screen_modal").modal('show');                
+                }
+            });
+        }
+
+          $(document).on('click', '.highlightPost', function (e) {
+            var that = $(this);
+            var postID = $(this).data('id');
+
+            $.ajax({
+                url: '/highlight-post/' + postID,
+                type: "get", 
+                async: false,
+                success: function(result) {
+                    if(result.data.is_highlight == "1") {
+                        that.addClass('blue');
+                    } else {
+                        that.removeClass('blue');
+                    }
+                }
+            });
+        });
+        
 </script>
 @endsection

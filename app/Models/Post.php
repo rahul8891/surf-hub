@@ -12,6 +12,7 @@ use App\Models\State;
 use App\Models\Upload;
 use App\Models\Comment;
 use App\Models\Tag;
+use App\Models\AdvertPost;
 use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
@@ -87,6 +88,14 @@ class Post extends Model
     public function states()
     {
         return $this->belongsTo(State::class, 'state_id', 'id');
+    }
+    /**
+     * Relationship between state and advert_post model    
+     * @return object
+     */
+    public function advert()
+    {
+        return $this->belongsTo(AdvertPost::class, 'id', 'post_id');
     }
 
     /**

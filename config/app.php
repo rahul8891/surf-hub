@@ -178,6 +178,7 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         ProtoneMedia\LaravelFFMpeg\Support\ServiceProvider::class,
         willvincent\Rateable\RateableServiceProvider::class,
+        Srmklive\PayPal\Providers\PayPalServiceProvider::class
     ],
 
     /*
@@ -231,6 +232,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'FFMpeg' => ProtoneMedia\LaravelFFMpeg\Support\FFMpeg::class,
         'FollowNotification' => App\Helpers\FollowNotification::class,
+        'SpotifyUserAuth' => App\Helpers\SpotifyUserAuth::class,
+        'showAdvertisment' => App\Helpers\showAdvertisment::class,
 
     ],
 

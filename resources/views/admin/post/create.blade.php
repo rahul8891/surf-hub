@@ -1,277 +1,271 @@
-@extends('layouts.admin.master')
+@extends('layouts.admin.admin_layout')
 @section('content')
-<!--/. container-fluid -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
+<link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
 
-<!-- right column -->
-<div class="col-md-12">
-    <!-- general form elements disabled -->
-    <!-- <div id="loader"></div> -->
-    <div class="card card-primary">
-        <div class="card-header">
-            <h3 class="card-title">Create New User</h3>
-        </div>
-        <!-- /.card-header -->
-        <form role="form" id="postForm" name="postForm" method="POST" action="{{ route('postStore') }}"
-            enctype="multipart/form-data">
+<section class="home-section">
+
+    <div class="container">
+        <div class="home-row">
+
+            @include('layouts.admin.admin_left_sidebar')    
+
+            <div class="middle-content">
+            <form class="" id="my-great-dropzone" method="POST" name="postForm" action="{{ route('postStore') }}" class="upload-form" accept-charset="utf-8" enctype="multipart/form-data">
             @csrf
-            <div class="card-body">
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label>Post Type <span class="required">*</span></label>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="selectWrap pos-rel">
-                                    <select class="form-control" name="post_type" required>
-                                        <option value="">{{ __('-- Select --')}}</option>
-                                        @foreach($customArray['post_type'] as $key => $value)
-                                        <option value="{{ $key }}" {{ old('post_type') == $key ? "selected" : "" }}>
-                                            {{ $value}}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('post_type')
-                                <strong class="required">{{ $message }}</strong>
-                                @enderror
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for="user_id">User<span class="required">*</span></label>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="selectWrap pos-rel">
-                                    <select class="form-control" name="user_id" required>
-                                        <option value="">{{ __('-- Select --')}}</option>
-                                        @foreach($users as $key => $value)
-                                        <option value="{{ $value->id }}"
-                                            {{ old('user_name') == $key ? "selected" : "" }}>{{ $value->user_name}}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-                <hr />
-
-                <h2 class="text-primary">Upload Video/Photo</h2>
-                <div class="form-group">
-                    <textarea placeholder="Share your surf experience....." name="post_text"
-                        class="form-control has-success" rows="3"></textarea>
-                    <hr />
-                    <div class="videoImageUploader a_videoImageUploader">
-                        <div class="upload-btn-wrapper">
-                            <button type="button" id="file_button" class="btn"><img alt="" src="{{ asset("/img/photo.png")}}"></button>
-                            <input type="file" id="input_multifileSelect1" name="files[]" accept=".png, .jpg, .jpeg, .gif"
-                                multiple />
-                        </div>
-                        <div class="upload-btn-wrapper">
-                            <button type="button" id="video_button" class="btn"><img alt="" src="{{ asset("/img/video.png")}}"></button>
-                            <input type="file" id="input_multifileSelect2" name="videos[]" accept=".mp4, .wmv, .mkv, .mpeg4" multiple />
-                        </div>
-                        <!-- <div class="upload-btn-wrapper">
-                            <button class="btn"><img alt="" src="{{ asset("/img/tag-friend.png")}}"></button>
-                        </div>  -->
-                    </div>
-                </div>
-    <hr />
-    <div class="formWrap">
-        <h2 class="text-primary">Mandatory Info</h2>
-        <div class="row">
-            <div class="col-md-6 my-2">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label>Surf Date <span class="required">*</span></label>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="selectWrap pos-rel">
-                            <input class="form-control" type="date" name="surf_date" id="datepicker"
-                                value="{{ old('surf_date') }}" required />
-                        </div>
-                        @error('surf_date')
-                        <strong class="required">{{ $message }}</strong>
-                        @enderror
-                     </div>                          
-                </div>
-
-            </div>
-            <div class="col-md-6 my-2">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label>Wave size <span class="required">*</span></label>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="selectWrap pos-rel">
-                            <select class="form-control" name="wave_size" required>
-                                <option value="">{{ __('-- Select --')}}</option>
-                                @foreach($customArray['wave_size'] as $key => $value)
-                                <option value="{{ $key }}" {{ old('wave_size') == $key ? "selected" : "" }}>{{ $value}}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        @error('wave_size')
-                        <strong class="required">{{ $message }}</strong>
-                        @enderror
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 my-2">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label>Country <span class="required">*</span></label>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="selectWrap pos-rel">
-                            <select class="form-control select2 select2-hidden-accessible country local_beach_break_id"
-                                name="country_id" id="country_id" required>
-                                <option value="">-- Country --</option>
-                                @foreach($countries as $key => $value)
-                                <option value="{{ $value->id }}"
-                                    {{ old('country_id') == $value->id ? "selected" : "" }}>
-                                    {{ $value->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('country_id')
-                            <strong class="required">{{ $message }}</strong>
-                            @enderror
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 my-2">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label class="width-102">Beach / Break <span class="required">*</span></label>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="selectWrap pos-rel">
-                            <input type="text" value="{{ old('local_beach_break')}}" name="local_beach_break"
-                                placeholder="Your Local Beach / Break" class="form-control search-box" required autocomplete="off" />
-                            <input type="hidden" value="{{ old('local_beach_break_id')}}" name="local_beach_break_id"
-                                id="local_beach_break_id" class="form-control">
-                            <div class="auto-search search1" id="country_list"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 my-2">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label>State</label>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="selectWrap pos-rel">
-                            <select class="form-control" name="state_id" id="state_id">
-                                <option selected="selected" value="">-- State --</option>
-                                @foreach($states as $key => $value)
-                                <option value="{{ $value->id }}" {{ old('state_id') == $value->id ? "selected" : "" }}>
-                                    {{ $value->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 my-2">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label>Board Type<span class="required">*</span></label>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="selectWrap pos-rel">
-                            <select class="form-control" name="board_type" required>
-                                <option value="">{{ __('-- Select --')}}</option>
-                                @foreach($customArray['board_type'] as $key => $value)
-                                <option value="{{ $key }}" {{ old('board_type') == $key ? "selected" : "" }}>{{ $value}}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        @error('board_type')
-                        <strong class="required">{{ $message }}</strong>
-                        @enderror
-                    </div>
-            </div>
-        </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label>Surfer<span class="required">*</span></label>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="d-flex">
-                            @foreach ($customArray['surfer'] as $key => $value)
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="surfer" value="{{$value}}"
-                                    id="{{$value}}" required/>
-                                <label for="{{$value}}" class="form-check-label text-primary">{{$value}}</label>
-                            </div>
+                <div class="upload-wrap">
+                    <div class="upload-header">
+                        <h2>Upload Video/Photo</h2>
+                        <select class="form-select ps-2 mb-0" name="post_type" required>
+                            @foreach($customArray['post_type'] as $key => $value)
+                            <option value="{{ $key }}">{{ $value}}</option>
                             @endforeach
-                        </div>  
-                        @error('surfer')
-                        <strong class="required">{{ $message }}</strong>
-                        @enderror
+                        </select>
                     </div>
-                </div>
-                <div class="col-md-8 col-sm-4 float-right" style="display:none" id="othersSurfer">
-                    
-                    <div class="selectWrap pos-rel">
-                        <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
-                            placeholder="@ Search other user" class="form-control other_surfer" required>
-                        <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id"
-                            id="surfer_id" class="form-control surfer_id">
-                        <div class="auto-search search2" id="other_surfer_list"></div>
-                    </div>
-                </div>
-            </div>
-        
-    </div>
-
-    <hr />
-    <div class="formWrap optionalFields">
-        <h2 class="text-primary">Optional Info</h2>
-        <div class="row">
-            <div class="col-md-6 mx-auto">
-                <div class="row">
-                    @foreach($customArray['optional'] as $key => $value)
-                    <div class="col-md-4 pl-1 pr-1 col-6">
-                        <div class="cstm-check pos-rel">
-                            <input type="checkbox" name="optional_info[]" value="{{ __($key) }}" id="{{ __($key) }}" />
-                            <label for="{{ __($key) }}" class="">{{ __($value) }}</label>
+                    <div class="upload-body">
+                       <input type="hidden" name="post_id" id="postIds" >
+                       <input type="hidden" name="user_id" value="{{auth()->user()->id ?? ''}}">
+                        <div class="multiple-photo-upload">
+                            <div class=" align-items-start d-flex flex-wrap gap-4">
+                                <div class="upload-photo-multiple" >
+                                    <div>
+                                        <img src="/img/blue-upload-large.png">
+                                        <span>Drag files to<br>upload</span>
+                                    </div>
+                                    <button class="blue-btn btn">CHOOSE FILE</button>
+                                    <input type="file" id="input_multifile" name="files[]" multiple="multiple">
+                                </div>
+                                <div class="upload-file-name" id="filesInfo">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <textarea class="form-control ps-2" placeholder="Share your surf experience..."
+                                      style="height: 80px" name="post_text"></textarea>
                         </div>
                     </div>
-                    @endforeach
+                    <div class="upload-header">
+                        <h2>Mandatory Info</h2>
+                    </div>
+                    <div class="upload-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-md-4">Surf Date<span class="red-txt">*</span></label>
+                                    <div class="col-md-8">
+                                        <input class="form-control ps-2 mb-0" type="date" name="surf_date" id="datepicker"
+                                                       value="{{ old('surf_date') }}" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-md-4">Wave Size<span class="red-txt">*</span></label>
+                                    <div class="col-md-8">
+                                        <select class="form-select ps-2 mb-0" name="wave_size" required>
+                                                    <option value="">{{ __('-- Select --')}}</option>
+                                                    @foreach($customArray['wave_size'] as $key => $value)
+                                                    <option value="{{ $key }}"
+                                                            {{ old('wave_size') == $key ? "selected" : "" }}>{{ $value}}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-md-4">Country<span class="red-txt">*</span></label>
+                                    <div class="col-md-8">
+                                        <select class="form-select ps-2 mb-0" name="country_id" id="country_id" district
+                                                    required>
+                                                <option value="">-- Country --</option>
+                                                @foreach($countries as $key => $value)
+                                                <option value="{{ $value->id }}"
+                                                        {{ ( $value->id == $currentUserCountryId) ? 'selected' : '' }}>
+                                                    {{ $value->name }}</option>
+                                                @endforeach
+                                            </select>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-md-6">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-md-4">State<span class="red-txt">*</span></label>
+                                    <div class="col-md-8">
+                                        <select class="form-select ps-2 mb-0" name="state_id" id="state_id" required>
+                                                <option selected="selected" value="">-- State --</option>
+                                                @foreach($states as $key => $value)
+                                                <option value="{{ $value->id }}"
+                                                        {{ old('state_id') == $value->id ? "selected" : "" }}>
+                                                        {{ $value->name }}</option>
+                                                @endforeach
+                                            </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                           
+                            <div class="col-md-6">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-md-4">Beach<span class="red-txt">*</span></label>
+                                    <div class="col-md-8">
+                                        <input type="text" value="{{ old('local_beach_break')}}"
+                                                  class="form-control ps-2 mb-0 search-box" name="local_beach_break" autocomplete="off" required>
+                                            <input type="hidden" name="local_beach_break_id"
+                                                   id="local_beach_break_id" class="form-control">
+                                            <div class="auto-search search1" id="country_list"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-md-4">Break<span class="red-txt">*</span></label>
+                                    <div class="col-md-8">
+                                         <select class="form-select ps-2 mb-0" name="break_id" id="break_id">
+                                                <option selected="selected" value="">-- Break --</option>
+                                         </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-md-3">Surfer<span class="red-txt">*</span></label>
+                                    <div class="col-md-8">
+                                        
+                                        @foreach ($customArray['surfer'] as $key => $value)
+                                        <div class="form-check d-inline-block me-3">
+                                            <input class="form-check-input" type="radio" name="surfer" value="{{$value}}"
+                                                   id="{{$value}}" required/>
+                                            <label for="{{$value}}" class="form-check-label">{{$value}}</label>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="othersSurfer">
+                            <div class="col-md-6">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-md-4 d-md-block d-none"></label>
+                                    <div class="col-md-8">
+<!--                                        <input type="text" class="form-control ps-2 mb-0" placeholder="Search another user">-->
+                                    <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
+                                               class="form-control ps-2 mb-0 other_surfer" placeholder="Search another user" required>
+                                        <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id"
+                                               id="surfer_id" class="form-control surfer_id">
+                                        <div class="auto-search search2" id="other_surfer_list"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="upload-header">
+                        <h2>Optional Info</h2>
+                    </div>
+                    <div class="upload-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-md-4">Fin Set Up</label>
+                                    <div class="col-md-8">
+                                        <select class="form-select ps-2 mb-0" name="fin_set_up">
+                                            <option value="">{{ __('-- Select --')}}</option>
+                                            @foreach($customArray['fin_set_up'] as $key => $value)
+                                                <option value="{{ $key }}"
+                                                        {{ old('fin_set_up') == $key ? "selected" : "" }}>{{ $value}}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-md-4">Stance</label>
+                                    <div class="col-md-8">
+                                        <select class="form-select ps-2 mb-0" name="stance">
+                                            <option value="">{{ __('-- Select --')}}</option>
+                                            <option value="GOOFY">Goofy</option>
+                                            <option value="REGULAR">Regular</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-md-2"></label>
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            @foreach($customArray['optional'] as $key => $value)
+                                <div class="col-sm-4 col-6">
+                                    <div class="form-check d-inline-block">
+                                        <input type="checkbox" class="form-check-input" name="optional_info[]" value="{{ __($key) }}"
+                                               id="{{ __($key) }}" />
+                                        <label for="{{ __($key) }}" class="">{{ __($value) }}</label>
+                                    </div>
+                                </div>
+                                @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="upload-header p-0"></div>
+                    <div class="upload-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-md-4">Board Type</label>
+                                    <div class="col-md-8">
+                                        <select class="form-select ps-2 mb-0" id="board_type" name="board_type">
+                                                <option value="">{{ __('-- Select --')}}</option>
+                                                @foreach($customArray['board_type'] as $key => $value)
+                                                <option value="{{ $key }}"
+                                                        {{ old('board_type') == $key ? "selected" : "" }}>{{ $value}}
+                                            </option>
+                                            @endforeach
+                                            </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-none" id="additional_optional_info">
+                            
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="col-md-10">
+                            <button class="btn blue-btn w-150" type="submit">UPLOAD</button>
+                        </div>
+                    </div>
                 </div>
+            </form>
             </div>
+
+            <div class="right-advertisement">
+            </div>
+
         </div>
     </div>
+</section>
 
-</div>
-<!-- /.card-body -->
-<div class="card-footer">
-    <a href="{{ route('postIndex')}}" class="btn btn-default">Back</a>
-    <button type="submit" id="next1" class="btn btn-info float-right">Submit</button>
-</div>
-</form>
-<!-- /.card-footer -->
-</div>
+@include('elements/location_popup_model')
+@include('layouts/models/upload_video_photo')
+
+<script type="text/javascript">
+    
+
+</script>
 @endsection

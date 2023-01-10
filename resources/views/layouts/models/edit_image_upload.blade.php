@@ -5,6 +5,6 @@
 }
 </style>
     
-<div class="modal fade uploadModal" id="edit_image_upload_main" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+<div class="modal fade uploadModal" id="edit_image_upload_main" role="dialog" aria-labelledby="exampleModalLabel">
     
 </div>

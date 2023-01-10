@@ -51,6 +51,52 @@ $(document).ready(function () {
         readVideoURL(this);
     });
 
+    $("#input_multifile").change(function () {
+        previewFile(this);
+    });
+
+    function previewFile(input) {
+        var newFileList = Array.from(input.files);
+        $.each(newFileList, function (index, mediaFile) {
+            var ext = mediaFile.name.substring(mediaFile.name.lastIndexOf(".") + 1).toLowerCase();
+            if (mediaFile && (ext == "mov" || ext == "mp4" || ext == "wmv" || ext == "mkv" || ext == "gif" || ext == "mpeg4")) {
+                $("#videoError").hide();
+                var f = newFileList[index]
+                dataVideo.push(input.files[index]);
+                
+                var _size = f.size;
+                var fSExt = new Array('Bytes', 'KB', 'MB', 'GB'),
+                i=0;while(_size>900){_size/=1024;i++;}
+                var exactSize = (Math.round(_size*100)/100)+' '+fSExt[i];
+                
+                $("#filesInfo").append('<div class="name-row pip"><img src="/img/video-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div>');
+                $(".remove-photo").click(function () {
+                    var indexRemoved = $(this).data('index');
+                    dataImage.splice(indexRemoved, 1);
+                    $(this).parent(".pip").remove();
+                });
+            }
+            if(mediaFile && (ext == "png" || ext == "jpeg" || ext == "jpg")) {
+              var f = newFileList[index]
+                dataVideo.push(input.files[index]);
+                
+                var _size = f.size;
+                var fSExt = new Array('Bytes', 'KB', 'MB', 'GB'),
+                i=0;while(_size>900){_size/=1024;i++;}
+                var exactSize = (Math.round(_size*100)/100)+' '+fSExt[i];
+                
+                $("#filesInfo").append('<div class="name-row pip"><img src="/img/img-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div>');
+                $(".remove-photo").click(function () {
+                    var indexRemoved = $(this).data('index');
+                    dataImage.splice(indexRemoved, 1);
+                    $(this).parent(".pip").remove();
+                });  
+            }
+            if (newFileList.length == 0) {
+                $("#videoError").show();
+            }
+        });
+    }
     function readVideoURL(input) {
         var newFileList = Array.from(input.files);
         $.each(newFileList, function (index, videoFile) {
@@ -330,4 +376,36 @@ $(document).ready(function () {
                 $("#other_surfer").val("");
         }
     });
+    
+    /************** rating js ****************************/
+    $(document).on('change', '.rating', function () {
+        var value = $(this).val();
+        var id = $(this).attr("data-id");
+
+        if (id != '') {
+            var csrf_token = $('meta[name="csrf-token"]').attr("content");
+
+            $.ajax({
+                type: "POST",
+                url: "/rating",
+                data: {
+                    value: value,
+                    id: id,
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    $('#average-rating' + id).html(Math.floor(jsonResponse['averageRating']));
+                    $('#users-rated' + id).html(Math.floor(jsonResponse['usersRated']));
+                    $(".rating-container").hide();
+                    $(".rating-container").siblings(".avg-rating").show();
+
+                }
+            });
+        } else {
+            $(this).val(value);
+        }
+    });
+    
+    
 });

@@ -9,19 +9,25 @@
     "license": "MIT",
     "require": {
         "php": "^7.3",
+        "aerni/laravel-spotify": "^1.6",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.0",
         "laravel/jetstream": "^1.3",
         "laravel/sanctum": "^2.6",
+        "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.0",
         "league/flysystem-aws-s3-v3": "^1.0",
         "livewire/livewire": "^2.0",
+        "paypal/rest-api-sdk-php": "^1.14",
         "pbmedia/laravel-ffmpeg": "^7.4",
         "php-ffmpeg/php-ffmpeg": "^0.16.0",
-        "willvincent/laravel-rateable": "^2.3",
-        "pion/laravel-chunk-upload": "^1.5"
+        "phpoffice/phpspreadsheet": "^1.26",
+        "pion/laravel-chunk-upload": "^1.5",
+        "socialiteproviders/spotify": "^4.1",
+        "srmklive/paypal": "^3.0",
+        "willvincent/laravel-rateable": "^2.3"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
@@ -48,7 +54,9 @@
         },
         "files": [
             "app/Helper/CustomHelpers.php",
-            "app/Helper/NotificationHelpers.php"
+            "app/Helper/NotificationHelpers.php",
+            "app/Helper/SpotifyHelpers.php",
+            "app/Helper/AdvertismentHelpers.php"
         ]
     },
     "autoload-dev": {

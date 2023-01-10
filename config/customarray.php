@@ -66,9 +66,17 @@ return [
         'LONGBOARD'=>'Longboard', 
         'BODYBOARD'=>'Bodyboard', 
         'KNEEBOARD'=>'Kneeboard', 
-        'BODYSURF'=>'Bodysurf',
         'SKIMBOARD'=>'Skimboard',
         'SUP'=>'SUP',
+    ],
+
+    // FIN SET UP drop down menu
+    'fin_set_up'=>[
+        'SINGLE FIN'=>'Single Fin', 
+        'TWIN FIN'=>'Twin Fin', 
+        'THRUSTER'=>'Thruster', 
+        'QUAD BONZA'=>'Quad Bonza', 
+        'FINLESS'=>'Finless'
     ],
 
 
@@ -78,7 +86,7 @@ return [
         'DROP_IN'=>'Drop In', 
         'CUTBACK'=>'Cutback', 
         'AIR'=>'Air', 
-        'BARREL_ROLL'=>'Barrel Roll', 
+        'BARREL_ROLL'=>'Barrel', 
         'SNAP'=>'Snap',
         '360'=>'360',
         'WIPEOUT'=>'Wipeout',

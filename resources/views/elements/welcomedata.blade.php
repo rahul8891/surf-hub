@@ -4,7 +4,7 @@
     <div class="inner-news-feed">
         <div class="user-details">
             <div class="user-left">
-                @if(file_exists(asset('storage/'.$posts->user->profile_photo_path)))
+                @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
                 <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
                 @else
                 <img src="/img/logo_small.png" class="profileImg" alt="">
@@ -17,22 +17,28 @@
             </div>
         </div>
         @if(!empty($posts->upload->image))
-        <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="Feed" class="w-100" id="myImage{{$posts->id}}">
+        <div class="newsFeedImgVideo">
+            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+        </div>
         @elseif(!empty($posts->upload->video))
         @if (!File::exists($posts->upload->video))
-        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-        </video>
+        <div class="newsFeedImgVideo">
+            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+            </video>
+        </div>    
         @else
-        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-        </video>
+        <div class="newsFeedImgVideo">
+            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+            </video>
+        </div>
         @endif
         @endif
         <div class="user-bottom-options">
-            <div class="rating-flex">
+            <div class="rating-flex rating-flex-child">
                 <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
-                <span class="avg-rating">{{ round(floatval($posts->averageRating)) }} (<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span>)</span>
+                <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
 
             </div>
             <div class="right-options">
@@ -116,5 +122,5 @@
     $('.rating').rating({
     showClear:false,
             showCaption:false
-            });
+    });
 </script>

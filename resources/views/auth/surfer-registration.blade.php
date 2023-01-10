@@ -19,7 +19,7 @@
             @enderror
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-md-6">
             <input type="text" class="form-control user-icon" placeholder="User Name" name="user_name" value="{{ old('user_name') }}" minlength="5"
                    maxlength="25" required autocomplete="user_name">
@@ -73,7 +73,7 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <input type="date" class="form-control calender-icon" name="dob" value="{{ old('dob') }}" minlength="3"
+            <input type="text" placeholder="DOB" onfocus="(this.type='date')" class="form-control calender-icon" name="dob" value="{{ old('dob') }}" minlength="3"
                    autocomplete="dob" required>
             @error('dob')
             <div class="text-danger">{{ $message }}</div>

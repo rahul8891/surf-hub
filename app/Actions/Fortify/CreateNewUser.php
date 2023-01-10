@@ -90,6 +90,8 @@ class CreateNewUser implements CreatesNewUsers {
 //                }
 //                if($input['camera_brand']) {
                 $userProfile->preferred_camera = !empty($input['camera_brand']) ? $input['camera_brand'] : '';
+                $userProfile->preferred_board = !empty($input['board_type']) ? $input['board_type'] : '';
+                $userProfile->postal_code = !empty($input['postal_code']) ? $input['postal_code'] : '';
 //                }
 //                if($input['company_name']) {
                 $userProfile->company_name = !empty($input['company_name']) ? $input['company_name'] : '';
@@ -108,12 +110,14 @@ class CreateNewUser implements CreatesNewUsers {
         } catch (\Exception $e) {
             if ($user->id) {
                 $this->deleteUplodedProfileImage($getImageArray['profile_photo_name']);
-                $this->deleteUplodedResortImages($input['resort_name']);
+                if (isset($input['resort_name']) && !empty($input['resort_name'])) {
+                    $this->deleteUplodedResortImages($input['resort_name']);
+                }
                 $this->deletUserRecord($user->id);
             }
-            echo '<pre>';
-            print_r($e->getMessage());
-            die;
+//            echo '<pre>';
+//            print_r($e->getMessage());
+//            die;
             throw ValidationException::withMessages([$e->getMessage()]);
         }
     }

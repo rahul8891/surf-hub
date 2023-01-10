@@ -1,52 +1,64 @@
-@extends('layouts.user.user')
+@extends('layouts.user.new_layout')
 @section('content')
-@include('layouts/user/user_feed_menu')
 
-<section class="loginWrap registrationWrap">
-    <!--<div class="">-->
-        <div class="container">
-      <!--<div class="col-md-12 col-xl-10">-->
-
-        <div class="card mask-custom">
-          <div class="card-body p-4">
-
-            <table class="table mb-0">
-              <thead>
-                <tr>
-                  <th scope="col">Surfer</th>
-                  <!--<th scope="col">Post</th>-->
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach ($surferRequest as $key => $val)  
-                <tr class="fw-normal">
-                  <td class="align-middle col-md-4">
-                    <span>{{$val['first_name'].' '.$val['last_name']}}</span>
-                  </td>
-<!--                  <td class="align-middle col-md-6">
-                    <span>Call Sam For payments</span>
-                  </td>-->
-                  
-                  <td class="align-middle col-md-2">
-                    <a href="{{ route('acceptRejectRequest', [Crypt::encrypt($val['id']),'accept']) }}" class="btn btn-info postReport">Accept</a>
-                    <a href="{{ route('acceptRejectRequest', [Crypt::encrypt($val['id']),'reject']) }}" class="btn btn-info postReport">Reject</a>
-                  </td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-
-
-          </div>
+<section class="home-section">
+    <div class="container">
+        <div class="home-row">
+            @include('layouts.user.left_sidebar')
+            <div class="middle-content">
+                <div class="surfer-wrap">
+                    <div class="surfer-header">
+                        <h2>Surfer Requests <span class="blue-txt">{{count($surferRequest)}}</span></h2>
+                    </div>
+                    <div class="surfer-body">
+                        @if (count($surferRequest) > 0)
+                        @foreach ($surferRequest as $key => $val)  
+                        <div class="surfer-request">
+                            <div class="row align-items-center gap-2 gap-xl-0">
+                                <div class="col-xl-6">
+                                    @if($val->user->profile_photo_path)
+                                    <img src="{{ asset('storage/'.$val->user->profile_photo_path) }}" alt=""
+                                         class="align-middle bg-white notification-img">
+                                    @else
+                                    <img src="/img/follower-img.png" alt=""
+                                         class="align-middle bg-white notification-img">
+                                    @endif
+                                    
+                                    <div class="d-inline-block align-middle">
+                                        <p class="name mb-0">{{$val->first_name.' '.$val->last_name }}</p>
+				        <p class="time mb-0">2 day ago</p>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 text-xl-end">
+                                    <a class="btn grey-borderBtn me-3 review" href="{{ route('surferFollowRequest', [Crypt::encrypt($val->id)]) }}" >
+                                        <img src="/img/review.png" class="me-1 align-middle" alt="REVIEW">
+                                        <span class="align-middle">REVIEW</span>
+                                    </a>
+                                    <a class="btn grey-borderBtn me-3 accept" href="{{ route('acceptRejectRequest', [Crypt::encrypt($val->id),'accept']) }}">
+                                        <img src="/img/accept.png" class="me-1 align-middle" alt="ACCEPT">
+                                        <span class="align-middle">ACCEPT</span>
+                                    </a>
+                                    <a class="btn grey-borderBtn reject" href="{{ route('acceptRejectRequest', [Crypt::encrypt($val->id),'reject']) }}">
+                                        <img src="/img/reject.png" class="me-1 align-middle" alt="REJECT">
+                                        <span class="align-middle">REJECT</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                        @else
+                        <div class="requests"><div class=""><div class="userInfo mt-2 mb-2 text-center">No record found!</div></div>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            <div class="right-advertisement">
+                <img src="img/advertisement1.png" alt="advertisement">
+                <img src="img/advertisement2.png" alt="advertisement">
+            </div>
         </div>
-
-      <!--</div>-->
     </div>
-  <!--</div>-->
 </section>
-
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 @endsection
