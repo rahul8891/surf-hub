@@ -26,8 +26,9 @@
 
         <!-- script -->
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js"></script>
         <script src="{{ asset('js/new/jquery-3.5.1.min.js') }}"></script>
+        <script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js"></script>
     </head>
 
     <body class="login-body">
@@ -72,9 +73,9 @@
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5JiYXogWVNPfX_L4uA0oWb-qiNSfKfYk"
         type="text/javascript"></script>
         <!-- Bootstrap -->
-        <script src="{{ asset("/js/new/admin_custom.js")}}"></script>
         <script src="{{ asset('/js/new/bootstrap.js') }}"></script>
         <script src="{{ asset("js/new/jquery.validate.min.js") }}"></script>
+        <script src="{{ asset("/js/new/admin_custom.js")}}"></script>
         @if (Auth::user())
         <script src="{{ asset("js/new/post.js")}}"></script>
         @endif
@@ -82,7 +83,7 @@
         <script src="{{ asset("js/new/star-rating.min.js")}}"></script>    
         <script src="{{ asset("js/new/slick.js")}}"></script>
         
-        <script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
+        
         <script>
     $(document).ready(function () {
 

@@ -356,37 +356,5 @@
         }
     });
 
-    function uploadFiles(file, ext) {
-        var user_id = $('#user_id').val();
-        var fileName = Date.now() + '.' + ext;
-        if (ext == "png" || ext == "jpeg" || ext == "jpg") {
-
-            imgElems.push(fileName);
-            var filePath = 'images/' + user_id + '/' + fileName;
-        } else {
-            var filePath = 'videos/' + user_id + '/' + fileName;
-            vidElems.push(fileName);
-        }
-        var fileUrl = 'https://d1d39qm6rlhacy.cloudfront.net/' + filePath;
-//    console.log(imgElems);
-//    console.log(vidElems);
-
-//    s3.upload({
-//        Key: filePath,
-//        Body: file,
-////        ACL: 'public-read'
-//    }, function (err, data) {
-//        if (err) {
-//            alert(err);
-//        }
-//        console.log('Successfully Uploaded!'+ data);
-//        $('#imagesHid_input').val(JSON.stringify(imgElems));
-//        $('#videosHid_input').val(JSON.stringify(vidElems));
-//    }).on('httpUploadProgress', function (progress) {        
-//       var uploaded = parseInt((progress.loaded * 100) / progress.total)+'%';
-//       $("#progress").html(uploaded);
-//    }); 
-    }
-
 </script>
 @endsection

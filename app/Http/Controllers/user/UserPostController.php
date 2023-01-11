@@ -215,16 +215,18 @@ class UserPostController extends Controller {
 //                        $result = $this->posts->savePost($data, $fileType[0], $filename, $message);
 //                    }
                 
-                if (!empty($postArray["images"])) {
-                    foreach ($postArray["images"] as $value) {
-                        $result = $this->posts->savePost($data, "image", $value, $message);
+                if (!empty($postArray["images"]) || !empty($postArray["videos"])) {
+                    if (!empty($postArray["images"])) {
+                        foreach ($postArray["images"] as $value) {
+                            $result = $this->posts->savePost($data, "image", $value, $message);
+                        }
                     }
-                } elseif(!empty($postArray["videos"])) {
-                   foreach ($postArray["videos"] as $value) {
-                        $result = $this->posts->savePost($data, "video", $value, $message);
-                    } 
-                }
-                else {
+                    if (!empty($postArray["videos"])) {
+                        foreach ($postArray["videos"] as $value) {
+                            $result = $this->posts->savePost($data, "video", $value, $message);
+                        }
+                    }
+                } else {
                     $result = $this->posts->savePost($data, '', '', $message);
                 }
                 if ($result) {
