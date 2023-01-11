@@ -163,11 +163,11 @@ class PostController extends Controller
                 }
 
                 if ($result) {
-                    return Redirect()->route('adminMyHub')->withSuccess($message);
-//                    return json_encode(array('message' => 'Post has been upload successfully')); 
+//                    return Redirect()->route('adminMyHub')->withSuccess($message);
+                    return json_encode(array('message' => 'Post has been upload successfully')); 
                 } else {
-//                    return json_encode(array('message' => 'Error')); 
-                    return Redirect()->route('adminMyHub')->withErrors($message);
+                    return json_encode(array('message' => 'Error while posting')); 
+//                    return Redirect()->route('adminMyHub')->withErrors($message);
                 }
             }
         }catch (\Exception $e){ 
