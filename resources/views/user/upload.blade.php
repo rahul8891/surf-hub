@@ -311,16 +311,17 @@
     var imgElems = [];
     var vidElems = [];
     $(document).on('change', '#input_multifile', function () {
-
         var files = document.getElementById('input_multifile').files;
         var len = files.length;
-
+       
+        
         for (var i = 0; i < len; i++) {
             var ext = files[i].name.substring(files[i].name.lastIndexOf(".") + 1).toLowerCase();
 //        uploadFiles(files[i],ext);
+            var random = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
             var user_id = $('#user_id').val();
-            var timeStamp = Date.now();
-            var fileName = timeStamp + '.' + ext;
+            var timeStamp = Date.now() + ""+ random;
+            var fileName = timeStamp +'.' + ext;
             if (ext == "png" || ext == "jpeg" || ext == "jpg") {
 
                 imgElems.push(fileName);
