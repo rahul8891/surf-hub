@@ -304,8 +304,10 @@
 //
     var s3 = new AWS.S3({
         apiVersion: '2006-03-01',
-        params: {Bucket: bucketName}
+//        httpOptions: {timeout: 0},
+        params: {Bucket: bucketName},
     });
+    var opts = {queueSize: 1, partSize: 1024 * 1024 * 10};
     var imgElems = [];
     var vidElems = [];
     $(document).on('change', '#input_multifile', function () {
@@ -331,12 +333,11 @@
             }
             var fileUrl = 'https://d1d39qm6rlhacy.cloudfront.net/' + filePath;
 //    alert(fileUrl);
-
             s3.upload({
                 Key: filePath,
                 Body: files[i],
 //        ACL: 'public-read'
-            }, function (err, data) {
+            }, opts,  function (err, data) {
                 if (err) {
                     alert(err);
                 }

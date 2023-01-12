@@ -267,7 +267,6 @@
 @include('layouts/models/upload_video_photo')
 
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.828.0.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>  
 <script src="https://cdn.jsdelivr.net/npm/laravel-file-uploader"></script>  
 
@@ -286,8 +285,10 @@
 //
     var s3 = new AWS.S3({
         apiVersion: '2006-03-01',
+//        httpOptions: {timeout: 0},
         params: {Bucket: bucketName}
     });
+    var opts = {queueSize: 1, partSize: 1024 * 1024 * 10};
     var imgElems = [];
     var vidElems = [];
     $(document).on('change', '#input_multifile', function () {
@@ -318,7 +319,7 @@
                 Key: filePath,
                 Body: files[i],
 //        ACL: 'public-read'
-            }, function (err, data) {
+            }, opts, function (err, data) {
                 if (err) {
                     alert(err);
                 }
