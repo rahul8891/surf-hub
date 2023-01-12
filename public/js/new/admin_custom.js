@@ -542,6 +542,15 @@ $('#searchReports').keyup(debounce(function () {
                 }
             });
         });
+        
+        // no space allow in text box
+    $.validator.addMethod(
+            "noSpace",
+            function (value, element) {
+                return value == "" || value.trim().length != 0;
+            },
+            "No space please and don't leave it empty"
+            );
     
 });
 /**

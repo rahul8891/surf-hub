@@ -11,7 +11,6 @@
         <!-- Font Awesome Icons -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
-        <link rel="stylesheet" type="text/css" href="{{ asset("/css/loader.css")}}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/new/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset("/css/new/croppie.css") }}" />
         <link rel="stylesheet" href="{{ asset("/css/new/star-rating.min.css") }}" />
@@ -19,15 +18,11 @@
         <link rel="stylesheet" href="{{ asset("/css/new/slick-theme.css") }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('css/new/style.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/new/media.css') }}">	
-        <link href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.css">
-
-
+        <link rel="stylesheet" type="text/css" href="{{ asset("/css/loader.css")}}">
         <!-- script -->
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js"></script>
         <script src="{{ asset('js/new/jquery-3.5.1.min.js') }}"></script>
+        <script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
     </head>
 
     <body class="login-body">
@@ -66,15 +61,16 @@
         <!-- REQUIRED SCRIPTS -->
         <!-- jQuery -->
         
-        <script src="{{ asset("js/croppie.js")}}"></script>
+        <script src="{{ asset("js/new/croppie.js")}}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.5.1/jquery.nicescroll.min.js"></script>
         <!-- ddslick -->
-        <script type="text/javascript" src="https://cdn.rawgit.com/prashantchaudhary/ddslick/master/jquery.ddslick.min.js" ></script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5JiYXogWVNPfX_L4uA0oWb-qiNSfKfYk"
         type="text/javascript"></script>
         <!-- Bootstrap -->
-        <script src="{{ asset("/js/new/admin_custom.js")}}"></script>
         <script src="{{ asset('/js/new/bootstrap.js') }}"></script>
         <script src="{{ asset("js/new/jquery.validate.min.js") }}"></script>
+        <script src="{{ asset("/js/new/admin_custom.js")}}"></script>
         @if (Auth::user())
         <script src="{{ asset("js/new/post.js")}}"></script>
         @endif
@@ -82,12 +78,12 @@
         <script src="{{ asset("js/new/star-rating.min.js")}}"></script>    
         <script src="{{ asset("js/new/slick.js")}}"></script>
         
-        <script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
+        
         <script>
     $(document).ready(function () {
 
         // input browser file
-        bsCustomFileInput.init();
+//        bsCustomFileInput.init();
         /*******************************************************************************
          *                   Image Show popup
          ********************************************************************************/
