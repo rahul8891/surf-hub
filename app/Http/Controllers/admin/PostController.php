@@ -105,9 +105,10 @@ class PostController extends Controller
                 $data['surfer'] = Auth::user()->user_name;
             }
 
-            $postArray = (isset($data['files']) && !empty($data['files'])) ? $data['files'] : [];
-//            $videoArray$postArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];
-//            $postArray = array_filter(array_merge($imageArray, $videoArray));
+//            $postArray = (isset($data['files']) && !empty($data['files'])) ? $data['files'] : [];
+            $imageArray["images"] = (isset($data['imagesHid_input'][0]) && !empty($data['imagesHid_input'][0]))?json_decode($data['imagesHid_input'][0]):[];
+            $videoArray["videos"] = (isset($data['videosHid_input'][0]) && !empty($data['videosHid_input'][0]))?json_decode($data['videosHid_input'][0]):[];
+            $postArray = array_filter(array_merge($imageArray, $videoArray));
 //            echo '<pre>';print_r($postArray);die;
             $rules = array(
                 'post_type' => ['required'],
@@ -122,36 +123,51 @@ class PostController extends Controller
                 // If validation falis redirect back to register.
                 return response()->json(['error' => $validate->errors()]);
             } else {
-                if (!empty($postArray)) {
-                    $fileData = [];
-                    foreach ($postArray as $value) {
-
-                        $fileType = explode('/', $value->getMimeType());
-
-                        if ($fileType[0] == 'image') {
-                            $fileFolder = 'images/' . $request->user_id;
-                            // $destinationPath = public_path('storage/images/');
-                        } elseif ($fileType[0] == 'video') {
-                            $fileFolder = 'videos/' . $request->user_id;
-                            // $destinationPath = public_path('storage/fullVideos/');
+//                if (!empty($postArray)) {
+//                    $fileData = [];
+//                    foreach ($postArray as $value) {
+//
+//                        $fileType = explode('/', $value->getMimeType());
+//
+//                        if ($fileType[0] == 'image') {
+//                            $fileFolder = 'images/' . $request->user_id;
+//                            // $destinationPath = public_path('storage/images/');
+//                        } elseif ($fileType[0] == 'video') {
+//                            $fileFolder = 'videos/' . $request->user_id;
+//                            // $destinationPath = public_path('storage/fullVideos/');
+//                        }
+//
+//                        $path = Storage::disk('s3')->put($fileFolder, $value);
+//                        $filePath = Storage::disk('s3')->url($path);
+//
+//                        $fileArray = explode("/", $filePath);
+//                        $filename = end($fileArray);
+//
+//                        $result = $this->posts->savePost($data, $fileType[0], $filename, $message);
+//                    }
+//                } 
+                
+                if (!empty($postArray["images"]) || !empty($postArray["videos"])) {
+                    if (!empty($postArray["images"])) {
+                        foreach ($postArray["images"] as $value) {
+                            $result = $this->posts->savePost($data, "image", $value, $message);
                         }
-
-                        $path = Storage::disk('s3')->put($fileFolder, $value);
-                        $filePath = Storage::disk('s3')->url($path);
-
-                        $fileArray = explode("/", $filePath);
-                        $filename = end($fileArray);
-
-                        $result = $this->posts->savePost($data, $fileType[0], $filename, $message);
+                    }
+                    if (!empty($postArray["videos"])) {
+                        foreach ($postArray["videos"] as $value) {
+                            $result = $this->posts->savePost($data, "video", $value, $message);
+                        }
                     }
                 } else {
                     $result = $this->posts->savePost($data, '', '', $message);
                 }
 
                 if ($result) {
-                    return Redirect()->route('adminMyHub')->withSuccess($message);
+//                    return Redirect()->route('adminMyHub')->withSuccess($message);
+                    return json_encode(array('message' => 'Post has been upload successfully')); 
                 } else {
-                    return Redirect()->route('adminMyHub')->withErrors($message);
+                    return json_encode(array('message' => 'Error while posting')); 
+//                    return Redirect()->route('adminMyHub')->withErrors($message);
                 }
             }
         }catch (\Exception $e){ 
