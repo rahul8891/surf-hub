@@ -60,13 +60,13 @@
                         @elseif(!empty($posts->upload->video))
                         @if (!File::exists($posts->upload->video))
                         <div class="newsFeedImgVideo">
-                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                        <video width="100%" preload="none" data-setup="{}" controls playsinline muted class="video-js" id="myVid{{$posts->id}}" >
                             <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
                         </video>
                         </div>    
                         @else
                         <div class="newsFeedImgVideo">
-                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                        <video width="100%" preload="none" data-setup="{}" controls playsinline muted class="video-js" id="myVid{{$posts->id}}">
                             <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
                         </video>
                         </div>
@@ -280,7 +280,9 @@
 @include('layouts/models/full_screen_modal')
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-	var page = 1;
+
+
+    var page = 1;
 
     $(window).scroll(function() {
         if($(window).scrollTop() + $(window).height() >= $(document).height()) {

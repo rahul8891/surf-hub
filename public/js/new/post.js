@@ -57,40 +57,49 @@ $(document).ready(function () {
 
     function previewFile(input) {
         var newFileList = Array.from(input.files);
+        var fLen = 0;
         $.each(newFileList, function (index, mediaFile) {
             var ext = mediaFile.name.substring(mediaFile.name.lastIndexOf(".") + 1).toLowerCase();
             if (mediaFile && (ext == "mov" || ext == "mp4" || ext == "wmv" || ext == "mkv" || ext == "gif" || ext == "mpeg4")) {
                 $("#videoError").hide();
                 var f = newFileList[index]
                 dataVideo.push(input.files[index]);
-                
+                fLen = (dataVideo.length) - 1;
                 var _size = f.size;
                 var fSExt = new Array('Bytes', 'KB', 'MB', 'GB'),
-                i=0;while(_size>900){_size/=1024;i++;}
-                var exactSize = (Math.round(_size*100)/100)+' '+fSExt[i];
-                
-                $("#filesInfo").append('<div class="name-row pip"><img src="/img/video-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo target' + index + '" data-index=' + index + '> &#x2715;</a></div>');
+                        i = 0;
+                while (_size > 900) {
+                    _size /= 1024;
+                    i++;
+                }
+                var exactSize = (Math.round(_size * 100) / 100) + ' ' + fSExt[i];
+
+                $("#filesInfo").append('<div class="name-row pip"><img src="/img/video-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span><a class="remove-photo target' + fLen + '" data-index=' + index + '> &#x2715;</a></div>');
                 $(".remove-photo").click(function () {
                     var indexRemoved = $(this).data('index');
                     dataImage.splice(indexRemoved, 1);
                     $(this).parent(".pip").remove();
                 });
             }
-            if(mediaFile && (ext == "png" || ext == "jpeg" || ext == "jpg")) {
-              var f = newFileList[index]
+            if (mediaFile && (ext == "png" || ext == "jpeg" || ext == "jpg")) {
+                var f = newFileList[index]
                 dataVideo.push(input.files[index]);
-                
+                fLen = (dataVideo.length) - 1;
                 var _size = f.size;
                 var fSExt = new Array('Bytes', 'KB', 'MB', 'GB'),
-                i=0;while(_size>900){_size/=1024;i++;}
-                var exactSize = (Math.round(_size*100)/100)+' '+fSExt[i];
-                
-                $("#filesInfo").append('<div class="name-row pip"><img src="/img/img-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo target' + index + '" data-index=' + index + '> &#x2715;</a></div>');
+                        i = 0;
+                while (_size > 900) {
+                    _size /= 1024;
+                    i++;
+                }
+                var exactSize = (Math.round(_size * 100) / 100) + ' ' + fSExt[i];
+
+                $("#filesInfo").append('<div class="name-row pip"><img src="/img/img-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span><a class="remove-photo target' + fLen + '" data-index=' + index + '> &#x2715;</a></div>');
                 $(".remove-photo").click(function () {
                     var indexRemoved = $(this).data('index');
                     dataImage.splice(indexRemoved, 1);
                     $(this).parent(".pip").remove();
-                });  
+                });
             }
             if (newFileList.length == 0) {
                 $("#videoError").show();
@@ -105,17 +114,17 @@ $(document).ready(function () {
                 $("#videoError").hide();
                 var f = newFileList[index]
                 dataVideo.push(input.files[index]);
-                
+
                 //var filename = Math.round((new Date()).getTime() / 1000) + "." + ext;               
-                
+
                 //$("#input_multifile2").val(filename);
-                
+
                 //storeFiles(videoFile, filename);
-                
+
                 $("<span class=\"pip\">" +
-                "<img style=\"width: 50px;\" class=\"imageThumb\" src=\"/img/play.png\" title=\"" + videoFile.name + "\"/>" +
-                "<br/><span class=\"remove\" data-index=\"" + index + "\"><img src=\"" + base_url + "\/img/close.png\" id=\"remove\" style=\"margin: 0px;position: inherit;padding: 0px 0px 10px 0px;top: 148px;cursor: pointer;\" width=\"14px\"></span>" +
-                "</span>").insertAfter("#filesInfo");
+                        "<img style=\"width: 50px;\" class=\"imageThumb\" src=\"/img/play.png\" title=\"" + videoFile.name + "\"/>" +
+                        "<br/><span class=\"remove\" data-index=\"" + index + "\"><img src=\"" + base_url + "\/img/close.png\" id=\"remove\" style=\"margin: 0px;position: inherit;padding: 0px 0px 10px 0px;top: 148px;cursor: pointer;\" width=\"14px\"></span>" +
+                        "</span>").insertAfter("#filesInfo");
                 $(".remove").click(function () {
                     var indexRemoved = $(this).data('index');
                     dataImage.splice(indexRemoved, 1);
@@ -130,7 +139,7 @@ $(document).ready(function () {
             }
         });
     }
-    
+
     function readImageURL(input) {
         var newFileList = Array.from(input.files);
         $.each(newFileList, function (index, img) {
@@ -139,11 +148,11 @@ $(document).ready(function () {
                 $("#imageError").hide();
                 var f = newFileList[index]
                 dataImage.push(input.files[index]);
-                
+
                 // var filename = Math.round((new Date()).getTime() / 1000) + "." + ext;               
-                
+
                 // $("#input_multifile2").val(filename);
-                
+
                 // storeFiles(videoFile, filename);
                 // dataImage[index] = newFileList[index];
                 reader = new FileReader();
@@ -202,12 +211,12 @@ $(document).ready(function () {
 
     // no space allow in text box
     /* $.validator.addMethod(
-        "noSpace",
-        function (value, element) { 
-            return value == "" || value.trim().length != 0;
-        },
-        "No space please and don't leave it empty"
-    ); */
+     "noSpace",
+     function (value, element) { 
+     return value == "" || value.trim().length != 0;
+     },
+     "No space please and don't leave it empty"
+     ); */
     /**
      * Validate post form befor submit
      */
@@ -285,7 +294,7 @@ $(document).ready(function () {
             e.preventDefault();
             $("#input_multifile").val('');
             var formData = new FormData(form);
-            
+
             console.log(formData);
 //            console.log(formData.files);
 //            return false;
@@ -313,7 +322,7 @@ $(document).ready(function () {
             });
         }
     });
-    
+
     $("form[name='adminCreatePostForm']").validate({
         rules: {
             post_type: {
@@ -388,7 +397,7 @@ $(document).ready(function () {
             e.preventDefault();
             $("#input_multifile").val('');
             var formData = new FormData(form);
-            
+
             console.log(formData);
 //            console.log(formData.files);
 //            return false;
@@ -451,7 +460,7 @@ $(document).ready(function () {
                 $("#other_surfer").val("");
         }
     });
-    
+
     /************** rating js ****************************/
     $(document).on('change', '.rating', function () {
         var value = $(this).val();
@@ -481,6 +490,25 @@ $(document).ready(function () {
             $(this).val(value);
         }
     });
-    
-    
+
+    document.querySelectorAll('.video-js').forEach((i) => {
+        if (i) {
+            const observer = new IntersectionObserver((entries) => {
+                observerCallback(entries, observer, i)
+            },
+                    {threshold: 1});
+            observer.observe(i);
+        }
+    })
+
+    const observerCallback = (entries, observer, header) => {
+        entries.forEach((entry, i) => {
+            if (entry.intersectionRatio !== 1 && !entry.paused) {
+                entry.target.pause();
+            } else {
+                entry.target.play();
+            }
+        });
+    };
+
 });
