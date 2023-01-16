@@ -23,13 +23,13 @@
         @elseif(!empty($posts->upload->video))
         @if (!File::exists($posts->upload->video))
         <div class="newsFeedImgVideo">
-            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+            <video width="100%" preload="none" data-setup="{}" controls playsinline muted class="video-js" id="myImage{{$posts->id}}">
                 <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
             </video>
         </div>    
         @else
         <div class="newsFeedImgVideo">
-            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+            <video width="100%" preload="none" data-setup="{}" controls playsinline muted class="video-js" id="myImage{{$posts->id}}">
                 <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
             </video>
         </div>
