@@ -35,6 +35,7 @@ use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Facades\Storage;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use Config;
 
 class UserPostController extends Controller {
 
@@ -671,12 +672,26 @@ class UserPostController extends Controller {
 //        echo '<pre>'; print_r($postsList);die;
         $url = url()->current();
         $usersList = $this->masterService->getAllUsers();
-
-        if ($request->ajax()) {
-            $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url'))->render();
-            return response()->json(['html' => $view]);
-        }
+//        dd($presignedUrl);
+        
         return view('user.upload', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches'));
+    }
+    public function getPresignedUrl(Request $request) {
+        
+        $data = $request->all();
+        $key = $data['filepath'];
+        $client = Storage::disk('s3')->getDriver()->getAdapter()->getClient();
+        $bucket = Config::get('filesystems.disks.s3.bucket');
+        
+        $cmd = $client->getCommand('PutObject', [
+            'Bucket' => $bucket,
+            'Key' => $key
+        ]);
+        $req = $client->createPresignedRequest($cmd, '+20 minutes');
+        $presignedUrl = (string) $req->getUri();
+
+        return response()->json($presignedUrl);
+        
     }
 
 }
