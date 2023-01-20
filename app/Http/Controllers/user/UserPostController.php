@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Storage;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Config;
+use PreSignedUrl;
 
 class UserPostController extends Controller {
 
@@ -680,15 +681,7 @@ class UserPostController extends Controller {
         
         $data = $request->all();
         $key = $data['filepath'];
-        $client = Storage::disk('s3')->getDriver()->getAdapter()->getClient();
-        $bucket = Config::get('filesystems.disks.s3.bucket');
-        
-        $cmd = $client->getCommand('PutObject', [
-            'Bucket' => $bucket,
-            'Key' => $key
-        ]);
-        $req = $client->createPresignedRequest($cmd, '+20 minutes');
-        $presignedUrl = (string) $req->getUri();
+        $presignedUrl = PreSignedUrl::getPreSignedUrl($key);
 
         return response()->json($presignedUrl);
         

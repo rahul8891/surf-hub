@@ -3,7 +3,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
 <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
-
+<style>
+ 
+</style>
 <section class="home-section">
 
     <div class="container">
@@ -40,7 +42,6 @@
                                         <input type="file" id="input_multifile" name="files[]" multiple="multiple">
                                     </div>
                                     <div class="upload-file-name" id="filesInfo">
-
                                     </div>
                                 </div>
                             </div>
@@ -261,7 +262,7 @@
                         </div>
                         <div class="row justify-content-end">
                             <div class="col-md-10">
-                                <button class="btn blue-btn w-150" type="submit">UPLOAD</button>
+                                <button id="formSubmit" class="btn blue-btn w-150" type="submit">UPLOAD</button>
                             </div>
                         </div>
                     </div>
@@ -291,8 +292,7 @@
 </script> 
 <script type="text/javascript">
 
-      var imgElems = [];
-      var vidElems = [];  
+    
 
 //    var bucketName = 'surfhub';
 //    var bucketRegion = 'ap-southeast-2';
@@ -310,7 +310,7 @@
 //        params: {Bucket: bucketName},
 //    });
 //    var opts = {queueSize: 1, partSize: 1024 * 1024 * 10};
-    
+
 //    $(document).on('change', '#input_multifile', function () {
 //        var files = document.getElementById('input_multifile').files;
 //        var len = files.length;
@@ -367,84 +367,6 @@
 //
 //        }
 //    });
-
-
-
-    $(document).on('change', '#input_multifile', function (e) {
-        e.preventDefault();
-
-        var files = document.getElementById('input_multifile').files;
-        var len = files.length;
-
-        
-        for (var i = 0; i < len; i++) {
-            var ext = files[i].name.substring(files[i].name.lastIndexOf(".") + 1).toLowerCase();
-            let fileType = files[i].type;
-            let file = files[i];
-            
-            var random = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
-            var user_id = $('#user_id').val();
-            let timeStamp = Date.now() + "" + random;
-            var fileName = timeStamp + '.' + ext;
-            if (ext == "png" || ext == "jpeg" || ext == "jpg") {
-
-                imgElems.push(fileName);
-                $("<div id='progress" + timeStamp + "' class='px-4'></div>").insertAfter(".target" + i);
-                var filePath = 'images/' + user_id + '/' + fileName;
-            } else {
-                var filePath = 'videos/' + user_id + '/' + fileName;
-                vidElems.push(fileName);
-                $("<div id='progress" + timeStamp + "' class='px-4'></div>").insertAfter(".target" + i);
-            }
-           
-            var post_url;
-            $.ajax({
-                type: "GET",
-                url: "/get-presigned-url",
-                data: {'filepath': filePath},
-                dataType: "json",
-                success: function (jsonResponse) {
-                    
-                    post_url = jsonResponse;
-
-                    $.ajax({
-                        url: post_url,
-                        type: 'PUT',
-                        datatype: 'xml',
-                        data: file,
-                        contentType : fileType,
-                        processData : false,
-                        xhr: function () {
-                            var xhr = $.ajaxSettings.xhr();
-                            if (xhr.upload) {
-                                xhr.upload.addEventListener('progress', function (event) {
-                                    console.log(event);
-                                    var percent = 0;
-                                    var position = event.loaded || event.position;
-                                    var total = event.total;
-                                    if (event.lengthComputable) {
-                                        percent = Math.ceil(position / total * 100);
-                                        $("#progress" + timeStamp).html(percent+"%");
-                                    }
-                                }, true);
-                            }
-                            return xhr;
-                        }
-                    }).done(function (response) {
-                        
-                        $('#imagesHid_input').val(JSON.stringify(imgElems));
-                        $('#videosHid_input').val(JSON.stringify(vidElems));
-                    });
-
-                }
-            });
-
-        }
-    });
-
-
-
-
 
 
 </script>
