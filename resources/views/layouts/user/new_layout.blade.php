@@ -77,11 +77,21 @@
         <script src="{{ asset("js/new/slick.js")}}"></script>  
         
         <script>
-            var videoID = $('video').attribute('id')
-            console.log("Video ID = "+videoID);
+            
 
             window.HELP_IMPROVE_VIDEOJS = false;
-            var player = videojs(videoID);
+
+            $( ".video-js" ).each(function( i ) {
+                var videoID = $(this).attr('id');
+
+                var options = {};
+
+                var player = videojs(videoID, options, function onPlayerReady() {
+                    // In this context, `this` is the player that was created by Video.js.
+                    this.stop();
+                });
+            });
+            
         </script>
 
         <script>

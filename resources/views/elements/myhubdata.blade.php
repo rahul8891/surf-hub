@@ -218,6 +218,22 @@
 @endif
 @endforeach
 
+<script>
+    window.HELP_IMPROVE_VIDEOJS = false;
+
+    $( "video" ).each(function( i ) {
+        var videoID = $(this).attr('id');
+
+        var options = {};
+
+        var player = videojs(videoID, options, function onPlayerReady() {
+            // In this context, `this` is the player that was created by Video.js.
+            this.stop();
+        });
+    });
+    
+</script>
+
 <script type="text/javascript">
     $('.rating').rating({
     showClear:false,
