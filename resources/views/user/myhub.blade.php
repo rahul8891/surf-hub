@@ -61,15 +61,15 @@
                         @if (!File::exists($posts->upload->video))
                         <div class="newsFeedImgVideo">
                         <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                            <source src="{{ 'http://3.26.158.209:8081/s3/videos/'.$posts->user->id.'/'.$posts->upload->video }}/playlist.m3u8" type="application/x-mpegURL">    
-	                    <!-- <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" > -->
+                            <source src="https://d1d39qm6rlhacy.cloudfront.net/hls/hls/master.m3u8" type="application/x-mpegURL">    
+	                        <!-- <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" > -->
                         </video>
                         </div>    
                         @else
                         <div class="newsFeedImgVideo">
                         <video width="100%" preload="none" data-setup="{}" controls playsinline muted class="video-js" id="myVid{{$posts->id}}">
                             <!-- <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >     -->
-                            <source src="{{ 'http://3.26.158.209:8081/s3/videos/'.$posts->user->id.'/'.$posts->upload->video }}/playlist.m3u8" type="application/x-mpegURL"> 
+                            <source src="https://d1d39qm6rlhacy.cloudfront.net/hls/hls/master.m3u8" type="application/x-mpegURL"> 
                         </video>
                         </div>
                         @endif
