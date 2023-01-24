@@ -68,9 +68,9 @@
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5JiYXogWVNPfX_L4uA0oWb-qiNSfKfYk"
         type="text/javascript"></script>
         <script src="https://vjs.zencdn.net/5.19.2/video.js"></script>
-        <script src="{{ asset('/hls_main/js/hls.min.js?v=v0.9.1') }}"></script>
-        <script src="{{ asset('/hls_main/js/videojs5-hlsjs-source-handler.min.js?v=0.3.1') }}"></script>
-        <script src="{{ asset('/hls_main/js/vjs-quality-picker.js?v=v0.0.2') }}"></script>
+        <script src="{{ asset('/js/hls/hls.min.js?v=v0.9.1') }}"></script>
+        <script src="{{ asset('/js/hls/videojs5-hlsjs-source-handler.min.js?v=0.3.1') }}"></script>
+        <script src="{{ asset('/js/hls/vjs-quality-picker.js?v=v0.0.2') }}"></script>
         <!-- <script src="{{ asset('/js/app.js') }}"></script> -->
 
         <script src="{{ asset('/js/new/bootstrap.js') }}"></script>
