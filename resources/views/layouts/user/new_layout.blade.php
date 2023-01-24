@@ -74,13 +74,25 @@
         <script src="{{ asset("js/new/custom.js") }}"></script>
         <script src="{{ asset("js/new/post.js")}}"></script>
         <script src="{{ asset("js/new/star-rating.min.js")}}"></script>    
-        <script src="{{ asset("js/new/slick.js")}}"></script>  
+        <script src="{{ asset("js/new/slick.js")}}"></script>
+        <script src="http://jwpsrv.com/library/4+R8PsscEeO69iIACooLPQ.js"></script>
         
         <script>
+            // jw player for streaming videos
             
-
+            $( ".jw-video-player" ).each(function( i ) {
+                var videoID = $(this).attr('id');
+                var video = $(this).attr('data-src');
+                jwplayer(videoID).setup({
+                autostart: false,
+                file: video,
+                primary: "html",
+            });
+            });
+            
+            
             window.HELP_IMPROVE_VIDEOJS = false;
-
+            
             $( ".video-js" ).each(function( i ) {
                 var videoID = $(this).attr('id');
 
