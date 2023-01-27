@@ -59,14 +59,14 @@
                         @elseif(!empty($posts->upload->video))
                         @if (!File::exists($posts->upload->video))
                         <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="https://d1d39qm6rlhacy.cloudfront.net/hls/hls/master.m3u8">
-                       <video width="100%" preload="auto" data-setup="{}" controls muted class="video-js" id="myVideoTag{{$posts->id}}">
+                       <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
                             <!-- <source src="https://d1d39qm6rlhacy.cloudfront.net/hls/hls/master.m3u8" type="application/x-mpegURL">    
 	                         <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >  -->
                         </video>
                         </div>    
                         @else
                         <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-src="https://d1d39qm6rlhacy.cloudfront.net/hls/hls/master.m3u8">
-                        <video width="100%" preload="auto" data-setup="{}" controls muted class="video-js" id="myVideoTag{{$posts->id}}">
+                        <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
                              <!-- <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >     
                             <source src="https://d1d39qm6rlhacy.cloudfront.net/hls/hls/master.m3u8" type="application/x-mpegURL">  -->
                         </video>
