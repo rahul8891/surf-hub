@@ -3,7 +3,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
 <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
-
+<style>
+ 
+</style>
 <section class="home-section">
 
     <div class="container">
@@ -40,7 +42,6 @@
                                         <input type="file" id="input_multifile" name="files[]" multiple="multiple">
                                     </div>
                                     <div class="upload-file-name" id="filesInfo">
-
                                     </div>
                                 </div>
                             </div>
@@ -261,7 +262,7 @@
                         </div>
                         <div class="row justify-content-end">
                             <div class="col-md-10">
-                                <button class="btn blue-btn w-150" type="submit">UPLOAD</button>
+                                <button id="formSubmit" class="btn blue-btn w-150" type="submit">UPLOAD</button>
                             </div>
                         </div>
                     </div>
@@ -291,72 +292,82 @@
 </script> 
 <script type="text/javascript">
 
-    var bucketName = 'surfhub';
-    var bucketRegion = 'ap-southeast-2';
-    var IdentityPoolId = 'ap-southeast-2:8cbd8e79-bff8-488e-ab00-d580948e68e7';
+    
 
-    AWS.config.update({
-        region: bucketRegion,
-        credentials: new AWS.CognitoIdentityCredentials({
-            IdentityPoolId: IdentityPoolId
-        })
-    });
+//    var bucketName = 'surfhub';
+//    var bucketRegion = 'ap-southeast-2';
+//    var IdentityPoolId = 'ap-southeast-2:8cbd8e79-bff8-488e-ab00-d580948e68e7';
+//    AWS.config.update({
+//        region: bucketRegion,
+//        credentials: new AWS.CognitoIdentityCredentials({
+//            IdentityPoolId: IdentityPoolId
+//        })
+//    });
+////
+//    var s3 = new AWS.S3({
+//        apiVersion: '2006-03-01',
+////        httpOptions: {timeout: 0},
+//        params: {Bucket: bucketName},
+//    });
+//    var opts = {queueSize: 1, partSize: 1024 * 1024 * 10};
+
+//    $(document).on('change', '#input_multifile', function () {
+//        var files = document.getElementById('input_multifile').files;
+//        var len = files.length;
+//       
+//        
+//        for (var i = 0; i < len; i++) {
+//            var ext = files[i].name.substring(files[i].name.lastIndexOf(".") + 1).toLowerCase();
+////        uploadFiles(files[i],ext);
+//            var random = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+//            var user_id = $('#user_id').val();
+//            var timeStamp = Date.now() + ""+ random;
+//            var fileName = timeStamp +'.' + ext;
+//            if (ext == "png" || ext == "jpeg" || ext == "jpg") {
 //
-    var s3 = new AWS.S3({
-        apiVersion: '2006-03-01',
-//        httpOptions: {timeout: 0},
-        params: {Bucket: bucketName},
-    });
-    var opts = {queueSize: 1, partSize: 1024 * 1024 * 10};
-    var imgElems = [];
-    var vidElems = [];
-    $(document).on('change', '#input_multifile', function () {
-        var files = document.getElementById('input_multifile').files;
-        var len = files.length;
-       
-        
-        for (var i = 0; i < len; i++) {
-            var ext = files[i].name.substring(files[i].name.lastIndexOf(".") + 1).toLowerCase();
-//        uploadFiles(files[i],ext);
-            var random = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
-            var user_id = $('#user_id').val();
-            var timeStamp = Date.now() + ""+ random;
-            var fileName = timeStamp +'.' + ext;
-            if (ext == "png" || ext == "jpeg" || ext == "jpg") {
+//                imgElems.push(fileName);
+//                $("<div id='progress" + timeStamp + "' class='px-4'></div>").insertAfter(".target" + i);
+//                var filePath = 'images/' + user_id + '/' + fileName;
+//            } else {
+//                var filePath = 'videos/' + user_id + '/' + fileName;
+//                vidElems.push(fileName);
+//                $("<div id='progress" + timeStamp + "' class='px-4'></div>").insertAfter(".target" + i);
+//            }
+//            var fileUrl = 'https://d1d39qm6rlhacy.cloudfront.net/' + filePath;
+////    alert(fileUrl);
+////            s3.upload({
+////                Key: filePath,
+////                Body: files[i],
+//////        ACL: 'public-read'
+////            }, opts,  function (err, data) {
+////                if (err) {
+////                    alert(err);
+////                }
+////                console.log('Successfully Uploaded!' + data);
+////                $('#imagesHid_input').val(JSON.stringify(imgElems));
+////                $('#videosHid_input').val(JSON.stringify(vidElems));
+////            }).on('httpUploadProgress', function (progress) {
+////                const key = progress.key.split("/");
+////                const check = key[2].split(".");
+////                console.log(check);
+////                var uploaded = parseInt((progress.loaded * 100) / progress.total) + '%';
+////                $("#progress" + check[0]).html(uploaded);
+////
+////            });
+//
+//
+//                $.ajax({
+//                url: presignedUrl, // the presigned URL
+//                type: 'PUT',
+//                data: 'data to upload into URL',
+//                success: function() { console.log('Uploaded data successfully.'); }
+//              });
+//
+//
+//
+//        }
+//    });
 
-                imgElems.push(fileName);
-                $("<div id='progress" + timeStamp + "' class='px-4'></div>").insertAfter(".target" + i);
-                var filePath = 'images/' + user_id + '/' + fileName;
-            } else {
-                var filePath = 'videos/' + user_id + '/' + fileName;
-                vidElems.push(fileName);
-                $("<div id='progress" + timeStamp + "' class='px-4'></div>").insertAfter(".target" + i);
-            }
-            var fileUrl = 'https://d1d39qm6rlhacy.cloudfront.net/' + filePath;
-//    alert(fileUrl);
-            s3.upload({
-                Key: filePath,
-                Body: files[i],
-//        ACL: 'public-read'
-            }, opts,  function (err, data) {
-                if (err) {
-                    alert(err);
-                }
-                console.log('Successfully Uploaded!' + data);
-                $('#imagesHid_input').val(JSON.stringify(imgElems));
-                $('#videosHid_input').val(JSON.stringify(vidElems));
-            }).on('httpUploadProgress', function (progress) {
-                const key = progress.key.split("/");
-                const check = key[2].split(".");
-                console.log(check);
-                var uploaded = parseInt((progress.loaded * 100) / progress.total) + '%';
-                $("#progress" + check[0]).html(uploaded);
-
-            });
-
-
-        }
-    });
 
 </script>
 @endsection
