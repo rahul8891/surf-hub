@@ -317,14 +317,26 @@ class MyHubController extends Controller {
                     $result = $this->postService->updatePostData($data, '', '', $message);
                 }
                 if ($result['status'] === TRUE) {
-                    return Redirect()->route('myhub')->withSuccess($result['message']);
+                    if (Auth::user()->user_type == 'ADMIN') {
+                        return Redirect()->route('adminMyHub')->withSuccess($result['message']);
+                    } else {
+                        return Redirect()->route('myhub')->withErrors($result['message']);
+                    }
                 } else {
-                    return Redirect()->route('myhub')->withErrors($result['message']);
+                    if (Auth::user()->user_type == 'ADMIN') {
+                        return Redirect()->route('adminMyHub')->withErrors($result['message']);
+                    } else {
+                        return Redirect()->route('myhub')->withErrors($result['message']);
+                    }
                 }
             }
         } catch (\Exception $e) {
 
-            return redirect()->route('myhub')->withErrors($e->getMessage());
+            if (Auth::user()->user_type == 'ADMIN') {
+                return Redirect()->route('adminMyHub')->withErrors($e->getMessage());
+            } else {
+                return Redirect()->route('myhub')->withErrors($e->getMessage());
+            }
         }
     }
 

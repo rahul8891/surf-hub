@@ -1,10 +1,14 @@
-@extends('layouts.user.new_layout')
+@extends( Auth::user() && Auth::user()->user_type == 'ADMIN'  ?  'layouts.admin.admin_layout' : 'layouts.user.new_layout' )
 @section('content')
 
 <section class="home-section">
     <div class="container">
         <div class="home-row">
+            @if(Auth::user()->user_type == 'ADMIN') 
+            @include('layouts.admin.admin_left_sidebar')
+            @else
             @include('layouts.user.left_sidebar')
+            @endif
             <div class="middle-content">
                 <div class="surfer-wrap">
                     <div class="surfer-header">
@@ -26,7 +30,7 @@
                                     
                                     <div class="d-inline-block align-middle">
                                         <p class="name mb-0">{{$val->first_name.' '.$val->last_name }}</p>
-				        <p class="time mb-0">2 day ago</p>
+				        <p class="time mb-0">{{ postedDateTime($val->created_at) }}</p>
                                     </div>
                                 </div>
                                 <div class="col-xl-6 text-xl-end">

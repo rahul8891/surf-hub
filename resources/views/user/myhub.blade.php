@@ -268,11 +268,7 @@
                     <img src="/images/spiner4.gif" alt="loading" height="90px;" width="170px;">
               </div>
             </div>
-            
-            <div class="right-advertisement">
-                <img src="/img/new/advertisement1.png" alt="advertisement">
-                <img src="/img/new/advertisement2.png" alt="advertisement">
-            </div>
+            @include('elements/admin_right_side_ads')
         </div>
     </div>
 </section>

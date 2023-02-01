@@ -48,8 +48,8 @@ class ReportController extends Controller
         $data = Report::with(['user', 'post' => function($q) {
                     $q->with('user')->get();
                 }])->get();
-        
-        return view('admin/report/index', compact('data'));     
+        $common = $this->common;        
+        return view('admin/report/index', compact('data','common'));     
     }
     public function searchReport(Request $request) {
 

@@ -430,12 +430,24 @@ class UserPostController extends Controller {
         try {
             $result = $this->posts->saveToMyHub(Crypt::decrypt($id), $message);
             if ($result) {
-                return redirect()->route('dashboard')->withSuccess($message);
+                if (Auth::user()->user_type == 'ADMIN') {
+                    return Redirect()->route('adminIndex')->withSuccess($result);
+                } else {
+                    return Redirect()->route('dashboard')->withErrors($result);
+                }
             } else {
-                return redirect()->route('dashboard')->withErrors($message);
+                if (Auth::user()->user_type == 'ADMIN') {
+                    return Redirect()->route('adminIndex')->withSuccess($result);
+                } else {
+                    return Redirect()->route('dashboard')->withErrors($result);
+                }
             }
         } catch (\Exception $e) {
-            return redirect()->route('dashboard', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
+            if (Auth::user()->user_type == 'ADMIN') {
+                return Redirect()->route('adminIndex')->withErrors($e->getMessage());
+            } else {
+                return Redirect()->route('dashboard')->withErrors($e->getMessage());
+            }
         }
     }
 

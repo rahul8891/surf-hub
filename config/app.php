@@ -234,6 +234,7 @@ return [
         'FollowNotification' => App\Helpers\FollowNotification::class,
         'SpotifyUserAuth' => App\Helpers\SpotifyUserAuth::class,
         'showAdvertisment' => App\Helpers\showAdvertisment::class,
+        'AdminAds' => App\Helpers\AdminAds::class,
 
     ],
 

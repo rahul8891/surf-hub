@@ -1,16 +1,20 @@
-@extends('layouts.user.new_layout')
+@extends( Auth::user() && Auth::user()->user_type == 'ADMIN'  ?  'layouts.admin.admin_layout' : 'layouts.user.new_layout' )
 @section('content')
 
 <section class="home-section">
     <div class="container">
         <div class="home-row">
+            @if(Auth::user()->user_type == 'ADMIN') 
+            @include('layouts.admin.admin_left_sidebar')
+            @else
             @include('layouts.user.left_sidebar')
+            @endif
             <div class="middle-content">
                 <div class="follow-wrap">
                     <div class="search-follower">
                         <div class="row align-items-center">
                             <div class="col-sm-12">
-                                <label class="">Surfer Requests <span class="blue-txt">585</span></label>
+                                <label class="">Surfer Requests</label>
                             </div>
 
                         </div>

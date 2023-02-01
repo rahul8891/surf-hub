@@ -89,14 +89,14 @@ class AdminDashboard extends Controller
         $usersList = $this->masterService->getAllUsers();
 
         if ($request->ajax()) {
-            $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches'))->render();
+            $view = view('elements/admin_homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches'))->render();
             return response()->json(['html' => $view]);
         }
         return view('admin/dashboard.admin_feed', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches'));
     }
-    public function myHub(Request $request) {
+    
+    public function myHub($post_type = null, Request $request) {
         $beach_name = "";
-        $post_type = 'all';
         $params = $request->all();
         $order = $request->input('order');
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
@@ -105,8 +105,11 @@ class AdminDashboard extends Controller
         $customArray = $this->customArray;
         $userDetail = Auth::user()->user_profiles;
 
-        $postsList = $myHubs = $this->posts->getFilteredData($params, 'myhub');
-
+        if (isset($post_type) && !empty($post_type)) {
+            $postsList = $myHubs = $this->posts->getFilteredData($params, 'myhub', $post_type);
+        } else {
+            $postsList = $myHubs = $this->posts->getFilteredData($params, 'myhub');
+        }
         $beaches = $this->masterService->getBeaches();
 
         if (!empty($request->input('local_beach_break_id'))) {
@@ -115,7 +118,7 @@ class AdminDashboard extends Controller
         }
 
         if ($request->ajax()) {
-            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches'))->render();
+            $view = view('elements/admin_myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches'))->render();
             return response()->json(['html' => $view]);
         }
 
@@ -150,7 +153,7 @@ class AdminDashboard extends Controller
         }
        // print_r($postsList);die;
         if ($request->ajax()) {
-            $view = view('elements/searchdata', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name','beaches'))->render();
+            $view = view('elements/admin_searchdata', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name','beaches'))->render();
             return response()->json(['html' => $view]);
         }
         

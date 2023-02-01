@@ -1,35 +1,15 @@
-@extends('layouts.user.new_layout')
-@section('content')
-
-<section class="home-section">
-    <div class="container">
-        <div class="home-row">
-            <div class="my-details-div">
-                @include('layouts.user.left_sidebar')
-            </div>
-            <div class="middle-content" id="post-data">
-                @include('layouts.user.content_menu')
-                @if (isset($postsList) && empty($postsList[0]))
-                <div class="post alert text-center alert-dismissible py-5" role="alert">
-                    {{ ucWords('no matches found') }}
-                </div>
-                @endif
-                @if (!empty($postsList))
-                @php ($c = 0)
-                @php ($i = 0)
-                @foreach ($postsList as $key => $posts)
-                <div class="news-feed">
-
+@if(isset($postsList[0]->id) && !empty($postsList[0]->id))
+@foreach ($postsList as $key => $posts)
+@if($posts->parent_id == 0)
+<div class="news-feed">
                     <div class="inner-news-feed">
                         <div class="user-details">
                             <div class="user-left">
-
+                                
                                 @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
-                                @if($posts->user_id != Auth::user()->id)
-                                @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
+                                @if(Auth::user() && $posts->user_id != Auth::user()->id)
+                                @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
                                 <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
-                                @elseif($posts->user->user_type == 'PHOTOGRAPHER')
-                                <a href="{{route('photographer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
                                 @elseif($posts->user->user_type == 'SURFER CAMP')
                                 <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
                                 @endif
@@ -37,11 +17,9 @@
                                 <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
                                 @endif
                                 @else
-                                @if($posts->user_id != Auth::user()->id)
-                                @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
+                                @if(Auth::user() && $posts->user_id != Auth::user()->id)
+                                @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
                                 <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
-                                @elseif($posts->user->user_type == 'PHOTOGRAPHER')
-                                <a href="{{route('photographer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
                                 @elseif($posts->user->user_type == 'SURFER CAMP')
                                 <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
                                 @endif
@@ -50,16 +28,14 @@
                                 @endif
                                 @endif
                                 <div>     
-                                    @if($posts->user_id != Auth::user()->id)
-                                    @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
-                                    <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
-                                    @elseif($posts->user->user_type == 'PHOTOGRAPHER')
-                                    <p class="name"><span><a href="{{route('photographer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
-                                    @elseif($posts->user->user_type == 'SURFER CAMP')
-                                    <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
-                                    @endif
-
-
+                                    @if(Auth::user() && $posts->user_id != Auth::user()->id)
+                                    @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
+                                <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
+                                @elseif($posts->user->user_type == 'SURFER CAMP')
+                                <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
+                                @endif
+                                    
+                                    
                                     @else
                                     <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span>
                                     </p>
@@ -68,15 +44,13 @@
                                     <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
                                 </div>
                             </div>
-                            @if($posts->user_id != Auth::user()->id)
-                            <div class="user-right"> 
-                                <img src="/img/new/normal-user.png" alt="normal-user">
+                            @if (isset(Auth::user()->id) && ($posts->user_id != Auth::user()->id))
 
+                            <div class="user-right">
+                                <img src="/img/normal-user.png" alt="normal-user">
                                 <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
-                                    <span class="follow-icon"></span> FOLLOW
+                                <span class="follow-icon"></span> FOLLOW
                                 </button>
-
-
                             </div>
                             @endif
                         </div>
@@ -87,33 +61,38 @@
                         @elseif(!empty($posts->upload->video))
                         @if (!File::exists($posts->upload->video))
                         <div class="newsFeedImgVideo">
-                            <video width="100%" preload="none" data-setup="{}" controls playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-                            </video>
+                        <video width="100%" preload="none" data-setup="{}" controls playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+                        </video>
                         </div>    
                         @else
                         <div class="newsFeedImgVideo">
-                            <video width="100%" preload="none" data-setup="{}" controls playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-                            </video>
+                        <video width="100%" preload="none" data-setup="{}" controls playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+                        </video>
                         </div>
                         @endif
                         @endif
                         <div class="user-bottom-options">
-                            <div class="rating-flex rating-flex-child">
+                            <div class="rating-flex">
+                            <div class="rating-flex-child">
                                 <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
                                 <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
+
+                            </div>
+                            @if($posts->is_feed == 0)    
+                            <div class="highlight">
+                                <a class="add-to-feed" data-id="{{ $posts->id }}">Add to Feed</a>
+                            </div>
+                            @endif
                             </div>
                             <div class="right-options">
-                                @if(Auth::user()->id != $posts->user_id)
-                                <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/new/save.png" alt="Save"></a>
-                                @endif
-                                @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'] && empty($requestSurfer[$posts->id]))
-                                <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
+                                @if(Auth::user() && $posts->user_id != Auth::user()->id)
+                                <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/save.png" alt="Save"></a>
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
-                                    <img src={{asset("/img/location.png")}} alt="Location"></a>
-                                <a onclick="openFullscreenSilder({{$posts->id}});"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
+                                    <img src={{asset("img/location.png")}} alt="Location"></a>
+                                <a onclick="openFullscreenSilder({{$posts->id}});"><img src={{asset("img/expand.png")}} alt="Expand"></a>
                                 <div class="d-inline-block info dropdown" title="Info">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -155,6 +134,7 @@
                                 @if(Auth::user() && $posts->user_id == Auth::user()->id)
                                 <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a>
                                 <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
+                                
                                 @endif
                                 <div class="d-inline-block tag dropdown" title="Tag">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
@@ -185,7 +165,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if(Auth::user()->id != $posts->user_id)
+                                @if(Auth::user() && $posts->user_id != Auth::user()->id)
                                 <div class="d-inline-block report dropdown" title="Report">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -227,10 +207,11 @@
                             </div>
                         </div>
                     </div>
+                    @if(Auth::user())
                     <div class="comments-div">
                         <a class="" data-bs-toggle="collapse" href="#collapseExample{{$posts->id}}" role="button"
                            aria-expanded="false" aria-controls="collapseExample{{$posts->id}}">
-                            Say Something <img src="/img/dropdwon.png" alt="dropdown" class="ms-1">
+                            Say Something <img src="img/dropdwon.png" alt="dropdown" class="ms-1">
                         </a>
                         <div class="collapse" id="collapseExample{{$posts->id}}">
                             <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
@@ -241,7 +222,7 @@
                                         <input type="hidden" name="parent_user_id" value="{{$posts->user_id}}">
                                         <input type="text" name="comment" id="{{$posts->id}}" class="form-control ps-2 mb-0 h-100 commentOnPost">
                                     </div>
-                                    <button type="submit" id="submitPost{{$posts->id}}" class="send-btn btn"><img src="/img/send.png"></button>
+                                    <button type="submit" id="submitPost{{$posts->id}}" class="send-btn btn"><img src="img/send.png"></button>
                                 </div>
                             </form>
                             @foreach ($posts->comments as $comments)
@@ -253,129 +234,16 @@
                             @endforeach
                         </div>
                     </div>
+                    @endif
                 </div>
-                @php ($c++)
-                @if($c == 5 && showAdvertisment::instance()->getAdvertisment())
-                @foreach (showAdvertisment::instance()->getAdvertisment() as $key => $requests)
-                @if($i != $key)
-                @continue
-                @endif
-                @if(!empty($requests['image']))
-                <div class="news-feed">
-                    <div class="inner-news-feed">
-                        <img src="{{ env('FILE_CLOUD_PATH').'images/'.$requests['user_id'].'/'.$requests['image'] }}" alt="" id="myImage{{$posts->id}}" class="postImg">
-                    </div>
-                </div>
-                @elseif(!empty($requests['video']))
-                <div class="news-feed">
-                    <div class="inner-news-feed">
-                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$requests['user_id'].'/'.$requests['video'] }}" >    
-                        </video>
-                    </div>    
-                </div>    
-                @endif
 
-                @php ($c = 0)
-                @break 
-                @endforeach
-                @php ($i++)
-                @endif
+@endif
+@endforeach
 
-                @endforeach
-                @endif
-                <div class="justify-content-center ajax-load" style="display:none;margin-left: 40%">
-                    <img src="/images/spiner4.gif" alt="loading" height="90px;" width="170px;">
-                </div>
-            </div>
-
-            <div class="right-advertisement">
-                @if($res = AdminAds::instance()->getAdminAds('TOPRIGHT BOTTOMRIGHT', Route::currentRouteName()))
-                @foreach ($res as $key => $req)
-                <img src="{{ env('FILE_CLOUD_PATH').'images/'.$req['user_id'].'/'.$req['image'] }}" alt="advertisement">
-                @endforeach
-                @else
-                <img src="/img/new/advertisement1.png" alt="advertisement">
-                <img src="/img/new/advertisement2.png" alt="advertisement">
-                @endif
-            </div>
-        </div>
-    </div>
-</section>
-@include('elements/location_popup_model')
-@include('layouts/models/edit_image_upload')
-@include('layouts/models/full_screen_modal')
 <script type="text/javascript">
-    var page = 1;
-    $(window).scroll(function() {
-    if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    page++;
-    loadMoreData(page);
-    }
+    $('.rating').rating({
+    showClear:false,
+            showCaption:false
     });
-    function loadMoreData(page) {
-    var url = window.location.href;
-    if (url.indexOf("?") !== - 1) {
-    var url = window.location.href + '&page=' + page;
-    } else {
-    var url = window.location.href + '?page=' + page;
-    }
-
-    $.ajax({
-    url: url,
-            type: "get",
-            async: false,
-            beforeSend: function() {
-            $('.ajax-load').show();
-            }
-    })
-            .done(function(data) {
-            if (data.html == "") {
-            $('.ajax-load').addClass('requests');
-            $('.ajax-load').html("No more records found");
-            return;
-            }
-
-            $('.ajax-load').removeClass('requests');
-            $('.ajax-load').hide();
-//            $("#post-data").insertBefore(data.html);
-            $(data.html).insertBefore(".ajax-load");
-            });
-    }
-
-    $(document).on('click', '.editBtnVideo', function() {
-    var id = $(this).data('id');
-    $.ajax({
-    url: '/getPostData/' + id,
-            type: "get",
-            async: false,
-            success: function(data) {
-            // console.log(data.html);
-            $("#edit_image_upload_main").html("");
-            $("#edit_image_upload_main").append(data.html);
-            $("#edit_image_upload_main").modal('show');
-            }
-    });
-    });
-    $('.pos-rel a').each(function(){
-    $(this).on('hover, mouseover, click', function() {
-    $(this).children('.userinfoModal').find('input[type="text"]').focus();
-    });
-    });
-    function openFullscreenSilder(id) {
-    $.ajax({
-    url: '/getPostFullScreen/' + id,
-            type: "get",
-            async: false,
-            success: function(data) {
-            // console.log(data.html);
-            $("#full_screen_modal").html("");
-            $("#full_screen_modal").append(data.html);
-            $("#full_screen_modal").modal('hide');
-            $("#full_screen_modal").modal('show');
-            }
-    });
-    }
-
 </script>
-@endsection
+@endif

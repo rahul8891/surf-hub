@@ -19,15 +19,15 @@
         <div class="profile-menu">
             <div class="profile-row {{ ((userActiveMenu('myhubs') == 'active') && ($post_type == 'posts'))?'active':'' }}">
                 <img src="/img/posts.png" alt="posts">
-                 <a class="" href="{{ route('myhubs', 'posts') }}">Posts - <span class="blue-txt num" id="posts"> </span></a>
+                 <a class="" href="{{ route('adminMyHub', 'posts') }}">Posts - <span class="blue-txt num" id="posts"> </span></a>
             </div>
             <div class="profile-row {{ userActiveMenu('upload') }}">
                 <img src="/img/upload.png" alt="Uploads">
-                 <a class="" href="{{ route('profile') }}">Uploads - <span class="blue-txt num" id="uploads"> </span></a>
+                 <a class="" href="{{ route('adminMyHub', 'all') }}">Uploads - <span class="blue-txt num" id="uploads"> </span></a>
             </div>
             <div class="profile-row {{ userActiveMenu('followRequests') }}">
                 <img src="/img/comments.png" alt="Comments">
-                 <a class=""  href="{{ route('followRequests') }}">Comments <span class="notification" id="comments"></span></a>
+                 <a class=""  href="{{ route('commentsIndex') }}">Comments <span class="notification" id="comments"></span></a>
             </div>
             <div class="profile-row {{ userActiveMenu('surferRequestList') }}">
                 <img src="/img/small-logo.png" alt="Surfer Requests">

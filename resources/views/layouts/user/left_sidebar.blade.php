@@ -36,7 +36,7 @@
             </div>
             <div class="profile-row {{ userActiveMenu('upload') }}">
                 <img src="/img/upload.png" alt="Uploads">
-                 <a class="" href="{{ route('profile') }}">Uploads - <span class="blue-txt num" id="uploads"> </span></a>
+                 <a class="" href="{{ route('myhubs', 'all') }}">Uploads - <span class="blue-txt num" id="uploads"> </span></a>
             </div>
             <div class="profile-row {{ userActiveMenu('followRequests') }}">
                 <img src="/img/follow-request.png" alt="Follow Requests">
@@ -61,7 +61,14 @@
 
     </div>
     <div class="left-advertisement">
-        <img src="/img/advertisement1.png" alt="advertisement">
+    @if($res = AdminAds::instance()->getAdminAds('TOPLEFT BOTTOMLEFT', Route::currentRouteName()))
+    @foreach ($res as $key => $req)
+    <img src="{{ env('FILE_CLOUD_PATH').'images/'.$req['user_id'].'/'.$req['image'] }}" alt="advertisement">
+    @endforeach
+    @else
+    <img src="/img/new/advertisement1.png" alt="advertisement">
+    <img src="/img/new/advertisement2.png" alt="advertisement">
+    @endif
     </div>
 </div>
 <script>

@@ -292,10 +292,7 @@
                 
             </div>
 
-            <div class="right-advertisement">
-                <img src="img/advertisement1.png" alt="advertisement">
-                <img src="img/advertisement2.png" alt="advertisement">
-            </div>
+            @include('elements/admin_right_side_ads')
 
         </div>
     </div>

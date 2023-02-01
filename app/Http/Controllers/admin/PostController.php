@@ -16,6 +16,7 @@ use App\Services\MasterService;
 use App\Services\PostService;
 use App\Traits\PasswordTrait;
 use App\Models\User;
+use App\Models\Comment;
 use Carbon\Carbon;
 use App\Models\Post;
 use App\Models\Upload;
@@ -55,6 +56,7 @@ class PostController extends Controller
         $this->language = config('customarray.language'); 
         $this->accountType = config('customarray.accountType');
         $this->post_type = config('customarray.post_type');
+        $this->common = config('customarray.common');
     }
 
 
@@ -338,12 +340,12 @@ class PostController extends Controller
         try{
             $result = $this->posts->deletePost(Crypt::decrypt($id),$message);
             if($result){
-                return redirect()->route('postIndex')->withSuccess($message);  
+                return redirect()->route('adminMyHub')->withSuccess($message);  
             }else{
-                return redirect()->route('postIndex')->withErrors($message); 
+                return redirect()->route('adminMyHub')->withErrors($message); 
             }
         }catch (\Exception $e){
-            return redirect()->route('postIndex', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
+            return redirect()->route('adminMyHub')->withErrors($e->getMessage());
         }
 
     }
@@ -363,6 +365,19 @@ class PostController extends Controller
         } else {
             return response()->json(['statuscode' => 400, 'status' => false, 'message' =>  "Something went wrong. Please try later."], 400);
         }
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function comments()
+    {
+        $data = Comment::with(['user', 'post' => function($q) {
+                    $q->with('user')->get();
+                }])->get();  
+        $common = $this->common;        
+        return view('admin/post/comments', compact('data','common'));     
     }
     
 }

@@ -259,7 +259,6 @@
         </form>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script>
     var dataImage = new Array();
     var dataVideo = new Array();

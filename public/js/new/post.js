@@ -207,7 +207,30 @@ $(document).ready(function () {
 
     /*************************************************************************************/
 
-
+    /**
+     * Execute a function given a delay time
+     * 
+     * @param {type} func
+     * @param {type} wait
+     * @param {type} immediate
+     * @returns {Function}
+     */
+    var debounce = function (func, wait, immediate) {
+        var timeout;
+        return function () {
+            var context = this, args = arguments;
+            var later = function () {
+                timeout = null;
+                if (!immediate)
+                    func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow)
+                func.apply(context, args);
+        };
+    };
 
     // no space allow in text box
     /* $.validator.addMethod(
@@ -511,4 +534,161 @@ $(document).ready(function () {
         });
     };
 
+    $('.tag_user').keyup(debounce(function () {
+        // the following function will be executed every half second	
+
+        var post_id = $(this).attr('data-post_id');
+        if ($(this).val().length > 1) {
+            $.ajax({
+                type: "GET",
+                url: "/getTagUsers",
+                data: {
+                    post_id: post_id,
+                    searchTerm: $(this).val(),
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+
+                    $('#tag_user_list' + post_id).html(jsonResponse);
+                }
+            })
+        } else {
+            $('#user_id').val('');
+            $('#tag_user_list' + post_id).html("");
+        }
+
+    }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
+
+    $(document).on('click', '.tagSearch li', function () {
+        var value = $(this).text().trim();
+        var dataId = $(this).attr("data-id");
+        var postId = $(this).attr("data-post_id");
+        //ajax call to insert data in tag table and also set notification
+        $.ajax({
+            type: "POST",
+            url: "/setTagUsers",
+            data: {
+                post_id: postId,
+                user_id: dataId,
+                _token: csrf_token
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+
+                if (jsonResponse.status == 'success') {
+                    $('#rowId' + dataId).hide();
+                    //$('#tag_user_list'+postId).html("");
+                    $('.tag_user').val(value);
+                    $('#user_id').val(dataId);
+                    //$('#tag_user_list'+postId).html("");
+                    $(".scrollWrap").empty();
+                    $('.scrollWrap').html(jsonResponse.responsData);
+                } else {
+                    alert(jsonResponse.message);
+                }
+                $('#tag_user_list' + postId).html(jsonResponse);
+            }
+        })
+    });
+    
+    $(document).on('click', '.followPost', function () {
+        var $this = $(this);
+        var dataId = $(this).data("id");
+        var postId = $(this).attr("data-post_id");
+        $.ajax({
+            type: "POST",
+            url: "/follow",
+            data: {
+                followed_user_id: dataId,
+                post_id: postId,
+                sataus: 'FOLLOW',
+                _token: csrf_token
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                if (jsonResponse.status == "success") {
+                    $this.addClass('clicked');
+                    $this.removeClass('followPost');
+
+                    spinner.hide();
+                } else {
+                    spinner.hide();
+                    alert(jsonResponse.message);
+                }
+                setInterval(myTimerUserMessage, 4000);
+            }
+        });
+    });
+    $('#searchFollower').keyup(debounce(function () {
+        // the following function will be executed every half second	
+        var user_id = $('#user_id').val();
+        var keyword = $('#searchFollower').val();
+//        if ($(this).val().length > 2) {
+        $.ajax({
+            type: "GET",
+            url: "/searchFollwers/" + user_id,
+            data: {
+                searchTerm: keyword,
+                _token: csrf_token
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                $('.list-followers').html(jsonResponse.html);
+            }
+        })
+
+//        } else {
+//            $('#local_beach_break_id').val('');
+//            $('#country_list').html("");
+//        }
+
+    }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+    $('#searchFollowing').keyup(debounce(function () {
+        // the following function will be executed every half second	
+        var keyword = $('#searchFollowing').val();
+        var user_id = $('#user_id').val();
+//        if ($(this).val().length > 2) {
+        $.ajax({
+            type: "GET",
+            url: "/searchFollowing/" + user_id,
+            data: {
+                searchTerm: keyword,
+                _token: csrf_token
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                $('.list-followers').html(jsonResponse.html);
+            }
+        })
+
+//        } else {
+//            $('#local_beach_break_id').val('');
+//            $('#country_list').html("");
+//        }
+
+    }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+    $('#searchFollowRequest').keyup(debounce(function () {
+        // the following function will be executed every half second	
+        var keyword = $('#searchFollowRequest').val();
+//        if ($(this).val().length > 2) {
+        $.ajax({
+            type: "GET",
+            url: "/searchFollowRequest",
+            data: {
+                searchTerm: keyword,
+                _token: csrf_token
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                $('.list-followers').html(jsonResponse.html);
+            }
+        })
+
+//        } else {
+//            $('#local_beach_break_id').val('');
+//            $('#country_list').html("");
+//        }
+
+    }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 });

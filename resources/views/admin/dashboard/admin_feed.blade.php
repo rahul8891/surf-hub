@@ -210,7 +210,7 @@
                                             <div>
                                                 <textarea class="form-control ps-2" name="comments" id="{{$posts->id}}"
                                                           placeholder="Additional Comments.."
-                                                          style="height: 80px"></textarea>
+                                                          style="height: 80px" required="required"></textarea>
                                             </div>
                                             <button type="submit" id="submitReport{{$posts->id}}" class="btn blue-btn w-100">REPORT</button>
                                         </form>
