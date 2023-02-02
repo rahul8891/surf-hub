@@ -99,41 +99,34 @@
             window.HELP_IMPROVE_VIDEOJS = false;
             
             //$( ".video-js" ).each(function( i ) {
-            $( ".jw-video-player" ).each(function( i ) {
+            $( ".hls-video-player" ).each(function( i ) {
                 var videoID = $(this).attr('data-id');
                 var video = $(this).attr('data-src');
                 console.log("Data = myVideoTag"+videoID+"  --  "+video);
                 var options = {};
 
-                /*var player = videojs(videoID, options, function onPlayerReady() {
-                    // In this context, `this` is the player that was created by Video.js.
-                    this.stop();
-                });*/
-                /*var player = videojs('myVideoTag'+videoID, {
-                    techOrder: ['shaka', 'html5'],
-                    shaka: {
-                        sideload: true,
-                        configuration: {
-                            // just an example of setting shaka player config options
-                            streaming: {
-                                bufferBehind: 40,
-                                bufferingGoal: 20
-                            }
-                        }
-                    }
-                });
-
-                player.qualityPickerPlugin();
-                player.src([{
-                    type: 'application/x-mpegURL',
-                    src: video
-                }]);*/
 
                 videojs('myVideoTag'+videoID).ready(function () {
                     var myPlayer = this;
                     myPlayer.qualityPickerPlugin();
                     myPlayer.src({
                         type: 'application/x-mpegURL', 
+                        src: video
+                    });
+                });
+            });
+            $( ".jw-video-player" ).each(function( i ) {
+                var videoID = $(this).attr('data-id');
+                var video = $(this).attr('data-src');
+                console.log("Data = myVideoTag"+videoID+"  --  "+video);
+                var options = {};
+
+
+                videojs('myVideoTag'+videoID).ready(function () {
+                    var myPlayer = this;
+                    myPlayer.qualityPickerPlugin();
+                    myPlayer.src({
+//                        type: 'application/x-mpegURL', 
                         src: video
                     });
                 });

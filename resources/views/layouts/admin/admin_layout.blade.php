@@ -23,6 +23,13 @@
 
         <script src="{{ asset('js/new/jquery-3.5.1.min.js') }}"></script>
         <script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
+        <link href="https://vjs.zencdn.net/5.19.2/video-js.css" rel="stylesheet">
+        <style>
+            .video-js {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
     </head>
 
     <body class="login-body">
@@ -67,6 +74,11 @@
         <!-- ddslick -->
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5JiYXogWVNPfX_L4uA0oWb-qiNSfKfYk"
         type="text/javascript"></script>
+        <script src="https://vjs.zencdn.net/5.19.2/video.js"></script>
+        <script src="{{ asset('/js/hls/hls.min.js?v=v0.9.1') }}"></script>
+        <script src="{{ asset('/js/hls/videojs5-hlsjs-source-handler.min.js?v=0.3.1') }}"></script>
+        <script src="{{ asset('/js/hls/vjs-quality-picker.js?v=v0.0.2') }}"></script>
+        
         <!-- Bootstrap -->
         <script src="{{ asset('/js/new/bootstrap.js') }}"></script>
         <script src="{{ asset("js/new/jquery.validate.min.js") }}"></script>
@@ -76,7 +88,45 @@
         <script src="{{ asset("js/new/star-rating.min.js")}}"></script>    
         <script src="{{ asset("js/new/slick.js")}}"></script>
         
-        
+        <script>
+            
+            window.HELP_IMPROVE_VIDEOJS = false;
+            
+            //$( ".video-js" ).each(function( i ) {
+            $( ".hls-video-player" ).each(function( i ) {
+                var videoID = $(this).attr('data-id');
+                var video = $(this).attr('data-src');
+                console.log("Data = myVideoTag"+videoID+"  --  "+video);
+                var options = {};
+
+
+                videojs('myVideoTag'+videoID).ready(function () {
+                    var myPlayer = this;
+                    myPlayer.qualityPickerPlugin();
+                    myPlayer.src({
+                        type: 'application/x-mpegURL', 
+                        src: video
+                    });
+                });
+            });
+            $( ".jw-video-player" ).each(function( i ) {
+                var videoID = $(this).attr('data-id');
+                var video = $(this).attr('data-src');
+                console.log("Data = myVideoTag"+videoID+"  --  "+video);
+                var options = {};
+
+
+                videojs('myVideoTag'+videoID).ready(function () {
+                    var myPlayer = this;
+                    myPlayer.qualityPickerPlugin();
+                    myPlayer.src({
+//                        type: 'application/x-mpegURL', 
+                        src: video
+                    });
+                });
+            });
+            
+        </script>
         <script>
     $(document).ready(function () {
 

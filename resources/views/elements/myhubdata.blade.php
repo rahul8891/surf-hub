@@ -37,17 +37,17 @@
         </div>
         @elseif(!empty($posts->upload->video))
         @if (!File::exists($posts->upload->video))
-        <div class="newsFeedImgVideo">
-            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                <!-- <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >     -->
-                <source src="{{ 'http://3.26.158.209:8081/s3/videos/'.$posts->user->id.'/'.$posts->upload->video }}/playlist.m3u8" type="application/x-mpegURL">
+        <div class="newsFeedImgVideo jw-video-player-load-more" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
+            <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
+                 <!-- <source src="https://d1d39qm6rlhacy.cloudfront.net/hls/hls/master.m3u8" type="application/x-mpegURL">    
+                      <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >  -->
             </video>
-        </div>    
+        </div> 
         @else
-        <div class="newsFeedImgVideo">
-            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                <!-- <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >     -->
-                <source src="{{ 'http://3.26.158.209:8081/s3/videos/'.$posts->user->id.'/'.$posts->upload->video }}/playlist.m3u8" type="application/x-mpegURL">
+        <div class="newsFeedImgVideo jw-video-player-load-more" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
+            <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
+                 <!-- <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >     
+                <source src="https://d1d39qm6rlhacy.cloudfront.net/hls/hls/master.m3u8" type="application/x-mpegURL">  -->
             </video>
         </div>
         @endif
@@ -218,23 +218,26 @@
 @endif
 @endforeach
 
-<script>
-    window.HELP_IMPROVE_VIDEOJS = false;
-
-    $( "video" ).each(function( i ) {
-        var videoID = $(this).attr('id');
-
-        var options = {};
-
-        var player = videojs(videoID, options, function onPlayerReady() {
-            // In this context, `this` is the player that was created by Video.js.
-            this.stop();
-        });
-    });
-    
-</script>
 
 <script type="text/javascript">
+    
+    $( ".jw-video-player-load-more" ).each(function( i ) {
+                var videoID = $(this).attr('data-id');
+                var video = $(this).attr('data-src');
+                console.log("Data = myVideoTag"+videoID+"  --  "+video);
+                var options = {};
+
+
+                videojs('myVideoTag'+videoID).ready(function () {
+                    var myPlayer = this;
+                    myPlayer.qualityPickerPlugin();
+                    myPlayer.src({
+//                        type: 'application/x-mpegURL', 
+                        src: video
+                    });
+                });
+    });
+    
     $('.rating').rating({
     showClear:false,
             showCaption:false
