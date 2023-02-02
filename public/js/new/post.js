@@ -514,7 +514,7 @@ $(document).ready(function () {
         }
     });
 
-    document.querySelectorAll('.video-js').forEach((i) => {
+    document.querySelectorAll('.vjs-tech').forEach((i) => {
         if (i) {
             const observer = new IntersectionObserver((entries) => {
                 observerCallback(entries, observer, i)
