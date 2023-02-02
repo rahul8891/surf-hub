@@ -2,7 +2,11 @@
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="editModalLabel">Edit</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <img alt="" src="{{ asset("/img/close.png")}}">
+            </button>
         </div>
+
         <div class="modal-body">
             <div class="map-details">
                 <form class="filterWrap" action="{{route('beachBreakUpdate')}}" name="beachBreakUpdate" method="POST">
@@ -13,11 +17,11 @@
 
                                 <div class="align-items-center d-flex mb-4">
                                     <label class="form-label me-3 w-150">Beach Name</label>
-                                    <input type="text" value="{{$beach_break[0]['beach_name']}}" class="form-control mb-0" name="beach_name" required="required">
+                                    <input type="text" value="{{$beach_break[0]['beach_name']}}" class="form-control mb-0" name="beach_name" id="beach_name" onkeyup="beachRules(this.value)">
                                 </div>
                                 <div class="align-items-center d-flex mb-4">
                                     <label class="form-label me-3 w-150">Break Name</label>
-                                    <input type="text" class="form-control mb-0" name="break_name" required="required" value="{{$beach_break[0]['break_name']}}">
+                                    <input type="text" class="form-control mb-0" name="break_name" id="break_name" value="{{$beach_break[0]['break_name']}}" onkeyup="breakRules(this.value)">
                                 </div>
                                 <div class="align-items-center d-flex mb-4">
                                     <label class="form-label me-3 w-150">City/Region</label>
@@ -49,7 +53,7 @@
                         <div class="row">
                             <div class="col-10 ms-auto ps-0">
                                 <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7562068.0941798575!2d-24.222649315868658!3d22.262223951848174!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94b5bf5683236db%3A0x5865a017e6166526!2sSurf%20Hub%20Cabo%20Verde!5e0!3m2!1sen!2sin!4v1667312190058!5m2!1sen!2sin"
+                                    src="https://maps.google.com/maps?q={{$beach_break[0]['latitude']}}, {{$beach_break[0]['longitude']}}&hl=us&z=14&amp;output=embed"
                                     height="200" style="border:0;width: 100%;" allowfullscreen="" loading="lazy"
                                     referrerpolicy="no-referrer-when-downgrade"></iframe>
                                 <input type="hidden" name="beach_break_id" value="{{$id}}" >
@@ -65,3 +69,105 @@
 
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+
+        var beach_name = $('#beach_name').val();
+        if(beach_name !== '') {
+        beachRules(beach_name);
+        }
+        var break_name = $('#break_name').val();
+        if(break_name !== '') {
+        breakRules(break_name);
+        }
+
+        $("form[name='beachBreakUpdate']").validate({
+            rules: {
+                beach_name: {
+                    required: true,
+                },
+                break_name: {
+                    required: true,
+                },
+                city_region: {
+                    required: true,
+                },
+                state: {
+                    required: true,
+                },
+                country: {
+                    required: true
+                },
+                latitude: {
+                    required: true
+                },
+                longitude: {
+                    required: true
+                }
+            },
+            errorPlacement: function (error, element) {
+                if (element.is(":radio")) {
+                    error.insertAfter(element.parent().parent());
+                } else {
+                    // This is the default behavior of the script for all fields
+                    error.insertAfter(element);
+                }
+            },
+            messages: {
+                beach_name: {
+                    required: "Please enter beach name"
+                },
+                break_name: {
+                    required: "Please enter break name"
+                },
+                city_region: {
+                    required: "Please enter city"
+                },
+                state: {
+                    required: "Please enter state"
+                },
+                country: {
+                    required: "Please enter country"
+                },
+                latitude: {
+                    required: "Please enter latitude"
+                },
+                longitude: {
+                    required: "Please enter longitude"
+                }
+            },
+            submitHandler: function (form, e) {
+                form.submit();
+
+            }
+        });
+
+    });
+    function beachRules(beach) {
+        
+        if (beach !== '') {
+            $('#break_name').rules('remove', 'required');
+        } else {
+            $('#break_name').rules('add', {
+                required: true,
+                messages: {
+                    required: "Please enter break name"
+                }
+            });
+        }
+
+    }
+    function breakRules(break_val) {
+        if (break_val !== '') {
+            $('#beach_name').rules('remove', 'required');
+        } else {
+            $('#beach_name').rules('add', {
+                required: true,
+                messages: {
+                    required: "Please enter beach name"
+                }
+            });
+        }
+
+    }
+</script>

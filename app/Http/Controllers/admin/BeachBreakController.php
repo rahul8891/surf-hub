@@ -192,8 +192,8 @@ class BeachBreakController extends Controller
         try{
             $data = $request->all();
             $rules = array(
-                'beach_name' => ['required', 'string'],
-                'break_name' => ['required','string'],
+//                'beach_name' => ['required', 'string'],
+//                'break_name' => ['required','string'],
                 'city_region' => ['required','string'],
                 'state' => ['required','string'],
                 'country' => ['required','string'],

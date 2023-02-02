@@ -691,4 +691,5 @@ $(document).ready(function () {
 //        }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
+
 });
