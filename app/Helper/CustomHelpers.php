@@ -60,3 +60,16 @@ function postedDateTime($dateTime = null) {
     $created = Carbon::createFromTimeStamp(strtotime($dateTime))->diffForHumans();
     return $created;
 }
+
+/**
+ *  Extract name from the filename
+ */
+function getName($file = '') {       
+    $nameFile = '';
+    if(isset($file) && !empty($file)) {
+        $name = explode(".", $file);
+        $nameFile = $name[0];
+    }
+
+    return $nameFile;
+}
