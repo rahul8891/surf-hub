@@ -331,19 +331,3 @@
 
 
                     </div>
-                    <script type="text/javascript">
-                        $('.rating-filter').rating({
-                            showClear: false,
-                            showCaption: false
-                        });
-
-                        function ratingShow(e) {
-                            $(e).children(".rating-container").show();
-                            $(e).children(".avg-rating").hide();
-                        }
-                        $(document).on('click', '.rating-container', function (e) {
-                            $(e).children(".rating-container").hide();
-                            $(e).children(".avg-rating").hide();
-                        });
-
-                    </script>
