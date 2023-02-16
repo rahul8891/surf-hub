@@ -26,7 +26,6 @@
                 @php ($i = 0)
                 @foreach ($postsList as $key => $posts)
                 <div class="news-feed">
-
                     <div class="inner-news-feed">
                         <div class="user-details">
                             <div class="user-left">
@@ -59,15 +58,17 @@
                         </div>
                         @elseif(!empty($posts->upload->video))
                         @if (!File::exists($posts->upload->video))
-                        <div class="newsFeedImgVideo">
-                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+                        <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="https://d1d39qm6rlhacy.cloudfront.net/hls/hls/master.m3u8">
+                       <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
+                            <!-- <source src="https://d1d39qm6rlhacy.cloudfront.net/hls/hls/master.m3u8" type="application/x-mpegURL">    
+	                         <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >  -->
                         </video>
                         </div>    
                         @else
-                        <div class="newsFeedImgVideo">
-                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+                        <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-src="https://d1d39qm6rlhacy.cloudfront.net/hls/hls/master.m3u8">
+                        <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
+                             <!-- <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >     
+                            <source src="https://d1d39qm6rlhacy.cloudfront.net/hls/hls/master.m3u8" type="application/x-mpegURL">  -->
                         </video>
                         </div>
                         @endif
@@ -278,9 +279,14 @@
 @include('elements/location_popup_model')
 @include('layouts/models/edit_image_upload')
 @include('layouts/models/full_screen_modal')
+
+
+
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-	var page = 1;
+
+    
+    var page = 1;
 
     $(window).scroll(function() {
         if($(window).scrollTop() + $(window).height() >= $(document).height()) {

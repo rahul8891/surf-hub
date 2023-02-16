@@ -39,13 +39,15 @@
         @if (!File::exists($posts->upload->video))
         <div class="newsFeedImgVideo">
             <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+                <!-- <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >     -->
+                <source src="{{ 'http://3.26.158.209:8081/s3/videos/'.$posts->user->id.'/'.$posts->upload->video }}/playlist.m3u8" type="application/x-mpegURL">
             </video>
         </div>    
         @else
         <div class="newsFeedImgVideo">
             <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+                <!-- <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >     -->
+                <source src="{{ 'http://3.26.158.209:8081/s3/videos/'.$posts->user->id.'/'.$posts->upload->video }}/playlist.m3u8" type="application/x-mpegURL">
             </video>
         </div>
         @endif
@@ -215,6 +217,22 @@
 
 @endif
 @endforeach
+
+<script>
+    window.HELP_IMPROVE_VIDEOJS = false;
+
+    $( "video" ).each(function( i ) {
+        var videoID = $(this).attr('id');
+
+        var options = {};
+
+        var player = videojs(videoID, options, function onPlayerReady() {
+            // In this context, `this` is the player that was created by Video.js.
+            this.stop();
+        });
+    });
+    
+</script>
 
 <script type="text/javascript">
     $('.rating').rating({

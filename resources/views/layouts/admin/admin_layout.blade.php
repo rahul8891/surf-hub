@@ -71,9 +71,7 @@
         <script src="{{ asset('/js/new/bootstrap.js') }}"></script>
         <script src="{{ asset("js/new/jquery.validate.min.js") }}"></script>
         <script src="{{ asset("/js/new/admin_custom.js")}}"></script>
-        @if (Auth::user())
         <script src="{{ asset("js/new/post.js")}}"></script>
-        @endif
         <script src="{{ asset("js/new/script.js")}}"></script>
         <script src="{{ asset("js/new/star-rating.min.js")}}"></script>    
         <script src="{{ asset("js/new/slick.js")}}"></script>
