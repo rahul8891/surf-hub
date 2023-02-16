@@ -1922,6 +1922,9 @@ header .notification {
     max-height: 175px;
     overflow: auto;
 }
+.name-row:nth-of-type(odd) {
+    background: #e0e0e0;
+}
 
 
 #full_screen_modal .modal-dialog {

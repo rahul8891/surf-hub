@@ -74,7 +74,7 @@ $(document).ready(function () {
                 }
                 var exactSize = (Math.round(_size * 100) / 100) + ' ' + fSExt[i];
 
-                $("#filesInfo").append('<div class="name-row pip"><img src="/img/video-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span><a class="remove-photo target' + fLen + '" data-index=' + index + '> &#x2715;</a></div>');
+                $("#filesInfo").append('<div class="name-row pip justify-content-between"><div class=" target' + fLen + '" ><img src="/img/video-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span><a class="remove-photo " data-index=' + index + '> &#x2715;</a></div></div>');
                 $(".remove-photo").click(function () {
                     var indexRemoved = $(this).data('index');
                     dataImage.splice(indexRemoved, 1);
@@ -94,7 +94,7 @@ $(document).ready(function () {
                 }
                 var exactSize = (Math.round(_size * 100) / 100) + ' ' + fSExt[i];
 
-                $("#filesInfo").append('<div class="name-row pip"><img src="/img/img-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span><a class="remove-photo target' + fLen + '" data-index=' + index + '> &#x2715;</a></div>');
+                $("#filesInfo").append('<div class="name-row pip justify-content-between"><div class=" target' + fLen + '" ><img src="/img/img-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div></div>');
                 $(".remove-photo").click(function () {
                     var indexRemoved = $(this).data('index');
                     dataImage.splice(indexRemoved, 1);
@@ -510,5 +510,98 @@ $(document).ready(function () {
             }
         });
     };
+    
+    
+    
+    var k = 0;
+    var imgElems = [];
+    var vidElems = [];
+    
+    $(document).on('change', '#input_multifile', function (e) {
+        e.preventDefault();
+
+        var files = document.getElementById('input_multifile').files;
+        var len = files.length;
+        
+        $('#formSubmit').attr('disabled',true);
+        
+        for (var i = 0; i < len; i++) {
+            
+            var ext = files[i].name.substring(files[i].name.lastIndexOf(".") + 1).toLowerCase();
+            let fileType = files[i].type;
+            let file = files[i];
+
+            var random = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+            var user_id = $('#user_id').val();
+            let timeStamp = Date.now() + "" + random;
+            var fileName = timeStamp + '.' + ext;
+            if (ext == "png" || ext == "jpeg" || ext == "jpg") {
+
+                imgElems.push(fileName);
+                $("<div><div id='progress" + timeStamp + "' class='px-5 mx-5 fs-5 font-weight-bold text-success'></div></div>").insertAfter(".target" + i);
+                var filePath = 'images/' + user_id + '/' + fileName;
+            } else {
+                var filePath = 'videos/' + user_id + '/' + fileName;
+                vidElems.push(fileName);
+                $("<div><div id='progress" + timeStamp + "' class='px-5 mx-5 fs-5 font-weight-bold text-success'></div></div>").insertAfter(".target" + i);
+            }
+
+            preSignedUrl(filePath, file, fileType ,timeStamp ,i , len);
+            
+
+        }
+        
+    });
+    
+    function preSignedUrl(filePath, file, fileType ,timeStamp ,i , len) {
+      var post_url;
+            $.ajax({
+                type: "GET",
+                url: "/get-presigned-url",
+                data: {'filepath': filePath},
+                dataType: "json",
+                success: function (jsonResponse) {
+
+                    post_url = jsonResponse;
+
+                    uploadMedia(post_url, file, fileType ,timeStamp ,i , len);
+
+                }
+            });  
+    }
+
+    function uploadMedia(post_url, file, fileType, timeStamp ,i , len) {
+        
+        $.ajax({
+            url: post_url,
+            type: 'PUT',
+            datatype: 'xml',
+            data: file,
+            contentType: fileType,
+            processData: false,
+            xhr: function () {
+                var xhr = $.ajaxSettings.xhr();
+                if (xhr.upload) {
+                    xhr.upload.addEventListener('progress', function (event) {
+                        var percent = 0;
+                        var position = event.loaded || event.position;
+                        var total = event.total;
+                        if (event.lengthComputable) {
+                            percent = Math.ceil(position / total * 100);
+                            $("#progress" + timeStamp).html(percent + "%");
+                        }
+                    }, true);
+                }
+                return xhr;
+            }
+        }).done(function (response) {
+            k++;
+            $('#imagesHid_input').val(JSON.stringify(imgElems));
+            $('#videosHid_input').val(JSON.stringify(vidElems));
+            if(k == len) {
+                $('#formSubmit').attr('disabled',false);
+            }
+        });
+    }
 
 });
