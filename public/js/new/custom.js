@@ -1,17 +1,17 @@
-$(document).ready(function () {
-    var csrf_token = $('meta[name="csrf-token"]').attr("content");
+jQuery(document).ready(function () {
+    var csrf_token = jQuery('meta[name="csrf-token"]').attr("content");
 
-    /*$('#login').click(function (event) {		
-     var email = $('#email').val();
-     var password = $('#password').val();
+    /*jQuery('#login').click(function (event) {		
+     var email = jQuery('#email').val();
+     var password = jQuery('#password').val();
      if(email && password){
      spinner.show();
      }
      });*/
     /************** country and phone field onload register ****************************/
 
-    $('#register .country option:selected').prop("selected", false);
-    $('#register .phone').val('');
+    jQuery('#register .country option:selected').prop("selected", false);
+    jQuery('#register .phone').val('');
 
     
 
@@ -19,15 +19,15 @@ $(document).ready(function () {
     /************** spiner code ****************************/
     var stopSpiner = "{{ $spiner}}";
 
-    // var spinner = $('#loader');
+    // var spinner = jQuery('#loader');
 
-    var spinner = $(".loaderWrap");
+    var spinner = jQuery(".loaderWrap");
 
-    $("#next").click(function (event) {
+    jQuery("#next").click(function (event) {
         spinner.show();
     });
 
-    // $("#next1").click(function (event) {
+    // jQuery("#next1").click(function (event) {
     // 	spinner.show();
     // });
 
@@ -40,13 +40,13 @@ $(document).ready(function () {
     /************** end spiner code ****************************/
 
     /** Phone Code  */
-    $(".country").change(function (e) {
-        var phone_code = $('option:selected', this).data("phone");
+    jQuery(".country").change(function (e) {
+        var phone_code = jQuery('option:selected', this).data("phone");
         if (phone_code != '') {
-            $(".phone").val(phone_code);
+            jQuery(".phone").val(phone_code);
             // set phone code to phone input
         } else {
-            $(".phone").val('');
+            jQuery(".phone").val('');
             // remove phone code to phone input
         }
     });
@@ -57,22 +57,22 @@ $(document).ready(function () {
     /**************************************************************************************
      *                     set image preview after selection and crop befor update
      ***************************************************************************************/
-    $("#exampleInputFile").change(function () {
+    jQuery("#exampleInputFile").change(function () {
         readURL(this);
     });
-    $("form[name='register-surfer'] #exampleInputFile").change(function () {
+    jQuery("form[name='register-surfer'] #exampleInputFile").change(function () {
         readURL(this);
     });
-    $("form[name='register-resort'] #exampleInputFile").change(function () {
+    jQuery("form[name='register-resort'] #exampleInputFile").change(function () {
         readURL(this);
     });
-    $("form[name='register-advertiser'] #exampleInputFile").change(function () {
+    jQuery("form[name='register-advertiser'] #exampleInputFile").change(function () {
         readURL(this);
     });
 
 
     var $image_crop;
-    $image_crop = $('#image').croppie({
+    $image_crop = jQuery('#image').croppie({
         enableExif: true,
         enableOrientation: true,
         viewport: {
@@ -95,7 +95,7 @@ $(document).ready(function () {
                 input.files[0] &&
                 (ext == "png" || ext == "jpeg" || ext == "jpg")
                 ) {
-            $("#imageError").hide();
+            jQuery("#imageError").hide();
             var reader = new FileReader();
             reader.onload = function (e) {
                 $image_crop.croppie('bind', {
@@ -105,109 +105,109 @@ $(document).ready(function () {
                 });
             };
             reader.readAsDataURL(input.files[0]);
-            $('#myModal').modal('show');
-            $("#remove-img").show();
-            $("form[name='register-surfer'] #remove-img").show();
-            $("form[name='register-resort'] #remove-img").show();
-            $("form[name='register-advertiser'] #remove-img").show();
+            jQuery('#myModal').modal('show');
+            jQuery("#remove-img").show();
+            jQuery("form[name='register-surfer'] #remove-img").show();
+            jQuery("form[name='register-resort'] #remove-img").show();
+            jQuery("form[name='register-advertiser'] #remove-img").show();
         } else {
-            $('#imagebase64').val("");
-            $("form[name='register-surfer'] #imagebase64").val("");
-            $("form[name='register-resort'] #imagebase64").val("");
-            $("form[name='register-advertiser'] #imagebase64").val("");
-            $("#exampleInputFile").val("");
-            $("form[name='register-surfer'] #exampleInputFile").val("");
-            $("form[name='register-resort'] #exampleInputFile").val("");
-            $("form[name='register-advertiser'] #exampleInputFile").val("");
+            jQuery('#imagebase64').val("");
+            jQuery("form[name='register-surfer'] #imagebase64").val("");
+            jQuery("form[name='register-resort'] #imagebase64").val("");
+            jQuery("form[name='register-advertiser'] #imagebase64").val("");
+            jQuery("#exampleInputFile").val("");
+            jQuery("form[name='register-surfer'] #exampleInputFile").val("");
+            jQuery("form[name='register-resort'] #exampleInputFile").val("");
+            jQuery("form[name='register-advertiser'] #exampleInputFile").val("");
 
-            $("#category-img-tag").attr("src", "/img/image-file.png");
-            $("#category-img-tag").attr("width", "auto");
+            jQuery("#category-img-tag").attr("src", "/img/image-file.png");
+            jQuery("#category-img-tag").attr("width", "auto");
 
 
-            $("form[name='register-surfer'] #category-img-tag").attr("src", "/img/image-file.png");
-            $("form[name='register-surfer'] #category-img-tag").attr("width", "auto");
+            jQuery("form[name='register-surfer'] #category-img-tag").attr("src", "/img/image-file.png");
+            jQuery("form[name='register-surfer'] #category-img-tag").attr("width", "auto");
 
-            $("form[name='register-resort'] #category-img-tag").attr("src", "/img/image-file.png");
-            $("form[name='register-resort'] #category-img-tag").attr("width", "auto");
+            jQuery("form[name='register-resort'] #category-img-tag").attr("src", "/img/image-file.png");
+            jQuery("form[name='register-resort'] #category-img-tag").attr("width", "auto");
 
-            $("form[name='register-advertiser'] #category-img-tag").attr("src", "/img/image-file.png");
-            $("form[name='register-advertiser'] #category-img-tag").attr("width", "auto");
+            jQuery("form[name='register-advertiser'] #category-img-tag").attr("src", "/img/image-file.png");
+            jQuery("form[name='register-advertiser'] #category-img-tag").attr("width", "auto");
 
-            $("#remove-img").hide();
-            $("#imageError").show();
-            $("form[name='register-surfer'] #remove-img").hide();
-            $("form[name='register-resort'] #remove-img").hide();
-            $("form[name='register-advertiser'] #remove-img").hide();
-            $("form[name='register-surfer'] #imageError").show();
-            $("form[name='register-resort'] #imageError").show();
-            $("form[name='register-advertiser'] #imageError").show();
+            jQuery("#remove-img").hide();
+            jQuery("#imageError").show();
+            jQuery("form[name='register-surfer'] #remove-img").hide();
+            jQuery("form[name='register-resort'] #remove-img").hide();
+            jQuery("form[name='register-advertiser'] #remove-img").hide();
+            jQuery("form[name='register-surfer'] #imageError").show();
+            jQuery("form[name='register-resort'] #imageError").show();
+            jQuery("form[name='register-advertiser'] #imageError").show();
         }
     }
 
-    $('.crop_image').click(function (event) {
+    jQuery('.crop_image').click(function (event) {
         $image_crop.croppie('result', {
             type: 'canvas',
             size: 'viewport'
         }).then(function (response) {
-            $('#imagebase64').val(response);
-            $("form[name='register-surfer'] #imagebase64").val(response);
-            $("form[name='register-resort'] #imagebase64").val(response);
-            $("form[name='register-advertiser'] #imagebase64").val(response);
-            $("#category-img-tag").attr("src", response);
-            $("#category-img-tag").attr("width", "100%");
+            jQuery('#imagebase64').val(response);
+            jQuery("form[name='register-surfer'] #imagebase64").val(response);
+            jQuery("form[name='register-resort'] #imagebase64").val(response);
+            jQuery("form[name='register-advertiser'] #imagebase64").val(response);
+            jQuery("#category-img-tag").attr("src", response);
+            jQuery("#category-img-tag").attr("width", "100%");
 
-            $("form[name='register-surfer'] #category-img-tag").attr("src", response);
-            $("form[name='register-surfer'] #category-img-tag").attr("width", "100%");
+            jQuery("form[name='register-surfer'] #category-img-tag").attr("src", response);
+            jQuery("form[name='register-surfer'] #category-img-tag").attr("width", "100%");
 
-            $("form[name='register-resort'] #category-img-tag").attr("src", response);
-            $("form[name='register-resort'] #category-img-tag").attr("width", "100%");
+            jQuery("form[name='register-resort'] #category-img-tag").attr("src", response);
+            jQuery("form[name='register-resort'] #category-img-tag").attr("width", "100%");
 
-            $("form[name='register-advertiser'] #category-img-tag").attr("src", response);
-            $("form[name='register-advertiser'] #category-img-tag").attr("width", "100%");
+            jQuery("form[name='register-advertiser'] #category-img-tag").attr("src", response);
+            jQuery("form[name='register-advertiser'] #category-img-tag").attr("width", "100%");
 
-            $('#myModal').modal('hide');
+            jQuery('#myModal').modal('hide');
         })
     });
 
     /**
      * Model Cancle 
      */
-    $(".close").click(function () {
-        $('#imagebase64').val("");
-        $("form[name='register-surfer'] #imagebase64").val("");
-        $("form[name='register-resort'] #imagebase64").val("");
-        $("form[name='register-advertiser'] #imagebase64").val("");
-        $("#exampleInputFile").val("");
-        $("form[name='register-surfer'] #exampleInputFile").val("");
-        $("form[name='register-resort'] #exampleInputFile").val("");
-        $("form[name='register-advertiser'] #exampleInputFile").val("");
-        $("#category-img-tag").attr("src", "");
-        $("#category-img-tag").attr("src", "img/image-file.png");
-        $("#category-img-tag").attr("width", "auto");
-        $("#remove-img").hide();
+    jQuery(".close").click(function () {
+        jQuery('#imagebase64').val("");
+        jQuery("form[name='register-surfer'] #imagebase64").val("");
+        jQuery("form[name='register-resort'] #imagebase64").val("");
+        jQuery("form[name='register-advertiser'] #imagebase64").val("");
+        jQuery("#exampleInputFile").val("");
+        jQuery("form[name='register-surfer'] #exampleInputFile").val("");
+        jQuery("form[name='register-resort'] #exampleInputFile").val("");
+        jQuery("form[name='register-advertiser'] #exampleInputFile").val("");
+        jQuery("#category-img-tag").attr("src", "");
+        jQuery("#category-img-tag").attr("src", "img/image-file.png");
+        jQuery("#category-img-tag").attr("width", "auto");
+        jQuery("#remove-img").hide();
     });
 
     /**
      * Reset Image
      */
-    $("#remove-img").click(function () {
-        $('#imagebase64').val("");
-        $("#exampleInputFile").val("");
-        $("#category-img-tag").attr("src", "");
-        $("#category-img-tag").attr("src", "img/image-file.png");
-        $("#category-img-tag").attr("width", "auto");
-        $("#remove-img").hide();
+    jQuery("#remove-img").click(function () {
+        jQuery('#imagebase64').val("");
+        jQuery("#exampleInputFile").val("");
+        jQuery("#category-img-tag").attr("src", "");
+        jQuery("#category-img-tag").attr("src", "img/image-file.png");
+        jQuery("#category-img-tag").attr("width", "auto");
+        jQuery("#remove-img").hide();
     });
 
     /**************************************************************************************
      *                    Profile Image
      ***************************************************************************************/
-    $("#exampleInputProfileFile").change(function () {
+    jQuery("#exampleInputProfileFile").change(function () {
         readProfileURL(this);
     });
 
-    $("#myButton").click(function () {
-        $('#exampleInputProfileFile').click();
+    jQuery("#myButton").click(function () {
+        jQuery('#exampleInputProfileFile').click();
     });
 
     function readProfileURL(input) {
@@ -218,7 +218,7 @@ $(document).ready(function () {
                 input.files[0] &&
                 (ext == "png" || ext == "jpeg" || ext == "jpg")
                 ) {
-            $("#imageError").hide();
+            jQuery("#imageError").hide();
             var reader = new FileReader();
             reader.onload = function (e) {
                 $image_crop.croppie('bind', {
@@ -228,28 +228,28 @@ $(document).ready(function () {
                 });
             };
             reader.readAsDataURL(input.files[0]);
-            $('#myModal').modal('show');
+            jQuery('#myModal').modal('show');
         } else {
-            $("#imageError").show();
+            jQuery("#imageError").show();
         }
     }
 
     /**
      * Update user profile using ajax
      */
-    $('.crop_profile_image').click(function (event) {
+    jQuery('.crop_profile_image').click(function (event) {
         $image_crop.croppie('result', {
             type: 'canvas',
             size: 'viewport'
         }).then(function (response) {
-            var id = $("#user-id").data("userid");//$(this).data("userid");
+            var id = jQuery("#user-id").data("userid");//jQuery(this).data("userid");
             console.log(id);
-            $('#imagebase64').val(response);
-            $("#category-img-tag").attr("src", response);
-            $("#category-img-tag").attr("width", "auto");
-            $('#myModal').modal('hide');
+            jQuery('#imagebase64').val(response);
+            jQuery("#category-img-tag").attr("src", response);
+            jQuery("#category-img-tag").attr("width", "auto");
+            jQuery('#myModal').modal('hide');
             spinner.show();
-            $.ajax({
+            jQuery.ajax({
                 type: "POST",
                 url: "/updateProfile",
                 data: {
@@ -261,12 +261,12 @@ $(document).ready(function () {
                 success: function (jsonResponse) {
                     if (jsonResponse.status == "success") {
                         spinner.hide();
-                        $("#head").load(location.href + " #head>*", "");
+                        jQuery("#head").load(location.href + " #head>*", "");
                         document.getElementById("error").innerHTML = jsonResponse.message;
                         document.getElementById("error").className = "alert alert-success";
                     } else {
                         spinner.hide();
-                        $("#head").load(location.href + " #head>*", "");
+                        jQuery("#head").load(location.href + " #head>*", "");
                         document.getElementById("error").innerHTML = jsonResponse.message;
                         document.getElementById("error").className = "alert alert-danger";
                     }
@@ -281,7 +281,7 @@ $(document).ready(function () {
      *
      ********************************************************************************************************/
 
-    $.validator.addMethod("pwcheck", function (value) {
+    jQuery.validator.addMethod("pwcheck", function (value) {
         return (
                 /[\@\#\$\%\^\&\*\(\)\_\+\!]/.test(value) &&
                 /[a-z]/.test(value) &&
@@ -290,7 +290,7 @@ $(document).ready(function () {
                 );
     });
     // no space allow in text box
-    $.validator.addMethod(
+    jQuery.validator.addMethod(
             "noSpace",
             function (value, element) {
                 return value == "" || value.trim().length != 0;
@@ -299,7 +299,7 @@ $(document).ready(function () {
             );
 
     // valid email format
-    $.validator.addMethod(
+    jQuery.validator.addMethod(
             "validEmailFormat",
             function (email) {
                 var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
@@ -308,7 +308,7 @@ $(document).ready(function () {
             "Please enter valid email with valid format"
             );
     // NO SPACE ALLOW IN USER NAME
-    $.validator.addMethod(
+    jQuery.validator.addMethod(
             "spaceNotAllow",
             function (value) {
                 var regexp = /^([A-z0-9!@#$%^&*().,<>{}[\]<>?_=+\-|;:\'\"\/])*[^\s]\1*$/;
@@ -318,7 +318,7 @@ $(document).ready(function () {
             );
 
     // only number allowed
-    $.validator.addMethod(
+    jQuery.validator.addMethod(
             "numericOnly",
             function (value) {
                 // return /^[0-9]*$/.test(value);
@@ -328,7 +328,7 @@ $(document).ready(function () {
             "Please only enter numeric values (0-9) and +-"
             );
 
-    $.validator.addMethod(
+    jQuery.validator.addMethod(
             "localBeachBreak",
             function (value) {
                 return value != "";
@@ -336,17 +336,17 @@ $(document).ready(function () {
             "Please enter beack break"
             );
 
-    $.validator.addMethod(
+    jQuery.validator.addMethod(
             "newPwdCurrentPws",
             function (value) {
-                if (value != $('#current_password').val()) {
+                if (value != jQuery('#current_password').val()) {
                     return value;
                 }
             },
             "New password can not be same as current password"
             );
 
-    $("form[name='register']").validate({
+    jQuery("form[name='register']").validate({
         rules: {
             first_name: {
                 required: true,
@@ -502,7 +502,7 @@ $(document).ready(function () {
         }
     });
 
-    $("form[name='register-resort']").validate({
+    jQuery("form[name='register-resort']").validate({
         rules: {
             resort_name: {
                 required: true,
@@ -660,10 +660,10 @@ $(document).ready(function () {
         submitHandler: function (form) {
             var input = document.getElementById('formFile');
             if (input.files.length > 4) {
-                $('.resort_pics_error').text('Please select only 5 pics');
+                jQuery('.resort_pics_error').text('Please select only 5 pics');
                 return false;
             } else {
-                $('.resort_pics_error').text('');
+                jQuery('.resort_pics_error').text('');
             }
             form.submit();
         }
@@ -671,7 +671,7 @@ $(document).ready(function () {
 
 
 
-    $("form[name='register-advertiser']").validate({
+    jQuery("form[name='register-advertiser']").validate({
         rules: {
             company_name: {
                 required: true,
@@ -790,7 +790,7 @@ $(document).ready(function () {
         }
     });
 
-    $("form[name='register-surfer']").validate({
+    jQuery("form[name='register-surfer']").validate({
         rules: {
             gender: {
                 required: true,
@@ -959,18 +959,18 @@ $(document).ready(function () {
     });
 
 
-//    $('#formFile').change(function(){
+//    jQuery('#formFile').change(function(){
 //   //get the input and the file list
 //   var input = document.getElementById('formFile');
 //   if(input.files.length>4){
-//       $('.validation').css('display','block');
+//       jQuery('.validation').css('display','block');
 //   }else{
-//       $('.validation').css('display','none');
+//       jQuery('.validation').css('display','none');
 //   }
 //});
 
     // Login Validation
-    $("form[name='login']").validate({
+    jQuery("form[name='login']").validate({
         rules: {
             email: {
                 required: true
@@ -1002,7 +1002,7 @@ $(document).ready(function () {
     });
 
     // forgot password
-    $("form[name='forgot_password']").validate({
+    jQuery("form[name='forgot_password']").validate({
         rules: {
             email: {
                 required: true,
@@ -1029,7 +1029,7 @@ $(document).ready(function () {
     });
 
     // reset password
-    $("form[name='reset_password']").validate({
+    jQuery("form[name='reset_password']").validate({
         rules: {
             email: {
                 required: true,
@@ -1075,7 +1075,7 @@ $(document).ready(function () {
     });
 
     // reset password
-    $("form[name='update_password']").validate({
+    jQuery("form[name='update_password']").validate({
         rules: {
             current_password: {
                 required: true
@@ -1123,7 +1123,7 @@ $(document).ready(function () {
     });
 
     // update profile
-    $("form[name='update_profile']").validate({
+    jQuery("form[name='update_profile']").validate({
         rules: {
             first_name: {
                 required: true,
@@ -1234,9 +1234,9 @@ $(document).ready(function () {
         }
     });
 
-    $('form input[type=text]').focus(function () {
+    jQuery('form input[type=text]').focus(function () {
         // get selected input error container
-        $(this).siblings(".text-danger").hide();
+        jQuery(this).siblings(".text-danger").hide();
     });
 
     /**
@@ -1265,36 +1265,36 @@ $(document).ready(function () {
     };
 
     // ajax form field data for post
-    $('.search-box').keyup(debounce(function () {
+    jQuery('.search-box').keyup(debounce(function () {
         // the following function will be executed every half second	
-        if ($(this).val().length > 2) {
-            $.ajax({
+        if (jQuery(this).val().length > 2) {
+            jQuery.ajax({
                 type: "GET",
                 url: "/getBeachBreach",
                 data: {
-                    searchTerm: $(this).val(),
+                    searchTerm: jQuery(this).val(),
                     _token: csrf_token
                 },
                 dataType: "json",
                 success: function (jsonResponse) {
 
-                    $('#country_list').html(jsonResponse);
+                    jQuery('#country_list').html(jsonResponse);
                 }
             })
 
         } else {
-            $('#local_beach_break_id').val('');
-            $('#country_list').html("");
+            jQuery('#local_beach_break_id').val('');
+            jQuery('#country_list').html("");
         }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
-    $('#searchFollower').keyup(debounce(function () {
+    jQuery('#searchFollower').keyup(debounce(function () {
         // the following function will be executed every half second	
-        var user_id = $('#user_id').val();
-        var keyword = $('#searchFollower').val();
-//        if ($(this).val().length > 2) {
-        $.ajax({
+        var user_id = jQuery('#user_id').val();
+        var keyword = jQuery('#searchFollower').val();
+//        if (jQuery(this).val().length > 2) {
+        jQuery.ajax({
             type: "GET",
             url: "/searchFollwers/" + user_id,
             data: {
@@ -1303,22 +1303,22 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (jsonResponse) {
-                $('.list-followers').html(jsonResponse.html);
+                jQuery('.list-followers').html(jsonResponse.html);
             }
         })
 
 //        } else {
-//            $('#local_beach_break_id').val('');
-//            $('#country_list').html("");
+//            jQuery('#local_beach_break_id').val('');
+//            jQuery('#country_list').html("");
 //        }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
-    $('#searchFollowing').keyup(debounce(function () {
+    jQuery('#searchFollowing').keyup(debounce(function () {
         // the following function will be executed every half second	
-        var keyword = $('#searchFollowing').val();
-        var user_id = $('#user_id').val();
-//        if ($(this).val().length > 2) {
-        $.ajax({
+        var keyword = jQuery('#searchFollowing').val();
+        var user_id = jQuery('#user_id').val();
+//        if (jQuery(this).val().length > 2) {
+        jQuery.ajax({
             type: "GET",
             url: "/searchFollowing/" + user_id,
             data: {
@@ -1327,21 +1327,21 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (jsonResponse) {
-                $('.list-followers').html(jsonResponse.html);
+                jQuery('.list-followers').html(jsonResponse.html);
             }
         })
 
 //        } else {
-//            $('#local_beach_break_id').val('');
-//            $('#country_list').html("");
+//            jQuery('#local_beach_break_id').val('');
+//            jQuery('#country_list').html("");
 //        }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
-    $('#searchFollowRequest').keyup(debounce(function () {
+    jQuery('#searchFollowRequest').keyup(debounce(function () {
         // the following function will be executed every half second	
-        var keyword = $('#searchFollowRequest').val();
-//        if ($(this).val().length > 2) {
-        $.ajax({
+        var keyword = jQuery('#searchFollowRequest').val();
+//        if (jQuery(this).val().length > 2) {
+        jQuery.ajax({
             type: "GET",
             url: "/searchFollowRequest",
             data: {
@@ -1350,140 +1350,140 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (jsonResponse) {
-                $('.list-followers').html(jsonResponse.html);
+                jQuery('.list-followers').html(jsonResponse.html);
             }
         })
 
 //        } else {
-//            $('#local_beach_break_id').val('');
-//            $('#country_list').html("");
+//            jQuery('#local_beach_break_id').val('');
+//            jQuery('#country_list').html("");
 //        }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
-    $('.search-box4').keyup(debounce(function () {
+    jQuery('.search-box4').keyup(debounce(function () {
         // the following function will be executed every half second	
-        if ($(this).val().length > 2) {
-            $.ajax({
+        if (jQuery(this).val().length > 2) {
+            jQuery.ajax({
                 type: "GET",
                 url: "/getBeachBreach",
                 data: {
-                    searchTerm: $(this).val(),
+                    searchTerm: jQuery(this).val(),
                     _token: csrf_token
                 },
                 dataType: "json",
                 success: function (jsonResponse) {
 
-                    $('#country_list4').html(jsonResponse);
+                    jQuery('#country_list4').html(jsonResponse);
                 }
             })
 
         } else {
-            $('#local_beach_break_id_resort').val('');
-            $('#country_list4').html("");
+            jQuery('#local_beach_break_id_resort').val('');
+            jQuery('#country_list4').html("");
         }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
-    $('.search-box3').keyup(debounce(function () {
+    jQuery('.search-box3').keyup(debounce(function () {
         // the following function will be executed every half second	
-        if ($(this).val().length > 2) {
-            $.ajax({
+        if (jQuery(this).val().length > 2) {
+            jQuery.ajax({
                 type: "GET",
                 url: "/getBeachBreach",
                 data: {
-                    searchTerm: $(this).val(),
+                    searchTerm: jQuery(this).val(),
                     _token: csrf_token
                 },
                 dataType: "json",
                 success: function (jsonResponse) {
 
-                    $('#country_list3').html(jsonResponse);
+                    jQuery('#country_list3').html(jsonResponse);
                 }
             })
 
         } else {
-            $('#local_beach_break_id_surfer').val('');
-            $('#country_list3').html("");
+            jQuery('#local_beach_break_id_surfer').val('');
+            jQuery('#country_list3').html("");
         }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
-    $('.ad-search-box').keyup(debounce(function () {
+    jQuery('.ad-search-box').keyup(debounce(function () {
         // the following function will be executed every half second	
-        if ($(this).val().length > 2) {
-            $.ajax({
+        if (jQuery(this).val().length > 2) {
+            jQuery.ajax({
                 type: "GET",
                 url: "/getBeachBreach",
                 data: {
-                    searchTerm: $(this).val(),
+                    searchTerm: jQuery(this).val(),
                     _token: csrf_token
                 },
                 dataType: "json",
                 success: function (jsonResponse) {
 
-                    $('#beach_list').html(jsonResponse);
+                    jQuery('#beach_list').html(jsonResponse);
                 }
             })
 
         } else {
-            $('#local_beach_id').val('');
-            $('#beach_list').html("");
+            jQuery('#local_beach_id').val('');
+            jQuery('#beach_list').html("");
         }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
 
-    $(document).on('click', '#beach_list li', function () {
-        var value = $(this).text();
-        var dataId = $(this).attr("data-id");
-        $('#beach_list').html("");
-        $('.ad-search-box').val(value);
-        $('#local_beach_id').val(dataId);
-        $('#beach_list').html("");
+    jQuery(document).on('click', '#beach_list li', function () {
+        var value = jQuery(this).text();
+        var dataId = jQuery(this).attr("data-id");
+        jQuery('#beach_list').html("");
+        jQuery('.ad-search-box').val(value);
+        jQuery('#local_beach_id').val(dataId);
+        jQuery('#beach_list').html("");
     });
-    $(document).on('click', '.search1 li', function () {
-        var value = $(this).text();
-        var dataId = $(this).attr("data-id");
-        $('#country_list').html("");
-        $('.search-box').val(value);
-        $('#local_beach_break_id').val(dataId);
+    jQuery(document).on('click', '.search1 li', function () {
+        var value = jQuery(this).text();
+        var dataId = jQuery(this).attr("data-id");
+        jQuery('#country_list').html("");
+        jQuery('.search-box').val(value);
+        jQuery('#local_beach_break_id').val(dataId);
         getBreak(dataId);
-        $('#country_list').html("");
+        jQuery('#country_list').html("");
     });
 
-    $(document).on('click', '.search4 li', function () {
-        var value = $(this).text();
-        var dataId = $(this).attr("data-id");
-        $('#country_list4').html("");
-        $('.search-box4').val(value);
-        $('#local_beach_break_id_resort').val(dataId);
+    jQuery(document).on('click', '.search4 li', function () {
+        var value = jQuery(this).text();
+        var dataId = jQuery(this).attr("data-id");
+        jQuery('#country_list4').html("");
+        jQuery('.search-box4').val(value);
+        jQuery('#local_beach_break_id_resort').val(dataId);
         getBreak(dataId);
-        $('#country_list4').html("");
+        jQuery('#country_list4').html("");
     });
 
-    $(document).on('click', '.search3 li', function () {
-        var value = $(this).text();
-        var dataId = $(this).attr("data-id");
-        $('#country_list3').html("");
-        $('.search-box3').val(value);
-        $('#local_beach_break_id_surfer').val(dataId);
+    jQuery(document).on('click', '.search3 li', function () {
+        var value = jQuery(this).text();
+        var dataId = jQuery(this).attr("data-id");
+        jQuery('#country_list3').html("");
+        jQuery('.search-box3').val(value);
+        jQuery('#local_beach_break_id_surfer').val(dataId);
         getBreak(dataId);
-        $('#country_list3').html("");
+        jQuery('#country_list3').html("");
     });
 
-    $(document).on('click', '.previewAds', function () {
+    jQuery(document).on('click', '.previewAds', function () {
 //        alert('ggg');
-        var form = $('#storeAdvert').val();
-        $('#preview').val("1");
+        var form = jQuery('#storeAdvert').val();
+        jQuery('#preview').val("1");
         form.submit();
     });
 
 
     function getBreak(beachValue) {
-//        var beachValue = $(this).val();
+//        var beachValue = jQuery(this).val();
         if (beachValue != 0) {
-            $.ajax({
+            jQuery.ajax({
                 type: "GET",
                 url: '/getBreak',
                 data: {
@@ -1494,34 +1494,34 @@ $(document).ready(function () {
                 success: function (jsonResponse) {
                     //console.log(jsonResponse);
                     if (jsonResponse.status == 'success') {
-                        $("#break_id").empty();
+                        jQuery("#break_id").empty();
                         var myJsonData = jsonResponse.data;
-                        $("#break_id").append('<option value="">--Select--</option>');
-                        $.each(myJsonData, function (key, value) {
+                        jQuery("#break_id").append('<option value="">--Select--</option>');
+                        jQuery.each(myJsonData, function (key, value) {
                             if (value.break_name != '') {
-                                $("#break_id").append('<option value="' + value.id + '">' + value.break_name + '</option>');
-                                $("#break_id").rules("add", {required: true, messages: {required: "Break is required"}});
+                                jQuery("#break_id").append('<option value="' + value.id + '">' + value.break_name + '</option>');
+                                jQuery("#break_id").rules("add", {required: true, messages: {required: "Break is required"}});
 
                             } else {
-                                $("#break_id").rules("remove");
+                                jQuery("#break_id").rules("remove");
                             }
                         });
                     } else {
-                        $("#break_id").empty();
+                        jQuery("#break_id").empty();
                     }
                 }
             });
         } else {
-            $("#state_id").empty();
+            jQuery("#state_id").empty();
         }
     }
 
-    $("#beach_filter").change(function (e) {
-//    if ($('#beach_filter').is(":selected")) {
-        $('#break_filter').find('option').remove();
-        $("#break_filter").append('<option value=""> -- Break --</option>');
-        var beachValue = $(this).val();
-        $.ajax({
+    jQuery("#beach_filter").change(function (e) {
+//    if (jQuery('#beach_filter').is(":selected")) {
+        jQuery('#break_filter').find('option').remove();
+        jQuery("#break_filter").append('<option value=""> -- Break --</option>');
+        var beachValue = jQuery(this).val();
+        jQuery.ajax({
             type: "GET",
             url: '/getBreak',
             data: {
@@ -1534,34 +1534,34 @@ $(document).ready(function () {
                 if (jsonResponse.status == 'success') {
                     var myJsonData = jsonResponse.data;
 
-                    $.each(myJsonData, function (key, value) {
+                    jQuery.each(myJsonData, function (key, value) {
                         if (value.break_name != '') {
-                            $("#break_filter").append('<option value="' + value.id + '">' + value.break_name + '</option>');
-//                            $("#break_filter").append('<div class="cstm-check pos-rel break_rem'+beachValue+'"><input type="checkbox" id="break_' + value.id + '" name="filter_break_' + value.id + '" value="' + value.id + '" /><label for="break_' + value.id + '" class="width-138">' + value.break_name + '</label></div>');
+                            jQuery("#break_filter").append('<option value="' + value.id + '">' + value.break_name + '</option>');
+//                            jQuery("#break_filter").append('<div class="cstm-check pos-rel break_rem'+beachValue+'"><input type="checkbox" id="break_' + value.id + '" name="filter_break_' + value.id + '" value="' + value.id + '" /><label for="break_' + value.id + '" class="width-138">' + value.break_name + '</label></div>');
                         }
                     });
                 } else {
-//                    $("#break_id").empty();
+//                    jQuery("#break_id").empty();
                 }
             }
         });
 
 //        }
-//        alert("checked Score: " + $(this).val());
+//        alert("checked Score: " + jQuery(this).val());
 //    else {
-//        var beachValue = $(this).val();
-////        $("#break_filter").remove();
+//        var beachValue = jQuery(this).val();
+////        jQuery("#break_filter").remove();
 //    }
     });
 
 
-    $("#board_type").change(function (e) {
-//    if ($('#beach_filter').is(":selected")) {
-//        $('#break_filter').find('option').remove();
-//        $("#break_filter").append('<option value=""> -- Break --</option>');
-        var board_type = $(this).val();
+    jQuery("#board_type").change(function (e) {
+//    if (jQuery('#beach_filter').is(":selected")) {
+//        jQuery('#break_filter').find('option').remove();
+//        jQuery("#break_filter").append('<option value=""> -- Break --</option>');
+        var board_type = jQuery(this).val();
         if (board_type !== '') {
-            $.ajax({
+            jQuery.ajax({
                 type: "GET",
                 url: '/get-additional-board-info',
                 data: {
@@ -1574,158 +1574,158 @@ $(document).ready(function () {
 //                if (jsonResponse.status == 'success') {
                     var myJsonData = jsonResponse.data;
 
-                    $('#additional_optional_info').removeClass('d-none');
-                    $('#additional_optional_info').html(jsonResponse);
+                    jQuery('#additional_optional_info').removeClass('d-none');
+                    jQuery('#additional_optional_info').html(jsonResponse);
 //                } else {
-//                    $('#additional_optional_info').addClass('d-none');
+//                    jQuery('#additional_optional_info').addClass('d-none');
 //                }
                 }
             });
 
         } else {
-            $('#additional_optional_info').addClass('d-none');
-//        $("#break_filter").remove();
+            jQuery('#additional_optional_info').addClass('d-none');
+//        jQuery("#break_filter").remove();
         }
     });
 
     // ajax form field data for filter
-    $('.search-box2').keyup(debounce(function () {
+    jQuery('.search-box2').keyup(debounce(function () {
         // the following function will be executed every half second	
 
-        if ($(this).val().length > 2) {
+        if (jQuery(this).val().length > 2) {
 
-            $.ajax({
+            jQuery.ajax({
                 type: "GET",
                 url: "/getBeachBreach",
                 data: {
-                    searchTerm: $(this).val(),
+                    searchTerm: jQuery(this).val(),
                     _token: csrf_token
                 },
                 dataType: "json",
                 success: function (jsonResponse) {
 
-                    $('#country_list2').html(jsonResponse);
+                    jQuery('#country_list2').html(jsonResponse);
                 }
             })
 
         } else {
-            $('#local_beach_break_id2').val('');
-            $('#country_list2').html("");
+            jQuery('#local_beach_break_id2').val('');
+            jQuery('#country_list2').html("");
         }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
-    $(document).on('click', '.searchTwo li', function () {
-        var value = $(this).text();
-        var dataId = $(this).attr("data-id");
-        $('#country_list2').html("");
-        $('.search-box2').val(value);
-        $('#local_beach_break_id2').val(dataId);
-        $('#country_list2').html("");
+    jQuery(document).on('click', '.searchTwo li', function () {
+        var value = jQuery(this).text();
+        var dataId = jQuery(this).attr("data-id");
+        jQuery('#country_list2').html("");
+        jQuery('.search-box2').val(value);
+        jQuery('#local_beach_break_id2').val(dataId);
+        jQuery('#country_list2').html("");
     });
 
 
 
 
-    $('.other_surfer').keyup(debounce(function () {
+    jQuery('.other_surfer').keyup(debounce(function () {
         // the following function will be executed every half second	
-        if ($(this).val().length > 1) {
-            $.ajax({
+        if (jQuery(this).val().length > 1) {
+            jQuery.ajax({
                 type: "GET",
                 url: "/getUsers",
                 data: {
-                    searchTerm: $(this).val(),
+                    searchTerm: jQuery(this).val(),
                     _token: csrf_token
                 },
                 dataType: "json",
                 success: function (jsonResponse) {
-                    $('#other_surfer_list').html(jsonResponse);
+                    jQuery('#other_surfer_list').html(jsonResponse);
                 }
             })
         } else {
-            $('#surfer_id').val('');
-            $('#other_surfer_list').html("");
+            jQuery('#surfer_id').val('');
+            jQuery('#other_surfer_list').html("");
         }
     }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
-    $(document).on('click', '.search2 li', function () {
-        var value = $(this).text().trim();
-        var dataId = $(this).attr("data-id");
-        $('#other_surfer_list').html("");
-        $('.other_surfer').val(value);
-        $('#surfer_id').val(dataId);
-        $('#other_surfer_list').html("");
+    jQuery(document).on('click', '.search2 li', function () {
+        var value = jQuery(this).text().trim();
+        var dataId = jQuery(this).attr("data-id");
+        jQuery('#other_surfer_list').html("");
+        jQuery('.other_surfer').val(value);
+        jQuery('#surfer_id').val(dataId);
+        jQuery('#other_surfer_list').html("");
     });
 
-    $(document).on('click', '#filter_other_surfer_data li', function () {
-        var value = $(this).text().trim();
-        var dataId = $(this).attr("data-id");
+    jQuery(document).on('click', '#filter_other_surfer_data li', function () {
+        var value = jQuery(this).text().trim();
+        var dataId = jQuery(this).attr("data-id");
 
-        $('.filter_other_surfer').val(value);
-        $('#surfer_id_filter').val(dataId);
-        $('#filter_other_surfer_data').html("");
+        jQuery('.filter_other_surfer').val(value);
+        jQuery('#surfer_id_filter').val(dataId);
+        jQuery('#filter_other_surfer_data').html("");
     });
 
 
-    $('.filter_other_surfer').keyup(debounce(function () {
+    jQuery('.filter_other_surfer').keyup(debounce(function () {
         // the following function will be executed every half second	
-        var userType = $('#filter_user_type').val();
+        var userType = jQuery('#filter_user_type').val();
 //        alert(userType);
-        if ($(this).val().length > 1) {
-            $.ajax({
+        if (jQuery(this).val().length > 1) {
+            jQuery.ajax({
                 type: "GET",
                 url: "/getFilterUsers",
                 data: {
                     user_type: userType,
-                    searchTerm: $(this).val(),
+                    searchTerm: jQuery(this).val(),
                     _token: csrf_token
                 },
                 dataType: "json",
                 success: function (jsonResponse) {
-                    $('#filter_other_surfer_data').html(jsonResponse);
+                    jQuery('#filter_other_surfer_data').html(jsonResponse);
                 }
             });
         } else {
-            $('#surfer_id_filter').val('');
-            $('#filter_other_surfer_data').html("");
+            jQuery('#surfer_id_filter').val('');
+            jQuery('#filter_other_surfer_data').html("");
         }
     }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
 
 
-    $('.tag_user').keyup(debounce(function () {
+    jQuery('.tag_user').keyup(debounce(function () {
         // the following function will be executed every half second	
 
-        var post_id = $(this).attr('data-post_id');
-        if ($(this).val().length > 1) {
-            $.ajax({
+        var post_id = jQuery(this).attr('data-post_id');
+        if (jQuery(this).val().length > 1) {
+            jQuery.ajax({
                 type: "GET",
                 url: "/getTagUsers",
                 data: {
                     post_id: post_id,
-                    searchTerm: $(this).val(),
+                    searchTerm: jQuery(this).val(),
                     _token: csrf_token
                 },
                 dataType: "json",
                 success: function (jsonResponse) {
 
-                    $('#tag_user_list' + post_id).html(jsonResponse);
+                    jQuery('#tag_user_list' + post_id).html(jsonResponse);
                 }
             })
         } else {
-            $('#user_id').val('');
-            $('#tag_user_list' + post_id).html("");
+            jQuery('#user_id').val('');
+            jQuery('#tag_user_list' + post_id).html("");
         }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
 
-    $(document).on('click', '.tagSearch li', function () {
-        var value = $(this).text().trim();
-        var dataId = $(this).attr("data-id");
-        var postId = $(this).attr("data-post_id");
+    jQuery(document).on('click', '.tagSearch li', function () {
+        var value = jQuery(this).text().trim();
+        var dataId = jQuery(this).attr("data-id");
+        var postId = jQuery(this).attr("data-post_id");
         //ajax call to insert data in tag table and also set notification
-        $.ajax({
+        jQuery.ajax({
             type: "POST",
             url: "/setTagUsers",
             data: {
@@ -1737,30 +1737,30 @@ $(document).ready(function () {
             success: function (jsonResponse) {
 
                 if (jsonResponse.status == 'success') {
-                    $('#rowId' + dataId).hide();
-                    //$('#tag_user_list'+postId).html("");
-                    $('.tag_user').val(value);
-                    $('#user_id').val(dataId);
-                    //$('#tag_user_list'+postId).html("");
-                    $(".scrollWrap").empty();
-                    $('.scrollWrap').html(jsonResponse.responsData);
+                    jQuery('#rowId' + dataId).hide();
+                    //jQuery('#tag_user_list'+postId).html("");
+                    jQuery('.tag_user').val(value);
+                    jQuery('#user_id').val(dataId);
+                    //jQuery('#tag_user_list'+postId).html("");
+                    jQuery(".scrollWrap").empty();
+                    jQuery('.scrollWrap').html(jsonResponse.responsData);
                 } else {
                     alert(jsonResponse.message);
                 }
-                $('#tag_user_list' + post_id).html(jsonResponse);
+                jQuery('#tag_user_list' + post_id).html(jsonResponse);
             }
         })
     });
 
 
-    var other = $('input[name="other_surfer"]').val();
+    var other = jQuery('input[name="other_surfer"]').val();
     if (other == 'Me') {
-        $('input[name="other_surfer"]').val('');
+        jQuery('input[name="other_surfer"]').val('');
     } else if (other == 'Unknown') {
-        $('input[name="other_surfer"]').val('');
+        jQuery('input[name="other_surfer"]').val('');
     } else {
-        $("#othersSurfer").show();
-        $('input[name="surfer"][value="Others"]').prop("checked", true);
+        jQuery("#othersSurfer").show();
+        jQuery('input[name="surfer"][value="Others"]').prop("checked", true);
     }
 
 
@@ -1769,10 +1769,10 @@ $(document).ready(function () {
      * State Baded on the selection on country
      */
 
-    $(document).on('change', '#country_id, #edit_country_id', function (e) {
-        var currentcountryValue = $(this).val();
+    jQuery(document).on('change', '#country_id, #edit_country_id', function (e) {
+        var currentcountryValue = jQuery(this).val();
         if (currentcountryValue != 0) {
-            $.ajax({
+            jQuery.ajax({
                 type: "GET",
                 url: '/getState',
                 data: {
@@ -1783,26 +1783,26 @@ $(document).ready(function () {
                 success: function (jsonResponse) {
                     //console.log(jsonResponse);
                     if (jsonResponse.status == 'success') {
-                        $("#state_id, #edit_state_id").empty();
+                        jQuery("#state_id, #edit_state_id").empty();
                         var myJsonData = jsonResponse.data;
-                        $("#state_id, #edit_state_id").append('<option value="">--Select--</option>');
-                        $.each(myJsonData, function (key, value) {
-                            $("#state_id, #edit_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                        jQuery("#state_id, #edit_state_id").append('<option value="">--Select--</option>');
+                        jQuery.each(myJsonData, function (key, value) {
+                            jQuery("#state_id, #edit_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                         });
                     } else {
-                        $("#state_id").empty();
+                        jQuery("#state_id").empty();
                     }
                 }
             });
         } else {
-            $("#state_id").empty();
+            jQuery("#state_id").empty();
         }
     });
 
-    $(document).on('change', '#search_country_id', function (e) {
-        var currentcountryValue = $(this).val();
+    jQuery(document).on('change', '#search_country_id', function (e) {
+        var currentcountryValue = jQuery(this).val();
         if (currentcountryValue != 0) {
-            $.ajax({
+            jQuery.ajax({
                 type: "GET",
                 url: '/getState',
                 data: {
@@ -1813,19 +1813,19 @@ $(document).ready(function () {
                 success: function (jsonResponse) {
                     //console.log(jsonResponse);
                     if (jsonResponse.status == 'success') {
-                        $("#search_state_id").empty();
+                        jQuery("#search_state_id").empty();
                         var myJsonData = jsonResponse.data;
-                        $("#search_state_id").append('<option value="">--Select--</option>');
-                        $.each(myJsonData, function (key, value) {
-                            $("#search_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                        jQuery("#search_state_id").append('<option value="">--Select--</option>');
+                        jQuery.each(myJsonData, function (key, value) {
+                            jQuery("#search_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                         });
                     } else {
-                        $("#search_state_id").empty();
+                        jQuery("#search_state_id").empty();
                     }
                 }
             });
         } else {
-            $("#search_state_id").empty();
+            jQuery("#search_state_id").empty();
         }
     });
 
@@ -1835,10 +1835,10 @@ $(document).ready(function () {
      * Filter State Baded on the selection on filter country
      */
 
-    $(document).on('change', '#filter_country_id, #edit_country_id', function (e) {
-        var currentcountryValue = $(this).val();
+    jQuery(document).on('change', '#filter_country_id, #edit_country_id', function (e) {
+        var currentcountryValue = jQuery(this).val();
         if (currentcountryValue != 0) {
-            $.ajax({
+            jQuery.ajax({
                 type: "GET",
                 url: '/getState',
                 data: {
@@ -1849,25 +1849,25 @@ $(document).ready(function () {
                 success: function (jsonResponse) {
                     //console.log(jsonResponse);
                     if (jsonResponse.status == 'success') {
-                        $("#filter_state_id, #edit_state_id").empty();
+                        jQuery("#filter_state_id, #edit_state_id").empty();
                         var myJsonData = jsonResponse.data;
-                        $("#filter_state_id, #edit_state_id").append('<option value="">--Select--</option>');
-                        $.each(myJsonData, function (key, value) {
-                            $("#filter_state_id, #edit_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                        jQuery("#filter_state_id, #edit_state_id").append('<option value="">--Select--</option>');
+                        jQuery.each(myJsonData, function (key, value) {
+                            jQuery("#filter_state_id, #edit_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                         });
                     } else {
-                        $("#filter_state_id").empty();
+                        jQuery("#filter_state_id").empty();
                     }
                 }
             });
         } else {
-            $("#filter_state_id").empty();
+            jQuery("#filter_state_id").empty();
         }
     });
 
-    $(document).on('click', '.unfollow', function () {
-        var dataId = $(this).attr("data-id");
-        $.ajax({
+    jQuery(document).on('click', '.unfollow', function () {
+        var dataId = jQuery(this).attr("data-id");
+        jQuery.ajax({
             type: "POST",
             url: "unfollow",
             data: {
@@ -1877,12 +1877,12 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (jsonResponse) {
-                $('#row-id' + dataId).hide();
+                jQuery('#row-id' + dataId).hide();
                 if (jsonResponse.status == "success") {
                     spinner.hide();
                     if (jsonResponse.count == 0) {
-                        $('#allFollower').hide();
-                        $('#followRequestCount').show();
+                        jQuery('#allFollower').hide();
+                        jQuery('#followRequestCount').show();
                     }
                     document.getElementById("error").innerHTML = jsonResponse.message;
                     document.getElementById("error").className = "alert alert-success";
@@ -1898,10 +1898,10 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '.accept , .accept-follow', function () {
-        var $this = $(this);
-        var dataId = $(this).attr("data-id");
-        $.ajax({
+    jQuery(document).on('click', '.accept , .accept-follow', function () {
+        var $this = jQuery(this);
+        var dataId = jQuery(this).attr("data-id");
+        jQuery.ajax({
             type: "POST",
             url: "accept",
             data: {
@@ -1911,14 +1911,14 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (jsonResponse) {
-                $('#row-id' + dataId).hide();
+                jQuery('#row-id' + dataId).hide();
                 if (jsonResponse.status == "success") {
                     spinner.hide();
                     if (jsonResponse.count == 0) {
                         $this.parent('div').hide();
-                        $('.followCount').hide();
+                        jQuery('.followCount').hide();
                     } else {
-                        $('.followCount').text(jsonResponse.count);
+                        jQuery('.followCount').text(jsonResponse.count);
                     }
                     document.getElementById("error").innerHTML = jsonResponse.message;
                     document.getElementById("error").className = "alert alert-success";
@@ -1932,10 +1932,10 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '.reject', function () {
-        var $this = $(this);
-        var dataId = $(this).attr("data-id");
-        $.ajax({
+    jQuery(document).on('click', '.reject', function () {
+        var $this = jQuery(this);
+        var dataId = jQuery(this).attr("data-id");
+        jQuery.ajax({
             type: "POST",
             url: "reject",
             data: {
@@ -1945,14 +1945,14 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (jsonResponse) {
-                $('#row-id' + dataId).hide();
+                jQuery('#row-id' + dataId).hide();
                 if (jsonResponse.status == "success") {
                     spinner.hide();
                     if (jsonResponse.count == 0) {
                         $this.parent('div').hide();
-                        $('.followCount').hide();
+                        jQuery('.followCount').hide();
                     } else {
-                        $('.followCount').text(jsonResponse.count);
+                        jQuery('.followCount').text(jsonResponse.count);
                     }
                     document.getElementById("error").innerHTML = jsonResponse.message;
                     document.getElementById("error").className = "alert alert-success";
@@ -1966,9 +1966,9 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '.remove', function () {
-        var dataId = $(this).attr("data-id");
-        $.ajax({
+    jQuery(document).on('click', '.remove', function () {
+        var dataId = jQuery(this).attr("data-id");
+        jQuery.ajax({
             type: "POST",
             url: "remove",
             data: {
@@ -1978,12 +1978,12 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (jsonResponse) {
-                $('#row-id' + dataId).hide();
+                jQuery('#row-id' + dataId).hide();
                 if (jsonResponse.status == "success") {
                     spinner.hide();
                     if (jsonResponse.count == 0) {
-                        $('#allFollower').hide();
-                        $('#followRequestCount').show();
+                        jQuery('#allFollower').hide();
+                        jQuery('#followRequestCount').show();
                     }
                     document.getElementById("error").innerHTML =
                             jsonResponse.message;
@@ -2001,13 +2001,13 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '.followPost', function () {
-        var $this = $(this);
-        var dataId = $(this).data("id");
-        var postId = $(this).attr("data-post_id");
+    jQuery(document).on('click', '.followPost', function () {
+        var $this = jQuery(this);
+        var dataId = jQuery(this).data("id");
+        var postId = jQuery(this).attr("data-post_id");
 
         spinner.show();
-        $.ajax({
+        jQuery.ajax({
             type: "POST",
             url: "/follow",
             data: {
@@ -2032,8 +2032,8 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '#navbarDropdown', function () {
-        $.ajax({
+    jQuery(document).on('click', '#navbarDropdown', function () {
+        jQuery.ajax({
             type: "POST",
             url: "updateNotificationCountStatus",
             data: {
@@ -2042,7 +2042,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (jsonResponse) {
                 if (jsonResponse.status == "success") {
-                    $('.followCountHead').hide();
+                    jQuery('.followCountHead').hide();
                 }
             }
         });
@@ -2051,47 +2051,47 @@ $(document).ready(function () {
     
 
 
-    $('.commentOnPost').keyup(function () {
-        var postId = $(this).attr('id');
-        if ($(this).val().length > 0) {
-            $("#submitPost" + postId).show();
+    jQuery('.commentOnPost').keyup(function () {
+        var postId = jQuery(this).attr('id');
+        if (jQuery(this).val().length > 0) {
+            jQuery("#submitPost" + postId).show();
         } else {
-            $("#submitPost" + postId).hide();
+            jQuery("#submitPost" + postId).hide();
         }
     });
 
     //Auto play videos when view in scroll
 //    function isInView(el) {
 //        var rect = el.getBoundingClientRect();// absolute position of video element
-//        return !(rect.top > $(window).height() || rect.bottom < 0);// visible?
+//        return !(rect.top > jQuery(window).height() || rect.bottom < 0);// visible?
 //    }
 //
-//    $(document).on("scroll", function () {
-//        $("video").each(function () {
-//            if (isInView($(this)[0])) {// visible?
-//                if ($(this)[0].paused)
-//                    $(this)[0].play();// play if not playing
+//    jQuery(document).on("scroll", function () {
+//        jQuery("video").each(function () {
+//            if (isInView(jQuery(this)[0])) {// visible?
+//                if (jQuery(this)[0].paused)
+//                    jQuery(this)[0].play();// play if not playing
 //            } else {
-//                if (!$(this)[0].paused)
-//                    $(this)[0].pause();// pause if not paused
+//                if (!jQuery(this)[0].paused)
+//                    jQuery(this)[0].pause();// pause if not paused
 //            }
 //        });
 //    });
     //End auto play
 
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+    jQuery(function () {
+        jQuery('[data-toggle="tooltip"]').tooltip()
     });
-    $(function () {
-        $('[data-toggle="modal"]').tooltip()
+    jQuery(function () {
+        jQuery('[data-toggle="modal"]').tooltip()
     });
 
 });
 
 //To select country name
 function selectCountry(val) {
-    $("#search-box").val(val);
-    $("#suggesstion-box").hide();
+    jQuery("#search-box").val(val);
+    jQuery("#suggesstion-box").hide();
 }
 /**
  * remove message after time set hit
@@ -2133,18 +2133,18 @@ function initializeMap(id, lat, long) {
 }
 
 //show map on modal
-$(document).on('click shown.bs.modal', '.locationMap', function () {
-    var id = $(this).attr("data-id");
-    var lat = $(this).attr("data-lat");
-    var long = $(this).attr("data-long");
+jQuery(document).on('click shown.bs.modal', '.locationMap', function () {
+    var id = jQuery(this).attr("data-id");
+    var lat = jQuery(this).attr("data-lat");
+    var long = jQuery(this).attr("data-long");
     initializeMap(id, lat, long);
 });
 
-$('#test-other').click(function () {
-    if ($('#test-other').prop('checked')) {
-        $('#othersFilterSurfer').removeClass('d-none');
+jQuery('#test-other').click(function () {
+    if (jQuery('#test-other').prop('checked')) {
+        jQuery('#othersFilterSurfer').removeClass('d-none');
     } else {
-        $('#othersFilterSurfer').addClass('d-none');
+        jQuery('#othersFilterSurfer').addClass('d-none');
     }
 });
 
@@ -2153,7 +2153,7 @@ $('#test-other').click(function () {
         var _this = this;
         this.isOpen = false;
         this.areAllChecked = false;
-        this.$el = $(el);
+        this.$el = jQuery(el);
         this.$label = this.$el.find(".dropdown-label");
         this.$option = this.$el.find(".dropdown-list");
         this.$checkAll = this.$el.find('[data-toggle="check-all"]').first();
@@ -2220,8 +2220,8 @@ $('#test-other').click(function () {
             this.isOpen = true;
             this.$el.addClass("on");
             this.$option.css({transform: "", "position": "relative"});
-            $(document).on("click", function (e) {
-                if (!$(e.target).closest("[data-control]").length) {
+            jQuery(document).on("click", function (e) {
+                if (!jQuery(e.target).closest("[data-control]").length) {
                     _this.toggleOpen();
                 }
             });
@@ -2229,7 +2229,7 @@ $('#test-other').click(function () {
             this.isOpen = false;
             this.$option.css({"transform": "scale(1, 0)", "position": "absolute"});
             this.$el.removeClass("on");
-            $(document).off("click");
+            jQuery(document).off("click");
         }
     };
 
