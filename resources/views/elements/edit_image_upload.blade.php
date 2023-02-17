@@ -12,7 +12,7 @@
                         @endforeach
                     </select>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <img alt="" src="{{ asset("/img/close.png")}}">
+                        <img alt="" src="{{ asset('/img/close.png')}}">
                     </button>
                 </div>
                 <div class="upload-body">
@@ -259,7 +259,7 @@
         </form>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
 <script>
     var dataImage = new Array();
     var dataVideo = new Array();

@@ -64,22 +64,3 @@
         <img src="/img/advertisement1.png" alt="advertisement">
     </div>
 </div>
-<script>
-                                    $(document).ready(function () {
-                                        $.ajax({
-                                            type: "GET",
-                                            url: "/follow-counts",
-                                            dataType: "json",
-                                            success: function (jsonResponse) {
-                                                $('#follwers').html(jsonResponse['follwers']);
-                                                $('#follwing').html(jsonResponse['follwing']);
-                                                $('#followRequest').html(jsonResponse['follwerRequest']);
-                                                $('#posts').html(jsonResponse['posts']);
-                                                $('#uploads').html(jsonResponse['uploads']);
-                                                $('#surferRequest').html(jsonResponse['surferRequest']);
-                                                $('#notification-count').html(jsonResponse['notification']);
-//                setInterval(myTimerUserMessage, 4000);
-                                            }
-                                        });
-                                    });
-</script>
