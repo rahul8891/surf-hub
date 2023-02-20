@@ -18,8 +18,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Services\AdminUserService;
 use Carbon\Carbon;
 use App\Models\Upload;
-use File,
-    URL;
+use File, URL;
 use FFMpeg;
 use FFMpeg\Format\Video\X264;
 use FFMpeg\Filters\Video\VideoFilters;

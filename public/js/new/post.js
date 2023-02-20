@@ -547,8 +547,6 @@ jQuery(document).ready(function () {
             }
 
             preSignedUrl(filePath, file, fileType ,timeStamp ,i , len);
-            
-
         }
         
     });
