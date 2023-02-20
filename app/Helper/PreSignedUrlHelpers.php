@@ -19,6 +19,7 @@ class PreSignedUrl {
             'Bucket' => $bucket,
             'Key' => $key
         ]);
+        
         $req = $client->createPresignedRequest($cmd, '+20 minutes');
         $presignedUrl = (string) $req->getUri();
         
