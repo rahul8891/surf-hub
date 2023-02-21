@@ -191,7 +191,7 @@
                                                     <a href="{{route('saveToMyHub', Crypt::encrypt($postData->id))}}" class="">SAVE
                                                         <div class="saveInfo">
                                                             <div class="pos-rel">
-                                                                <img src={{asset("img/tooltipArrowDown.png")}} alt="">
+                                                                <img src={{asset('img/tooltipArrowDown.png')}} alt="">
                                                                 Save this video to your personal MyHub library
                                                             </div>
                                                         </div>
