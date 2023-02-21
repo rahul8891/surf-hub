@@ -268,13 +268,16 @@
                     </div>
                 </div>
                 @elseif(!empty($requests['video']))
-                <div class="news-feed">
-                    <div class="inner-news-feed">
-                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$requests['user_id'].'/'.$requests['video'] }}" >    
-                        </video>
-                    </div>    
-                </div>    
+                    @if (!File::exists($requests['video']))
+                        <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                        </div>    
+                    @else
+                        <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'m3u8' }}">
+                            <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
+                            </video>
+                        </div>
+                    @endif  
                 @endif
 
                 @php ($c = 0)
@@ -309,7 +312,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-	var page = 1;
+	/*var page = 1;
 
     $(window).scroll(function() {
         if($(window).scrollTop() + $(window).height() >= $(document).height()) {
@@ -385,7 +388,7 @@
                     $("#full_screen_modal").modal('show');
                 }
             });
-      }
+      } */
         
 </script>
 @endsection
