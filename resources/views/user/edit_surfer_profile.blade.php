@@ -49,6 +49,7 @@
                                 </div>
                             </div>
                         </div>
+                       
                         <div class="row">
                             <div class="col-md-6">
                                 <input type="text" class="form-control user-icon" placeholder="First Name" name="first_name"
@@ -70,7 +71,7 @@
                                 <div class="white-bg gender-icon">
                                     <select class="form-select" name="gender" id="gender" required>
                                         <option value="">Gender</option>
-                                        @foreach($gender_type as $key => $value)
+                                        @foreach($gender_type as $key => $value) 
                                         <option value="{{ $key }}" {{ ($user->user_profiles->gender == $key) ? "selected" : "" }} >
                                             {{ $value }}</option>
                                         @endforeach

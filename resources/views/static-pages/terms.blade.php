@@ -4,11 +4,11 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <ul class="mb-0 pl-0">
-                    <li class="hover-no">
+                <div class="mb-0 pl-0">
+                    <h2 class="hover-no">
                         <a href="javascript:void(0);">{{ __($pages->title) }}</a>
-                    </li>
-                </ul>
+                    </h2>
+                </div>
             </div>
         </div>
 
