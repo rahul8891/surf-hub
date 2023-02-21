@@ -99,7 +99,7 @@
 
     window.HELP_IMPROVE_VIDEOJS = false;
                 
-    $( ".jw-video-player" ).each(function( i ) {
+    jQuery( ".jw-video-player" ).each(function( i ) {
         var videoID = $(this).attr('data-id');
         var video = $(this).attr('data-src');
         console.log("Data = myVideoTag"+videoID+"  --  "+video);
