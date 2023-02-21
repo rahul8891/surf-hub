@@ -53,15 +53,11 @@
                                                 <img src="{{ env('FILE_CLOUD_PATH').'images/'.$postData->user->id.'/'.$postData->upload->image }}" alt="" width="100%" class="img-fluid" id="myImage{{$postData->id}}">
                                         </div>
                                     @elseif(!empty($postData->upload->video))
-                                        @php 
-                                            $type = 'video';
-                                            $file = env('FILE_CLOUD_PATH').'videos/'.$postData->user->id.'/'.$postData->upload->video;
-                                        @endphp
                                         <br>
                                         <div class="pos-rel editBtnWrap">
-                                            <video width="100%" preload="auto" data-setup="{}"  controls  autoplay playsinline muted class="video-js" id="myImage{{$postData->id}}">
-                                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$postData->user->id.'/'.$postData->upload->video }}" >    
-                                            </video>
+                                            <div class="newsFeedImgVideo jw-video-player" id="myVid{{$postData->id}}" data-id="{{$postData->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$postData->user->id.'/'.getName($postData->upload->video).'/'.getName($postData->upload->video).'.m3u8' }}">
+                                                <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$postData->id}}"></video>
+                                            </div>      
                                         </div>
                                     @else
                                         @php 
@@ -94,14 +90,14 @@
                                                 </li>
                                                 <li>
                                                     <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$postData->beach_breaks->latitude ?? ''}}" data-long="{{$postData->beach_breaks->longitude ?? ''}}" data-id="{{$postData->id}}" class="locationMap">
-                                                        <img src="{{ asset("/img/maps-and-flags.png")}}" alt="">
+                                                        <img src="{{ asset('/img/maps-and-flags.png')}}" alt="">
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
-                                                    <a onclick="openFullscreen({{$postData->id}});"><img src="{{ asset("/img/full_screen.png")}}"
+                                                    <a onclick="openFullscreen({{$postData->id}});"><img src="{{ asset('/img/full_screen.png')}}"
                                                             alt=""></a>
                                                 </li>
                                                 <li>
@@ -111,7 +107,7 @@
                                                     <a href="javascript:void(0)">INFO
                                                         <div class="saveInfo infoHover">
                                                             <div class="pos-rel">
-                                                                <img src="{{ asset("img/tooltipArrowDown.png")}}" alt="">
+                                                                <img src="{{ asset('img/tooltipArrowDown.png')}}" alt="">
                                                                 <div class="row">
                                                                     <div class="col-5">
                                                                         Date
@@ -191,7 +187,7 @@
                                                     <a href="{{route('saveToMyHub', Crypt::encrypt($postData->id))}}" class="">SAVE
                                                         <div class="saveInfo">
                                                             <div class="pos-rel">
-                                                                <img src={{asset('img/tooltipArrowDown.png')}} alt="">
+                                                                <img src={{asset('/img/tooltipArrowDown.png')}} alt="">
                                                                 Save this video to your personal MyHub library
                                                             </div>
                                                         </div>

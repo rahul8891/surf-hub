@@ -34,9 +34,9 @@
                                     @if(!empty($detail->post->upload->video))
                                     <br>
                                     <div class="pos-rel editBtnWrap">
-                                        <video width="100%" controls autoplay playsinline playsinline="playsinline" muted id="myImage{{$detail->post->id}}">
-                                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$detail->post->user->id.'/'.$detail->post->upload->video }}" >    
-                                        </video>
+                                        <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                                            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                                        </div>    
                                         <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
                                     </div>
                                     
