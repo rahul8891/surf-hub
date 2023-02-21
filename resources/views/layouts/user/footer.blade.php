@@ -35,7 +35,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.5.1/jquery.nicescroll.min.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5JiYXogWVNPfX_L4uA0oWb-qiNSfKfYk"></script>
-
+<script src="https://vjs.zencdn.net/5.19.2/video.js"></script>
+<script src="{{ asset('/js/hls/hls.min.js?v=v0.9.1') }}"></script>
+<script src="{{ asset('/js/hls/videojs5-hlsjs-source-handler.min.js?v=0.3.1') }}"></script>
+<script src="{{ asset('/js/hls/vjs-quality-picker.js?v=v0.0.2') }}"></script>
 
 <script src="{{ asset('js/new/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('js/new/star-rating.min.js')}}"></script>    
@@ -44,6 +47,7 @@
 <script src="{{ asset('js/new/custom.js') }}"></script>
 <script src="{{ asset('js/new/post.js')}}"></script>
 <script src="{{ asset('js/new/script.js') }}"></script>
+<script src="http://jwpsrv.com/library/4+R8PsscEeO69iIACooLPQ.js"></script>
 
 
 <script type="text/javascript" async>
