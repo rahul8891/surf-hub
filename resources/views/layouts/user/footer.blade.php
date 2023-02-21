@@ -92,6 +92,24 @@
             jQuery(".profileChangePswd").toggleClass("show");
         });
     });
+
+    window.HELP_IMPROVE_VIDEOJS = false;
+                
+    $( ".jw-video-player" ).each(function( i ) {
+        var videoID = $(this).attr('data-id');
+        var video = $(this).attr('data-src');
+        console.log("Data = myVideoTag"+videoID+"  --  "+video);
+        var options = {};
+
+        videojs('myVideoTag'+videoID).ready(function () {
+            var myPlayer = this;
+            // myPlayer.qualityPickerPlugin();
+            myPlayer.src({
+                type: 'application/x-mpegURL', 
+                src: video
+            });
+        });
+    });
     //
     function openFullscreen(id) {
         var elem = document.getElementById("myImage" + id);

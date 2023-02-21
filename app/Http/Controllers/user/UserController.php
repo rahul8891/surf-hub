@@ -155,9 +155,8 @@ class UserController extends Controller {
         $beachData = BeachBreak::where('id',$user->user_profiles->local_beach_break_id)->get()->toArray();
         $beach = $beachData[0]['beach_name'];
         }
-//        echo '<pre>';dump($beach[0]['beach_name']);die;
-//        foreach ($user as $v) {
-//        }
+
+        // dd($user);
         if($user->user_type == 'USER') {
         return view('user.edit_surfer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','board_type','beach'));
             
