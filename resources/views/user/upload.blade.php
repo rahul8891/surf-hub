@@ -45,17 +45,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div id="app">  
-                                <file-uploader  
-                                        :unlimited="true"  
-                                        collection="avatars"  
-                                        name="media"  
-                                        :tokens="{{ json_encode(old('media', [])) }}"  
-                                        label="Upload Avatar"  
-                                        notes="Supported types: jpeg, png,jpg,gif"
-                                        :display-validation-messages="true"  
-                                ></file-uploader>  
-                            </div>  -->
                             <div class="mt-3">
                                 <textarea class="form-control ps-2" placeholder="Share your surf experience..."
                                           style="height: 80px" name="post_text"></textarea>

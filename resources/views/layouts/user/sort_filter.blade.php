@@ -89,7 +89,7 @@
                                                     <option value="USER">Surfer</option>
                                                     <option value="PHOTOGRAPHER">Photographer</option>
                                                     <option value="SURFER CAMP">Surf Camp</option>
-                                                    <option value="ADVERTISEMENT">Advertiser</option>
+                                                    <!-- <option value="ADVERTISEMENT">Advertiser</option> -->
                                                 </select>
                                             </div>
                                         </div>
@@ -104,23 +104,23 @@
                                         <div class="col-md-8">
                                             @if(Auth::user())
                                             <div class="d-inline-block form-check mb-0 me-3">
-                                                <input type="checkbox" class="form-check-input mt-0"
-                                                       id="me-surfe" name="filterUser" value="me">
+                                                <input type="checkbox" class="form-check-input mt-0" id="me-surfe" name="filterUser" value="me">
                                                 <label class="form-check-label" for="me-surfe">Me</label>
                                             </div>
                                             @endif
                                             <div class="d-inline-block form-check mb-0">
-                                                <input type="checkbox" class="form-check-input mt-0"
-                                                       id="test-other" name="filterUser" value="others">
+                                                <input type="checkbox" class="form-check-input mt-0" id="test-other" name="filterUser" value="others">
                                                 <label class="form-check-label"
                                                        for="test-other">Other</label>
                                             </div>
+                                            <div class="d-inline-block form-check mb-0">
+                                                <input type="checkbox" class="form-check-input mt-0" id="test-other" name="filterUser" value="unknown">
+                                                <label class="form-check-label" for="test-other">Unknown</label>
+                                            </div>
                                         </div>
-                                    <!--</div>-->
-                                        
-                                        
-                                        
+                                        <!--</div>-->                                        
                                     </div>
+                                    
                                     <div class="row align-items-center d-none mb-4" id="othersFilterSurfer">
                                         
                                      <div class="col-md-4">
@@ -235,7 +235,7 @@
                                     </div>
                                     <div class="row align-items-center mb-4">
                                         <div class="col-md-4">
-                                            <label class="form-label">Board Size</label>
+                                            <label class="form-label">Board Type</label>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="white-bg">
@@ -304,7 +304,7 @@
 
                                     </div>
                                     <div class="filter-checkbox start-rating mb-4">
-                                        <label class="form-label">Start Rating</label>
+                                        <label class="form-label">Star Rating</label>
                                         <div class="rating-flex" onclick="ratingShow(this)">
                                             <input id="rating" name="rating" class="rating-filter rating-loading" data-min="0" data-max="5" data-step="1" data-size="xs" value="0">                            
                                             <span class="avg-rating"></span>

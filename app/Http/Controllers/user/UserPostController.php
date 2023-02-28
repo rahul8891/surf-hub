@@ -371,7 +371,7 @@ class UserPostController extends Controller {
         if (isset($data['id']) && !empty($data['id'])) {
             try {
                 $result = $this->posts->ratePost($data, $message);
-
+                
                 if ($result) {
                     return json_encode(array('status' => $result['status'], 'message' => $result['message'],
                         'averageRating' => $result['averageRating'], 'usersRated' => $result['usersRated']));

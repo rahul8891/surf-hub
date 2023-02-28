@@ -1070,7 +1070,7 @@ class PostService {
         $id = $data['id'];
         $value = $data['value'];
         $posts=$this->posts->find($id);
-        
+        // dd($posts->rateOnce($value));
         try{
             //************* saving user's rating *****************/
                 if($posts->rateOnce($value)){
