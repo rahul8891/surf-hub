@@ -7,12 +7,12 @@ return [
      *                                  Enum Data Type
      **********************************************************************************************************/
     // User Type 
-     'userType'=>[
+    'userType'=>[
         'ADMIN'=>'ADMIN',
-        'USER'=>'Srufer',
+        'USER'=>'USER',
         'PHOTOGRAPHER'=>'PHOTOGRAPHER',
         'SURFER CAMP'=>'SURFER CAMP',
-        'ADVERTISEMENT'=>'Advertiser'
+        'ADVERTISEMENT'=>'ADVERTISEMENT'
     ],
 
     
