@@ -9,9 +9,9 @@ return [
     // User Type 
      'userType'=>[
         'ADMIN'=>'ADMIN',
-        'USER'=>'Srufer',
+        'USER'=>'Surfer',
         'PHOTOGRAPHER'=>'PHOTOGRAPHER',
-        'SURFER CAMP'=>'SURFER CAMP',
+        'SURFER CAMP'=>'SURF CAMP',
         'ADVERTISEMENT'=>'Advertiser'
     ],
 

@@ -17,15 +17,15 @@ class UserMiddleware
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
-    {
+    { 
         try{
             if (!Auth::user()){
                 return Redirect::to('/login')->withErrors('Sorry, please login to access this page.'); 
             } else {
                 $user = Auth::user();
                 $checkUserType = config('customarray.userType');
-                if (in_array($user->user_type, $checkUserType)) {
-                    if($user->user_type == ($checkUserType['USER'] || $checkUserType['PHOTOGRAPHER'] || $checkUserType['ADVERTISEMENT'] || $checkUserType['SURFER CAMP'])){
+                if (isset($checkUserType[$user->user_type])) {
+                    if($user->user_type == ('USER' || 'PHOTOGRAPHER' || 'ADVERTISEMENT' || 'SURFER CAMP')){
                         // return true and allow route to USER
                         return $next($request);
                     }else{

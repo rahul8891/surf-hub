@@ -14,8 +14,9 @@ class LoginResponse implements LoginResponseContract
         $redirectRoute = '/';
         $user = Auth::user();
         $checkUserType = config('customarray.userType');
-        if (in_array($user->user_type, $checkUserType)) {
-            if($user->user_type == $checkUserType['ADMIN']){
+        // dd($checkUserType);
+        if (isset($checkUserType[$user->user_type])) {
+            if($user->user_type == 'ADMIN') {
                 // if user type belongs to ADMIN then redirect to the admin dashboard
                 $redirectRoute = config('customarray.adminhome');
             }else{
