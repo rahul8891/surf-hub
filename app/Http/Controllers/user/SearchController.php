@@ -132,7 +132,6 @@ class SearchController extends Controller
      */
     public function filter(Request $request)
     {
-        //
         $beach_name="";
         $params=$request->all();
         $order=$request->input('order');

@@ -30,6 +30,9 @@
                                         <video width="200" height="150" controls="true">
                                         <source src="{{ config('config.file_path').'videos/'.$post->user->id.'/'.$item->video }}" type="" />
                                         </video>
+                                        <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($item->video).'/'.getName($item->video).'.m3u8' }}">
+                                            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                                        </div>  
                                         @endif
                                     @endforeach
                                 @endif      

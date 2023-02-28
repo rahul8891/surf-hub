@@ -105,6 +105,12 @@
         // console.log("Data = myVideoTag"+videoID+"  --  "+video);
         var options = {};
 
+        const playerElement = document.querySelector(".myVideoTag"+videoID);
+
+        playerElement.addEventListener("error", (event) => {
+            console.log(event.target.error.message);
+        });
+
         videojs('myVideoTag'+videoID).ready(function () {
             var myPlayer = this;
             myPlayer.qualityPickerPlugin();

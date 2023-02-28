@@ -1,124 +1,7 @@
 @extends('layouts.admin.admin_layout')
 @section('content')
 <style>
-    .loadingWrap {
-  position: fixed;
-  z-index: 999;
-  height: 2em;
-  width: 20em;
-  overflow: show;
-  margin: auto;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-.loadingWrap:before {
-  content: '';
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-    background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
-
-  background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
-}
-
-/* :not(:required) hides these rules from IE9 and below */
-.loadingWrap:not(:required) {
-  /* hide "loadingWrap..." text */
-  font: 0/0 a;
-  color: transparent;
-  text-shadow: none;
-  background-color: transparent;
-  border: 0;
-}
-
-.loadingWrap:not(:required):after {
-  content: '';
-  display: block;
-  font-size: 10px;
-  width: 1em;
-  height: 1em;
-  margin-top: -0.5em;
-  -webkit-animation: spinner 150ms infinite linear;
-  -moz-animation: spinner 150ms infinite linear;
-  -ms-animation: spinner 150ms infinite linear;
-  -o-animation: spinner 150ms infinite linear;
-  animation: spinner 150ms infinite linear;
-  border-radius: 0.5em;
-  -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
-}
-
-/* Animation */
-
-@-webkit-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@-moz-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@-o-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
+    
     </style>
 <div class="justify-content-center loadingWrap d-none">
                     
@@ -130,8 +13,11 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
                         <div class="table-strip-wrap">
                             <div class="strip-table-header">
                                 <h2>Beach/Breaks</h2>
-                                <div>
-                                    <div class="dropdown d-inline-block map-details">
+                                
+                                    
+                            </div>
+                            <div class="table-responsive">
+                                <div class="dropdown d-inline-block map-details">
                                         <div class="btn greyBorder-btn ms-0 " >
                                             <input type="file" name="beach_break_excel" id="beach_break_excel">
                                             <span>IMPORT EXCEL</span> 
@@ -199,20 +85,18 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
                                             </form>
                                         </div>
                                         
-                                        <div
-                                            class="d-inline-block d-lg-inline-block dropdown filter ms-2 my-lg-0 my-3 searchByFilter">
-                                            <form class="dropdown-toggle" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
+                                        <!-- <div class="d-inline-block d-lg-inline-block dropdown filter ms-2 my-lg-0 my-3 searchByFilter">
+                                            <form class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <div class="row">
-                                                    <label for="serachBy" class="col-sm-4 col-form-label">Search
-                                                        by</label>
+                                                    <label for="serachBy" class="col-sm-4 col-form-label" id="serachBy">Search by</label>
                                                     <div class="col-sm-8">
                                                         <input type="text" class="form-control mb-0" id="serachBy">
                                                     </div>
                                                 </div>
                                             </form>
+
                                             <div class="dropdown-menu" style="width: 400px;">
-                                                <form class="filterWrap" action="{{route('beachBreakListIndex')}}" aria-labelledby="dropdownMenuButton2" name="searchFilter">
+                                                <form class="filterWrap" action="{{ route('beachBreakListIndex') }}" aria-labelledby="dropdownMenuButton2" name="searchFilter">
                                                 <div class="filter-header">
                                                     <h5>Search by</h5>
                                                     <a href="#">Clear</a>
@@ -252,19 +136,16 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
                                                     <div class="text-center">
                                                         <button type="submit" class="btn blue-btn w-150">Search</button>
                                                     </div>
-                                                </div>
+                                                </div> 
                                                 </form>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-
+                                <table class="table table-striped" id="beachBreak">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
+                                            <th>S No.</th>
                                             <th>Beach Name</th>
                                             <th>Break Name</th>
                                             <th>City/Region</th>
@@ -278,7 +159,8 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
                                     <tbody>
                                          @foreach($beach_break as $key => $value)
                                         <tr>
-                                            <td>{{ ($beach_break->currentpage()-1) * $beach_break->perpage() + $key + 1  }}</td>
+                                            
+                                            <td>{{ $key + 1  }}</td>
                                             <td>{{ $value->beach_name }}</td>
                                             <td>{{ $value->break_name }}</td>
                                             <td>{{ $value->city_region }}</td>
