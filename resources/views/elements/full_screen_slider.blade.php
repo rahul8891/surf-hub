@@ -25,15 +25,13 @@
                     @if(!empty($posts->upload->image))            
                         <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
                     @elseif(!empty($posts->upload->video))
-                        @if (!File::exists($posts->upload->video))
-                            <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVid{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')">
+                            <!-- <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVid{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')" >
                                 <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
-                            </video>   
-                        @else
-                            <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVid{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')" >
-                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
+                            </video> -->
+                        <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'m3u8' }}">
+                            <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
                             </video>
-                        @endif
+                        </div>
                     @endif
                 </div> 
             @endforeach
