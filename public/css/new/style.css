@@ -1979,3 +1979,30 @@ header .notification {
     font-size: 15px !important;
     margin-bottom: 15px !important;
 }
+
+/********* Filter Multi Select Box **********/
+.selectcover {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+.multi-select-container {
+    width: 100%;
+}
+.multi-select-button {
+    width: 100%;
+    border: 1px solid #C0BCBC;
+    height: 40px;
+    line-height: 2;
+    max-width: 100%;
+    box-sizing: content-box;
+    border-radius: 0;
+    box-shadow: none;
+}
+.multi-select-button:after {
+    border-color: #787878 transparent transparent transparent;
+    position: absolute;
+    right: 14px;
+    top: 15px;
+}

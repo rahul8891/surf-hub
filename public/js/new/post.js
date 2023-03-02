@@ -74,7 +74,7 @@ jQuery(document).ready(function () {
                 }
                 var exactSize = (Math.round(_size * 100) / 100) + ' ' + fSExt[i];
 
-                jQuery("#filesInfo").append('<div class="name-row pip justify-content-between"><div class=" target' + fLen + '" ><img src="/img/video-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span><a class="remove-photo " data-index=' + index + '> &#x2715;</a></div></div>');
+                jQuery("#filesInfo").prepend('<div class="name-row pip justify-content-between"><div class=" target' + fLen + '" ><img src="/img/video-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span><a class="remove-photo " data-index=' + index + '> &#x2715;</a></div></div>');
                 jQuery(".remove-photo").click(function () {
                     var indexRemoved = jQuery(this).data('index');
                     dataImage.splice(indexRemoved, 1);
@@ -94,7 +94,7 @@ jQuery(document).ready(function () {
                 }
                 var exactSize = (Math.round(_size * 100) / 100) + ' ' + fSExt[i];
 
-                jQuery("#filesInfo").append('<div class="name-row pip justify-content-between"><div class=" target' + fLen + '" ><img src="/img/img-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div></div>');
+                jQuery("#filesInfo").prepend('<div class="name-row pip justify-content-between"><div class=" target' + fLen + '" ><img src="/img/img-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div></div>');
                 jQuery(".remove-photo").click(function () {
                     var indexRemoved = jQuery(this).data('index');
                     dataImage.splice(indexRemoved, 1);
@@ -568,8 +568,7 @@ jQuery(document).ready(function () {
             });  
     }
 
-    function uploadMedia(post_url, file, fileType, timeStamp ,i , len) {
-        
+    function uploadMedia(post_url, file, fileType, timeStamp ,i , len) {        
         jQuery.ajax({
             url: post_url,
             type: 'PUT',

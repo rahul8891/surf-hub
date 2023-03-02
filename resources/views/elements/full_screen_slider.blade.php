@@ -42,9 +42,7 @@
         </div>
         <div class="col-md-12 text-center mb-2">
             <button id="toggle" class="btn btn-primary col-md-2 text-white">Play</button>
-
         </div>
-
     </div>
 </div>
 

@@ -303,10 +303,8 @@
 @include('layouts/models/edit_image_upload')
 @include('layouts/models/full_screen_modal')
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-	/*var page = 1;
+    var page = 1;
 
     $(window).scroll(function() {
         if($(window).scrollTop() + $(window).height() >= $(document).height()) {
@@ -340,49 +338,9 @@
 
             $('.ajax-load').removeClass('requests');
             $('.ajax-load').hide();
-//            $("#search-data").append(data.html);
+    //            $("#post-data").insertBefore(data.html);
             $(data.html).insertBefore(".ajax-load");
         });
     }
-        
-        $(document).on('click', '.editBtnVideo', function() {
-            var id = $(this).data('id');
-            
-            $.ajax({
-                url: '/getPostData/' + id,
-                type: "get", 
-                async: false,
-                success: function(data) {
-                    // console.log(data.html);
-                    $("#edit_image_upload_main").html("");
-                    $("#edit_image_upload_main").append(data.html);
-                    $("#edit_image_upload_main").modal('show');                
-                }
-            });
-        });
-        
-        $('.pos-rel a').each(function(){
-           $(this).on('hover, mouseover, click', function() {
-                $(this).children('.userinfoModal').find('input[type="text"]').focus();
-            });
-        });
-        
-        function openFullscreenSilder(id) {
-          const myModal = new bootstrap.Modal(document.getElementById('full_screen_modal')); // creating modal object
- 
-          $.ajax({
-                url: '/getPostFullScreen/' + id,
-                type: "get", 
-                async: false,
-                success: function(data) {
-                    // console.log(data.html);
-                    $("#full_screen_modal").html("");
-                    $("#full_screen_modal").append(data.html);
-                    
-                    $("#full_screen_modal").modal('show');
-                }
-            });
-      } */
-        
 </script>
 @endsection

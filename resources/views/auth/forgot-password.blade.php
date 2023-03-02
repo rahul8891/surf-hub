@@ -4,7 +4,7 @@
     <div class="innerWrap">
         <div class="container">
             <div class="text-center">
-                <a href="{{ url('/') }}"><img src="img/logo_2.png" alt="" class="img-fluid logo"></a>
+                <a href="{{ url('/') }}"><img src="img/logo.png" alt="" class="img-fluid logo"></a>
             </div>
             <div class="formWrap">
                 <div class="row">
