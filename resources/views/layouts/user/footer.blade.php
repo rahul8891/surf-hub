@@ -48,7 +48,6 @@
 <script src="{{ asset('js/new/post.js')}}"></script>
 <script src="{{ asset('js/new/script.js') }}"></script>
 <script src="http://jwpsrv.com/library/4+R8PsscEeO69iIACooLPQ.js"></script>
-<script src="{{ asset('js/new/jquery.multi-select.js') }}"></script>
 
 <script type="text/javascript" async>
 	jQuery.noConflict();
@@ -137,48 +136,6 @@
             elem.enterFullscreen();
         }
     }
-
-
-
-    // var page = 1;
-
-    // jQuery(window).scroll(function() { alert('aa');
-    //     if(jQuery(window).scrollTop() + jQuery(window).height() >= jQuery(document).height()) { alert('ccc');
-    //         page++;
-    //         loadMoreData(page);
-    //     } else {
-    //         alert('dd');
-    //     }
-    // });
-
-    // function loadMoreData(page) { alert('aaa');
-    //     var url = window.location.href;
-    //     if(url.indexOf("?") !== -1) {
-    //         var url = window.location.href + '&page=' + page;
-    //     }else {
-    //         var url = window.location.href + '?page=' + page;
-    //     }
-        
-    //     jQuery.ajax({
-    //         url: url,
-    //         type: "get",
-    //         async: false,
-    //         beforeSend: function() {
-    //             jQuery('.ajax-load').show();
-    //         }
-    //     })
-    //     .done(function(data) {
-    //         if(data.html == "") {
-    //             jQuery('.ajax-load').addClass('requests');
-    //             jQuery('.ajax-load').html("No more records found");
-    //             return;
-    //         }
-
-    //         jQuery('.ajax-load').removeClass('requests');
-    //         jQuery('.ajax-load').hide();
-    //         jQuery(data.html).insertBefore(".ajax-load");
-    //     });
-    // }
         
     jQuery('.right-options').on('click', '.editBtnVideo', function() {
         var id = jQuery(this).data('id');
@@ -236,7 +193,7 @@
     mybutton = document.getElementById("scrollToTop");
     window.onscroll = function() {scrollFunction()};
 
-	function scrollFunction() {
+	function scrollFunction() { 
 		if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
 			mybutton.style.display = "block";
 		} else {
@@ -249,7 +206,7 @@
 		document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 	} 
 </script>
-
+<script src="{{ asset('js/new/jquery.multi-select.js') }}"></script>
 @include('elements/location_popup_model')
 @include('layouts/models/edit_image_upload')
 @include('layouts/models/full_screen_modal')

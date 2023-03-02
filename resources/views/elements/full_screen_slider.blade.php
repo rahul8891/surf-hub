@@ -45,28 +45,28 @@
         </div>
     </div>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>  
 <script src="https://sdk.scdn.co/spotify-player.js"></script>
 <script>
-
+    jQuery.noConflict();
     function focusPlay(post_id) {
         document.getElementById('myVid' + post_id).play();
     }
 
     //// Play selected song
     const play_song = async (uri) => {
-    console.log("Changing song");
-    let request_answer = fetch(
+        console.log("Changing song");
+        let request_answer = fetch(
             `https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
-    {
-    method: "PUT",
-            body: JSON.stringify({ uris: [uri] }),
-            headers: {
-            'Content-Type': 'application/json',
+            {
+                method: "PUT",
+                body: JSON.stringify({ uris: [uri] }),
+                headers: {
+                '   Content-Type': 'application/json',
                     'Authorization': `Bearer ${access_token}`
-            },
-    }
-    ).then((data) => console.log(data));
+                },
+            }
+        ).then((data) => console.log(data));
     };
     window.onSpotifyWebPlaybackSDKReady = () => {
     const token = @json($token);
@@ -112,9 +112,10 @@
     // creating a new device which will be visible for Spotify Connect
     player.connect();
     };
-    $(document).ready(function () {
-    var homeCarousel = $('.demo').slick({
-    dots: false,
+
+    jQuery(document).ready(function () {
+        var homeCarousel = jQuery('.demo').slick({
+            dots: false,
             fade: true,
             pauseOnHover: false,
             arrows: true,
@@ -124,22 +125,25 @@
             speed: 300,
             slidesToShow: 1,
             adaptiveHeight: false
-    });
-    $(document).on('click', '#toggle', function () {
-    if ($(this).html() == 'Pause'){
-    $('.slider').slick('slickPause')
-            .slick('slickSetOption', 'pauseOnDotsHover', false)
-            .slick('slickSetOption', 'autoplay', false)
-            .slick('slickSetOption', 'autoplaySpeed', 3000);
-    $(this).html('Play')
-    } else {
-    $('.slider')
-            .slick('slickPlay')
-            .slick('slickSetOption', 'pauseOnDotsHover', true)
-            .slick('slickSetOption', 'autoplay', true)
-            .slick('slickSetOption', 'autoplaySpeed', 3000);
-    $(this).html('Pause')
-    }
-    });
+        });
+
+        jQuery(document).on('click', '#toggle', function () {
+            if (jQuery(this).html() == 'Pause'){
+                jQuery('.slider').slick('slickPause')
+                    .slick('slickSetOption', 'pauseOnDotsHover', false)
+                    .slick('slickSetOption', 'autoplay', false)
+                    .slick('slickSetOption', 'autoplaySpeed', 3000);
+
+                jQuery(this).html('Play')
+            } else {
+                jQuery('.slider')
+                    .slick('slickPlay')
+                    .slick('slickSetOption', 'pauseOnDotsHover', true)
+                    .slick('slickSetOption', 'autoplay', true)
+                    .slick('slickSetOption', 'autoplaySpeed', 3000);
+                
+                jQuery(this).html('Pause')
+            }
+        });
     });
 </script>
