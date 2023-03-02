@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="{{ asset('/css/new/slick-theme.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('css/new/style.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/new/media.css') }}">	
-        
+        <link rel="stylesheet" href="{{ asset('css/new/multi-select.css') }}" />
 
         <style>
             .video-js {
@@ -24,7 +24,7 @@
             }
         </style>
     </head>
-
+    
     <body class="login-body">
         <header>
             @include('layouts/header')

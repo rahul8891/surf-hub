@@ -69,7 +69,7 @@ jQuery(document).ready(function () {
                 i=0;while(_size>900){_size/=1024;i++;}
                 var exactSize = (Math.round(_size*100)/100)+' '+fSExt[i];
                 
-                jQuery("#filesInfo").append('<div class="name-row pip"><img src="/img/video-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div>');
+                jQuery("#filesInfo").prepend('<div class="name-row pip"><img src="/img/video-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div>');
                 jQuery(".remove-photo").click(function () {
                     var indexRemoved = jQuery(this).data('index');
                     dataImage.splice(indexRemoved, 1);
@@ -85,7 +85,7 @@ jQuery(document).ready(function () {
                 i=0;while(_size>900){_size/=1024;i++;}
                 var exactSize = (Math.round(_size*100)/100)+' '+fSExt[i];
                 
-                jQuery("#filesInfo").append('<div class="name-row pip"><img src="/img/img-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div>');
+                jQuery("#filesInfo").prepend('<div class="name-row pip"><img src="/img/img-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div>');
                 jQuery(".remove-photo").click(function () {
                     var indexRemoved = jQuery(this).data('index');
                     dataImage.splice(indexRemoved, 1);

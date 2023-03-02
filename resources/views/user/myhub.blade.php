@@ -272,4 +272,45 @@
     </div>
 </section>
 
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+    var page = 1;
+
+    $(window).scroll(function() {
+        if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+            page++;
+            loadMoreData(page);
+        }
+    });
+
+    function loadMoreData(page) {
+        var url = window.location.href;
+        if(url.indexOf("?") !== -1) {
+            var url = window.location.href + '&page=' + page;
+        }else {
+            var url = window.location.href + '?page=' + page;
+        }
+        
+        $.ajax({
+            url: url,
+            type: "get",
+            async: false,
+            beforeSend: function() {
+                $('.ajax-load').show();
+            }
+        })
+        .done(function(data) {
+            if(data.html == "") {
+                $('.ajax-load').addClass('requests');
+                $('.ajax-load').html("No more records found");
+                return;
+            }
+
+            $('.ajax-load').removeClass('requests');
+            $('.ajax-load').hide();
+    //            $("#post-data").insertBefore(data.html);
+            $(data.html).insertBefore(".ajax-load");
+        });
+    }
+</script>
 @endsection

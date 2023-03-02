@@ -10,9 +10,9 @@
                     <select class="form-select ps-2" name="user_type" id="user_type" required onchange="getform(this.value)">
                         <option value="">Select User Type</option>
                         <option value="2" selected="">Surfer</option>
-                        <option value="3">Advertisement</option>
                         <option value="5">Photographer</option>
                         <option value="6">Surf Camp</option>
+                        <option value="3">Advertiser</option>
                     </select>
                     @error('language')
                     <div class="text-danger">{{ $message }}</div>

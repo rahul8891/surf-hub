@@ -1,10 +1,10 @@
-@extends('layouts.guest_user')
+@extends('layouts.user.new_layout')
 @section('content')
 <section class="loginWrap">
     <div class="innerWrap">
         <div class="container">
             <div class="text-center">
-                <a href="{{ url('/') }}"><img src="{{ asset("/img/logo_2.png") }}" alt="" class="img-fluid logo"></a>
+                <a href="{{ url('/') }}"><img src="{{ asset("/img/logo.png") }}" alt="" class="img-fluid logo"></a>
             </div>
             <div class="formWrap">
                 <div class="row">
