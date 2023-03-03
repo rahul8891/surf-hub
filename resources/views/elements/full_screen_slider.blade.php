@@ -10,7 +10,7 @@
          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
         <!-- Carousel wrapper -->
-        <div class="slider demo">
+        <div class="slider demo post-slider">
             @if (!empty($postsList))
             @foreach ($postsList as $key => $posts)
                 <div class="newsFeedImgVideoSlider">                
@@ -29,7 +29,7 @@
                                 <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
                             </video> -->
                         <div class="jw-video-player" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
-                            <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
+                            <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')">
                             </video>
                         </div>
                     @endif
@@ -66,53 +66,56 @@
             }
         ).then((data) => console.log(data));
     };
+    
     window.onSpotifyWebPlaybackSDKReady = () => {
-    const token = @json($token);
-    const track_uri = @json($trackArray['track_uri']);
-    // Define the Spotify Connect device, getOAuthToken has an actual token 
-    // hardcoded for the sake of simplicity
-    var player = new Spotify.Player({
-    name: 'A Spotify Web SDK Player',
-            getOAuthToken: callback => {
-            callback(token);
-            },
-            volume: 0.1
-    });
-    // Called when connected to the player created beforehand successfully
-    player.addListener('ready', ({ device_id }) => {
-    console.log('Ready with Device ID', device_id);
-    const play = ({
-    spotify_uri,
-            playerInstance: {
-            _options: {
-            getOAuthToken,
-                    id
-            }
-            }
-    }) => {
-    getOAuthToken(access_token => {
-    fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
-    method: 'PUT',
-            body: JSON.stringify({ uris: [spotify_uri] }),
-            headers: {
-            'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${access_token}`
-            },
-    });
-    });
-    };
-    play({
-    playerInstance: player,
-            spotify_uri: track_uri,
-    });
-    });
-    // Connect to the player created beforehand, this is equivalent to 
-    // creating a new device which will be visible for Spotify Connect
-    player.connect();
+        const token = @json($token);
+        const track_uri = @json($trackArray['track_uri']);
+        // Define the Spotify Connect device, getOAuthToken has an actual token 
+        // hardcoded for the sake of simplicity
+        var player = new Spotify.Player({
+        name: 'A Spotify Web SDK Player',
+                getOAuthToken: callback => {
+                callback(token);
+                },
+                volume: 0.1
+        });
+        // Called when connected to the player created beforehand successfully
+        player.addListener('ready', ({ device_id }) => {
+            console.log('Ready with Device ID', device_id);
+            const play = ({
+            spotify_uri,
+                playerInstance: {
+                    _options: {
+                        getOAuthToken,
+                        id
+                    }
+                }
+            }) => {
+                getOAuthToken(access_token => {
+                    fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
+                        method: 'PUT',
+                        body: JSON.stringify({ uris: [spotify_uri] }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${access_token}`
+                        },
+                    });
+                });
+            };
+
+            play({
+                playerInstance: player,
+                spotify_uri: track_uri,
+            });
+        });
+
+        // Connect to the player created beforehand, this is equivalent to 
+        // creating a new device which will be visible for Spotify Connect
+        player.connect();
     };
 
     jQuery(document).ready(function () {
-        var homeCarousel = jQuery('.demo').slick({
+        var homeCarousel = jQuery('.post-slider').slick({
             dots: false,
             fade: true,
             pauseOnHover: false,
