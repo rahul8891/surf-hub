@@ -82,19 +82,12 @@
                         </div>
                         @if(!empty($posts->upload->image))
                             <div class="newsFeedImgVideo">
-                                <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                                <img src="{{ config('config.file_path').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
                             </div>
                         @elseif(!empty($posts->upload->video))
-                            @if (!File::exists($posts->upload->video))
-                                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
-                                    <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
-                                </div>    
-                            @else
-                                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'m3u8' }}">
-                                    <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
-                                    </video>
-                                </div>
-                            @endif
+                            <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                                <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                            </div>    
                         @endif
                         <div class="user-bottom-options">
                             <div class="rating-flex rating-flex-child">
@@ -336,78 +329,5 @@
             $(data.html).insertBefore(".ajax-load");
         });
     }
-</script>
-<script type="text/javascript">
-    /*var page = 1;
-    $(window).scroll(function() {
-    if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    page++;
-    loadMoreData(page);
-    }
-    });
-    function loadMoreData(page) {
-    var url = window.location.href;
-    if (url.indexOf("?") !== - 1) {
-    var url = window.location.href + '&page=' + page;
-    } else {
-    var url = window.location.href + '?page=' + page;
-    }
-
-    $.ajax({
-    url: url,
-            type: "get",
-            async: false,
-            beforeSend: function() {
-            $('.ajax-load').show();
-            }
-    })
-            .done(function(data) {
-            if (data.html == "") {
-            $('.ajax-load').addClass('requests');
-            $('.ajax-load').html("No more records found");
-            return;
-            }
-
-            $('.ajax-load').removeClass('requests');
-            $('.ajax-load').hide();
-//            $("#post-data").insertBefore(data.html);
-            $(data.html).insertBefore(".ajax-load");
-            });
-    }
-
-    $(document).on('click', '.editBtnVideo', function() {
-    var id = $(this).data('id');
-    $.ajax({
-    url: '/getPostData/' + id,
-            type: "get",
-            async: false,
-            success: function(data) {
-            // console.log(data.html);
-            $("#edit_image_upload_main").html("");
-            $("#edit_image_upload_main").append(data.html);
-            $("#edit_image_upload_main").modal('show');
-            }
-    });
-    });
-    $('.pos-rel a').each(function(){
-    $(this).on('hover, mouseover, click', function() {
-    $(this).children('.userinfoModal').find('input[type="text"]').focus();
-    });
-    });
-    function openFullscreenSilder(id) {
-    $.ajax({
-    url: '/getPostFullScreen/' + id,
-            type: "get",
-            async: false,
-            success: function(data) {
-            // console.log(data.html);
-            $("#full_screen_modal").html("");
-            $("#full_screen_modal").append(data.html);
-            $("#full_screen_modal").modal('hide');
-            $("#full_screen_modal").modal('show');
-            }
-    });
-    }*/
-
 </script>
 @endsection
