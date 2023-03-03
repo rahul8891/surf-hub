@@ -48,7 +48,7 @@
 <script>
     jQuery.noConflict();
     function focusPlay(post_id) {
-        jQuery('#myVideoTag' + post_id).play();
+        document.getElementById('myVideoTag' + post_id).play();
     }
 
     //// Play selected song
