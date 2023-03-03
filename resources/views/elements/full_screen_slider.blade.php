@@ -48,7 +48,7 @@
 <script>
     jQuery.noConflict();
     function focusPlay(post_id) {
-        document.getElementById('myVid' + post_id).play();
+        jQuery('#myVideoTag' + post_id).play();
     }
 
     //// Play selected song
@@ -145,6 +145,24 @@
                 
                 jQuery(this).html('Pause')
             }
+        });
+
+        window.HELP_IMPROVE_VIDEOJS = false;
+                
+        jQuery( ".jw-video-player" ).each(function( i ) {
+            var videoID = $(this).attr('data-id');
+            var video = $(this).attr('data-src');
+            // console.log("Data = myVideoTag"+videoID+"  --  "+video);
+            var options = {};
+
+            videojs('myVideoTag'+videoID).ready(function () {
+                var myPlayer = this;
+                myPlayer.qualityPickerPlugin();
+                myPlayer.src({
+                    type: 'application/x-mpegURL', 
+                    src: video
+                });
+            });
         });
     });
 </script>
