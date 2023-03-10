@@ -58,6 +58,7 @@ $router->get('spotify-call-back', [SpotifyAuthController::class, 'handleProvider
 Route::get('/surfer-request/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');
 Route::get('/getPostFullScreen/{id}', [MyHubController::class, 'getPostFullScreen'])->name('getPostFullScreen');
 Route::get('/get-presigned-url', [UserPostController::class, 'getPresignedUrl'])->name('getPresignedUrl');
+Route::post('/get-presigned-urls', [UserPostController::class, 'getPresignedUrl'])->name('getPresignedUrls');
 
 /*********************************************************************************************
  *                              User Route

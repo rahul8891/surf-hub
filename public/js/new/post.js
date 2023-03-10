@@ -536,27 +536,31 @@ jQuery(document).ready(function () {
             let timeStamp = Date.now() + "" + random;
             var fileName = timeStamp + '.' + ext;
             if (ext == "png" || ext == "jpeg" || ext == "jpg") {
-
+                var uploadFileType = 'image';
                 imgElems.push(fileName);
                 jQuery("<div><div id='progress" + timeStamp + "' class='px-5 mx-5 fs-5 font-weight-bold text-success'></div></div>").insertAfter(".target" + i);
                 var filePath = 'images/' + user_id + '/' + fileName;
             } else {
+                var uploadFileType = 'video';
                 var filePath = 'videos/' + user_id + '/' + fileName;
                 vidElems.push(fileName);
                 jQuery("<div><div id='progress" + timeStamp + "' class='px-5 mx-5 fs-5 font-weight-bold text-success'></div></div>").insertAfter(".target" + i);
             }
 
-            preSignedUrl(filePath, file, fileType ,timeStamp ,i , len);
+            preSignedUrl(filePath, file, fileType, uploadFileType, timeStamp ,i , len);
         }
         
     });
     
-    function preSignedUrl(filePath, file, fileType ,timeStamp ,i , len) {
+    function preSignedUrl(filePath, file, fileType, uploadFileType, timeStamp ,i , len) {
       var post_url;
             jQuery.ajax({
-                type: "GET",
-                url: "/get-presigned-url",
-                data: {'filepath': filePath},
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "/get-presigned-urls",
+                data: {'filepath': filePath, 'fileType': uploadFileType},
                 dataType: "json",
                 success: function (jsonResponse) {
 
