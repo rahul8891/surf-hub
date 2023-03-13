@@ -313,11 +313,10 @@ jQuery(document).ready(function () {
                 contentType: false,
                 success: function (jsonResponse) {
                     var res = JSON.parse(jsonResponse);
+                    
                     alert(res.message);
-//                    console.log(jsonResponse);
-                    location.reload();
-//                    x[0].setAttribute('style', 'display: none !important');
-//                    postResult(jsonResponse);
+                    // location.reload();
+                    location.href = '/user/myhub';
                 }
             });
         }

@@ -105,7 +105,8 @@ class PostService {
      */
     public function getPostByUserId($user_id){
 
-        $postArray =  $this->posts->where('user_id',$user_id)   
+        $postArray =  $this->posts->where('user_id',$user_id)
+                                  ->where('post_type', 'PUBLIC')
                                   ->where('is_deleted','0')                            
                                   ->orderBy('created_at','ASC')
                                   ->get()
@@ -317,11 +318,11 @@ class PostService {
                         ->groupBy('posts.id');
         }
 
-        if (($for ==' myhub') && ($type == 'posts')) {
+        if (($for == 'myhub') && ($type == 'posts')) {
             $postArray->where('posts.post_type', 'PUBLIC');
         } elseif (($for == 'myhub') && ($type == 'saved')) {
             $postArray->where('posts.post_type', 'PRIVATE');
-            $postArray->where('posts.parent_id','<>', 0);
+            $postArray->where('posts.parent_id','>=', 0);
         } elseif (($for == 'myhub') && ($type == 'tags')) {
             $postArray =  $this->posts
                         ->join('tags', 'posts.id', "=", 'tags.post_id')
@@ -334,7 +335,7 @@ class PostService {
         } elseif (($for == 'myhub') && ($type == 'reels')) {
             $postArray->where('posts.is_highlight', '1');
         }
-        
+        // dd($postArray->toSql());
         //************* applying conditions *****************/
         if (isset($params['user_type']) && !empty($params['user_type'])) {
             $postArray->where('posts.user_id', $params['surfer_id']);
@@ -1523,19 +1524,16 @@ class PostService {
         return $comments;
     }
     
-    public function getUploads($ids = null){
-        if(!empty($ids)) {
-            $uploads =  $this->upload
-                                  ->whereIn('post_id', $ids)                          
-                                  ->orderBy('id','ASC')
-                                  ->get()
-                                  ->toArray();
-        } else {
-            $uploads =  $this->upload                  
-                        ->orderBy('id','ASC')
-                        ->get()
-                        ->toArray();
-        }
+    public function getUploads($user_id = null){
+        // $uploads =  $this->upload                  
+        //                 ->orderBy('id','ASC')
+        //                 ->get()
+        //                 ->toArray();
+        $uploads =  $this->posts->where('user_id', $user_id)
+                    ->where('is_deleted','0')                            
+                    ->orderBy('created_at','ASC')
+                    ->get()
+                    ->toArray();
    
         return $uploads;
     }

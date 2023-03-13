@@ -191,7 +191,8 @@ class UserPostController extends Controller {
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
                 return response()->json(['error' => $validate->errors()]);
-            } else {                
+            } else {              
+                dd($data);  
                 if (!empty($postArray["images"]) || !empty($postArray["videos"])) {
                     if (!empty($postArray["images"])) {
                         foreach ($postArray["images"] as $value) {
@@ -207,8 +208,8 @@ class UserPostController extends Controller {
                     $result = $this->posts->savePost($data, '', '', $message);
                 }
                 if ($result) {
-                    return Redirect()->route('myhub')->withSuccess($message);
-                    // return json_encode(array('message' => 'Post has been upload successfully')); 
+                    // return Redirect()->route('myhub')->withSuccess($message);
+                    return json_encode(array('message' => 'Post has been upload successfully')); 
                 } else {
                     return json_encode(array('message' => 'Error')); 
 //                    return Redirect()->route('myhub')->withErrors($message);

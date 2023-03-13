@@ -261,9 +261,9 @@
 @endforeach
 
 <script type="text/javascript">
-    $('.rating').rating({
-    showClear:false,
-            showCaption:false
+    jQuery('.rating').rating({
+        showClear:false,
+        showCaption:false
     });
 </script>
 @endif

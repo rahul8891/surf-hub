@@ -216,7 +216,7 @@
 <script>
     window.HELP_IMPROVE_VIDEOJS = false;
 
-    $( "video" ).each(function( i ) {
+    jQuery( "video" ).each(function( i ) {
         var videoID = $(this).attr('id');
 
         var options = {};
@@ -230,9 +230,9 @@
 </script>
 
 <script type="text/javascript">
-    $('.rating').rating({
-    showClear:false,
-            showCaption:false
+    jQuery('.rating').rating({
+        showClear:false,
+        showCaption:false
     });
 </script>
 @endif
