@@ -680,8 +680,11 @@ class UserPostController extends Controller {
     public function getPresignedUrl(Request $request) {
         
         $data = $request->all();
+        
         $key = $data['filepath'];
-        $presignedUrl = PreSignedUrl::getPreSignedUrl($key);
+        $type = $data['fileType'];
+
+        $presignedUrl = PreSignedUrl::getPreSignedUrl($key, $type);
 
         return response()->json($presignedUrl);
         
