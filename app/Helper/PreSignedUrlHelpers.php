@@ -12,13 +12,14 @@ class PreSignedUrl {
 
     function getPreSignedUrl($key, $type) {
         if($type == 'image') {
-            $client = Storage::disk('s3_image')->getDriver()->getAdapter()->getClient();
-        } else {
+            $client = Storage::disk('image_s3')->getDriver()->getAdapter()->getClient();
+            $bucket = Config::get('filesystems.disks.image_s3.bucket');
+        } else { 
             $client = Storage::disk('s3')->getDriver()->getAdapter()->getClient();
+            $bucket = Config::get('filesystems.disks.s3.bucket');
         }
-
+        // dd($client);
         // $client = Storage::disk('s3')->getDriver()->getAdapter()->getClient();
-        $bucket = Config::get('filesystems.disks.s3.bucket');
         
         $cmd = $client->getCommand('PutObject', [
             'Bucket' => $bucket,
