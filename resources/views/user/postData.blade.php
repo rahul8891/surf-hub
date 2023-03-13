@@ -50,7 +50,7 @@
                                             $file = env('FILE_CLOUD_PATH').'images/'.$postData->user->id.'/'.$postData->upload->image;
                                         @endphp
                                         <div class="pos-rel editBtnWrap">
-                                                <img src="{{ env('FILE_CLOUD_PATH').'images/'.$postData->user->id.'/'.$postData->upload->image }}" alt="" width="100%" class="img-fluid" id="myImage{{$postData->id}}">
+                                                <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$postData->user->id.'/'.$postData->upload->image }}" alt="" width="100%" class="img-fluid" id="myImage{{$postData->id}}">
                                         </div>
                                     @elseif(!empty($postData->upload->video))
                                         <br>

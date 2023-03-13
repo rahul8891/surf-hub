@@ -168,18 +168,17 @@ class UserPostController extends Controller {
     public function store(Request $request) {
         try {
             $data = $request->all();
-//    echo "<pre>";print_r($data);die;
+
             if (!empty($data['other_surfer'])) {
                 $data['surfer'] = $data['other_surfer'];
             } elseif (isset($data['surfer']) && ($data['surfer'] == 'Me')) {
                 $data['surfer'] = Auth::user()->user_name;
             }
 
-//            $postArray = (isset($data['files']) && !empty($data['files'])) ? $data['files'] : [];
             $imageArray["images"] = (isset($data['imagesHid_input'][0]) && !empty($data['imagesHid_input'][0]))?json_decode($data['imagesHid_input'][0]):[];
             $videoArray["videos"] = (isset($data['videosHid_input'][0]) && !empty($data['videosHid_input'][0]))?json_decode($data['videosHid_input'][0]):[];
             $postArray = array_filter(array_merge($imageArray, $videoArray));
-//            echo '<pre>';print_r($postArray);die;
+
             $rules = array(
                 'post_type' => ['required'],
                 'user_id' => ['required'],
@@ -192,31 +191,7 @@ class UserPostController extends Controller {
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
                 return response()->json(['error' => $validate->errors()]);
-            } else {
-                
-                                    
-//                    foreach ($postArray as $value) {
-//
-//                        $fileType = explode('/', $value->getMimeType());
-//
-//                        if ($fileType[0] == 'image') {
-//                            $fileFolder = 'images/' . $request->user_id;
-//                            // $destinationPath = public_path('storage/images/');
-//                        } elseif ($fileType[0] == 'video') {
-//                            $fileFolder = 'videos/' . $request->user_id;
-//                            // $destinationPath = public_path('storage/fullVideos/');
-//                        }
-//
-//                        $path = Storage::disk('s3')->put($fileFolder, $value);
-//                        $filePath = Storage::disk('s3')->url($path);
-//
-//                        $fileArray = explode("/", $filePath);
-//                        $filename = end($fileArray);
-//                        
-//
-//                        $result = $this->posts->savePost($data, $fileType[0], $filename, $message);
-//                    }
-                
+            } else {                
                 if (!empty($postArray["images"]) || !empty($postArray["videos"])) {
                     if (!empty($postArray["images"])) {
                         foreach ($postArray["images"] as $value) {
@@ -232,10 +207,10 @@ class UserPostController extends Controller {
                     $result = $this->posts->savePost($data, '', '', $message);
                 }
                 if ($result) {
-//                    return Redirect()->route('myhub')->withSuccess($message);
-                return json_encode(array('message' => 'Post has been upload successfully')); 
+                    return Redirect()->route('myhub')->withSuccess($message);
+                    // return json_encode(array('message' => 'Post has been upload successfully')); 
                 } else {
-                return json_encode(array('message' => 'Error')); 
+                    return json_encode(array('message' => 'Error')); 
 //                    return Redirect()->route('myhub')->withErrors($message);
                 }
             }

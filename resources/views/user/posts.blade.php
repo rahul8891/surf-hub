@@ -27,7 +27,7 @@
                                                                               
                                     @if(!empty($detail->post->upload->image))
                                     <div class="pos-rel editBtnWrap">
-                                        <img src="{{ env('FILE_CLOUD_PATH').'images/'.$detail->post->user->id.'/'.$detail->post->upload->image }}" alt="" width="100%" class="img-fluid" id="myImage{{$detail->post->id}}">
+                                        <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$detail->post->user->id.'/'.$detail->post->upload->image }}" alt="" width="100%" class="img-fluid" id="myImage{{$detail->post->id}}">
                                         <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
                                     </div>
                                     @endif

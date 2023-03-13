@@ -63,7 +63,7 @@
         @if(!empty($posts->upload->image))
 
         <div class="newsFeedImgVideo">
-            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" class="">
+            <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" class="">
         </div>
 
 <!--<img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="Feed" class="w-100" id="myImage{{$posts->id}}">-->
