@@ -192,7 +192,7 @@ class UserPostController extends Controller {
                 // If validation falis redirect back to register.
                 return response()->json(['error' => $validate->errors()]);
             } else {              
-                dd($data);  
+                // dd($data);  
                 if (!empty($postArray["images"]) || !empty($postArray["videos"])) {
                     if (!empty($postArray["images"])) {
                         foreach ($postArray["images"] as $value) {
