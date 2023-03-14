@@ -216,20 +216,22 @@
 <script>
     window.HELP_IMPROVE_VIDEOJS = false;
 
-    jQuery( "video" ).each(function( i ) {
-        var videoID = $(this).attr('id');
-
+    jQuery( ".jw-video-player" ).each(function( i ) {
+        var videoID = $(this).attr('data-id');
+        var video = $(this).attr('data-src');
+        // console.log("Data = myVideoTag"+videoID+"  --  "+video);
         var options = {};
 
-        var player = videojs(videoID, options, function onPlayerReady() {
-            // In this context, `this` is the player that was created by Video.js.
-            this.stop();
+        videojs('myVideoTag'+videoID).ready(function () {
+            var myPlayer = this;
+            myPlayer.qualityPickerPlugin();
+            myPlayer.src({
+                type: 'application/x-mpegURL', 
+                src: video
+            });
         });
     });
     
-</script>
-
-<script type="text/javascript">
     jQuery('.rating').rating({
         showClear:false,
         showCaption:false
