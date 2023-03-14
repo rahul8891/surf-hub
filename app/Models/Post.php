@@ -85,7 +85,7 @@ class Post extends Model
      * Relationship between country and user_follows model    
      * @return object
      */
-    public function beach_name()
+    public function breakName()
     {
         return $this->belongsTo(BeachBreak::class, 'local_break_id', 'id');
     }
