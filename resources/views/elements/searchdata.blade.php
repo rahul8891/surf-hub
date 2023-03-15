@@ -8,42 +8,34 @@
         <div class="user-details">
             <div class="user-left">
 
-                @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
-                @if(Auth::user() && $posts->user_id != Auth::user()->id)
-                @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
-                <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
-                @elseif($posts->user->user_type == 'SURFER CAMP')
-                <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
-                @endif
-                @else
-                <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
-                @endif
-                @else
-                @if(Auth::user() && $posts->user_id != Auth::user()->id)
-                @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
-                <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
-                @elseif($posts->user->user_type == 'SURFER CAMP')
-                <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
-                @endif
-                @else
-                <img src="/img/logo_small.png" class="profileImg" alt="">
-                @endif
-                @endif
-                <div>     
+                <!-- @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
                     @if(Auth::user() && $posts->user_id != Auth::user()->id)
-                    @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
-                    <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
-                    @elseif($posts->user->user_type == 'SURFER CAMP')
-                    <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
-                    @endif
-
-
+                        @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
+                            <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                        @elseif($posts->user->user_type == 'SURFER CAMP')
+                            <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                        @endif
                     @else
-                    <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span>
-                    </p>
+                        <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
                     @endif
-                    <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
-                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
+                @else
+                    <img src="/img/logo_small.png" class="profileImg" alt="">
+                @endif -->
+                <div>    
+                    @if (isset($posts->parent_id) && ($posts->parent_id > 0)) 
+                        @if(Auth::user() && $posts->user_id != Auth::user()->id)
+                            @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
+                            <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
+                            @elseif($posts->user->user_type == 'SURFER CAMP')
+                            <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
+                            @endif
+                        @else
+                            <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span>
+                            </p>`
+                        @endif
+                        <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
+                        <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
+                    @endif
                 </div>
             </div>
             @if (isset(Auth::user()->id) && ($posts->user_id != Auth::user()->id))
@@ -56,19 +48,24 @@
             </div>
             @endif
         </div>
-        @if(!empty($posts->upload->image))
-        <div class="newsFeedImgVideo">
-            <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
-        </div>
-        @elseif(!empty($posts->upload->video))
-            @if (!File::exists($posts->upload->video))
+        @if (isset($posts->parent_id) && ($posts->parent_id > 0))
+            @if(!empty($posts->upload->image))
+                <div class="newsFeedImgVideo">
+                    <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->parent_id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                </div>
+            @elseif(!empty($posts->upload->video))
+                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->parent_id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                    <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                </div>
+            @endif
+        @else 
+            @if(!empty($posts->upload->image))
+                <div class="newsFeedImgVideo">
+                    <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                </div>
+            @elseif(!empty($posts->upload->video))
                 <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
                     <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
-                </div>    
-            @else
-                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'m3u8' }}">
-                    <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
-                    </video>
                 </div>
             @endif
         @endif
@@ -101,7 +98,11 @@
                             <div class="col-5">{{$posts->surfer}}</div>
                             <div class="col-5">Posted By</div>
                             <div class="col-2 text-center">:</div>
-                            <div class="col-5">{{ucfirst($posts->user->user_name)}}</div>
+                            @if (isset($posts->parent_id) && ($posts->parent_id > 0))
+                                <div class="col-5">{{ucfirst($posts->parentPost->user_name)}}</div>
+                            @else
+                                <div class="col-5">{{ucfirst($posts->user->user_name)}}</div>
+                            @endif
                             <div class="col-5">Beach/Break</div>
                             <div class="col-2 text-center">:</div>
                             <div class="col-5">{{$posts->beach_breaks->beach_name}}/{{$posts->beach_breaks->break_name}}</div>
@@ -261,9 +262,33 @@
 @endforeach
 
 <script type="text/javascript">
+    window.HELP_IMPROVE_VIDEOJS = false;
+
+    jQuery( ".jw-video-player" ).each(function( i ) {
+        var videoID = $(this).attr('data-id');
+        var video = $(this).attr('data-src');
+        // console.log("Data = myVideoTag"+videoID+"  --  "+video);
+        var options = {};
+
+        videojs('myVideoTag'+videoID).ready(function () {
+            var myPlayer = this;
+            myPlayer.qualityPickerPlugin();
+            myPlayer.src({
+                type: 'application/x-mpegURL', 
+                src: video
+            });
+        });
+    });
+
     jQuery('.rating').rating({
         showClear:false,
         showCaption:false
+    });
+
+    jQuery('.pos-rel a').each(function(){
+        jQuery(this).on('hover, mouseover, click', function() {
+            jQuery(this).children('.userinfoModal').find('input[type="text"]').focus();
+        });
     });
 </script>
 @endif

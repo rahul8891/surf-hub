@@ -1,9 +1,6 @@
 var page = 1;
 
 jQuery(window).scroll(function() {
-    // console.log(jQuery(window).scrollTop());
-    // console.log(jQuery(window).height());
-    // console.log(jQuery(document).height());
     if(jQuery(window).scrollTop() + jQuery(window).height() >= jQuery(document).height()) {alert('bb');
         page++;
         loadMoreData(page);

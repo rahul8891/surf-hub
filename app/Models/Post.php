@@ -115,6 +115,15 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class, 'post_id', 'id');
     }
+
+    /**
+     * Relationship between posts and parent post record    
+     * @return object
+     */
+    public function parentPost()
+    {
+        return $this->hasOne(User::class, 'id', 'parent_id');
+    }
     
 
     /**

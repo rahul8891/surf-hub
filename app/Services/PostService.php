@@ -1128,52 +1128,71 @@ class PostService {
      * @param  message return message based on the condition 
      * @return dataArray with message
      */
-    public function saveToMyHub($id,&$message=''){
-        
-        $postSave=$this->posts->find($id);
-        $postMedia=Upload::select('*')->where('post_id',$id)->get();
+    public function saveToMyHub($id, &$message=''){
+        if ($this->posts->where('parent_post_id', $id)->where('user_id', Auth::user()->id)->exists()) {
+            $message = 'Post already saved.';
+        } else {
+            $postSave=$this->posts->find($id);
+            $postMedia = Upload::select('*')->where('post_id',$id)->get();
 
-        try{
-            $this->posts['post_type'] = 'PRIVATE';
-            $this->posts['user_id'] = Auth::user()->id;
-            $this->posts['post_text'] = $postSave->post_text;
-            $this->posts['country_id'] =$postSave->country_id;
-            $this->posts['surf_start_date'] = $postSave->surf_start_date;
-            $this->posts['wave_size'] = $postSave->wave_size;
-            $this->posts['board_type'] = $postSave->board_type;
-            $this->posts['state_id'] = $postSave->state_id;
-            $this->posts['local_beach_id'] = $postSave->local_beach_id;
-            $this->posts['surfer'] = $postSave->surfer;
-            $this->posts['optional_info'] = $postSave->optional_info;
-            $this->posts['parent_id'] = $postSave->user_id;
-            $this->posts['local_break_id'] = $postSave->local_break_id;
-            $this->posts['additional_info'] = $postSave->additional_info;
-            $this->posts['fin_set_up'] = $postSave->fin_set_up;
-            $this->posts['stance'] = $postSave->stance;
-            $this->posts['created_at'] = Carbon::now();
-            $this->posts['updated_at'] = Carbon::now();            
-            
-            if($this->posts->save()){
-                $post_id=$this->posts->id;
-                foreach($postMedia as $media){
+            try{
+                $this->posts['post_type'] = 'PRIVATE';
+                $this->posts['user_id'] = Auth::user()->id;
+                $this->posts['post_text'] = $postSave->post_text;
+                $this->posts['country_id'] =$postSave->country_id;
+                $this->posts['surf_start_date'] = $postSave->surf_start_date;
+                $this->posts['wave_size'] = $postSave->wave_size;
+                $this->posts['board_type'] = $postSave->board_type;
+                $this->posts['state_id'] = $postSave->state_id;
+                $this->posts['local_beach_id'] = $postSave->local_beach_id;
+                $this->posts['surfer'] = $postSave->surfer;
+                $this->posts['optional_info'] = $postSave->optional_info;
+
+                if (isset($postSave->parent_id) && ($postSave->parent_id > 0)) {
+                    $this->posts['parent_id'] = $postSave->parent_id;
+                } else {
+                    $this->posts['parent_id'] = $postSave->user_id;
+                }
+
+                if (isset($postSave->parent_post_id) && ($postSave->parent_post_id > 0)) {
+                    $this->posts['parent_post_id'] = $postSave->parent_post_id;
+                } else {
+                    $this->posts['parent_post_id'] = $postSave->id;
+                }
+
+                $this->posts['local_break_id'] = $postSave->local_break_id;
+                $this->posts['additional_info'] = $postSave->additional_info;
+                $this->posts['fin_set_up'] = $postSave->fin_set_up;
+                $this->posts['stance'] = $postSave->stance;
+                $this->posts['created_at'] = Carbon::now();
+                $this->posts['updated_at'] = Carbon::now();            
+                
+                if($this->posts->save()){
+                    $post_id = $this->posts->id;
+                    foreach($postMedia as $media){
                         $upload = new Upload();
                         $upload->post_id = $post_id;
                         $upload->image = $media->image;
                         $upload->video = $media->video;
-                        $upload->save();
-                       
-                 }
-                
-                    $message = 'Post has been saved successfully.!';
-                    return $message;
-                
+
+                        if (isset($media->parent_media_id) && ($media->parent_media_id > 0)) {
+                            $upload->parent_media_id = $media->parent_media_id;
+                        } else {
+                            $upload->parent_media_id = $media->id;
+                        }
+                        
+                        $upload->save();                       
+                    }
+                    
+                    $message = 'Post has been saved successfully.!';              
+                }
+            }
+            catch (\Exception $e){     
+                $message='"'.$e->getMessage().'"';
             }
         }
-        catch (\Exception $e){     
-            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
-            $message='"'.$e->getMessage().'"';
-            return $message;
-        }
+
+        return $message;
     }
 
     /**
