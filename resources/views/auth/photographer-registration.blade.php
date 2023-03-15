@@ -31,7 +31,7 @@
             @enderror
         </div>
         <div class="col-md-6">
-            <div class="white-bg photographer-icon">
+            <!-- <div class="white-bg photographer-icon">
                 <select class="form-select " name="photographer_type" required>
                     <option value="">Photographer Type</option>
                     <option value="1">One</option>
@@ -41,7 +41,7 @@
                 @error('photographer_type')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="row">

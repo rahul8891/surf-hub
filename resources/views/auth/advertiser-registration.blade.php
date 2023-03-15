@@ -60,7 +60,7 @@
             @enderror
         </div>
         <div class="col-md-6">
-            <div class="company-icon white-bg">
+            <!-- <div class="company-icon white-bg">
                 <select class="form-select" name="industry" required>
                     <option selected>Industry</option>
                     <option value="1">One</option>
@@ -70,7 +70,7 @@
                 @error('industry')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="row">

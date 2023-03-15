@@ -27,7 +27,7 @@
             <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
             <div class="white-bg user-type-icon">
                 <select class="form-select">
                     <option selected>Select User Type</option>
@@ -36,7 +36,7 @@
                     <option value="3">Three</option>
                 </select>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="row">
         <div class="col-md-6">
