@@ -143,7 +143,8 @@
     <div class="row">
         <div class="col-md-6">
             <input type="text" class="form-control paypal-icon" placeholder="Paypal" name="paypal"
-                   autocomplete="paypal">
+                   autocomplete="paypal" require>
+            <span class="align-middle d-inline-block ms-3">Compulsory to link PayPal account for billing.</span>
             @error('paypal')
             <div class="text-danger">{{ $message }}</div>
             @enderror

@@ -714,6 +714,10 @@ jQuery(document).ready(function () {
                 required: true
             },
 
+            paypal: {
+                required: true
+            },
+
             password: {
                 minlength: 8,
                 required: true,
@@ -771,6 +775,11 @@ jQuery(document).ready(function () {
             country_id: {
                 required: "Please select your country"
             },
+
+            paypal: {
+                required: "Please enter your paypal ID"
+            },
+
             password: {
                 required: "Please enter your password",
                 pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
