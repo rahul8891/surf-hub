@@ -639,12 +639,13 @@ class UserService {
         $userData = UserProfile::where('user_id', $surfer_id)->get();
         $userProfile = array();
         foreach ($userData as $val) {
+            // dd($val->local_beach_break_id);
             $userProfile['user_id'] = $surfer_id;
             $userProfile['surfer_name'] = $val->first_name . ' ' . $val->last_name;
             $userProfile['profile_photo_path'] = $val->user->profile_photo_path;
             $userProfile['email'] = $val->user->email;
             $userProfile['gender'] = (isset($val->gender) && $val->gender != 0) ? $this->checkUserType['gender_type'][$val->gender] : '-';
-            $userProfile['beach_break'] = isset($val->local_beach_break_id) ? $val->beach_breaks->beach_name . " " . $val->beach_breaks->break_name : '-';
+            $userProfile['beach_break'] = (isset($val->local_beach_break_id) && ($val->local_beach_break_id != 0)) ? $val->beach_breaks->beach_name . " " . $val->beach_breaks->break_name : '-';
             $userProfile['country'] = isset($val->country_id) ? $val->countries->name : '-';
             $userProfile['dob'] = isset($val->dob) ? $val->dob : '-';
             $userProfile['preferred_board'] = (isset($val->preferred_board) && !empty($val->preferred_board)) ? $this->checkUserType['board_type'][$val->preferred_board] : '-';

@@ -4,7 +4,6 @@
     @foreach ($postsList as $key => $posts)
         @if($posts->parent_id == 0)
             <div class="news-feed">
-
                 <div class="inner-news-feed">
                     <div class="user-details">
                         <div class="user-left">
@@ -14,10 +13,10 @@
                                 @else
                                     <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
-                                <div>                                                            
+                                <div>
                                     <p class="name"><span>{{ ucfirst($posts->parentPost->user_profiles->first_name) }} {{ ucfirst($posts->parentPost->user_profiles->last_name) }} ( {{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} )</span> </p>
                                     <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
-                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
+                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                                 </div>
                             @else
                                 @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
@@ -25,15 +24,15 @@
                                 @else
                                 <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
-                                <div>                                                            
+                                <div>
                                     <p class="name"><span>{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span> </p>
                                     <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
-                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
+                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                                 </div>
                             @endif
                         </div>
                         @if($posts->user_id != Auth::user()->id)
-                            <div class="user-right"> 
+                            <div class="user-right">
                                 <img src="/img/new/normal-user.png" alt="normal-user">
 
                                 <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
@@ -54,7 +53,7 @@
                                 <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
                             </div>
                         @endif
-                    @else 
+                    @else
                         @if(!empty($posts->upload->image))
                             <div class="newsFeedImgVideo">
                                 <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
@@ -68,9 +67,9 @@
                     <div class="user-bottom-options">
                         <div class="rating-flex">
                             <div class="rating-flex-child">
-                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">     
+                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">
                                 <span class="avg-rating">{{ round(floatval($posts->averageRating)) }} (<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span>)</span>
-                            </div>                       
+                            </div>
                             <div class="highlight highlightPost {{ (isset($posts->is_highlight) && ($posts->is_highlight == "1"))?'blue':'' }}" data-id="{{ $posts->id }}"  data-id="{{ $posts->is_highlight }}">
                                 <span>Highlights</span>
                             </div>
@@ -151,7 +150,7 @@
                                                 @endif
                                                 <span>{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
                                             </div>
-                                            @endforeach 
+                                            @endforeach
                                         </div>
                                     @endif
                                     <div>
@@ -172,7 +171,7 @@
 
                                     <div class="dropdown-menu">
                                         <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
-                                            @csrf    
+                                            @csrf
                                             <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
                                             <h6 class="text-center fw-bold">Report Content</h6>
 
@@ -223,49 +222,48 @@
                         <div class="news-feed">
                             <div class="inner-news-feed">
                                 <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                                    <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$requests['user_id'].'/'.$requests['video'] }}" >    
+                                    <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$requests['user_id'].'/'.$requests['video'] }}" >
                                 </video>
-                            </div>    
-                        </div>    
+                            </div>
+                        </div>
                     @endif
 
                     @php ($a = 0)
-                    @break 
+                    @break
                 @endforeach
                 @php ($f++)
             @endif
 
         @endif
     @endforeach
-@endif
+    <script>
+        window.HELP_IMPROVE_VIDEOJS = false;
 
-<script>
-    window.HELP_IMPROVE_VIDEOJS = false;
+        jQuery( ".jw-video-player" ).each(function( i ) {
+            var videoID = $(this).attr('data-id');
+            var video = $(this).attr('data-src');
+            // console.log("Data = myVideoTag"+videoID+"  --  "+video);
+            var options = {};
 
-    jQuery( ".jw-video-player" ).each(function( i ) {
-        var videoID = $(this).attr('data-id');
-        var video = $(this).attr('data-src');
-        // console.log("Data = myVideoTag"+videoID+"  --  "+video);
-        var options = {};
-
-        videojs('myVideoTag'+videoID).ready(function () {
-            var myPlayer = this;
-            myPlayer.qualityPickerPlugin();
-            myPlayer.src({
-                type: 'application/x-mpegURL', 
-                src: video
+            videojs('myVideoTag'+videoID).ready(function () {
+                var myPlayer = this;
+                myPlayer.qualityPickerPlugin();
+                myPlayer.src({
+                    type: 'application/x-mpegURL',
+                    src: video
+                });
             });
         });
-    });
-    
-    jQuery('.rating').rating({
-        showClear:false,
-        showCaption:false
-    });
 
-    jQuery('.pos-rel a').each(function(){
-        jQuery(this).on('hover, mouseover, click', function() {
-            jQuery(this).children('.userinfoModal').find('input[type="text"]').focus();
+        jQuery('.rating').rating({
+            showClear:false,
+            showCaption:false
         });
-    });
-</script>
+
+        jQuery('.pos-rel a').each(function(){
+            jQuery(this).on('hover, mouseover, click', function() {
+                jQuery(this).children('.userinfoModal').find('input[type="text"]').focus();
+            });
+        });
+    </script>
+@endif
