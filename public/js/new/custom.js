@@ -1,7 +1,7 @@
 jQuery(document).ready(function () {
     var csrf_token = jQuery('meta[name="csrf-token"]').attr("content");
 
-    /*jQuery('#login').click(function (event) {		
+    /*jQuery('#login').click(function (event) {
      var email = jQuery('#email').val();
      var password = jQuery('#password').val();
      if(email && password){
@@ -13,7 +13,7 @@ jQuery(document).ready(function () {
     jQuery('#register .country option:selected').prop("selected", false);
     jQuery('#register .phone').val('');
 
-    
+
 
 
     /************** spiner code ****************************/
@@ -101,7 +101,7 @@ jQuery(document).ready(function () {
                 $image_crop.croppie('bind', {
                     url: e.target.result
                 }).then(function (blob) {
-                    // console.log(blob);               
+                    // console.log(blob);
                 });
             };
             reader.readAsDataURL(input.files[0]);
@@ -170,7 +170,7 @@ jQuery(document).ready(function () {
     });
 
     /**
-     * Model Cancle 
+     * Model Cancle
      */
     jQuery(".close").click(function () {
         jQuery('#imagebase64').val("");
@@ -224,7 +224,7 @@ jQuery(document).ready(function () {
                 $image_crop.croppie('bind', {
                     url: e.target.result
                 }).then(function (blob) {
-                    // console.log(blob);               
+                    // console.log(blob);
                 });
             };
             reader.readAsDataURL(input.files[0]);
@@ -1250,7 +1250,7 @@ jQuery(document).ready(function () {
 
     /**
      * Execute a function given a delay time
-     * 
+     *
      * @param {type} func
      * @param {type} wait
      * @param {type} immediate
@@ -1275,7 +1275,7 @@ jQuery(document).ready(function () {
 
     // ajax form field data for post
     jQuery('.search-box').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         if (jQuery(this).val().length > 2) {
             jQuery.ajax({
                 type: "GET",
@@ -1299,7 +1299,7 @@ jQuery(document).ready(function () {
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
     jQuery('#searchFollower').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         var user_id = jQuery('#user_id').val();
         var keyword = jQuery('#searchFollower').val();
 //        if (jQuery(this).val().length > 2) {
@@ -1323,7 +1323,7 @@ jQuery(document).ready(function () {
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
     jQuery('#searchFollowing').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         var keyword = jQuery('#searchFollowing').val();
         var user_id = jQuery('#user_id').val();
 //        if (jQuery(this).val().length > 2) {
@@ -1347,7 +1347,7 @@ jQuery(document).ready(function () {
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
     jQuery('#searchFollowRequest').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         var keyword = jQuery('#searchFollowRequest').val();
 //        if (jQuery(this).val().length > 2) {
         jQuery.ajax({
@@ -1371,7 +1371,7 @@ jQuery(document).ready(function () {
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
     jQuery('.search-box4').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         if (jQuery(this).val().length > 2) {
             jQuery.ajax({
                 type: "GET",
@@ -1395,7 +1395,7 @@ jQuery(document).ready(function () {
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
     jQuery('.search-box3').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         if (jQuery(this).val().length > 2) {
             jQuery.ajax({
                 type: "GET",
@@ -1419,7 +1419,7 @@ jQuery(document).ready(function () {
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
     jQuery('.ad-search-box').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         if (jQuery(this).val().length > 2) {
             jQuery.ajax({
                 type: "GET",
@@ -1599,7 +1599,7 @@ jQuery(document).ready(function () {
 
     // ajax form field data for filter
     jQuery('.search-box2').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
 
         if (jQuery(this).val().length > 2) {
 
@@ -1637,7 +1637,7 @@ jQuery(document).ready(function () {
 
 
     jQuery('.other_surfer').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         if (jQuery(this).val().length > 1) {
             jQuery.ajax({
                 type: "GET",
@@ -1677,7 +1677,7 @@ jQuery(document).ready(function () {
 
 
     jQuery('.filter_other_surfer').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         var userType = jQuery('#filter_user_type').val();
 //        alert(userType);
         if (jQuery(this).val().length > 1) {
@@ -1703,7 +1703,7 @@ jQuery(document).ready(function () {
 
 
     jQuery('.tag_user').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
 
         var post_id = jQuery(this).attr('data-post_id');
         if (jQuery(this).val().length > 1) {
@@ -2057,7 +2057,7 @@ jQuery(document).ready(function () {
         });
     });
 
-    
+
 
 
     jQuery('.commentOnPost').keyup(function () {

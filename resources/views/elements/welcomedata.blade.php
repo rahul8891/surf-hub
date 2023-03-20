@@ -11,7 +11,7 @@
                 @endif
                 <div>                                                            
                     <p class="name"><span>{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span> </p>
-                    <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
+                    <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                     <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
                 </div>
             </div>
@@ -116,8 +116,32 @@
 @endforeach
 @endif
 <script type="text/javascript">
+    window.HELP_IMPROVE_VIDEOJS = false;
+
+    jQuery( ".jw-video-player" ).each(function( i ) {
+        var videoID = $(this).attr('data-id');
+        var video = $(this).attr('data-src');
+        // console.log("Data = myVideoTag"+videoID+"  --  "+video);
+        var options = {};
+
+        videojs('myVideoTag'+videoID).ready(function () {
+            var myPlayer = this;
+            myPlayer.qualityPickerPlugin();
+            myPlayer.src({
+                type: 'application/x-mpegURL', 
+                src: video
+            });
+        });
+    });
+
     jQuery('.rating').rating({
         showClear:false,
         showCaption:false
+    });
+
+    jQuery('.pos-rel a').each(function(){
+        jQuery(this).on('hover, mouseover, click', function() {
+            jQuery(this).children('.userinfoModal').find('input[type="text"]').focus();
+        });
     });
 </script>

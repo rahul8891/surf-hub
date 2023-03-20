@@ -29,6 +29,8 @@ class DashboardController extends Controller {
     }
 
     public function dashboard(Request $request) {
+        // if(isset(checkLoginAttempt))
+        // dd($loginAttempt);
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
@@ -44,16 +46,10 @@ class DashboardController extends Controller {
                 ->paginate(10);
         $requestSurfer = array();
         foreach ($postsList as $val) {
-//            $surferRequest = SurferRequest::select("*")
-//                    ->where("post_id", "=", $val['id'])
-//                    ->where("status", "=", 0)
-//                    ->get();
-
             $surferRequest = SurferRequest::where("post_id", "=", $val['id'])
                     ->where("user_id", "=", Auth::user()->id)
                     ->get();
             foreach ($surferRequest as $res) {
-//                echo '<pre>'; print_r($res['id']);die;
                 $requestSurfer[$res->post_id] = $res->user_id;
             }
         }
@@ -207,6 +203,7 @@ class DashboardController extends Controller {
         }
         die;
     }
+
     public function getBreak(Request $request) {
         $data = $request->all();
 
@@ -223,72 +220,21 @@ class DashboardController extends Controller {
     }
 
     /**
-     * Display a listing of the resource.
+     * Check the user first time login
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create() {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request) {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id) {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id) {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id) {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id) {
-        //
+    public function checkLoginAttempt() {
+        dd(Auth::user()->first_time_login);
+        if (Auth::user()->first_time_login) {
+            $first_time_login = true;
+            Auth::user()->first_time_login = false;
+            Auth::user()->save();
+        } else {
+            $first_time_login = false;
+        }
+    
+        return $first_time_login; 
     }
 
 }

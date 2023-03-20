@@ -34,7 +34,7 @@
                                 @endif
                                 <div class="pl-3">
                                     <h4>{{ucfirst($postData->user->user_profiles->first_name)}} {{ucfirst($postData->user->user_profiles->last_name)}} ( {{ (isset($postData->user->user_name) && !empty($postData->user->user_name))?ucfirst($postData->user->user_name):"SurfHub" }} )</h4>
-                                    <span>{{ $postData->beach_breaks->beach_name ?? '' }} {{ $postData->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($postData->surf_start_date)->format('d-m-Y') }}</span><br>
+                                    <span>{{ (isset($postData->beach_breaks->beach_name))?$postData->beach_breaks->beach_name:'' }} {{ (isset($postData->breakName->break_name))?$postData->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($postData->surf_start_date)->format('d-m-Y') }}</span><br>
                                     <span>{{ postedDateTime($postData->created_at) }}</span>
                                 </div>
                             </div>                            
@@ -135,7 +135,7 @@
                                                                     </div>
                                                                     <div class="col-2 text-center">:</div>
                                                                     <div class="col-5">
-                                                                        {{ $postData->beach_breaks->beach_name ?? '' }}/{{ $postData->beach_breaks->break_name ?? '' }}
+                                                                        {{ (isset($postData->beach_breaks->beach_name))?$postData->beach_breaks->beach_name:'' }}{{ (isset($postData->breakName->break_name))?'/'.$postData->breakName->break_name:'' }}
                                                                     </div> 
                                                                     <div class="col-5">
                                                                         Country

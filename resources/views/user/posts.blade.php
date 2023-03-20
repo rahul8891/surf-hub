@@ -115,7 +115,7 @@
                                                                     </div>
                                                                     <div class="col-2 text-center">:</div>
                                                                     <div class="col-5">
-                                                                        {{$detail->post->beach_breaks->beach_name}}/{{$detail->post->beach_breaks->break_name}}
+                                                                        {{ (isset($detail->post->beach_breaks->beach_name))?$detail->post->beach_breaks->beach_name:'' }} {{ (isset($detail->post->breakName->break_name))?$detail->post->breakName->break_name:'' }}
                                                                     </div>
                                                                     <div class="col-5">
                                                                         Country

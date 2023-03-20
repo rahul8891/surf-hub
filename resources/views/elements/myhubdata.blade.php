@@ -260,9 +260,30 @@
             showCaption:false
         });
 
-        jQuery('.pos-rel a').each(function(){
-            jQuery(this).on('hover, mouseover, click', function() {
-                jQuery(this).children('.userinfoModal').find('input[type="text"]').focus();
+        //Auto play videos when view in scroll
+        function isInView(el) {
+            var rect = el.getBoundingClientRect();// absolute position of video element
+            return !(rect.top > $(window).height() || rect.bottom < 0);// visible?
+        }
+
+        /*$(document).on("scroll", function () {
+            $("video").each(function () {
+                if (isInView($(this)[0])) {// visible?
+                    if ($(this)[0].paused)
+                        $(this)[0].play();// play if not playing
+                } else {
+                    if ($(this)[0].play)
+                        $(this)[0].pause();// pause if not paused
+                }
+            });
+        });*/
+
+        $(function () {
+            $('.vjs-tech').mouseenter(function () {
+                $(this).get(0).play();
+            });
+            $('.vjs-tech').mouseout(function () {
+                $(this).get(0).pause();
             });
         });
     </script>
