@@ -1675,11 +1675,18 @@ jQuery(document).ready(function () {
         jQuery('#filter_other_surfer_data').html("");
     });
 
+    jQuery(document).on('click', '#filter_username_data li', function () {
+        var value = jQuery(this).text().trim();
+
+        jQuery('.filter_username').val(value);
+        jQuery('#filter_username_data').html("");
+    });
+
 
     jQuery('.filter_other_surfer').keyup(debounce(function () {
         // the following function will be executed every half second
         var userType = jQuery('#filter_user_type').val();
-//        alert(userType);
+
         if (jQuery(this).val().length > 1) {
             jQuery.ajax({
                 type: "GET",
@@ -1697,6 +1704,29 @@ jQuery(document).ready(function () {
         } else {
             jQuery('#surfer_id_filter').val('');
             jQuery('#filter_other_surfer_data').html("");
+        }
+    }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
+
+    jQuery('.filter_username').keyup(debounce(function () {
+        // the following function will be executed every half second
+        var userType = jQuery('#filter_user_type').val();
+
+        if (jQuery(this).val().length > 1) {
+            jQuery.ajax({
+                type: "GET",
+                url: "/getFilterUsers",
+                data: {
+                    user_type: userType,
+                    searchTerm: jQuery(this).val(),
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    jQuery('#filter_username_data').html(jsonResponse);
+                }
+            });
+        } else {
+            jQuery('#filter_username_data').html("");
         }
     }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
@@ -2133,6 +2163,7 @@ function initializeMap(id, lat, long) {
                     position: google.maps.ControlPosition.RIGHT_TOP,
                 },
             };
+
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
     new google.maps.Marker({
         position: latlng,

@@ -94,10 +94,21 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    
+
                                     <div class="row align-items-center mb-4">
-                                        <!--<div class=" align-items-center">-->
+                                        <div class="col-md-4">
+                                            <label class="form-label">Username</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="white-bg">
+                                                <input type="text" name="filter_username" class="form-control ps-2 mb-0 filter_username" placeholder="Search Username">
+                                                <div class="auto-search" id="filter_username_data"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row align-items-center mb-4">
                                         <div class="col-md-4">
                                             <label for="surfe" class="form-label">Surfer</label>
                                         </div>
@@ -118,22 +129,21 @@
                                                 <label class="form-check-label" for="test-other">Unknown</label>
                                             </div>
                                         </div>
-                                        <!--</div>-->                                        
                                     </div>
-                                    
+
                                     <div class="row align-items-center d-none mb-4" id="othersFilterSurfer">
-                                        
+
                                      <div class="col-md-4">
                                             <label for="surfe" class="form-label"></label>
-                                        </div>   
-                                    <div class="col-md-8">    
+                                        </div>
+                                    <div class="col-md-8">
                                     <input type="hidden" value="" name="surfer_id" id="surfer_id_filter" class="form-control surfer_id" />
                                     <input type="text" name="other_surfer" class="form-control ps-2 mb-0 filter_other_surfer" placeholder="Search">
                                     <div class="auto-search" id="filter_other_surfer_data"></div>
                                     </div>
-                                    
+
                                     </div>
-                                    
+
                                     <div class="row align-items-center mb-4">
                                         <div class="col-md-4">
                                             <label class="form-label">Start Date</label>
@@ -180,7 +190,7 @@
                                                 <select class="form-control" name="state_id" id="filter_state_id">
                                                     <option selected="selected" value="">-- State --</option>
                                                     @foreach($states as $key => $value)
-                                                    <option value="{{ $value->id }}" 
+                                                    <option value="{{ $value->id }}"
                                                             {{ old('state_id',Request::get('state_id')) == $value->id ? "selected" : "" }}>
                                                         {{ $value->name }}</option>
                                                     @endforeach
@@ -223,7 +233,7 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="white-bg">
-                                                <select class="form-control" name="wave_size">  
+                                                <select class="form-control" name="wave_size">
                                                     <option value="">{{ __('-- Select --')}}</option>
                                                     @foreach($customArray['wave_size'] as $key => $value)
                                                     <option value="{{ $key }}" {{ old('wave_size',Request::get('wave_size')) == $key ? "selected" : "" }}>{{ $value}}
@@ -306,7 +316,7 @@
                                     <div class="filter-checkbox start-rating mb-4">
                                         <label class="form-label">Star Rating</label>
                                         <div class="rating-flex" onclick="ratingShow(this)">
-                                            <input id="rating" name="rating" class="rating-filter rating-loading" data-min="0" data-max="5" data-step="1" data-size="xs" value="0">                            
+                                            <input id="rating" name="rating" class="rating-filter rating-loading" data-min="0" data-max="5" data-step="1" data-size="xs" value="0">
                                             <span class="avg-rating"></span>
                                         </div>
                                     </div>
@@ -331,4 +341,3 @@
 
 
                     </div>
-                    

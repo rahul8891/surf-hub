@@ -179,13 +179,13 @@ class UserService {
                 $users->id = $id;
                 $users->profile_photo_path = $image_path_forDB;
                 $users->profile_photo_name = $image_name;
-                // update user auth image 
+                // update user auth image
                 if (empty($dataRequest['userId'])) {
                     Auth::user()->profile_photo_path = $image_path_forDB;
                     Auth::user()->profile_photo_path = $image_name;
                 }
                 if ($users->save()) {
-                    // delete old image file 
+                    // delete old image file
                     File::delete(public_path("/storage/images/" . $userOldProfileImageName));
                     $message = $this->checkUserType['success']['IMAGE_UPDATE_SUCCESS'];
                     return true;
@@ -245,7 +245,6 @@ class UserService {
                 ->where('user_id', '!=', Auth::user()->id)
                 ->whereIn('user_type', $user_type)
                 ->where(function ($q) use ($string) {
-
                     $q->orWhere('first_name', 'LIKE', '%' . $string . '%');
                     $q->orWhere('users.user_name', 'LIKE', '%' . $string . '%');
                     $q->orWhere('last_name', 'LIKE', '%' . $string . '%');
@@ -256,9 +255,7 @@ class UserService {
                 })
                 ->groupBy('users.id')
                 ->get();
-//         $quries = DB::getQueryLog();
-//         dd($quries);
-        //dd($result);
+
         return $result;
     }
 
@@ -322,7 +319,7 @@ class UserService {
     public function followers($user_id) {
         $followers = $this->userFollows->where('followed_user_id', $user_id)
                         ->where('status', 'FOLLOW')
-//                    ->where('follower_request_status','0') 
+//                    ->where('follower_request_status','0')
                         ->where('is_deleted', '0')
                         ->orderBy('id', 'desc')->get();
         return $followers;
@@ -361,7 +358,7 @@ class UserService {
         } else {
             $followers = $this->userFollows->where('followed_user_id', $user_id)
                             ->where('status', 'FOLLOW')
-//                    ->where('follower_request_status','0') 
+//                    ->where('follower_request_status','0')
                             ->where('is_deleted', '0')
                             ->orderBy('id', 'desc')->get();
         }
@@ -381,7 +378,7 @@ class UserService {
         } else {
             $following = $this->userFollows->where('follower_user_id', $user_id)
                             ->where('status', 'FOLLOW')
-//                    ->where('follower_request_status','0') 
+//                    ->where('follower_request_status','0')
                             ->where('is_deleted', '0')
                             ->orderBy('id', 'desc')->get();
         }
@@ -393,7 +390,7 @@ class UserService {
         Notification::where(['receiver_id' => $user_id, 'notification_type' => 'Accept'])->orWhere(['notification_type' => 'Reject'])->update(['status' => '1', 'count_status' => '1', 'updated_at' => Carbon::now()]);
         $following = $this->userFollows->where('follower_user_id', $user_id)
                         ->where('status', 'FOLLOW')
-//                    ->where('follower_request_status','0') 
+//                    ->where('follower_request_status','0')
                         ->where('is_deleted', '0')
                         ->orderBy('id', 'desc')->get();
         return $following;
@@ -499,7 +496,7 @@ class UserService {
                 ->count();
 
         }
-        
+
         return $count;
     }
 
@@ -588,7 +585,7 @@ class UserService {
     /**
      * [saveFollowRequestNotification] we are storing the follow request notifications
      * @param  requestInput get all the requested input data
-     * @param  message return message based on the condition 
+     * @param  message return message based on the condition
      * @return dataArray with message
      */
     public function saveFollowRequestNotification($input, &$message = '') {
@@ -610,7 +607,7 @@ class UserService {
     /**
      * [saveFollowRequestAcceptRejectNotification] we are storing the accept and reject notifications
      * @param  requestInput get all the requested input data
-     * @param  message return message based on the condition 
+     * @param  message return message based on the condition
      * @return dataArray with message
      */
     public function saveFollowRequestAcceptRejectNotification($input, $notification_type = '') {
@@ -662,7 +659,7 @@ class UserService {
         $advertPost = array();
         $post = AdvertPost::where('post_id', $id)
                 ->get();
-        
+
 //        echo '<pre>';print_r($post);die;
         foreach ($post as $val) {
          $advertPost['ad_link']  = $val->ad_link;
@@ -701,7 +698,7 @@ class UserService {
         }
         return $advertPost;
     }
-    
+
     public function getMyAds() {
         $advertPost = array();
         $post = Post::where('user_id', Auth::user()->id)
