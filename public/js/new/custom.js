@@ -1715,8 +1715,8 @@ jQuery(document).ready(function () {
 
         if (jQuery(this).val().length > 1) {
             jQuery.ajax({
-                type: "GET",
-                url: "/getFilterUsers",
+                type: "POST",
+                url: "/getFilterUsernames",
                 data: {
                     user_type: userType,
                     searchTerm: jQuery(this).val(),

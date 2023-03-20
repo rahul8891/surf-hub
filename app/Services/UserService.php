@@ -259,6 +259,35 @@ class UserService {
         return $result;
     }
 
+    /*** Search by username autocomplete in filters */
+    public function getUsersFilterByUsername($string, $user_type='') {
+        $userProfiles = new UserProfile();
+//        DB::enableQueryLog();
+
+        if(isset($user_type) && !empty($user_type)) {
+            $result = $userProfiles
+                    ->join('users', 'users.id', '=', 'user_profiles.user_id')
+                    ->where('user_id', '!=', 1)
+                    ->whereIn('user_type', $user_type)
+                    ->where(function ($q) use ($string) {
+                        $q->orWhere('users.user_name', 'LIKE', '%' . $string . '%');
+                    })
+                    ->groupBy('users.id')
+                    ->get();
+        } else {
+            $result = $userProfiles
+                    ->join('users', 'users.id', '=', 'user_profiles.user_id')
+                    ->where('user_id', '!=', 1)
+                    ->where(function ($q) use ($string) {
+                        $q->orWhere('users.user_name', 'LIKE', '%' . $string . '%');
+                    })
+                    ->groupBy('users.id')
+                    ->get();
+        }
+
+        return $result;
+    }
+
     public function checkAlreadyTagged($dataRequest) {
         $result = $this->tag
                 ->where('post_id', $dataRequest['post_id'])
