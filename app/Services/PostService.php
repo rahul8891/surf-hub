@@ -343,6 +343,7 @@ class PostService {
         //************* applying conditions *****************/
         if (isset($params['username_id']) && !empty($params['username_id'])) {
             $postArray->where('posts.user_id', $params['username_id']);
+            $postArray->where('posts.parent_id', 0);
         }
 
         if (isset($params['filterUser']) && ($params['filterUser'] == 'me')) {
