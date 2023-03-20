@@ -9,10 +9,10 @@
                 @else
                 <img src="/img/logo_small.png" class="profileImg" alt="">
                 @endif
-                <div>                                                            
+                <div>
                     <p class="name"><span>{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span> </p>
                     <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
-                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
+                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
             @if (!File::exists($posts->upload->video))
                 <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
                     <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
-                </div>    
+                </div>
             @else
                 <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'m3u8' }}">
                     <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
@@ -34,7 +34,7 @@
         @endif
         <div class="user-bottom-options">
             <div class="rating-flex rating-flex-child">
-                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
+                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">
                 <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
 
             </div>
@@ -97,7 +97,7 @@
                                 @endif
                                 <span>{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
                             </div>
-                            @endforeach 
+                            @endforeach
                         </div>
                         @endif
                         <div>
@@ -128,7 +128,7 @@
             var myPlayer = this;
             myPlayer.qualityPickerPlugin();
             myPlayer.src({
-                type: 'application/x-mpegURL', 
+                type: 'application/x-mpegURL',
                 src: video
             });
         });
@@ -142,6 +142,21 @@
     jQuery('.pos-rel a').each(function(){
         jQuery(this).on('hover, mouseover, click', function() {
             jQuery(this).children('.userinfoModal').find('input[type="text"]').focus();
+        });
+    });
+
+    jQuery('.right-options').on('click', '.editBtnVideo', function() {
+        var id = jQuery(this).data('id');
+
+        jQuery.ajax({
+            url: '/getPostData/' + id,
+            type: "get",
+            async: false,
+            success: function(data) {
+                jQuery("#edit_image_upload_main").html("");
+                jQuery("#edit_image_upload_main").append(data.html);
+                jQuery("#edit_image_upload_main").modal('show');
+            }
         });
     });
 </script>

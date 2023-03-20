@@ -250,5 +250,20 @@
                 jQuery(this).children('.userinfoModal').find('input[type="text"]').focus();
             });
         });
+
+        jQuery('.right-options').on('click', '.editBtnVideo', function() {
+            var id = jQuery(this).data('id');
+
+            jQuery.ajax({
+                url: '/getPostData/' + id,
+                type: "get",
+                async: false,
+                success: function(data) {
+                    jQuery("#edit_image_upload_main").html("");
+                    jQuery("#edit_image_upload_main").append(data.html);
+                    jQuery("#edit_image_upload_main").modal('show');
+                }
+            });
+        });
     </script>
 @endif
