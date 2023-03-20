@@ -1677,8 +1677,10 @@ jQuery(document).ready(function () {
 
     jQuery(document).on('click', '#filter_username_data li', function () {
         var value = jQuery(this).text().trim();
+        var dataId = jQuery(this).attr("data-id");
 
         jQuery('.filter_username').val(value);
+        jQuery('#username_id_filter').val(dataId);
         jQuery('#filter_username_data').html("");
     });
 
@@ -1726,6 +1728,7 @@ jQuery(document).ready(function () {
                 }
             });
         } else {
+            jQuery('#username_id_filter').val('');
             jQuery('#filter_username_data').html("");
         }
     }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)

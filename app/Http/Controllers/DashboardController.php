@@ -29,8 +29,6 @@ class DashboardController extends Controller {
     }
 
     public function dashboard(Request $request) {
-        // if(isset(checkLoginAttempt))
-        // dd($loginAttempt);
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
@@ -53,7 +51,7 @@ class DashboardController extends Controller {
                 $requestSurfer[$res->post_id] = $res->user_id;
             }
         }
-        
+
         $url = url()->current();
         $usersList = $this->masterService->getAllUsers();
 
@@ -233,8 +231,8 @@ class DashboardController extends Controller {
         } else {
             $first_time_login = false;
         }
-    
-        return $first_time_login; 
+
+        return $first_time_login;
     }
 
 }

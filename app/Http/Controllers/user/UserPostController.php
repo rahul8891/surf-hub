@@ -27,8 +27,7 @@ use Closure;
 use Redirect;
 use Session;
 use File;
-use DB,
-    URL;
+use DB, URL;
 use FFMpeg;
 use FFMpeg\Format\Video\X264;
 use FFMpeg\Filters\Video\VideoFilters;
@@ -70,24 +69,6 @@ class UserPostController extends Controller {
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index() {
-        
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create() {
-        //
-    }
-
-    /**
      * Show the form for creating a new comment.
      *
      * @return \Illuminate\Http\Response
@@ -101,7 +82,7 @@ class UserPostController extends Controller {
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to current page.
-                //return response()->json(['error'=>$validate->errors()]); 
+                //return response()->json(['error'=>$validate->errors()]);
                 return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors('The comment field is required.');
             } else {
                 $result = $this->posts->saveComment($data, $message);
@@ -191,8 +172,8 @@ class UserPostController extends Controller {
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
                 return response()->json(['error' => $validate->errors()]);
-            } else {              
-                // dd($data);  
+            } else {
+                // dd($data);
                 if (!empty($postArray["images"]) || !empty($postArray["videos"])) {
                     if (!empty($postArray["images"])) {
                         foreach ($postArray["images"] as $value) {
@@ -209,9 +190,9 @@ class UserPostController extends Controller {
                 }
                 if ($result) {
                     // return Redirect()->route('myhub')->withSuccess($message);
-                    return json_encode(array('message' => 'Post has been upload successfully')); 
+                    return json_encode(array('message' => 'Post has been upload successfully'));
                 } else {
-                    return json_encode(array('message' => 'Error')); 
+                    return json_encode(array('message' => 'Error'));
 //                    return Redirect()->route('myhub')->withErrors($message);
                 }
             }
@@ -245,7 +226,7 @@ class UserPostController extends Controller {
                     foreach ($postArray as $value) {
 
                         $fileType = explode('/', $value->getMimeType());
-                        
+
                         if ($fileType[0] == 'image') {
                             $fileFolder = 'images/' . Auth::user()->id;
                             // $destinationPath = public_path('storage/images/');
@@ -289,17 +270,17 @@ class UserPostController extends Controller {
             throw ValidationException::withMessages([$e->getMessage()]);
         }
     }
-    
+
     public function publishAdvert(Request $request) {
         try {
             $data = $request->all();
-                        
+
                         if (isset($data['post_id']) && $data['post_id']) {
                             $advertPost = AdvertPost::where('post_id', $data['post_id'])->first();
                             $advertPost->preview_ad = 0;
                             $advertPost->save();
-                        } 
-                        return Redirect()->route('payment', Crypt::encrypt($data['post_id']))->withSuccess('Advertisment has been published successfully!');     
+                        }
+                        return Redirect()->route('payment', Crypt::encrypt($data['post_id']))->withSuccess('Advertisment has been published successfully!');
         } catch (\Exception $e) {
             throw ValidationException::withMessages([$e->getMessage()]);
         }
@@ -347,7 +328,7 @@ class UserPostController extends Controller {
         if (isset($data['id']) && !empty($data['id'])) {
             try {
                 $result = $this->posts->ratePost($data, $message);
-                
+
                 if ($result) {
                     return json_encode(array('status' => $result['status'], 'message' => $result['message'],
                         'averageRating' => $result['averageRating'], 'usersRated' => $result['usersRated']));
@@ -650,20 +631,20 @@ class UserPostController extends Controller {
         $url = url()->current();
         $usersList = $this->masterService->getAllUsers();
 //        dd($presignedUrl);
-        
+
         return view('user.upload', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches'));
     }
     public function getPresignedUrl(Request $request) {
-        
+
         $data = $request->all();
-        
+
         $key = $data['filepath'];
         $type = $data['fileType'];
 
         $presignedUrl = PreSignedUrl::getPreSignedUrl($key, $type);
 
         return response()->json($presignedUrl);
-        
+
     }
 
 }

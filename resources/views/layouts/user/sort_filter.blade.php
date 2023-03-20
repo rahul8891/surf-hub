@@ -85,7 +85,7 @@
                                         <div class="col-md-8">
                                             <div class="white-bg">
                                                 <select class="form-control select2 select2-hidden-accessible country local_beach_break_id"
-                                                        name="user_type" id="filter_user_type" multiple="multiple">
+                                                        name="user_type[]" id="filter_user_type" multiple="multiple">
                                                     <option value="USER">Surfer</option>
                                                     <option value="PHOTOGRAPHER">Photographer</option>
                                                     <option value="SURFER CAMP">Surf Camp</option>
@@ -101,6 +101,7 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="white-bg">
+                                                <input type="hidden" value="" name="username_id" id="username_id_filter" class="form-control username_id" />
                                                 <input type="text" name="filter_username" class="form-control ps-2 mb-0 filter_username" placeholder="Search Username">
                                                 <div class="auto-search" id="filter_username_data"></div>
                                             </div>

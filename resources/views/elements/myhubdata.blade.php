@@ -50,7 +50,7 @@
                             </div>
                         @elseif(!empty($posts->upload->video))
                             <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->parent_id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
-                                <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                                <video width="100%" preload="auto" data-setup="{}" controls muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
                             </div>
                         @endif
                     @else
@@ -60,7 +60,7 @@
                             </div>
                         @elseif(!empty($posts->upload->video))
                             <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
-                                <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                                <video width="100%" preload="auto" data-setup="{}" controls muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
                             </div>
                         @endif
                     @endif
@@ -236,6 +236,7 @@
 
         @endif
     @endforeach
+
     <script>
         window.HELP_IMPROVE_VIDEOJS = false;
 
@@ -255,36 +256,37 @@
             });
         });
 
-        jQuery('.rating').rating({
+        /* jQuery('.rating').rating({
             showClear:false,
             showCaption:false
-        });
+        }); */
 
         //Auto play videos when view in scroll
         function isInView(el) {
             var rect = el.getBoundingClientRect();// absolute position of video element
-            return !(rect.top > $(window).height() || rect.bottom < 0);// visible?
+            // console.log(rect);
+            return !(rect.top > ($(window).height() - 10) || rect.bottom < 0);// visible?
         }
 
-        /*$(document).on("scroll", function () {
-            $("video").each(function () {
+        $(function () {
+            $(".vjs-tech").each(function () {
                 if (isInView($(this)[0])) {// visible?
                     if ($(this)[0].paused)
                         $(this)[0].play();// play if not playing
                 } else {
-                    if ($(this)[0].play)
+                    if (!$(this)[0].paused)
                         $(this)[0].pause();// pause if not paused
                 }
             });
-        });*/
+        });
 
-        $(function () {
-            $('.vjs-tech').mouseenter(function () {
+        /* $(function () {
+            $('.vjs-tech').focus(function () {
                 $(this).get(0).play();
             });
-            $('.vjs-tech').mouseout(function () {
+            $('.vjs-tech').focusout(function () {
                 $(this).get(0).pause();
             });
-        });
+        });*/
     </script>
 @endif
