@@ -71,8 +71,13 @@
 
             <div class="right-options">
                 @if(Auth::user() && $posts->user_id != Auth::user()->id)
-                <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/save.png" alt="Save"></a>
+                    <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/save.png" alt="Save"></a>
                 @endif
+
+                @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'] && empty($requestSurfer[$posts->id]))
+                    <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
+                @endif
+
                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                     <img src={{asset("img/location.png")}} alt="Location"></a>
                 <a onclick="openFullscreen({{$posts->id}});"><img src={{asset("img/expand.png")}} alt="Expand"></a>
@@ -298,5 +303,28 @@
             }
         });
     });
+
+    //Auto play videos when view in scroll
+    function isInView(el) {
+        var rect = el.getBoundingClientRect();// absolute position of video element
+        return !(rect.top > (jQuery(window).height() / 2) || rect.bottom < (jQuery(window).height() / 4));// visible?
+    }
+
+    jQuery(document).on("scroll", function () {
+        jQuery("video").each(function () { //console.log('aa');
+            // jQuery("video").get(0).pause();
+            // visible?
+            if (isInView(jQuery(this).get(0))) { // console.log('video = '+ jQuery.parseJSON(jQuery(this).get(0).paused));
+                if (jQuery(this).get(0).paused) { //console.log('1111');
+                    jQuery(this).get(0).play(true);// play if not playing
+                }
+            } else {
+                if (!jQuery(this).get(0).paused) { //console.log('2222');
+                    jQuery(this).get(0).pause();// pause if not paused
+                }
+           }
+        });
+    });
+    //End auto play
 </script>
 @endif

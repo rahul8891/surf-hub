@@ -49,7 +49,7 @@
                                 <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
                                 @endif
-                                <div>     
+                                <div>
                                     @if($posts->user_id != Auth::user()->id)
                                     @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
                                     <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
@@ -65,11 +65,11 @@
                                     </p>
                                     @endif
                                     <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
-                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
+                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                                 </div>
                             </div>
                             @if($posts->user_id != Auth::user()->id)
-                            <div class="user-right"> 
+                            <div class="user-right">
                                 <img src="/img/new/normal-user.png" alt="normal-user">
 
                                 <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
@@ -87,11 +87,11 @@
                         @elseif(!empty($posts->upload->video))
                             <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
                                 <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
-                            </div>    
+                            </div>
                         @endif
                         <div class="user-bottom-options">
                             <div class="rating-flex rating-flex-child">
-                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
+                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">
                                 <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
                             </div>
                             <div class="right-options">
@@ -163,7 +163,7 @@
                                                 @endif
                                                 <span>{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
                                             </div>
-                                            @endforeach 
+                                            @endforeach
                                         </div>
                                         @endif
                                         <div>
@@ -184,7 +184,7 @@
 
                                     <div class="dropdown-menu">
                                         <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
-                                            @csrf    
+                                            @csrf
                                             <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
                                             <h6 class="text-center fw-bold">Report Content</h6>
 
@@ -237,7 +237,7 @@
                             @foreach ($posts->comments as $comments)
                             <div class="comment-row">
                                 <span class="comment-name">{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :
-                                </span> 
+                                </span>
                                 {{$comments->value}}
                             </div>
                             @endforeach
@@ -260,14 +260,14 @@
                 <div class="news-feed">
                     <div class="inner-news-feed">
                         <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$requests['user_id'].'/'.$requests['video'] }}" >    
+                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$requests['user_id'].'/'.$requests['video'] }}" >
                         </video>
-                    </div>    
-                </div>    
+                    </div>
+                </div>
                 @endif
 
                 @php ($c = 0)
-                @break 
+                @break
                 @endforeach
                 @php ($i++)
                 @endif
@@ -293,8 +293,8 @@
 <script type="text/javascript">
     var page = 1;
 
-    $(window).scroll(function() { 
-        if($(window).scrollTop() + $(window).height() >= ($(document).height() - 10)) { 
+    $(window).scroll(function() {
+        if($(window).scrollTop() + $(window).height() >= ($(document).height() - 10)) {
             page++;
             loadMoreData(page);
         }
@@ -307,7 +307,7 @@
         }else {
             var url = window.location.href + '?page=' + page;
         }
-        
+
         $.ajax({
             url: url,
             type: "get",
@@ -329,5 +329,28 @@
             $(data.html).insertBefore(".ajax-load");
         });
     }
+
+    //Auto play videos when view in scroll
+    function isInView(el) {
+        var rect = el.getBoundingClientRect();// absolute position of video element
+        return !(rect.top > (jQuery(window).height() / 2) || rect.bottom < (jQuery(window).height() / 4));// visible?
+    }
+
+    jQuery(document).on("scroll", function () {
+        jQuery("video").each(function () { //console.log('aa');
+            // jQuery("video").get(0).pause();
+            // visible?
+            if (isInView(jQuery(this).get(0))) { // console.log('video = '+ jQuery.parseJSON(jQuery(this).get(0).paused));
+                if (jQuery(this).get(0).paused) { //console.log('1111');
+                    jQuery(this).get(0).play(true);// play if not playing
+                }
+            } else {
+                if (!jQuery(this).get(0).paused) { //console.log('2222');
+                    jQuery(this).get(0).pause();// pause if not paused
+                }
+           }
+        });
+    });
+    //End auto play
 </script>
 @endsection

@@ -159,4 +159,27 @@
             }
         });
     });
+
+    //Auto play videos when view in scroll
+    function isInView(el) {
+        var rect = el.getBoundingClientRect();// absolute position of video element
+        return !(rect.top > (jQuery(window).height() / 2) || rect.bottom < (jQuery(window).height() / 4));// visible?
+    }
+
+    jQuery(document).on("scroll", function () {
+        jQuery("video").each(function () { //console.log('aa');
+            // jQuery("video").get(0).pause();
+            // visible?
+            if (isInView(jQuery(this).get(0))) { // console.log('video = '+ jQuery.parseJSON(jQuery(this).get(0).paused));
+                if (jQuery(this).get(0).paused) { //console.log('1111');
+                    jQuery(this).get(0).play(true);// play if not playing
+                }
+            } else {
+                if (!jQuery(this).get(0).paused) { //console.log('2222');
+                    jQuery(this).get(0).pause();// pause if not paused
+                }
+           }
+        });
+    });
+    //End auto play
 </script>
