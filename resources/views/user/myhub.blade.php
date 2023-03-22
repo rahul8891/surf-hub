@@ -340,7 +340,7 @@
     //Auto play videos when view in scroll
     function isInView(el) {
         var rect = el.getBoundingClientRect();// absolute position of video element
-        return !(rect.top > (jQuery(window).height() / 3) || rect.bottom < (jQuery(window).height() / 3));// visible?
+        return !(rect.top > (jQuery(window).height() / 2) || rect.bottom < (jQuery(window).height() / 4));// visible?
     }
 
     jQuery(document).on("scroll", function () {
