@@ -122,7 +122,7 @@
                                     <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/save.png" alt="Save"></a>
                                 @endif
 
-                                @if(($posts->surfer == 'Unknown') && (Auth::user()->id != $posts->user_id))
+                                @if(isset(Auth::user()->id) && ($posts['surfer'] == 'Unknown') && (Auth::user()->id != $posts['user_id']) && empty($requestSurfer[$posts->id]))
                                     <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
                                 @endif
 
