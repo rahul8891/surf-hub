@@ -41,7 +41,7 @@
 <script src="{{ asset('/js/hls/vjs-quality-picker.js?v=v0.0.2') }}"></script>
 
 <script src="{{ asset('js/new/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('js/new/star-rating.min.js')}}"></script>    
+<script src="{{ asset('js/new/star-rating.min.js')}}"></script>
 <script src="{{ asset('js/new/slick.js')}}"></script>
 
 <script src="{{ asset('js/new/custom.js') }}"></script>
@@ -101,7 +101,7 @@
     });
 
     window.HELP_IMPROVE_VIDEOJS = false;
-                
+
     jQuery( ".jw-video-player" ).each(function( i ) {
         var videoID = $(this).attr('data-id');
         var video = $(this).attr('data-src');
@@ -112,7 +112,7 @@
             var myPlayer = this;
             myPlayer.qualityPickerPlugin();
             myPlayer.src({
-                type: 'application/x-mpegURL', 
+                type: 'application/x-mpegURL',
                 src: video
             });
         });
@@ -136,37 +136,37 @@
             elem.enterFullscreen();
         }
     }
-        
+
     jQuery('.right-options').on('click', '.editBtnVideo', function() {
         var id = jQuery(this).data('id');
-        
+
         jQuery.ajax({
             url: '/getPostData/' + id,
-            type: "get", 
+            type: "get",
             async: false,
             success: function(data) {
                 jQuery("#edit_image_upload_main").html("");
                 jQuery("#edit_image_upload_main").append(data.html);
-                jQuery("#edit_image_upload_main").modal('show');                
+                jQuery("#edit_image_upload_main").modal('show');
             }
         });
     });
-    
+
     jQuery('.pos-rel a').each(function(){
        jQuery(this).on('hover, mouseover, click', function() {
             jQuery(this).children('.userinfoModal').find('input[type="text"]').focus();
         });
     });
-    
+
     function openFullscreenSilder(id) {
         jQuery.ajax({
             url: '/getPostFullScreen/' + id,
-            type: "get", 
+            type: "get",
             async: false,
             success: function(data) {
                 jQuery("#full_screen_modal").html("");
                 jQuery("#full_screen_modal").append(data.html);
-                jQuery("#full_screen_modal").modal('show');                
+                jQuery("#full_screen_modal").modal('show');
             }
         });
     }
@@ -177,7 +177,7 @@
 
 		jQuery.ajax({
 		    url: '/highlight-post/' + postID,
-		    type: "get", 
+		    type: "get",
 		    async: false,
 		    success: function(result) {
 		        if(result.data.is_highlight == "1") {
@@ -188,12 +188,12 @@
 		    }
 		});
 	});
-        
+
 
     mybutton = document.getElementById("scrollToTop");
     window.onscroll = function() {scrollFunction()};
 
-	function scrollFunction() { 
+	function scrollFunction() {
 		if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
 			mybutton.style.display = "block";
 		} else {
@@ -204,7 +204,7 @@
 	function topFunction() {
 		document.body.scrollTop = 0; // For Safari
 		document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-	} 
+	}
 </script>
 <script src="{{ asset('js/new/jquery.multi-select.js') }}"></script>
 @include('elements/location_popup_model')

@@ -60,7 +60,7 @@
                             </div>
                         @elseif(!empty($posts->upload->video))
                             <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
-                                <video width="100%" preload="auto" data-setup="{}" controls muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                                <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
                             </div>
                         @endif
                     @endif
@@ -237,7 +237,7 @@
         @endif
     @endforeach
 
-    <script>
+    <script type="text/javascript">
         window.HELP_IMPROVE_VIDEOJS = false;
 
         jQuery( ".jw-video-player" ).each(function( i ) {
@@ -264,28 +264,44 @@
         //Auto play videos when view in scroll
         function isInView(el) {
             var rect = el.getBoundingClientRect();// absolute position of video element
-            // console.log(rect);
-            return !(rect.top > ($(window).height() - 10) || rect.bottom < 0);// visible?
+            return !(rect.top > (jQuery(window).height() / 3) || rect.bottom < (jQuery(window).height() / 3));// visible?
         }
 
-        $(function () {
-            $(".vjs-tech").each(function () {
-                if (isInView($(this)[0])) {// visible?
-                    if ($(this)[0].paused)
-                        $(this)[0].play();// play if not playing
+        jQuery(document).on("scroll", function () {
+            jQuery("video").each(function () { //console.log('aa');
+                //jQuery("video").get(0).pause();
+                // visible?
+                if (isInView(jQuery(this).get(0))) { // console.log('video = '+ jQuery.parseJSON(jQuery(this).get(0).paused));
+                    if (jQuery(this).get(0).paused) { //console.log('1111');
+                        jQuery(this).get(0).play(true);// play if not playing
+                    }
                 } else {
-                    if (!$(this)[0].paused)
-                        $(this)[0].pause();// pause if not paused
+                    if (!jQuery(this).get(0).paused) { //console.log('2222');
+                        jQuery(this).get(0).pause();// pause if not paused
+                    }
                 }
             });
         });
-
-        /* $(function () {
-            $('.vjs-tech').focus(function () {
-                $(this).get(0).play();
+        //End auto play
+        /*jQuery(function () {
+            jQuery(".vjs-tech").each(function () {
+                if (isInView(jQuery(this)[0])) {// visible?
+                    if (jQuery(this)[0].paused)
+                        jQuery(this)[0].play();// play if not playing
+                } else {
+                    if (!jQuery(this)[0].paused)
+                        jQuery(this)[0].pause();// pause if not paused
+                }
             });
-            $('.vjs-tech').focusout(function () {
-                $(this).get(0).pause();
+        });*/
+
+        /*$(function () {
+            jQuery('video').focusin(function () { console.log('aaa');
+                jQuery(this)[0].paused();
+            });
+
+            jQuery('.vjs-tech').focusout(function () { console.log('bbb');
+                $(this)[0].pause();
             });
         });*/
     </script>
