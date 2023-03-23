@@ -2102,24 +2102,7 @@ jQuery(document).ready(function () {
         }
     });
 
-    //Auto play videos when view in scroll
-//    function isInView(el) {
-//        var rect = el.getBoundingClientRect();// absolute position of video element
-//        return !(rect.top > jQuery(window).height() || rect.bottom < 0);// visible?
-//    }
-//
-//    jQuery(document).on("scroll", function () {
-//        jQuery("video").each(function () {
-//            if (isInView(jQuery(this)[0])) {// visible?
-//                if (jQuery(this)[0].paused)
-//                    jQuery(this)[0].play();// play if not playing
-//            } else {
-//                if (!jQuery(this)[0].paused)
-//                    jQuery(this)[0].pause();// pause if not paused
-//            }
-//        });
-//    });
-    //End auto play
+
 
     jQuery(function () {
         jQuery('[data-toggle="tooltip"]').tooltip()

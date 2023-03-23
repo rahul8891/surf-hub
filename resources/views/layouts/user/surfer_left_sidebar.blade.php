@@ -56,13 +56,13 @@
                 <label class="d-block">Gender</label>
                 <span class="darkGrey-txt">{{ $userProfile['gender'] }}</span>
             </div>
-            
-            <div class="profile-row">
+
+            <!--  <div class="profile-row">
                 <label class="d-block">DOB</label>
                 <span class="darkGrey-txt">{{ $userProfile['dob'] }}</span>
-            </div>
+            </div> -->
             @endif
-            <div class="profile-row pt-0">
+            <!-- <div class="profile-row pt-0">
                 <label class="d-block">Email</label>
                 <span class="darkGrey-txt">{{ $userProfile['email'] }}</span>
             </div>
@@ -73,7 +73,7 @@
             <div class="profile-row pt-0">
                 <label class="d-block">Postal Code</label>
                 <span class="darkGrey-txt">{{ $userProfile['postal_code'] }}</span>
-            </div>
+            </div>  -->
             @if($userType == 'SURFER CAMP' || $userType == 'PHOTOGRAPHER')
             <div class="profile-row pt-0">
                 <label class="d-block">Website</label>

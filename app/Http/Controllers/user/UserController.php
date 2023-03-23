@@ -587,7 +587,7 @@ class UserController extends Controller {
     public function surferProfile(Request $request, $id) {
         $surfer_id = Crypt::decrypt($id);
         $url = url()->current();
-//        print_r($surfer_id);die;
+
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
@@ -598,16 +598,12 @@ class UserController extends Controller {
                 ->where('user_id', $surfer_id)
                 ->where(function ($query) {
                     $query->where('post_type', 'PUBLIC')
-                    ->orWhere('is_feed', '1');
+                    ->where('is_highlight', '1');
                 })
                 ->orderBy('posts.created_at', 'DESC')
                 ->paginate(10);
         $requestSurfer = array();
         foreach ($postsList as $val) {
-//            $surferRequest = SurferRequest::select("*")
-//                    ->where("post_id", "=", $val['id'])
-//                    ->where("status", "=", 0)
-//                    ->get();
             $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
                     ->where("surfer_requests.post_id", "=", $val['id'])
                     ->where("surfer_requests.status", "=", 0)

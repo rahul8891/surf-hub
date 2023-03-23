@@ -13,7 +13,7 @@
         text-decoration: none;
         color: #616161;
     }
-    
+
     .dropdown-label {
 /*            display: block;
             height: 30px;
@@ -49,15 +49,15 @@
             opacity: 0;
             transition: opacity .15s ease-in-out;
         }
-        
+
     .multi-dropdown {
         position: relative;
         font-size: 14px;
         color: #333;
 
-        
 
-        
+
+
 
         &.on {
             .dropdown-list {
@@ -107,7 +107,7 @@
                             <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort'=>'surfDateAsc']) }}">Surf Date (Old to New)</a>
                             <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort'=>'beach']) }}">Beach / Break</a>
                             <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort'=>'star']) }}">Star Rating </a>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
                <div class="filter">
@@ -332,7 +332,7 @@
                                                                         <select class="form-control" name="state_id" id="filter_state_id">
                                                                             <option selected="selected" value="">-- State --</option>
                                                                             @foreach($states as $key => $value)
-                                                                            <option value="{{ $value->id }}" 
+                                                                            <option value="{{ $value->id }}"
                                                                                     {{ old('state_id',Request::get('state_id')) == $value->id ? "selected" : "" }}>
                                                                                 {{ $value->name }}</option>
                                                                             @endforeach
@@ -363,7 +363,7 @@
                                                                 </div>
                                                                 <div class="col-md-8">
                                                                     <div class="selectWrap pos-rel">
-                                                                        <select class="form-control" name="wave_size">  
+                                                                        <select class="form-control" name="wave_size">
                                                                             <option value="">{{ __('-- Select --')}}</option>
                                                                             @foreach($customArray['wave_size'] as $key => $value)
                                                                             <option value="{{ $key }}" {{ old('wave_size',Request::get('wave_size')) == $key ? "selected" : "" }}>{{ $value}}
@@ -400,13 +400,13 @@
                                                                     <label class="mb-0">Beach </label>
                                                                 </div>
                                                                 <!--<label class="dropdown-label">Select</label>-->
-<!--                                                                
+<!--
                                                                 <div class="col-md-8">
-                                                                    
+
                                                                 </div>-->
                                                                 <div class="dropdown-list col-md-8">
                                                                     <a href="#" data-toggle="check-all" class="dropdown-option">
-                                                                        Check All  
+                                                                        Check All
                                                                     </a>
                                                                     @foreach($beaches as $val)
                                                                     <div class="cstm-check pos-rel">
@@ -415,7 +415,7 @@
                                                                     </div>
                                                                     @endforeach
 
-                                                                         
+
                                                                 </div>
                                                             </div>
                                                             <div class="dropdown" data-control="checkbox-dropdown">
@@ -423,11 +423,11 @@
 
                                                                 <div class="dropdown-list break-multi">
                                                                     <a href="#" data-toggle="check-all" class="dropdown-option">
-                                                                        Check All  
+                                                                        Check All
                                                                     </a>
-                                                                    
 
-                                                                         
+
+
                                                                 </div>
                                                             </div>
                                                             <div class="row mb-3 rating-box">
@@ -435,7 +435,7 @@
                                                                     <label class="mb-0">Star Rating </label>
                                                                 </div>
                                                                 <div class="col-md-8">
-                                                                    <ul class="pl-0 mb-0 ">                                                
+                                                                    <ul class="pl-0 mb-0 ">
                                                                         <li>
                                                                             <input id="filter-rating" name="rating" class="rating rating-loading" data-min="0" data-max="5" data-step="1" data-size="xs" value="0" />
                                                                         </li>

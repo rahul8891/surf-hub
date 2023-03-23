@@ -8,7 +8,7 @@
                     <h2>Upload Video/Photo</h2>
                     <select class="form-select ps-2 mb-0" name="post_type" required>
                         @foreach($customArray['post_type'] as $key => $value)
-                        <option value="{{ $key }}">{{ $value}}</option>
+                        <option value="{{ $key }}" {{ $myHubs->post_type == $key ? "selected" : "" }} >{{ $value}}</option>
                         @endforeach
                     </select>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
@@ -103,7 +103,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        
+
                         <div class="col-md-6">
                             <div class="row mb-3 align-items-center">
                                 <label class="col-md-4">Beach<span class="red-txt">*</span></label>
@@ -116,7 +116,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-6">
                             <div class="row mb-3 align-items-center">
                                 <label class="col-md-4">Break<span class="red-txt">*</span></label>
@@ -266,7 +266,7 @@
 $(document).ready(function () {
     /**
      * Execute a function given a delay time
-     * 
+     *
      * @param {type} func
      * @param {type} wait
      * @param {type} immediate
@@ -293,7 +293,7 @@ $(document).ready(function () {
 
     // ajax form field data for post
     $('.search-box').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         if ($(this).val().length > 2) {
             $.ajax({
                 type: "GET",
@@ -329,7 +329,7 @@ $(document).ready(function () {
     });
 
     $('.edit_other_surfer').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         if ($(this).val().length > 2) {
             $.ajax({
                 type: "GET",
@@ -359,7 +359,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.search12 li', function () {
-        
+
         var value = $(this).text();
         var dataId = $(this).attr("data-id");
         $('#country_list').html("");
@@ -403,10 +403,10 @@ $(document).ready(function () {
 
     function previewFile(input) {
         var newFileList = Array.from(input.files);
-        
+
         $.each(newFileList, function (index, mediaFile) {
             var ext = mediaFile.name.substring(mediaFile.name.lastIndexOf(".") + 1).toLowerCase();
-            
+
         if (mediaFile && (ext == "mov" || ext == "mp4" || ext == "wmv" || ext == "mkv" || ext == "gif" || ext == "mpeg4")) {
                 $("#videoError").hide();
                 var f = newFileList[index];
@@ -473,7 +473,7 @@ $(document).ready(function () {
                             $("#break_id").append('<option value="' + value.id + '">' + value.break_name + '</option>');
 //                            $("#break_id").rules("add", {required: true, messages: {required: "Break is required"}});
 
-                        } 
+                        }
 //                        else {
 ////                            $("#break_id").rules("remove");
 //                        }
