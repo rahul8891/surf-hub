@@ -24,27 +24,27 @@
                                          class="align-middle bg-white notification-img">
                                     @endif
                                     <div class="d-inline-block align-middle">
-                                        <p class="mb-0">
+                                        <a href="{{ route('getPostData', $requests['post_id']) }}" class="mb-0">
                                             <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                             @if($requests['notification_type'] == 'Post')
-                                            </span> Added a new {{$requests['post_type']}} </p>
+                                            </span> Added a new {{$requests['post_type']}} </a>
                                             @endif
                                             @if($requests['notification_type'] == 'Comment')
-                                            </span> is commented on your {{$requests['post_type']}} </p>
+                                            </span> is commented on your {{$requests['post_type']}} </a>
                                             @endif
                                             @if($requests['notification_type'] == 'Follow')
-                                            </span> sent you a follow request </p>
+                                            </span> sent you a follow request </a>
                                             @endif
                                             @if($requests['notification_type'] == 'Accept')
-                                            </span> accept your following request </p>
+                                            </span> accept your following request </a>
                                             @endif
                                             @if($requests['notification_type'] == 'Reject')
-                                            </span> reject your following request </p>
+                                            </span> reject your following request </a>
                                             @endif
                                             @if($requests['notification_type'] == 'Tag')
-                                            </span> tagged you on a post </p>
+                                            </span> tagged you on a post </a>
                                             @endif
-                         
+
                                         <p class="time mb-0">{{ postedDateTime($requests['created_at']) }}</p>
                                     </div>
                                 </div>

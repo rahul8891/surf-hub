@@ -78,7 +78,8 @@ class UserService {
                     return false;
                 }
 
-                $userType = $users->user_type;
+                $userType = $dataRequest['user_type'];
+                // dd($userType);
                 if (isset($dataRequest['profile_photo_blob']) && !empty($dataRequest['profile_photo_blob'])) {
 
                     $path = public_path() . "/storage/images/";
@@ -128,9 +129,11 @@ class UserService {
                     $user_profiles->state_id = $dataRequest['state_id'];
                     $user_profiles->suburb = $dataRequest['suburb'];
                 }
+                // dd($users);
                 if ($users->save() && $user_profiles->save()) {
+                    Auth::setUser($users);
                     $message = $this->checkUserType['success']['UPDATE_SUCCESS'];
-                    ;
+
                     return true;
                 }
             } else {

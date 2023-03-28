@@ -182,16 +182,11 @@ class UserController extends Controller {
         Validator::make($data, [
             'first_name' => ['required', 'min:3', 'string'],
             'last_name' => ['required', 'min:3', 'string'],
-//            'user_name' => ['required', 'string', 'min:5', 'alpha_dash'],
-//            'email' => ['required', 'string', 'email:rfc,dns', 'max:255'],
             'phone' => ['required'],
-//            'language' => ['required', 'string'],
             'country_id' => ['required', 'numeric'],
-//            'account_type' => ['required', 'string'],
             'paypal' => ['required', 'string'],
-//            'local_beach_break' => ['required', 'string'],
         ])->validate();
-//
+
         $result = $this->users->updateUserProfile($data, $message,$user_id);
         if ($result) {
             return Redirect::to('dashboard')->withSuccess($message);

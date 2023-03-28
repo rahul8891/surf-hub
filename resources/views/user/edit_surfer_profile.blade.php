@@ -23,8 +23,7 @@
                                     </div>
                                     <span class="align-middle d-inline-block ms-3">Upload Profile Pic</span>
                                 </div>
-                    <!--            <span id="imageError" class="notDisplayed d-done required">{{ __('Please upload files having
-                                                                extensions: jpg, jpeg, png') }}</span>-->
+                                <!-- <span id="imageError" class="notDisplayed d-done required">{{ __('Please upload files having extensions: jpg, jpeg, png') }}</span>-->
                                 @error('profile_photo_name')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -40,16 +39,17 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="white-bg user-type-icon">
-                                    <select class="form-select">
-                                        <option selected>Select User Type</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                    <select class="form-select" name="user_type" disabled>
+                                        <option value="">Select User Type</option>
+                                        <option value="USER" selected>Surfer</option>
+                                        <option value="PHOTOGRAPHER">Photographer</option>
+                                        <option value="SURFER CAMP">Surf Camp</option>
+                                        <option value="ADVERTISEMENT">Advertiser</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                       
+
                         <div class="row">
                             <div class="col-md-6">
                                 <input type="text" class="form-control user-icon" placeholder="First Name" name="first_name"
@@ -71,7 +71,7 @@
                                 <div class="white-bg gender-icon">
                                     <select class="form-select" name="gender" id="gender" required>
                                         <option value="">Gender</option>
-                                        @foreach($gender_type as $key => $value) 
+                                        @foreach($gender_type as $key => $value)
                                         <option value="{{ $key }}" {{ ($user->user_profiles->gender == $key) ? "selected" : "" }} >
                                             {{ $value }}</option>
                                         @endforeach
