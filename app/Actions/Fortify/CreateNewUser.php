@@ -25,29 +25,22 @@ class CreateNewUser implements CreatesNewUsers {
      * @return \App\Models\User
      */
     public function create(array $input) {
-        $user = new User(); // user tabel object 
-        $userProfile = new UserProfile(); // user profile table object   
+        $user = new User(); // user tabel object
+        $userProfile = new UserProfile(); // user profile table object
 
         Validator::make($input, [
             'first_name' => ['required', 'min:3', 'string'],
             'last_name' => ['required', 'min:3', 'string'],
-//            'user_name' => ['required', 'string','min:5', 'max:25', 'unique:users', 'alpha_dash'],
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
             'phone' => ['required', 'string'],
-//            'language' => ['required', 'string'],
             'country_id' => ['required', 'numeric'],
             'user_type_id' => ['required', 'numeric'],
-//            'account_type' => ['required', 'string'],
-            'profile_photo_name' => ['image', 'mimes:jpeg,jpg,png'],
-//            'local_beach_break' => ['required', 'string'],
             'terms' => ['required'],
             'password' => $this->passwordRules(),
         ])->validate();
-//         echo '<pre>';print_r($input);die;
-        try {
 
+        try {
             $getImageArray = $this->uploadImage($input);
-//            echo '<pre>';print_r($getImageArray);die;
             $user->user_name = !empty($input['user_name']) ? $input['user_name'] : '';
             $user->email = $input['email'];
             $user->user_type = $input['user_type_id'];

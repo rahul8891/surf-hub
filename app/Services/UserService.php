@@ -67,7 +67,7 @@ class UserService {
      * @return [object]              [description]
      */
     public function updateUserProfile($dataRequest, &$message = '',$user_id) {
-
+        //dd($dataRequest);
         $users = $this->users->find($user_id);
         $userProfiles = new UserProfile();
         try {
@@ -78,8 +78,8 @@ class UserService {
                     return false;
                 }
 
-                $userType = $dataRequest['user_type'];
-                // dd($userType);
+                $userType = $users->user_type;
+
                 if (isset($dataRequest['profile_photo_blob']) && !empty($dataRequest['profile_photo_blob'])) {
 
                     $path = public_path() . "/storage/images/";
@@ -97,20 +97,20 @@ class UserService {
                         $users->profile_photo_path = $image_path_forDB;
                     }
                 }
-                $users->user_name = !empty($dataRequest['user_name']) ? $dataRequest['user_name'] : '';
-                $user_profiles->first_name = $dataRequest['first_name'];
-                $user_profiles->last_name = $dataRequest['last_name'];
-                $user_profiles->phone = $dataRequest['phone'];
-                $user_profiles->paypal = $dataRequest['paypal'];
-                $user_profiles->country_id = $dataRequest['country_id'];
-                $user_profiles->postal_code = $dataRequest['postal_code'];
-                $user_profiles->local_beach_break_id = !empty($dataRequest['local_beach_break_id']) ? $dataRequest['local_beach_break_id'] : '';
+                $users->user_name = !empty($dataRequest['user_name']) ? $dataRequest['user_name']:$users->user_name;
+                $user_profiles->first_name = (isset($dataRequest['first_name']) && !empty($dataRequest['first_name']))?$dataRequest['first_name']:$user_profiles->first_name;
+                $user_profiles->last_name = (isset($dataRequest['last_name']) && !empty($dataRequest['last_name']))?$dataRequest['last_name']:$user_profiles->last_name;
+                $user_profiles->phone = (isset($dataRequest['phone']) && !empty($dataRequest['phone']))?$dataRequest['phone']:$user_profiles->phone;
+                $user_profiles->paypal = (isset($dataRequest['paypal']) && !empty($dataRequest['paypal']))?$dataRequest['paypal']:$user_profiles->paypal;
+                $user_profiles->country_id = (isset($dataRequest['country_id']) && !empty($dataRequest['country_id']))?$dataRequest['country_id']:$user_profiles->country_id;
+                $user_profiles->postal_code = (isset($dataRequest['postal_code']) && !empty($dataRequest['postal_code']))?$dataRequest['postal_code']:$user_profiles->postal_code;
+                $user_profiles->local_beach_break_id = !empty($dataRequest['local_beach_break_id']) ? $dataRequest['local_beach_break_id']:$user_profiles->local_beach_break_id;
                 $users->account_type = !empty($dataRequest['account_type']) ? $dataRequest['account_type'] : $users->account_type;
 
                 if ($userType == 'USER') {
-                    $user_profiles->preferred_board = $dataRequest['board_type'];
-                    $user_profiles->dob = $dataRequest['dob'];
-                    $user_profiles->gender = $dataRequest['gender'];
+                    $user_profiles->preferred_board = (isset($dataRequest['board_type']) && !empty($dataRequest['board_type']))?$dataRequest['board_type']:$user_profiles->preferred_board;
+                    $user_profiles->dob = (isset($dataRequest['dob']) && !empty($dataRequest['dob']))?$dataRequest['dob']:$user_profiles->dob;
+                    $user_profiles->gender = (isset($dataRequest['gender']) && !empty($dataRequest['gender']))?$dataRequest['gender']:$user_profiles->gender;
                 } elseif ($userType == 'PHOTOGRAPHER') {
                     $user_profiles->business_name = $dataRequest['business_name'];
                     $user_profiles->business_type = $dataRequest['photographer_type'];

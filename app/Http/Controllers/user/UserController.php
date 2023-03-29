@@ -183,8 +183,7 @@ class UserController extends Controller {
             'first_name' => ['required', 'min:3', 'string'],
             'last_name' => ['required', 'min:3', 'string'],
             'phone' => ['required'],
-            'country_id' => ['required', 'numeric'],
-            'paypal' => ['required', 'string'],
+            'country_id' => ['required', 'numeric']
         ])->validate();
 
         $result = $this->users->updateUserProfile($data, $message,$user_id);

@@ -504,6 +504,10 @@ footer .navbar-nav .nav-link {
     cursor: pointer;
 }
 
+#category-img-tag {
+    position: absolute;
+}
+
 input[type="date"]::-webkit-inner-spin-button,
 input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
