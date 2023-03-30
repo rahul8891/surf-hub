@@ -25,14 +25,14 @@
                                 @else
                                 <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
-                                <div>                                                            
+                                <div>
                                     <p class="name"><span>{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span> </p>
                                     <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
-                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
+                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                                 </div>
                             </div>
                             @if($posts->user_id != Auth::user()->id)
-                            <div class="user-right"> 
+                            <div class="user-right">
                                 <img src="/img/new/normal-user.png" alt="normal-user">
 
                                 <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
@@ -45,26 +45,26 @@
                         </div>
                         @if(!empty($posts->upload->image))
                         <div class="newsFeedImgVideo">
-                            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                            <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
                         </div>
                         @elseif(!empty($posts->upload->video))
                         @if (!File::exists($posts->upload->video))
                         <div class="newsFeedImgVideo">
                         <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >
                         </video>
-                        </div>    
+                        </div>
                         @else
                         <div class="newsFeedImgVideo">
                         <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
+                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >
                         </video>
                         </div>
                         @endif
                         @endif
                         <div class="user-bottom-options">
                             <div class="rating-flex">
-                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
+                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">
                                 <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
 
                             </div>
@@ -133,7 +133,7 @@
                                                 @endif
                                                 <span>{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
                                             </div>
-                                            @endforeach 
+                                            @endforeach
                                         </div>
                                         @endif
                                         <div>
@@ -154,7 +154,7 @@
 
                                     <div class="dropdown-menu">
                                         <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
-                                            @csrf    
+                                            @csrf
                                             <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
                                             <h6 class="text-center fw-bold">Report Content</h6>
 
@@ -207,7 +207,7 @@
                             @foreach ($posts->comments as $comments)
                             <div class="comment-row">
                                 <span class="comment-name">{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :
-                                </span> 
+                                </span>
                                 {{$comments->value}}
                             </div>
                             @endforeach
@@ -220,7 +220,7 @@
                     <img src="/images/spiner4.gif" alt="loading" height="90px;" width="170px;">
               </div>
             </div>
-            
+
             <div class="right-advertisement">
                 <img src="/img/new/advertisement1.png" alt="advertisement">
                 <img src="/img/new/advertisement2.png" alt="advertisement">
@@ -248,7 +248,7 @@
         }else {
             var url = window.location.href + '?page=' + page;
         }
-        
+
         $.ajax({
             url: url,
             type: "get",
@@ -270,28 +270,28 @@
             $(data.html).insertBefore(".ajax-load");
         });
     }
-        
-        
+
+
         $('.pos-rel a').each(function(){
            $(this).on('hover, mouseover, click', function() {
                 $(this).children('.userinfoModal').find('input[type="text"]').focus();
             });
         });
-        
+
       function openFullscreenSilder(id) {
           $.ajax({
                 url: '/getPostFullScreen/' + id,
-                type: "get", 
+                type: "get",
                 async: false,
                 success: function(data) {
                     // console.log(data.html);
                     $("#full_screen_modal").html("");
                     $("#full_screen_modal").append(data.html);
-                    $("#full_screen_modal").modal('hide');                
-                    $("#full_screen_modal").modal('show');                
+                    $("#full_screen_modal").modal('hide');
+                    $("#full_screen_modal").modal('show');
                 }
             });
       }
-        
+
 </script>
 @endsection
