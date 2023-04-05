@@ -492,6 +492,30 @@ class PostService {
         // dd($postArray);
     }
 
+    /**
+     * [getFilteredList] we are getiing all login user post with filter
+     * @param
+     * @param
+     * @return dataArray
+     */
+    public function getSurferPostData($user_id) {
+        $postArray =  $this->posts
+                    ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
+                    ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                    ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
+                    ->whereNull('posts.deleted_at')
+                    ->where('posts.user_id', $user_id)
+                    ->groupBy('posts.id');
+
+        $postArray->where('posts.post_type', 'PUBLIC');
+
+
+        $postArray->orderBy('posts.id','DESC');
+
+        // dd($postArray->toSql());
+        return $postArray->get();
+    }
+
 
     /**
      * upload image into directory
@@ -1551,16 +1575,24 @@ class PostService {
     }
 
     public function getUploads($user_id = null){
-        // $uploads =  $this->upload
-        //                 ->orderBy('id','ASC')
-        //                 ->get()
-        //                 ->toArray();
-        $uploads =  $this->posts->where('user_id', $user_id)
-                    ->where('is_deleted','0')
-                    ->orderBy('created_at','ASC')
-                    ->get()
-                    ->toArray();
+        $postArray =  $this->posts
+                    ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
+                    ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                    ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
+                    ->whereNull('posts.deleted_at')
+                    ->where('posts.user_id', $user_id)
+                    ->groupBy('posts.id');
 
-        return $uploads;
+        $postArray->orderBy('posts.created_at','DESC');
+
+        // dd($postArray->toSql());
+        return $postArray->get();
+        // $uploads =  $this->posts->where('user_id', $user_id)
+        //             ->where('is_deleted','0')
+        //             ->orderBy('created_at','ASC')
+        //             ->get()
+        //             ->toArray();
+
+        // return $uploads;
     }
 }

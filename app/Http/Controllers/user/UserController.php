@@ -800,27 +800,19 @@ class UserController extends Controller {
         $surfer_id = Crypt::decrypt($id);
         $followers = $this->users->followers($surfer_id);
         $common = $this->common;
-        $postsList = Post::with('followPost')->where('is_deleted', '0')
-                ->where('parent_id', '0')
-                ->where('user_id', $surfer_id)
-                ->where(function ($query) {
-                    $query->where('post_type', 'PUBLIC')
-                    ->orWhere('is_feed', '1');
-                })
-                ->orderBy('posts.created_at', 'DESC')
-                ->paginate(10);
+        $postsList = $this->post->getSurferPostData($surfer_id);
         $userProfile = $this->users->getUserDetail($surfer_id);
         $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $surfer_id);
 //        echo '<pre>'; print_r($followersCount);die;
         $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $surfer_id);
-        $userPosts = $this->post->getPostByUserId($surfer_id);
+        // $userPosts = $this->post->getPostByUserId($surfer_id);
         $userType = $userProfile['user_type'];
-        $postIds = array_filter(array_column($userPosts, 'id'));
-        $uploads = $this->post->getUploads($postIds);
+        // $postIds = array_filter(array_column($userPosts, 'id'));
+        $uploads = $this->post->getUploads($surfer_id);
         $fCounts = array(
             'follwers' => $followersCount,
             'follwing' => $followingCount,
-            'posts' => count($userPosts),
+            'posts' => count($postsList),
             'uploads' => count($uploads),
         );
 
@@ -831,31 +823,75 @@ class UserController extends Controller {
         $surfer_id = Crypt::decrypt($id);
         $following = $this->users->following($surfer_id);
         $common = $this->common;
-        $postsList = Post::with('followPost')->where('is_deleted', '0')
-                ->where('parent_id', '0')
-                ->where('user_id', $surfer_id)
-                ->where(function ($query) {
-                    $query->where('post_type', 'PUBLIC')
-                    ->orWhere('is_feed', '1');
-                })
-                ->orderBy('posts.created_at', 'DESC')
-                ->paginate(10);
+        $postsList = $this->post->getSurferPostData($surfer_id);
         $userProfile = $this->users->getUserDetail($surfer_id);
         $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $surfer_id);
 //        echo '<pre>'; print_r($followersCount);die;
         $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $surfer_id);
-        $userPosts = $this->post->getPostByUserId($surfer_id);
-        $postIds = array_filter(array_column($userPosts, 'id'));
-        $uploads = $this->post->getUploads($postIds);
+        // $userPosts = $this->post->getPostByUserId($surfer_id);
+        // $postIds = array_filter(array_column($userPosts, 'id'));
+        $uploads = $this->post->getUploads($surfer_id);
         $userType = $userProfile['user_type'];
         $fCounts = array(
             'follwers' => $followersCount,
             'follwing' => $followingCount,
-            'posts' => count($userPosts),
+            'posts' => count($postsList),
             'uploads' => count($uploads),
         );
 
         return view('user.surfer-following', compact('following', 'common', 'userProfile', 'fCounts','postsList','userType'));
+    }
+
+    public function surferPost($id) {
+        $surfer_id = Crypt::decrypt($id);
+
+        // dd($userProfile);
+        // $userDetail = UserProfile::where("user_id", $surfer_id)->first();
+        $customArray = $this->customArray;
+        $userProfile = $this->users->getUserDetail($surfer_id);
+        $postsList = $this->post->getSurferPostData($surfer_id);
+        $following = $this->users->following($surfer_id);
+
+
+        $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $surfer_id);
+        $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $surfer_id);
+        $uploads = $this->post->getUploads($surfer_id);
+        $userType = $userProfile['user_type'];
+
+        $fCounts = array(
+            'follwers' => $followersCount,
+            'follwing' => $followingCount,
+            'posts' => count($postsList),
+            'uploads' => count($uploads),
+        );
+
+        return view('user.surfer-post', compact('following', 'userProfile', 'fCounts','userType', 'postsList', 'customArray'));
+    }
+
+    public function surferUpload($id) {
+        $surfer_id = Crypt::decrypt($id);
+
+        // dd($userProfile);
+        // $userDetail = UserProfile::where("user_id", $surfer_id)->first();
+        $customArray = $this->customArray;
+        $userProfile = $this->users->getUserDetail($surfer_id);
+        $postsList = $this->post->getSurferPostData($surfer_id);
+        $following = $this->users->following($surfer_id);
+
+
+        $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $surfer_id);
+        $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $surfer_id);
+        $uploads = $this->post->getUploads($surfer_id);
+        $userType = $userProfile['user_type'];
+
+        $fCounts = array(
+            'follwers' => $followersCount,
+            'follwing' => $followingCount,
+            'posts' => count($postsList),
+            'uploads' => count($uploads),
+        );
+
+        return view('user.surfer-upload', compact('following', 'userProfile', 'fCounts','userType', 'uploads', 'customArray', 'postsList'));
     }
 
 }

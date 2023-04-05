@@ -114,6 +114,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/followers', [UserController::class, 'followers'])->name('followers');
     Route::get('/surfer-followers/{id}', [UserController::class, 'surferFollowers'])->name('surferFollowers');
     Route::get('/surfer-following/{id}', [UserController::class, 'surferFollowing'])->name('surferFollowing');
+    Route::get('/surfer-post/{id}', [UserController::class, 'surferPost'])->name('surferPost');
+    Route::get('/surfer-upload/{id}', [UserController::class, 'surferUpload'])->name('surferUpload');
     Route::get('/following', [UserController::class, 'following'])->name('following');
     Route::post('/unfollow', [UserController::class, 'unfollow'])->name('unfollow');
     Route::post('/accept', [UserController::class, 'accept'])->name('accept');

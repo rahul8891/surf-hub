@@ -29,48 +29,61 @@ class MasterService {
     protected $states;
 
     protected $users;
-    
+
     protected $beach_break;
-    
+
     protected $user_follow;
 
     public function __construct() {
-       
+
         // Country model object
         $this->countries = new Country();
 
-  
+
         // State model object
         $this->states = new State();
 
         // User model object
         $this->users = new User();
-       
+
         // Beach break model object
         $this->beach_break = new BeachBreak();
-       
+
         // User Follow model object
         $this->user_follow = new UserFollow();
-       
+
         // get custom config file
         $this->checkUserType = config('customarray');
     }
 
     /**
      * [getCountries] we are getiing all the countries
-     * @param  
-     * @param  
+     * @param
+     * @param
      * @return dataArray
      */
     public function getCountries(){
         return $this->countries->select('id', 'name','phone_code')->orderBy('name','asc')->get();
     }
 
+    /**
+     * [getCountryByName] we are getiing all the states based on the country id
+     * @param $countryId
+     * @return dataArray
+     */
+    public function getCountryByName($name){
+        if(isset($countryId) && !empty($countryId)) {
+            return $this->countries->select('id', 'name')->where('name',$name)->first();
+        } else {
+            return false;
+        }
+    }
+
 
     /**
      * [getStates] we are getiing all the states
-     * @param  
-     * @param  
+     * @param
+     * @param
      * @return dataArray
      */
     public function getStates(){
@@ -97,7 +110,7 @@ class MasterService {
         }
     }
     public function getBeaches(){
-            return $this->beach_break->select('id', 'beach_name')->groupBy('beach_name')->orderBy('beach_name','asc')->get()->toArray(); 
+            return $this->beach_break->select('id', 'beach_name')->groupBy('beach_name')->orderBy('beach_name','asc')->get()->toArray();
     }
     public function getBreakByBeachName($beach_name){
         if(isset($beach_name) && !empty($beach_name)) {
@@ -116,14 +129,14 @@ class MasterService {
 
     /**
      * [getAllUsers] we are getiing all the users
-     * @param  
-     * @param  
+     * @param
+     * @param
      * @return dataArray
      */
     public function getAllUsers(){
-        $users = $this->users->where('status',$this->checkUserType['status']['ACTIVE'])   
+        $users = $this->users->where('status',$this->checkUserType['status']['ACTIVE'])
                     ->where('is_deleted','0')
-                    ->where('user_type',$this->checkUserType['userType']['USER']) 
+                    ->where('user_type',$this->checkUserType['userType']['USER'])
                     //->whereNotIn('id',[Auth::user()->id])
                     ->orderBy('id','asc')->get();
 
@@ -147,7 +160,7 @@ class MasterService {
                     'grant_type' => 'refresh_token'
                 ]
             ]);
-//            echo '<pre>';print_r(json_decode($getToken->getBody(), true));die;  
+//            echo '<pre>';print_r(json_decode($getToken->getBody(), true));die;
             $tokenArr = json_decode($getToken->getBody(), true);
             $token = $tokenArr['access_token'];
 
@@ -161,8 +174,8 @@ class MasterService {
             ]);
             $top_user_tracks = json_decode($response->getBody(), true);
 
-//            echo '<pre>';print_r($top_user_tracks);die;    
-//            
+//            echo '<pre>';print_r($top_user_tracks);die;
+//
             $counter = 0;
             foreach ($top_user_tracks['items'] as $track) {
 

@@ -32,19 +32,19 @@
         <div class="profile-menu">
             <div class="profile-row {{ userActiveMenu('followers') }}">
                 <img src="/img/followers.png" alt="Followers">
-                <a class=""  href="{{ route('surferFollowers', Crypt::encrypt($userProfile['user_id'])) }}">Followers - <span class="blue-txt num" id="follwers">{{$fCounts['follwers']}} </span></a>
+                <a class=""  href="{{ route('surferFollowers', Crypt::encrypt($userProfile['user_id'])) }}">Followers - <span class="blue-txt num" id="surfer-follwers">{{$fCounts['follwers']}} </span></a>
             </div>
             <div class="profile-row {{ userActiveMenu('following') }}">
                 <img src="/img/following.png" alt="Following">
-                <a class="" href="{{ route('surferFollowing', Crypt::encrypt($userProfile['user_id'])) }}">Following - <span class="blue-txt num" id="follwing"> {{$fCounts['follwing']}}</span></a>
+                <a class="" href="{{ route('surferFollowing', Crypt::encrypt($userProfile['user_id'])) }}">Following - <span class="blue-txt num" id="surfer-follwing"> {{$fCounts['follwing']}}</span></a>
             </div>
             <div class="profile-row {{ ((userActiveMenu('myhubs') == 'active') && ($post_type == 'posts'))?'active':'' }}">
                 <img src="/img/posts.png" alt="posts">
-                <a class="" href="{{ route('myhubs', 'posts') }}">Posts - <span class="blue-txt num" id="posts"> {{$fCounts['posts']}}</span></a>
+                <a class="" href="{{ route('surferPost', Crypt::encrypt($userProfile['user_id']))}}">Posts - <span class="blue-txt num" id="surfer-posts"> {{$fCounts['posts']}}</span></a>
             </div>
             <div class="profile-row {{ userActiveMenu('upload') }}">
                 <img src="/img/upload.png" alt="Uploads">
-                <a class="" href="{{ route('profile') }}">Uploads - <span class="blue-txt num" id="uploads">{{$fCounts['uploads']}} </span></a>
+                <a class="" href="{{ route('surferUpload', Crypt::encrypt($userProfile['user_id'])) }}">Uploads - <span class="blue-txt num" id="surfer-uploads">{{$fCounts['uploads']}} </span></a>
             </div>
         </div>
 
