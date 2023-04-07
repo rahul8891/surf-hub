@@ -11,16 +11,17 @@
         <div class="my-profile text-center">
             <div class="profile-pic">
                 @if($userProfile['profile_photo_path'])
-                <img src="{{ asset('storage/'.$userProfile['profile_photo_path']) }}"
-                     alt="" class="rounded-circle">
+                    <img src="{{ asset('storage/'.$userProfile['profile_photo_path']) }}" alt="" class="rounded-circle">
                 @else
-                <div class="">
-                    {{ucwords(substr($userProfile['surfer_name'],0,1))}}
-                </div>
+                    <div class="">{{ucwords(substr($userProfile['surfer_name'],0,1))}}</div>
                 @endif
                 <span class="notification">0</span>
             </div>
-            <div class="my-name">{{ ucwords($userProfile['surfer_name']) }}</div>
+            <div class="my-name">
+                <a class="" href="{{ route('surfer-profile', Crypt::encrypt($userProfile['user_id'])) }}">
+                    {{ ucwords($userProfile['surfer_name']) }}
+                </a>
+            </div>
             <div class="my-comp">Surfhub <span class="blue-txt">$2540</span> Earn</div>
             @foreach ($postsList as $key => $posts)
             <button class="mx-0 greyBorder-btn mt-2 follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
@@ -30,22 +31,41 @@
             @endforeach
         </div>
         <div class="profile-menu">
-            <div class="profile-row {{ userActiveMenu('followers') }}">
-                <img src="/img/followers.png" alt="Followers">
-                <a class=""  href="{{ route('surferFollowers', Crypt::encrypt($userProfile['user_id'])) }}">Followers - <span class="blue-txt num" id="surfer-follwers">{{$fCounts['follwers']}} </span></a>
-            </div>
-            <div class="profile-row {{ userActiveMenu('following') }}">
-                <img src="/img/following.png" alt="Following">
-                <a class="" href="{{ route('surferFollowing', Crypt::encrypt($userProfile['user_id'])) }}">Following - <span class="blue-txt num" id="surfer-follwing"> {{$fCounts['follwing']}}</span></a>
-            </div>
-            <div class="profile-row {{ ((userActiveMenu('myhubs') == 'active') && ($post_type == 'posts'))?'active':'' }}">
-                <img src="/img/posts.png" alt="posts">
-                <a class="" href="{{ route('surferPost', Crypt::encrypt($userProfile['user_id']))}}">Posts - <span class="blue-txt num" id="surfer-posts"> {{$fCounts['posts']}}</span></a>
-            </div>
-            <div class="profile-row {{ userActiveMenu('upload') }}">
-                <img src="/img/upload.png" alt="Uploads">
-                <a class="" href="{{ route('surferUpload', Crypt::encrypt($userProfile['user_id'])) }}">Uploads - <span class="blue-txt num" id="surfer-uploads">{{$fCounts['uploads']}} </span></a>
-            </div>
+            @if($userProfile['account_type'] == 'PUBLIC')
+                <div class="profile-row {{ userActiveMenu('surferFollowers') }}">
+                    <img src="/img/followers.png" alt="Followers">
+                    <a class=""  href="{{ route('surferFollowers', Crypt::encrypt($userProfile['user_id'])) }}">Followers - <span class="blue-txt num" id="surfer-follwers">{{$fCounts['follwers']}} </span></a>
+                </div>
+                <div class="profile-row {{ userActiveMenu('surferFollowing') }}">
+                    <img src="/img/following.png" alt="Following">
+                    <a class="" href="{{ route('surferFollowing', Crypt::encrypt($userProfile['user_id'])) }}">Following - <span class="blue-txt num" id="surfer-follwing"> {{$fCounts['follwing']}}</span></a>
+                </div>
+                <div class="profile-row {{ ((userActiveMenu('myhubs') == 'active') && ($post_type == 'posts'))?'active':'' }}">
+                    <img src="/img/posts.png" alt="posts">
+                    <a class="" href="{{ route('surferPost', Crypt::encrypt($userProfile['user_id']))}}">Posts - <span class="blue-txt num" id="surfer-posts"> {{$fCounts['posts']}}</span></a>
+                </div>
+                <div class="profile-row {{ userActiveMenu('surferUpload') }}">
+                    <img src="/img/upload.png" alt="Uploads">
+                    <a class="" href="{{ route('surferUpload', Crypt::encrypt($userProfile['user_id'])) }}">Uploads - <span class="blue-txt num" id="surfer-uploads">{{$fCounts['uploads']}} </span></a>
+                </div>
+            @else
+                <div class="profile-row {{ userActiveMenu('surferFollowers') }}">
+                    <img src="/img/followers.png" alt="Followers">
+                    <a>Followers - <span class="blue-txt num" id="surfer-follwers">{{$fCounts['follwers']}} </span></a>
+                </div>
+                <div class="profile-row {{ userActiveMenu('surferFollowing') }}">
+                    <img src="/img/following.png" alt="Following">
+                    <a>Following - <span class="blue-txt num" id="surfer-follwing"> {{$fCounts['follwing']}}</span></a>
+                </div>
+                <div class="profile-row {{ ((userActiveMenu('myhubs') == 'active') && ($post_type == 'posts'))?'active':'' }}">
+                    <img src="/img/posts.png" alt="posts">
+                    <a>Posts - <span class="blue-txt num" id="surfer-posts"> {{$fCounts['posts']}}</span></a>
+                </div>
+                <div class="profile-row {{ userActiveMenu('surferUpload') }}">
+                    <img src="/img/upload.png" alt="Uploads">
+                    <a>Uploads - <span class="blue-txt num" id="surfer-uploads">{{$fCounts['uploads']}} </span></a>
+                </div>
+            @endif
         </div>
 
     </div>

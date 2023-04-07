@@ -613,9 +613,8 @@ class UserController extends Controller {
         $userType = $userProfile['user_type'];
         $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $surfer_id);
         $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $surfer_id);
-        $userPosts = $this->post->getPostByUserId($surfer_id);
-        $postIds = array_filter(array_column($userPosts, 'id'));
-        $uploads = $this->post->getUploads($postIds);
+        $userPosts = $this->post->getSurferPostData($surfer_id);
+        $uploads = $this->post->getUploads($surfer_id);
         $fCounts = array(
             'follwers' => $followersCount,
             'follwing' => $followingCount,
