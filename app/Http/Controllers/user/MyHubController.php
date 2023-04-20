@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Services\AdminUserService;
 use Carbon\Carbon;
 use App\Models\Upload;
-use File, URL;
+use File, URL, Route;
 use FFMpeg;
 use FFMpeg\Format\Video\X264;
 use FFMpeg\Filters\Video\VideoFilters;
@@ -221,22 +221,76 @@ class MyHubController extends Controller {
             $view = view('elements/edit_image_upload', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'users', 'beach_name', 'breaks', 'breakId'))->render();
             return response()->json(['html' => $view]);
         }
-        // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));    
+        // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));
     }
 
-    public function getPostFullScreen($id, Request $request) {
+    public function getPostFullScreen($id, $type, Request $request) {
         try {
-            $postsList = Post::select('posts.*')
-                    ->join('uploads', 'uploads.post_id', '=', 'posts.id')
-//                ->where('post.is_deleted', '0')   
-                    ->where('posts.id', '<=', $id)
-                    ->where('parent_id', '0')
-                    ->where(function ($query) {
-                        $query->where('uploads.image', '<>', '')
-                        ->orWhere('uploads.video', '<>', '');
-                    })
-                    ->orderBy('posts.created_at', 'DESC')
-                    ->paginate(100);
+            if($type == 'search') {
+                $postsList = Post::select('posts.*')
+                        ->join('uploads', 'uploads.post_id', '=', 'posts.id')
+                        ->where('posts.is_deleted', '0')
+                        ->where('posts.id', '<=', $id)
+                        ->where('parent_id', '0')
+                        ->where(function ($query) {
+                            $query->where('uploads.image', '<>', '')
+                            ->orWhere('uploads.video', '<>', '');
+                        })
+                        ->orderBy('posts.created_at', 'DESC')
+                        ->paginate(100);
+            } elseif($type == 'feed') {
+                $postsList = Post::select('posts.*')
+                        ->join('uploads', 'uploads.post_id', '=', 'posts.id')
+                        ->where('posts.is_deleted', '0')
+                        ->where(function ($query) {
+                            $query->where('post_type', 'PUBLIC')
+                            ->orWhere('is_feed', '1');
+                        })
+                        ->where('parent_id', '0')
+                        ->where(function ($query) {
+                            $query->where('uploads.image', '<>', '')
+                            ->orWhere('uploads.video', '<>', '');
+                        })
+                        ->orderBy('posts.created_at', 'DESC')
+                        ->paginate(100);
+            } elseif($type == 'myhub') {
+                $postsList = Post::select('posts.*')
+                        ->join('uploads', 'uploads.post_id', '=', 'posts.id')
+                        ->where('posts.is_deleted', '0')
+                        ->where('posts.id', '<=', $id)
+                        ->where('parent_id', '0')
+                        ->where('posts.user_id', Auth::user()->id)
+                        ->where(function ($query) {
+                            $query->where('uploads.image', '<>', '')
+                            ->orWhere('uploads.video', '<>', '');
+                        })
+                        ->orderBy('posts.created_at', 'DESC')
+                        ->paginate(100);
+            } elseif($type == 'surfer-profile') {
+                $postsList = Post::select('posts.*')
+                        ->join('uploads', 'uploads.post_id', '=', 'posts.id')
+                        ->where('posts.is_deleted', '0')
+                        ->where('posts.id', '<=', $id)
+                        ->where('parent_id', '0')
+                        ->where(function ($query) {
+                            $query->where('uploads.image', '<>', '')
+                            ->orWhere('uploads.video', '<>', '');
+                        })
+                        ->orderBy('posts.created_at', 'DESC')
+                        ->paginate(100);
+            } elseif($type == 'surfer-upload') {
+                $postsList = Post::select('posts.*')
+                        ->join('uploads', 'uploads.post_id', '=', 'posts.id')
+                        ->where('posts.is_deleted', '0')
+                        ->where('posts.id', '<=', $id)
+                        ->where('parent_id', '0')
+                        ->where(function ($query) {
+                            $query->where('uploads.image', '<>', '')
+                            ->orWhere('uploads.video', '<>', '');
+                        })
+                        ->orderBy('posts.created_at', 'DESC')
+                        ->paginate(100);
+            }
             $trackArray = array();
             $token = '';
             $trackArray['track_uri'] = '';
@@ -245,7 +299,7 @@ class MyHubController extends Controller {
             }
 //            echo '<pre>';print_r($trackArray);die;
         } catch (\Exception $e) {
-//            echo '<pre>';print_r($e->getMessage());die;  
+//            echo '<pre>';print_r($e->getMessage());die;
             throw ValidationException::withMessages([$e->getMessage()]);
         }
 
@@ -253,7 +307,7 @@ class MyHubController extends Controller {
             $view = view('elements/full_screen_slider', compact('postsList', 'trackArray', 'token'))->render();
             return response()->json(['html' => $view]);
         }
-        // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));    
+        // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));
     }
 
     /**

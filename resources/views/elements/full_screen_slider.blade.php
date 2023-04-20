@@ -10,10 +10,10 @@
          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
         <!-- Carousel wrapper -->
-        <div class="slider demo post-slider">
+        <div class="slider demo full-screen-slider post-slider">
             @if (!empty($postsList))
             @foreach ($postsList as $key => $posts)
-                <div class="newsFeedImgVideoSlider">                
+                <div class="newsFeedImgVideoSlider">
                     @if(Auth::user())
                         @if(!empty($token))
                             <button  class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></button>
@@ -22,18 +22,18 @@
                         @endif
                     @endif
 
-                    @if(!empty($posts->upload->image))            
-                        <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                    @if(!empty($posts->upload->image))
+                        <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
                     @elseif(!empty($posts->upload->video))
                             <!-- <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVid{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')" >
                                 <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
                             </video> -->
-                        <div class="jw-video-player" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
-                            <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')">
+                        <div class="jw-video-slider-player" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}"  data-id="{{$posts->id}}">
+                            <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTags{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')">
                             </video>
                         </div>
                     @endif
-                </div> 
+                </div>
             @endforeach
             @endif
 
@@ -43,12 +43,34 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>  
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
 <script src="https://sdk.scdn.co/spotify-player.js"></script>
+
 <script>
     jQuery.noConflict();
+
+    window.HELP_IMPROVE_VIDEOJS = false;
+
+    jQuery( ".jw-video-slider-player" ).each(function( i ) {
+        var videoID = 'myVideoTags'+$(this).attr('data-id');
+        var video = $(this).attr('data-src');
+        console.log("Data = myVideoTag ----     "+videoID+"  --  "+video);
+        var options = {};
+
+        videojs(videoID).ready(function () {
+            var myPlayer = this;
+            myPlayer.qualityPickerPlugin();
+            myPlayer.src({
+                type: 'application/x-mpegURL',
+                src: video
+            });
+        });
+    });
+
     function focusPlay(post_id) {
-        document.getElementById('myVideoTag' + post_id).play();
+        document.getElementById('myVideoTags' + post_id).play();
     }
 
     //// Play selected song
@@ -66,11 +88,11 @@
             }
         ).then((data) => console.log(data));
     };
-    
+
     window.onSpotifyWebPlaybackSDKReady = () => {
         const token = @json($token);
         const track_uri = @json($trackArray['track_uri']);
-        // Define the Spotify Connect device, getOAuthToken has an actual token 
+        // Define the Spotify Connect device, getOAuthToken has an actual token
         // hardcoded for the sake of simplicity
         var player = new Spotify.Player({
         name: 'A Spotify Web SDK Player',
@@ -109,7 +131,7 @@
             });
         });
 
-        // Connect to the player created beforehand, this is equivalent to 
+        // Connect to the player created beforehand, this is equivalent to
         // creating a new device which will be visible for Spotify Connect
         player.connect();
     };
@@ -142,27 +164,9 @@
                     .slick('slickSetOption', 'pauseOnDotsHover', true)
                     .slick('slickSetOption', 'autoplay', true)
                     .slick('slickSetOption', 'autoplaySpeed', 3000);
-                
+
                 jQuery(this).html('Pause')
             }
-        });
-
-        window.HELP_IMPROVE_VIDEOJS = false;
-                
-        jQuery( ".jw-video-player" ).each(function( i ) {
-            var videoID = $(this).attr('data-id');
-            var video = $(this).attr('data-src');
-            // console.log("Data = myVideoTag"+videoID+"  --  "+video);
-            var options = {};
-
-            videojs('myVideoTag'+videoID).ready(function () {
-                var myPlayer = this;
-                myPlayer.qualityPickerPlugin();
-                myPlayer.src({
-                    type: 'application/x-mpegURL', 
-                    src: video
-                });
-            });
         });
     });
 </script>

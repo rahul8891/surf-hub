@@ -158,9 +158,9 @@
         });
     });
 
-    function openFullscreenSilder(id) {
+    function openFullscreenSilder(id, type) {
         jQuery.ajax({
-            url: '/getPostFullScreen/' + id,
+            url: '/getPostFullScreen/' + id +'/'+type,
             type: "get",
             async: false,
             success: function(data) {

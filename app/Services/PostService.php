@@ -1581,6 +1581,7 @@ class PostService {
                     ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
                     ->whereNull('posts.deleted_at')
                     ->where('posts.user_id', $user_id)
+                    ->where('posts.parent_id', 0)
                     ->groupBy('posts.id');
 
         $postArray->orderBy('posts.created_at','DESC');

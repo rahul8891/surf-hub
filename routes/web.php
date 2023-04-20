@@ -57,7 +57,7 @@ Route::get('/getBreak', [DashboardController::class, 'getBreak'])->name('getBrea
 $router->get('spotify-auth', [SpotifyAuthController::class, 'redirectToProvider'])->name('spotify-auth');
 $router->get('spotify-call-back', [SpotifyAuthController::class, 'handleProviderCallback'])->name('spotify-call-back');
 Route::get('/surfer-request/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');
-Route::get('/getPostFullScreen/{id}', [MyHubController::class, 'getPostFullScreen'])->name('getPostFullScreen');
+Route::get('/getPostFullScreen/{id}/{type}', [MyHubController::class, 'getPostFullScreen'])->name('getPostFullScreen');
 Route::get('/get-presigned-url', [UserPostController::class, 'getPresignedUrl'])->name('getPresignedUrl');
 Route::post('/get-presigned-urls', [UserPostController::class, 'getPresignedUrl'])->name('getPresignedUrls');
 
