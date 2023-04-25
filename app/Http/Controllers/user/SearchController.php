@@ -37,7 +37,7 @@ class SearchController extends Controller
     {
         $beach_name="";
         $params = $request->all();
-
+        $urlData = (!empty($request->getQueryString()))?$request->getQueryString():"";
         $currentUserCountryId = (isset(Auth::user()->user_profiles->country_id) && !empty(Auth::user()->user_profiles->country_id))?Auth::user()->user_profiles->country_id:'';
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
@@ -55,11 +55,11 @@ class SearchController extends Controller
         if ($request->ajax()) {
             $data = $request->all();
             $page = $data['page'];
-            $view = view('elements/searchdata', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name','beaches','page'))->render();
+            $view = view('elements/searchdata', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name','beaches','page','urlData'))->render();
             return response()->json(['html' => $view]);
         }
 
-        return view('user.search', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name','beaches'));
+        return view('user.search', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name','beaches','urlData'));
     }
 
     /**

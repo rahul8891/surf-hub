@@ -160,7 +160,7 @@
 
     function openFullscreenSilder(id, type) {
         jQuery.ajax({
-            url: '/getPostFullScreen/' + id +'/'+type,
+            url: '/getPostFullScreen/' + id +'/'+type+'?<?php echo (isset($urlData) && !empty($urlData))?$urlData:'' ?>',
             type: "get",
             async: false,
             success: function(data) {

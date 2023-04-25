@@ -48,6 +48,7 @@ class MyHubController extends Controller {
      */
     public function index($post_type = null, Request $request) {
         $beach_name = "";
+        $urlData = (!empty($request->getQueryString()))?$request->getQueryString():"";
         $params = $request->all();
         $order = $request->input('order');
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
@@ -72,11 +73,11 @@ class MyHubController extends Controller {
         if ($request->ajax()) {
             $data = $request->all();
             $page = $data['page'];
-            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches','page'))->render();
+            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches','page','urlData','post_type'))->render();
             return response()->json(['html' => $view]);
         }
 
-        return view('user.myhub', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches', 'post_type'));
+        return view('user.myhub', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches', 'post_type','urlData'));
     }
 
     /**
@@ -225,47 +226,39 @@ class MyHubController extends Controller {
     }
 
     public function getPostFullScreen($id, $type, Request $request) {
+        $param = $request->all();
+
         try {
             if($type == 'search') {
-                $postsList = Post::select('posts.*')
-                        ->join('uploads', 'uploads.post_id', '=', 'posts.id')
-                        ->where('posts.is_deleted', '0')
-                        ->where('posts.id', '<=', $id)
-                        ->where('parent_id', '0')
-                        ->where(function ($query) {
-                            $query->where('uploads.image', '<>', '')
-                            ->orWhere('uploads.video', '<>', '');
-                        })
-                        ->orderBy('posts.created_at', 'DESC')
-                        ->paginate(100);
+                $postsList = $this->postService->getFilteredData($param, $type, '', 20);
+                // $postsList = Post::select('posts.*')
+                //         ->join('uploads', 'uploads.post_id', '=', 'posts.id')
+                //         ->where('posts.is_deleted', '0')
+                //         ->where('posts.id', '<=', $id)
+                //         ->where('parent_id', '0')
+                //         ->where(function ($query) {
+                //             $query->where('uploads.image', '<>', '')
+                //             ->orWhere('uploads.video', '<>', '');
+                //         })
+                //         ->orderBy('posts.created_at', 'DESC')
+                //         ->paginate(100);
             } elseif($type == 'feed') {
-                $postsList = Post::select('posts.*')
-                        ->join('uploads', 'uploads.post_id', '=', 'posts.id')
-                        ->where('posts.is_deleted', '0')
-                        ->where(function ($query) {
-                            $query->where('post_type', 'PUBLIC')
-                            ->orWhere('is_feed', '1');
-                        })
-                        ->where('parent_id', '0')
-                        ->where(function ($query) {
-                            $query->where('uploads.image', '<>', '')
-                            ->orWhere('uploads.video', '<>', '');
-                        })
-                        ->orderBy('posts.created_at', 'DESC')
-                        ->paginate(100);
-            } elseif($type == 'myhub') {
-                $postsList = Post::select('posts.*')
-                        ->join('uploads', 'uploads.post_id', '=', 'posts.id')
-                        ->where('posts.is_deleted', '0')
-                        ->where('posts.id', '<=', $id)
-                        ->where('parent_id', '0')
-                        ->where('posts.user_id', Auth::user()->id)
-                        ->where(function ($query) {
-                            $query->where('uploads.image', '<>', '')
-                            ->orWhere('uploads.video', '<>', '');
-                        })
-                        ->orderBy('posts.created_at', 'DESC')
-                        ->paginate(100);
+                $postsList = $this->postService->getFeedFilteredList($param, 20);
+            } elseif(str_contains($type, 'myhub')) {
+                $post_type = explode('-', $type);
+                $postsList = $this->postService->getFilteredData($param, $post_type[0], $post_type[1], 20);
+                // $postsList = Post::select('posts.*')
+                //         ->join('uploads', 'uploads.post_id', '=', 'posts.id')
+                //         ->where('posts.is_deleted', '0')
+                //         ->where('posts.id', '<=', $id)
+                //         ->where('parent_id', '0')
+                //         ->where('posts.user_id', Auth::user()->id)
+                //         ->where(function ($query) {
+                //             $query->where('uploads.image', '<>', '')
+                //             ->orWhere('uploads.video', '<>', '');
+                //         })
+                //         ->orderBy('posts.created_at', 'DESC')
+                //         ->paginate(100);
             } elseif($type == 'surfer-profile') {
                 $postsList = Post::select('posts.*')
                         ->join('uploads', 'uploads.post_id', '=', 'posts.id')
