@@ -2016,3 +2016,69 @@ header .notification {
 /* .full-screen-slider .slick-active {
     top: 95vh !important;
 } */
+
+
+/************** Style-rv ************/
+input.error,
+.form-control.error, 
+.form-select.error {
+    border: 1px solid #f00;
+    color: #f00;
+}
+form label.error {
+    position: relative;
+    top: -20px;
+    color: #f00;
+    font-size: 14px;
+}
+.form-control, .form-select {
+    border-radius:  6px ;
+}
+.user-bottom-options .right-options {
+    display: inline-flex;
+}   
+.user-bottom-options .right-options a:hover {
+    transform: scale(1.2);
+}
+/** Modal Dialog **/
+#full_screen_modal .btn-close {
+    padding: 10px 7px 7px 10px;
+    background-color: #616161;
+    border-radius: 50%;
+}
+.modal-dialog .slider button.slick-arrow {
+    width: inherit;
+    height: inherit;
+    min-width: 20px;
+    min-height: 46px;
+    background: rgba(194, 194, 194, 0.5);
+    /* padding: 5px 15px 5px 15px; */
+    border-radius: 50% 50%;
+}
+.modal-dialog .slider button.slick-arrow:hover {
+    background: rgba(194, 194, 194, 0.96);
+}
+.modal-dialog .slider button.slick-prev {
+    padding: 5px 10px 5px 20px; 
+}
+.modal-dialog .slider button.slick-next {
+    padding: 5px 20px 5px 10px; 
+}
+.modal-dialog .slider button.slick-arrow::before {
+    display: inline-block;
+    border-right: 4px solid #fff;
+    border-bottom: 4px solid #fff;
+    width: 20px; 
+    height: 20px;
+    content: '';
+    color: #fff;
+}
+.modal-dialog .slider button.slick-prev::before {
+    transform: rotate(-225deg);
+} 
+.modal-dialog .slider button.slick-next::before {
+    transform: rotate(-45deg);
+}
+.news-feed .user-details .name span {
+    color: #000;
+}
