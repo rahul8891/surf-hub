@@ -48,9 +48,28 @@
 <script src="{{ asset('js/new/post.js')}}"></script>
 <script src="{{ asset('js/new/script.js') }}"></script>
 <script src="http://jwpsrv.com/library/4+R8PsscEeO69iIACooLPQ.js"></script>
+<script src="{{ asset('js/new/jquery.multi-select.js') }}"></script>
 
 <script type="text/javascript" async>
 	jQuery.noConflict();
+
+    function openFullscreenSilder(id, type) {
+        // event.preventDefault();
+        jQuery.ajax({
+            url: '/getPostFullScreen/' + id +'/'+type+'?<?php echo (isset($urlData) && !empty($urlData))?$urlData:'' ?>',
+            type: "get",
+            async: true,
+            success: function(data) {
+                jQuery("#full_screen_modal").html("");
+                jQuery("#full_screen_modal").append(data.html);
+                jQuery("#full_screen_modal").modal('show');
+            },
+            error: function(err) {
+                alert(err);
+            }
+        });
+    }
+
 	jQuery(document).ready(function () {
 	  jQuery.ajax({
 	      type: "GET",
@@ -143,7 +162,7 @@
         jQuery.ajax({
             url: '/getPostData/' + id,
             type: "get",
-            async: false,
+            async: true,
             success: function(data) {
                 jQuery("#edit_image_upload_main").html("");
                 jQuery("#edit_image_upload_main").append(data.html);
@@ -157,19 +176,6 @@
             jQuery(this).children('.userinfoModal').find('input[type="text"]').focus();
         });
     });
-
-    function openFullscreenSilder(id, type) {
-        jQuery.ajax({
-            url: '/getPostFullScreen/' + id +'/'+type+'?<?php echo (isset($urlData) && !empty($urlData))?$urlData:'' ?>',
-            type: "get",
-            async: false,
-            success: function(data) {
-                jQuery("#full_screen_modal").html("");
-                jQuery("#full_screen_modal").append(data.html);
-                jQuery("#full_screen_modal").modal('show');
-            }
-        });
-    }
 
 	jQuery(document).on('click', '.highlightPost', function (e) {
 		var that = $(this);
@@ -206,7 +212,6 @@
 		document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 	}
 </script>
-<script src="{{ asset('js/new/jquery.multi-select.js') }}"></script>
 @include('elements/location_popup_model')
 @include('layouts/models/edit_image_upload')
 @include('layouts/models/full_screen_modal')
