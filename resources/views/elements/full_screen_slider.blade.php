@@ -28,7 +28,7 @@
                             <!-- <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVid{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')" >
                                 <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
                             </video> -->
-                        <div class="jw-video-slider-player" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}"  data-id="{{$posts->id}}">
+                        <div class="jw-video-slider-player" style="height:700px;" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}"  data-id="{{$posts->id}}">
                             <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTags{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')">
                             </video>
                         </div>
@@ -44,8 +44,6 @@
     </div>
 </div>
 
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
 <script src="https://sdk.scdn.co/spotify-player.js"></script>
 
 <script>
@@ -54,9 +52,12 @@
     window.HELP_IMPROVE_VIDEOJS = false;
 
     jQuery( ".jw-video-slider-player" ).each(function( i ) {
+        var playerHeight = window.innerHeight ;
+        $(this).css("height", playerHeight);
+
         var videoID = 'myVideoTags'+$(this).attr('data-id');
-        var video = $(this).attr('data-src');
-        console.log("Data = myVideoTag ----     "+videoID+"  --  "+video);
+        var videoUrl = $(this).attr('data-src');
+        console.log("Data = myVideoTag ----     "+videoID+"  --  "+videoUrl);
         var options = {};
 
         videojs(videoID).ready(function () {
@@ -64,13 +65,17 @@
             myPlayer.qualityPickerPlugin();
             myPlayer.src({
                 type: 'application/x-mpegURL',
-                src: video
+                src: videoUrl
             });
         });
     });
 
     function focusPlay(post_id) {
-        document.getElementById('myVideoTags' + post_id).play();
+        // document.getElementById('myVideoTags' + post_id).play(true);
+        videojs('myVideoTags' + post_id).ready(function () {
+            var myPlayer = this;
+            myPlayer.play();
+        });
     }
 
     //// Play selected song

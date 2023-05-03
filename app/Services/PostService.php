@@ -300,7 +300,7 @@ class PostService {
      * @param
      * @return dataArray
      */
-    public function getFilteredData($params, $for, $type = null) {
+    public function getFilteredData($params, $for, $type = null, $page = null) {
         if ($for=='search'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
@@ -488,8 +488,65 @@ class PostService {
         }
 
         // dd($postArray->toSql());
-        return $postArray->paginate(10);
-        // dd($postArray);
+        if(isset($page) && !empty($page)) {
+            return $postArray->paginate($page);
+        } else {
+            return $postArray->paginate(10);
+        }
+    }
+
+    /**
+     * [getFeedFilteredList] we are getiing all login user post with filter
+     * @param
+     * @param
+     * @return dataArray
+     */
+    public function getFeedFilteredList($data, $page = null) {
+        $postsList =  $this->posts
+            ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
+            ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
+            ->leftJoin('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
+            ->leftJoin('users', 'posts.user_id', '=', 'users.id')
+            ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
+            ->whereNull('posts.deleted_at')
+            ->where('posts.parent_id', '0')
+            ->where(function ($query) {
+                $query->where('posts.post_type', 'PUBLIC')
+                ->orWhere('posts.is_feed', '1');
+            })
+            ->groupBy('posts.id');
+
+        if (isset($data['sort'])) {
+            if($data['sort'] == "dateAsc"){
+                $postsList->orderBy('posts.created_at','ASC');
+            }
+            else if($data['sort'] == "dateDesc"){
+                $postsList->orderBy('posts.created_at','DESC');
+            }
+            else if($data['sort'] == "surfDateAsc"){
+                $postsList->orderBy('posts.surf_start_date','ASC');
+            }
+            else if($data['sort'] == "surfDateDesc"){
+                $postsList->orderBy('posts.surf_start_date','DESC');
+            }
+            else if($data['sort'] == "beach"){
+                $postsList->orderBy('beach_breaks.beach_name','ASC');
+            }
+            else if($data['sort'] == "star"){
+                $postsList->orderBy('average','DESC');
+            }
+            else{
+                $postsList->orderBy('posts.created_at','DESC');
+            }
+        } else {
+            $postsList->orderBy('posts.id','DESC');
+        }
+
+        if(isset($page) && !empty($page)) {
+            return $postsList->paginate($page);
+        } else {
+            return $postsList->paginate(10);
+        }
     }
 
     /**
