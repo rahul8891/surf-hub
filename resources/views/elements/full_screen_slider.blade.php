@@ -71,7 +71,11 @@
     });
 
     function focusPlay(post_id) {
-        document.getElementById('myVideoTags' + post_id).play();
+        // document.getElementById('myVideoTags' + post_id).play(true);
+        videojs('myVideoTags' + post_id).ready(function () {
+            var myPlayer = this;
+            myPlayer.play();
+        });
     }
 
     //// Play selected song
