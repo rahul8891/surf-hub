@@ -17,7 +17,11 @@
                             <div class="col-md-6">
                                 <div class="upload-photo">
                                     <div>
-                                        <img src="" id="category-img-tag" alt="">
+                                        @if(file_exists(storage_path('app/public/'.$user->profile_photo_path)))
+                                            <img src="{{ asset('storage/'.$user->profile_photo_path) }}" id="category-img-tag" alt="">
+                                        @else
+                                            <img src="" id="category-img-tag" alt="">
+                                        @endif
                                         <input type="file" accept=".png, .jpg, .jpeg" id="exampleInputFile" name="profile_photo_name">
                                         <input type="hidden" accept=".png, .jpg, .jpeg" id="imagebase64" name="profile_photo_blob" />
                                     </div>

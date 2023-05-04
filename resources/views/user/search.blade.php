@@ -83,6 +83,9 @@
                             @endif
                             @if (isset(Auth::user()->id) && ($posts->user_id != Auth::user()->id))
                                 <div class="user-right">
+                                    @if(Auth::user()->id != $posts->user_id)
+                                        <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/new/save.png" alt="Save"></a>
+                                    @endif
                                     <img src="/img/normal-user.png" alt="normal-user">
                                     <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
                                     <span class="follow-icon"></span> FOLLOW
@@ -119,7 +122,7 @@
                             </div>
                             <div class="right-options">
                                 @if(Auth::user() && $posts->user_id != Auth::user()->id)
-                                    <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/save.png" alt="Save"></a>
+                                    <!-- <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/save.png" alt="Save"></a> -->
                                 @endif
 
                                 @if(isset(Auth::user()->id) && ($posts['surfer'] == 'Unknown') && (Auth::user()->id != $posts['user_id']) && empty($requestSurfer[$posts->id]))
