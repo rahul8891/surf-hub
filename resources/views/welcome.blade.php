@@ -204,20 +204,5 @@
         });
     });
     //End auto play
-
-    function openFullscreenSilder(id) {
-        $.ajax({
-            url: '/getPostFullScreen/' + id,
-            type: "get",
-            async: false,
-            success: function(data) {
-                // console.log(data.html);
-                $("#full_screen_modal").html("");
-                $("#full_screen_modal").append(data.html);
-                $("#full_screen_modal").modal('hide');
-                $("#full_screen_modal").modal('show');
-            }
-        });
-    }
 </script>
 @endsection

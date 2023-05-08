@@ -74,7 +74,7 @@
 
             <div class="right-options">
                 @if(Auth::user() && $posts->user_id != Auth::user()->id)
-                    <!-- <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/save.png" alt="Save"></a> -->
+                    <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/save.png" alt="Save"></a>
                 @endif
 
                 @if(isset(Auth::user()->id) && ($posts['surfer'] == 'Unknown') && (Auth::user()->id != $posts['user_id']) && empty($requestSurfer[$posts->id]))
