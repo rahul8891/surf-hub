@@ -31,22 +31,28 @@
                                 </div>
                             </div>
                         </div>
-                        @if(!empty($posts->upload->image))
-                        <div class="newsFeedImgVideo">
-                            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
-                        </div>
-                        @elseif(!empty($posts->upload->video))
-                            @if (!File::exists($posts->upload->video))
+                        @if (isset($posts->parent_id) && ($posts->parent_id > 0))
+                            @if(!empty($posts->upload->image))
+                                <div class="newsFeedImgVideo">
+                                    <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->parent_id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                                </div>
+                            @elseif(!empty($posts->upload->video))
+                                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->parent_id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                                    <video width="100%" preload="auto" data-setup="{}" controls muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                                </div>
+                            @endif
+                        @else
+                            @if(!empty($posts->upload->image))
+                                <div class="newsFeedImgVideo">
+                                    <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                                </div>
+                            @elseif(!empty($posts->upload->video))
                                 <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
                                     <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
                                 </div>
-                            @else
-                                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'m3u8' }}">
-                                    <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
-                                    </video>
-                                </div>
                             @endif
                         @endif
+
                         <div class="user-bottom-options">
                             <div class="rating-flex">
                                 <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">
