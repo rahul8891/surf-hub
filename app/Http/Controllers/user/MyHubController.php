@@ -231,34 +231,11 @@ class MyHubController extends Controller {
         try {
             if($type == 'search') {
                 $postsList = $this->postService->getFilteredData($param, $type, '', 20);
-                // $postsList = Post::select('posts.*')
-                //         ->join('uploads', 'uploads.post_id', '=', 'posts.id')
-                //         ->where('posts.is_deleted', '0')
-                //         ->where('posts.id', '<=', $id)
-                //         ->where('parent_id', '0')
-                //         ->where(function ($query) {
-                //             $query->where('uploads.image', '<>', '')
-                //             ->orWhere('uploads.video', '<>', '');
-                //         })
-                //         ->orderBy('posts.created_at', 'DESC')
-                //         ->paginate(100);
             } elseif($type == 'feed') {
                 $postsList = $this->postService->getFeedFilteredList($param, 20);
             } elseif(str_contains($type, 'myhub')) {
                 $post_type = explode('-', $type);
                 $postsList = $this->postService->getFilteredData($param, $post_type[0], $post_type[1], 20);
-                // $postsList = Post::select('posts.*')
-                //         ->join('uploads', 'uploads.post_id', '=', 'posts.id')
-                //         ->where('posts.is_deleted', '0')
-                //         ->where('posts.id', '<=', $id)
-                //         ->where('parent_id', '0')
-                //         ->where('posts.user_id', Auth::user()->id)
-                //         ->where(function ($query) {
-                //             $query->where('uploads.image', '<>', '')
-                //             ->orWhere('uploads.video', '<>', '');
-                //         })
-                //         ->orderBy('posts.created_at', 'DESC')
-                //         ->paginate(100);
             } elseif($type == 'surfer-profile') {
                 $postsList = Post::select('posts.*')
                         ->join('uploads', 'uploads.post_id', '=', 'posts.id')
@@ -270,7 +247,7 @@ class MyHubController extends Controller {
                             ->orWhere('uploads.video', '<>', '');
                         })
                         ->orderBy('posts.created_at', 'DESC')
-                        ->paginate(100);
+                        ->paginate(20);
             } elseif($type == 'surfer-upload') {
                 $postsList = Post::select('posts.*')
                         ->join('uploads', 'uploads.post_id', '=', 'posts.id')
@@ -282,8 +259,15 @@ class MyHubController extends Controller {
                             ->orWhere('uploads.video', '<>', '');
                         })
                         ->orderBy('posts.created_at', 'DESC')
-                        ->paginate(100);
+                        ->paginate(20);
+            } elseif($type == 'home') {
+                $postsList =  $this->posts->whereNull('deleted_at')
+                                ->where('is_feed', '1')
+                                ->where('is_deleted','0')
+                                ->orderBy('id','DESC')
+                                ->paginate(20);
             }
+
             $trackArray = array();
             $token = '';
             $trackArray['track_uri'] = '';
