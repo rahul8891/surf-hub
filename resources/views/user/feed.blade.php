@@ -71,9 +71,22 @@
                             @if($posts->user_id != Auth::user()->id)
                             <div class="user-right">
                                 <img src="/img/new/normal-user.png" alt="normal-user">
-                                <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
-                                    <span class="follow-icon"></span> FOLLOW
-                                </button>
+                                @if(isset($posts->followPost->id) && !empty($posts->followPost->id))
+                                    @if(($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0'))
+                                        <button class="follow-btn follow clicked" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
+                                            <span class="follow-icon"></span> FOLLOWED
+                                        </button>
+                                    @else
+                                        <button class="follow-btn follow clicked Follow" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
+                                            <span class="follow-icon"></span> REQUEST SEND TO FOLLOW
+                                        </button>
+                                    @endif
+                                @else
+                                    <button class="follow-btn follow followPost" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
+                                        <span class="follow-icon"></span> FOLLOW
+                                    </button>
+                                @endif
+
                             </div>
                             @endif
                         </div>
