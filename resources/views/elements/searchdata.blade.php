@@ -38,9 +38,21 @@
                     <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/new/save.png" alt="Save"></a>
                 @endif
                 <img src="img/normal-user.png" alt="normal-user">
-                <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
-                    <span class="follow-icon"></span> FOLLOW
-                </button>
+                @if(isset($posts->followPost->id) && !empty($posts->followPost->id))
+                    @if(($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0'))
+                        <button class="follow-btn follow clicked" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
+                            <span class="follow-icon"></span> FOLLOWING
+                        </button>
+                    @else
+                        <button class="follow-btn follow clicked Follow" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
+                            <span class="follow-icon"></span>  FOLLOW REQUEST SEND
+                        </button>
+                    @endif
+                @else
+                    <button class="follow-btn follow followPost" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
+                        <span class="follow-icon"></span> FOLLOW
+                    </button>
+                @endif
             </div>
             @endif
         </div>

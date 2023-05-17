@@ -74,11 +74,11 @@
                                 @if(isset($posts->followPost->id) && !empty($posts->followPost->id))
                                     @if(($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0'))
                                         <button class="follow-btn follow clicked" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
-                                            <span class="follow-icon"></span> FOLLOWED
+                                            <span class="follow-icon"></span> FOLLOWING
                                         </button>
                                     @else
                                         <button class="follow-btn follow clicked Follow" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
-                                            <span class="follow-icon"></span> REQUEST SEND TO FOLLOW
+                                            <span class="follow-icon"></span>  FOLLOW REQUEST SEND
                                         </button>
                                     @endif
                                 @else
