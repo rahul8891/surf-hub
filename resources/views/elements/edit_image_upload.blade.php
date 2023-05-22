@@ -11,8 +11,8 @@
                         <option value="{{ $key }}" {{ $myHubs->post_type == $key ? "selected" : "" }} >{{ $value}}</option>
                         @endforeach
                     </select>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <img alt="" src="{{ asset('/img/close.png')}}">
+                    <button class="rounded-circle p-0" type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <img  style="height:35px;width:35px;" alt="" src="{{ asset('/img/close.png')}}">
                     </button>
                 </div>
                 <div class="upload-body">

@@ -1116,14 +1116,18 @@ header .notification {
     color: #616161;
 }
 
-.sort.dropdown .dropdown-menu,
-.filter.dropdown .dropdown-menu {
-    transform: none !important;
+.filter.dropdown .dropdown-menu{
+    transform:none !important;
     top: 40px !important;
     right: 0 !important;
     left: auto !important;
-
 }
+.sort.dropdown .dropdown-menu {
+
+    right: 0 !important;
+    left: auto !important;
+}
+
 
 .filter-body {
     padding-top: 20px;
@@ -1826,19 +1830,23 @@ header .notification {
     text-align: center;
     height: 325px;
 }
+.newsFeedImgVideoSlider,
+.newsFeedImgVideoSlider{
+    height:100vh;
+    overflow-y:auto;
+    display:flex !important;
+    align-items:center !important;
+}
 
 .newsFeedImgVideoSlider>img,
 .newsFeedImgVideoSlider>video {
-    height: 100vh;
-    width: auto;
+    width:100%;
+    max-height:100vh;
     margin: 0 auto;
     display: block;
 }
 
-.modal-dialog.editPostM {
-    max-width: initial !important;
-    width: calc(100% - 90px);
-}
+
 
 .newsFeedImgVideoSlider {
     background: #000;
@@ -1862,10 +1870,10 @@ header .notification {
 
 .spotify-btn {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 3px;
+    right: 0px;
     z-index: 1;
-}
+  }
 
 .rating-xs {
     font-size: 18px;
@@ -1954,17 +1962,18 @@ header .notification {
 }
 
 #full_screen_modal #toggle.btn {
-    position: absolute;
-    bottom: 46px;
-    left: 50%;
-    transform: translateX(-50%);
+	position: absolute;
+	top: 10px;
+	left: 2%;
+	width: 100px;
+	font-weight: bold;
 }
 #full_screen_modal .btn-close {
-  position: absolute;
-  left: 15px;
-  top: 15px;
-  z-index: 1;
-  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FFFFFF'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+	margin-top:5px;
+	z-index: 1;
+	background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FFFFFF'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+	height: 50px;
+	width: 50px;
 }
 
 /********** Static Page Style ***********/
@@ -2020,7 +2029,7 @@ header .notification {
 
 /************** Style-rv ************/
 input.error,
-.form-control.error, 
+.form-control.error,
 .form-select.error {
     border: 1px solid #f00;
     color: #f00;
@@ -2036,13 +2045,12 @@ form label.error {
 }
 .user-bottom-options .right-options {
     display: inline-flex;
-}   
+}
 .user-bottom-options .right-options a:hover {
     transform: scale(1.2);
 }
 /** Modal Dialog **/
 #full_screen_modal .btn-close {
-    padding: 10px 7px 7px 10px;
     background-color: #616161;
     border-radius: 50%;
 }
@@ -2059,26 +2067,47 @@ form label.error {
     background: rgba(194, 194, 194, 0.96);
 }
 .modal-dialog .slider button.slick-prev {
-    padding: 5px 10px 5px 20px; 
+    padding: 5px 10px 5px 20px;
 }
 .modal-dialog .slider button.slick-next {
-    padding: 5px 20px 5px 10px; 
+    padding: 5px 20px 5px 10px;
 }
 .modal-dialog .slider button.slick-arrow::before {
     display: inline-block;
     border-right: 4px solid #fff;
     border-bottom: 4px solid #fff;
-    width: 20px; 
+    width: 20px;
     height: 20px;
     content: '';
     color: #fff;
 }
 .modal-dialog .slider button.slick-prev::before {
     transform: rotate(-225deg);
-} 
+}
 .modal-dialog .slider button.slick-next::before {
     transform: rotate(-45deg);
 }
 .news-feed .user-details .name span {
     color: #000;
+}
+
+
+
+@media screen and (min-width: 575px){
+    .sort.dropdown .dropdown-menu {
+        top: 40px !important;
+        transform:none !important;
+    }
+    .modal-dialog.editPostM {
+        max-width: initial !important;
+        width: calc(100% - 90px);
+    }
+}
+@media screen and (max-width: 575px){
+    #full_screen_modal #toggle.btn {
+        width:auto;
+        padding:0 ;
+        border-radius: 50%;
+        right:45%;
+    }
 }

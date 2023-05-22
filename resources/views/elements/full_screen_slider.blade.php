@@ -7,7 +7,12 @@
 
 <div class="modal-dialog editPostM " role="document">
     <div class="modal-content">
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="position-absolute w-100 top-0">
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+        </div>
+
 
         <!-- Carousel wrapper -->
         <div class="slider demo full-screen-slider post-slider">
@@ -18,7 +23,15 @@
                         @if(!empty($token))
                             <button  class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></button>
                         @else
-                            <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></a>
+                            <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'>
+                                {{--  <picture>
+                                    <source media="(min-width:575px)"  srcset="/img/listen-on-spotify-button.png">
+                                    <img src="/img/new/spotify.png"  alt="Flowers" style="width:auto;">
+                                </picture>  --}}
+                                <img class="d-sm-block d-none" src="/img/listen-on-spotify-button.png" alt="">
+                                <img class="d-sm-none d-block" style="width:45px;" src="/img/new/spotify.png" alt="">
+
+                            </a>
                         @endif
                     @endif
 
@@ -39,7 +52,10 @@
 
         </div>
         <div class="col-md-12 text-center mb-2">
-            <button id="toggle" class="btn btn-primary col-md-2 text-white">Play</button>
+            <button id="toggle" class="btn btn-primary col-md-2 text-white">
+                <span class="d-sm-block d-none">Play</span>
+                <img style="width:40px;border-radius:50%;" class="d-sm-none d-block" src="/img/new/play.jpg">
+            </button>
         </div>
     </div>
 </div>
