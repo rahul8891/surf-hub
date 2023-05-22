@@ -285,7 +285,7 @@
 
     }
     #full_screen_modal #toggle.btn {
-        width:auto;
+        width:40px;
         padding:0 ;
         border-radius: 50%;
         right:45%;
