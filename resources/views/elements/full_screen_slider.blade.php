@@ -24,12 +24,11 @@
                             <button  class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></button>
                         @else
                             <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'>
-                                {{--  <picture>
+                                <picture>
                                     <source media="(min-width:575px)"  srcset="/img/listen-on-spotify-button.png">
-                                    <img src="/img/new/spotify.png"  alt="Flowers" style="width:auto;">
-                                </picture>  --}}
-                                <img class="d-sm-block d-none" src="/img/listen-on-spotify-button.png" alt="">
-                                <img class="d-sm-none d-block" style="width:45px;" src="/img/new/spotify.png" alt="">
+                                    <img src="/img/new/spotify.png" style="height:40px;"  alt="Flowers" style="width:auto;">
+                                </picture>
+
 
                             </a>
                         @endif
@@ -172,21 +171,23 @@
         });
 
         jQuery(document).on('click', '#toggle', function () {
-            if (jQuery(this).html() == 'Pause'){
+            if (jQuery(this).find('.play_pause').html() == 'Pause'){
                 jQuery('.slider').slick('slickPause')
                     .slick('slickSetOption', 'pauseOnDotsHover', false)
                     .slick('slickSetOption', 'autoplay', false)
                     .slick('slickSetOption', 'autoplaySpeed', 3000);
-
-                jQuery(this).html('Play')
+                let playbutton = `<span class="d-sm-block d-none play_pause">Play</span>
+                <img style="width:40px;border-radius:50%;" class="d-sm-none d-block" src="/img/new/play.jpg">`
+                jQuery(this).html(playbutton)
             } else {
                 jQuery('.slider')
                     .slick('slickPlay')
                     .slick('slickSetOption', 'pauseOnDotsHover', true)
                     .slick('slickSetOption', 'autoplay', true)
                     .slick('slickSetOption', 'autoplaySpeed', 3000);
-
-                jQuery(this).html('Pause')
+                    let pausebutton = `<span class="d-sm-block d-none play_pause">Pause</span>
+                    <img style="width:40px;border-radius:50%;" class="d-sm-none d-block" src="/img/new/pause.jpeg">`
+                jQuery(this).html(pausebutton)
             }
         });
     });
