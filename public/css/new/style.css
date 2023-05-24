@@ -1830,11 +1830,11 @@ header .notification {
     text-align: center;
     height: 325px;
 }
-.newsFeedImgVideoSlider,
 .newsFeedImgVideoSlider{
     height:100vh;
     overflow-y:auto;
-    display:flex !important;
+    /* display:flex !important; */
+    display:inline-block !important;
     align-items:center !important;
 }
 
