@@ -151,8 +151,8 @@
 @include('layouts/models/full_screen_modal')
 <script>
     var page = 1;
-    $(window).scroll(function() {
-        if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+    jQuery(window).scroll(function() {
+        if (jQuery(window).scrollTop() + jQuery(window).height() >= jQuery(document).height()) {
             page++;
             loadMoreData(page);
         }
@@ -167,24 +167,24 @@
         var url = window.location.href + '?page=' + page;
         }
 
-        $.ajax({
+        jQuery.ajax({
             url: url,
             type: "get",
             async: false,
             beforeSend: function() {
-                $('.ajax-load').show();
+                jQuery('.ajax-load').show();
             }
         }).done(function(data) {
             if (data.html == "") {
-                $('.ajax-load').addClass('requests');
-                $('.ajax-load').html("No more records found");
+                jQuery('.ajax-load').addClass('requests');
+                jQuery('.ajax-load').html("No more records found");
                 return;
             }
 
-            $('.ajax-load').removeClass('requests');
-            $('.ajax-load').hide();
+            jQuery('.ajax-load').removeClass('requests');
+            jQuery('.ajax-load').hide();
 //            $("#search-data").append(data.html);
-            $(data.html).insertBefore(".ajax-load");
+            jQuery(data.html).insertBefore(".ajax-load");
         });
     }
 
