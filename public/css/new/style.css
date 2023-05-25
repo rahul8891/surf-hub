@@ -1833,9 +1833,12 @@ header .notification {
 .newsFeedImgVideoSlider{
     height:100vh;
     overflow-y:auto;
-    /* display:flex !important; */
-    display:inline-block !important;
+    display:flex !important;
+    /* display:inline-block !important; */
     align-items:center !important;
+}
+.video-js .vjs-tech {
+    position: static !important;
 }
 
 .newsFeedImgVideoSlider>img,
