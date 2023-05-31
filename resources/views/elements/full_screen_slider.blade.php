@@ -28,8 +28,6 @@
                                     <source media="(min-width:575px)"  srcset="/img/listen-on-spotify-button.png">
                                     <img src="/img/new/spotify.png" style="height:40px;"  alt="Flowers" style="width:auto;">
                                 </picture>
-
-
                             </a>
                         @endif
                     @endif
@@ -37,11 +35,8 @@
                     @if(!empty($posts->upload->image))
                         <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
                     @elseif(!empty($posts->upload->video))
-                            <!-- <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVid{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')" >
-                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}">
-                            </video> -->
                         <div class="jw-video-slider-player" style="height:700px;" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}"  data-id="{{$posts->id}}">
-                            <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTags{{$posts->id}}" onmouseover="focusPlay('{{$posts->id}}')">
+                            <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTags{{$posts->id}}">
                             </video>
                         </div>
                     @endif
@@ -52,49 +47,52 @@
         </div>
         <div class="col-md-12 text-center mb-2">
             <button id="toggle" class="btn btn-primary col-md-2 text-white">
-                <span class="d-sm-block d-none">Play</span>
+                <span class="d-sm-block d-none play_pause">Play</span>
                 <img style="width:40px;border-radius:50%;" class="d-sm-none d-block" src="/img/new/play.jpg">
             </button>
         </div>
     </div>
 </div>
 
-<script src="https://sdk.scdn.co/spotify-player.js"></script>
+<!-- <script src="https://sdk.scdn.co/spotify-player.js"></script> -->
 
 <script>
     jQuery.noConflict();
 
     window.HELP_IMPROVE_VIDEOJS = false;
 
-    jQuery( ".jw-video-slider-player" ).each(function( i ) {
+    jQuery( ".jw-video-slider-player" ).each(function() {
         var playerHeight = window.innerHeight ;
-        $(this).css("height", playerHeight);
+        jQuery(this).css("height", playerHeight);
 
         var videoID = 'myVideoTags'+$(this).attr('data-id');
         var videoUrl = $(this).attr('data-src');
-        console.log("Data = myVideoTag ----     "+videoID+"  --  "+videoUrl);
+        // console.log("Data = myVideoTag ----     "+videoID+"  --  "+videoUrl);
         var options = {};
 
         videojs(videoID).ready(function () {
             var myPlayer = this;
             myPlayer.qualityPickerPlugin();
+
             myPlayer.src({
                 type: 'application/x-mpegURL',
                 src: videoUrl
             });
+
         });
     });
 
-    function focusPlay(post_id) {
+    // function focusPlay(post_id) {
+        // console.log('aaaaa');
         // document.getElementById('myVideoTags' + post_id).play(true);
-        videojs('myVideoTags' + post_id).ready(function () {
+        /*  videojs('myVideoTags' + post_id).ready(function () {
             var myPlayer = this;
             myPlayer.play();
-        });
-    }
+        });  */
+    // }
 
     //// Play selected song
-    const play_song = async (uri) => {
+    /*const play_song = async (uri) => {
         console.log("Changing song");
         let request_answer = fetch(
             `https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
@@ -107,9 +105,9 @@
                 },
             }
         ).then((data) => console.log(data));
-    };
+    };*/
 
-    window.onSpotifyWebPlaybackSDKReady = () => {
+    /*window.onSpotifyWebPlaybackSDKReady = () => {
         const token = @json($token);
         const track_uri = @json($trackArray['track_uri']);
         // Define the Spotify Connect device, getOAuthToken has an actual token
@@ -154,7 +152,7 @@
         // Connect to the player created beforehand, this is equivalent to
         // creating a new device which will be visible for Spotify Connect
         player.connect();
-    };
+    };*/
 
     jQuery(document).ready(function () {
         var homeCarousel = jQuery('.post-slider').slick({
@@ -170,6 +168,32 @@
             adaptiveHeight: false
         });
 
+        jQuery('.post-slider').on('afterChange', function(event, slick, currentSlide) {
+            console.log("aaa");
+            var vid = jQuery(slick.$slides[currentSlide]).find('video');
+            if (vid.length > 0) { console.log("bbb");
+                jQuery('.post-slider').slick('slickPause')
+                    .slick('slickSetOption', 'pauseOnDotsHover', false)
+                    .slick('slickSetOption', 'autoplay', false)
+                    .slick('slickSetOption', 'autoplaySpeed', 3000);
+                let playbutton = `<span class="d-sm-block d-none play_pause">Play</span>
+                <img style="width:40px;border-radius:50%;" class="d-sm-none d-block" src="/img/new/play.jpg">`;
+                jQuery('#toggle').html(playbutton);
+                jQuery(vid).get(0).play();
+            }
+        });
+
+        jQuery('video').on('ended',function(){
+            console.log('Video Complete')
+            jQuery('.post-slider').slick('slickPlay')
+                .slick('slickSetOption', 'pauseOnDotsHover', true)
+                .slick('slickSetOption', 'autoplay', true)
+                .slick('slickSetOption', 'autoplaySpeed', 3000);
+            let pausebutton = `<span class="d-sm-block d-none play_pause">Pause</span>
+                <img style="width:40px;border-radius:50%;" class="d-sm-none d-block" src="/img/new/pause.jpeg">`;
+            jQuery('#toggle').html(pausebutton);
+        });
+
         jQuery(document).on('click', '#toggle', function () {
             if (jQuery(this).find('.play_pause').html() == 'Pause'){
                 jQuery('.slider').slick('slickPause')
@@ -177,17 +201,17 @@
                     .slick('slickSetOption', 'autoplay', false)
                     .slick('slickSetOption', 'autoplaySpeed', 3000);
                 let playbutton = `<span class="d-sm-block d-none play_pause">Play</span>
-                <img style="width:40px;border-radius:50%;" class="d-sm-none d-block" src="/img/new/play.jpg">`
-                jQuery(this).html(playbutton)
+                    <img style="width:40px;border-radius:50%;" class="d-sm-none d-block" src="/img/new/play.jpg">`;
+                jQuery(this).html(playbutton);
             } else {
                 jQuery('.slider')
                     .slick('slickPlay')
                     .slick('slickSetOption', 'pauseOnDotsHover', true)
                     .slick('slickSetOption', 'autoplay', true)
                     .slick('slickSetOption', 'autoplaySpeed', 3000);
-                    let pausebutton = `<span class="d-sm-block d-none play_pause">Pause</span>
-                    <img style="width:40px;border-radius:50%;" class="d-sm-none d-block" src="/img/new/pause.jpeg">`
-                jQuery(this).html(pausebutton)
+                let pausebutton = `<span class="d-sm-block d-none play_pause">Pause</span>
+                    <img style="width:40px;border-radius:50%;" class="d-sm-none d-block" src="/img/new/pause.jpeg">`;
+                jQuery(this).html(pausebutton);
             }
         });
     });
