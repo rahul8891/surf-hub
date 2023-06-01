@@ -4,19 +4,17 @@
 });*/
 
 jQuery('.left-navbar-toggler').on('click', function (e) {
-    console.log("testing002");
     e.stopPropagation();
     jQuery('body').toggleClass('overflow-hidden');
     jQuery('.my-details-div').toggleClass('menu-slideIn');
 });
 
-jQuery(document).on('click', function (){
-    console.log("testing003");
+/*jQuery(document).on('click', function (){
     if(jQuery('.my-details-div').hasClass('menu-slideIn')) {
         jQuery('body').toggleClass('overflow-hidden');
         jQuery('.my-details-div').toggleClass('menu-slideIn');
     }
-});
+});*/
 
 
 jQuery(document).on('click', '.rating-flex-child', function (e) {

@@ -1,7 +1,7 @@
 @extends('layouts.admin.master')
 @section('content')
 <!--/. container-fluid -->
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
 <!-- right column -->
 <div class="col-md-12">
     <!-- general form elements disabled -->
@@ -22,9 +22,9 @@
                             <button class="btn"> <img for="exampleInputFile" src="{{asset("/img/profile1.jpg")}}" width="" alt="Profile Photo" id="category-img-tag" class="img-fluid" for="exampleInputFile" /></button>
                              <input type="file" accept=".png, .jpg, .jpeg" id="exampleInputFile"
                                                     name="profile_photo_name" value="{{ old('profile_photo_name') }}"/>
-                        </div>                        
+                        </div>
                     </div>
-                    
+
                     <!-- Row end -->
                 </div>
                 <div class="row">
@@ -152,12 +152,11 @@
                             @enderror
                         </div>
                     </div>
-                   
-                    
+
+
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label>{{ _('Search Beach Break') }}</label>
-
                             <input type="text"
                                 class="form-control @error('local_beach_break_id') is-invalid @enderror search-box"
                                 name="local_beach_break_id" placeholder="Search Beach Break "
@@ -177,8 +176,8 @@
                 <!-- Row End -->
                 <div class="row">
                     <!-- Row Start -->
-                    
-                    
+
+
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label>{{ _('Facebook Profile Link') }}</label>
@@ -271,4 +270,11 @@
         </div>
     </div>
     @include('layouts/models/image_crop')
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
+<script>
+    $("#country_id").select2({
+        selectOnClose: true
+    });
+</script>
     @endsection

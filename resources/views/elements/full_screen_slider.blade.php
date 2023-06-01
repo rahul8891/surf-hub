@@ -92,7 +92,7 @@
     // }
 
     //// Play selected song
-    /*const play_song = async (uri) => {
+    const play_song = async (uri) => {
         console.log("Changing song");
         let request_answer = fetch(
             `https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
@@ -105,9 +105,9 @@
                 },
             }
         ).then((data) => console.log(data));
-    };*/
+    };
 
-    /*window.onSpotifyWebPlaybackSDKReady = () => {
+    window.onSpotifyWebPlaybackSDKReady = () => {
         const token = @json($token);
         const track_uri = @json($trackArray['track_uri']);
         // Define the Spotify Connect device, getOAuthToken has an actual token
@@ -152,7 +152,7 @@
         // Connect to the player created beforehand, this is equivalent to
         // creating a new device which will be visible for Spotify Connect
         player.connect();
-    };*/
+    };
 
     jQuery(document).ready(function () {
         var homeCarousel = jQuery('.post-slider').slick({
@@ -169,18 +169,16 @@
         });
 
         jQuery('.post-slider').on('afterChange', function(event, slick, currentSlide) {
-            console.log("aaa");
-            var vid = jQuery(slick.$slides[currentSlide]).find('video');
+            videoSlide(slick, currentSlide);
+            /*var vid = jQuery(slick.$slides[currentSlide]).find('video');
             if (vid.length > 0) { console.log("bbb");
                 jQuery('.post-slider').slick('slickPause')
                     .slick('slickSetOption', 'pauseOnDotsHover', false)
                     .slick('slickSetOption', 'autoplay', false)
                     .slick('slickSetOption', 'autoplaySpeed', 3000);
-                let playbutton = `<span class="d-sm-block d-none play_pause">Play</span>
-                <img style="width:40px;border-radius:50%;" class="d-sm-none d-block" src="/img/new/play.jpg">`;
-                jQuery('#toggle').html(playbutton);
+
                 jQuery(vid).get(0).play();
-            }
+            } */
         });
 
         jQuery('video').on('ended',function(){
@@ -189,9 +187,6 @@
                 .slick('slickSetOption', 'pauseOnDotsHover', true)
                 .slick('slickSetOption', 'autoplay', true)
                 .slick('slickSetOption', 'autoplaySpeed', 3000);
-            let pausebutton = `<span class="d-sm-block d-none play_pause">Pause</span>
-                <img style="width:40px;border-radius:50%;" class="d-sm-none d-block" src="/img/new/pause.jpeg">`;
-            jQuery('#toggle').html(pausebutton);
         });
 
         jQuery(document).on('click', '#toggle', function () {
@@ -214,5 +209,17 @@
                 jQuery(this).html(pausebutton);
             }
         });
+
+        function videoSlide(slick, currentSlide) {
+            var vid = jQuery(slick.$slides[currentSlide]).find('video');
+            if (vid.length > 0) {
+                jQuery('.post-slider').slick('slickPause')
+                    .slick('slickSetOption', 'pauseOnDotsHover', false)
+                    .slick('slickSetOption', 'autoplay', false)
+                    .slick('slickSetOption', 'autoplaySpeed', 3000);
+
+                jQuery(vid).get(0).play();
+            }
+        }
     });
 </script>

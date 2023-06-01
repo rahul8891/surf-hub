@@ -11,15 +11,15 @@ use Carbon\Carbon;
 class SpotifyAuthController extends Controller
 {
     public function redirectToProvider()
-{
-    return Socialite::driver('spotify')->scopes(['user-read-email user-read-private app-remote-control user-top-read user-read-currently-playing user-read-recently-played streaming app-remote-control user-read-playback-state user-modify-playback-state'])->redirect();
-}
+    {
+        return Socialite::driver('spotify')->scopes(['user-read-email user-read-private app-remote-control user-top-read user-read-currently-playing user-read-recently-played streaming app-remote-control user-read-playback-state user-modify-playback-state'])->redirect();
+    }
 
-public function handleProviderCallback()
-{
-    $user = Socialite::driver('spotify')->user();
-    // echo '<pre>';    print_r($user);die;
-    if(!$user) {
+    public function handleProviderCallback()
+    {
+        $user = Socialite::driver('spotify')->user();
+
+        if(!$user) {
             $SpotifyUser =  new SpotifyUser();
             $SpotifyUser->user_id = Auth::user()->id;
             $SpotifyUser->spotify_user_id = $user->id;
@@ -32,9 +32,8 @@ public function handleProviderCallback()
         } else {
             $SpotifyUser = $user;
         }
-            return redirect()->intended('dashboard');
-   
-    
-    // $user->token;
-}
+
+
+        return redirect()->intended('dashboard');
+    }
 }

@@ -108,7 +108,7 @@
                                     <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->parent_id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
                                 </div>
                             @elseif(!empty($posts->upload->video))
-                                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->parent_id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ config('config.file_path').'videos/'.$posts->parent_id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
                                     <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
                                 </div>
                             @endif
@@ -118,7 +118,7 @@
                                     <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
                                 </div>
                             @elseif(!empty($posts->upload->video))
-                                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ config('config.file_path').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
                                     <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
                                 </div>
                             @endif
@@ -343,8 +343,8 @@
 <script type="text/javascript">
     var page = 1;
 
-    $(window).scroll(function() {
-        if($(window).scrollTop() + $(window).height() >= ($(document).height() - 10)) {
+    jQuery(window).scroll(function() {
+        if(jQuery(window).scrollTop() + $(window).height() >= (jQuery(document).height() - 10)) {
             page++;
             loadMoreData(page);
         }
@@ -358,7 +358,7 @@
             var url = window.location.href + '?page=' + page;
         }
 
-        $.ajax({
+        jQuery.ajax({
             url: url,
             type: "get",
             async: false,
@@ -368,15 +368,15 @@
         })
         .done(function(data) {
             if(data.html == "") {
-                $('.ajax-load').addClass('requests');
-                $('.ajax-load').html("No more records found");
+                jQuery('.ajax-load').addClass('requests');
+                jQuery('.ajax-load').html("No more records found");
                 return;
             }
 
-            $('.ajax-load').removeClass('requests');
-            $('.ajax-load').hide();
+            jQuery('.ajax-load').removeClass('requests');
+            jQuery('.ajax-load').hide();
     //            $("#post-data").insertBefore(data.html);
-            $(data.html).insertBefore(".ajax-load");
+            jQuery(data.html).insertBefore(".ajax-load");
         });
     }
 

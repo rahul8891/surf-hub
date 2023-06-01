@@ -2097,7 +2097,12 @@ form label.error {
 
 .jw-video-slider-player{
     width: 100%;
+    height: 100vh !important;
 }
-
-
+#country_list {
+    position: relative;
+}
+#country_list ul{
+    width: 100%;
+}
 
