@@ -108,14 +108,14 @@ class MyHubController extends Controller {
         if ($request->ajax()) {
             $data = $request->all();
             $page = $data['page'];
-            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches','page'))->render();
+            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches','page', 'post_type'))->render();
             return response()->json(['html' => $view]);
         }
 
         return view('user.myhub', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches', 'post_type'));
     }
 
-    /**11
+    /**
      * Display a listing of post with sorting.
      *
      * @return \Illuminate\Http\Response
@@ -281,10 +281,9 @@ class MyHubController extends Controller {
         }
 
         if ($request->ajax()) {
-            $view = view('elements/full_screen_slider', compact('postsList', 'trackArray', 'token'))->render();
+            $view = view('elements/full_screen_slider', compact('postsList', 'id', 'trackArray', 'token'))->render();
             return response()->json(['html' => $view]);
         }
-        // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));
     }
 
     /**

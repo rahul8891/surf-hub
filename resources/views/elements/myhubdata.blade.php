@@ -75,7 +75,6 @@
                             </div>
                         </div>
                         <div class="right-options">
-
                             @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'])
                             <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
                             @endif

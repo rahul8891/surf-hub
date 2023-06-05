@@ -18,7 +18,7 @@
         <div class="slider demo full-screen-slider post-slider">
             @if (!empty($postsList))
             @foreach ($postsList as $key => $posts)
-                <div class="newsFeedImgVideoSlider">
+                <div class="newsFeedImgVideoSlider" data-id="{{$posts->id}}">
                     @if(Auth::user())
                         @if(!empty($token))
                             <button  class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></button>
@@ -32,13 +32,24 @@
                         @endif
                     @endif
 
-                    @if(!empty($posts->upload->image))
-                        <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
-                    @elseif(!empty($posts->upload->video))
-                        <div class="jw-video-slider-player" style="height:700px;" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}"  data-id="{{$posts->id}}">
-                            <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTags{{$posts->id}}">
-                            </video>
-                        </div>
+                    @if (isset($posts->parent_id) && ($posts->parent_id > 0))
+                        @if(!empty($posts->upload->image))
+                            <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->parent_id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                        @elseif(!empty($posts->upload->video))
+                            <div class="jw-video-slider-player" style="height:700px;" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->parent_id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}"  data-id="{{$posts->id}}">
+                                <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTags{{$posts->id}}" oncanplay="focusPlay({{ $posts->id }})">
+                                </video>
+                            </div>
+                        @endif
+                    @else
+                        @if(!empty($posts->upload->image))
+                            <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                        @elseif(!empty($posts->upload->video))
+                            <div class="jw-video-slider-player" style="height:700px;" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}"  data-id="{{$posts->id}}">
+                                <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTags{{$posts->id}}" oncanplay="focusPlay({{ $posts->id }})">
+                                </video>
+                            </div>
+                        @endif
                     @endif
                 </div>
             @endforeach
@@ -54,7 +65,7 @@
     </div>
 </div>
 
-<!-- <script src="https://sdk.scdn.co/spotify-player.js"></script> -->
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
 
 <script>
     jQuery.noConflict();
@@ -82,14 +93,14 @@
         });
     });
 
-    // function focusPlay(post_id) {
-        // console.log('aaaaa');
+    function focusPlay(post_id) {
+        console.log('aaaaa = '+post_id);
         // document.getElementById('myVideoTags' + post_id).play(true);
-        /*  videojs('myVideoTags' + post_id).ready(function () {
+        videojs('myVideoTags' + post_id).ready(function () {
             var myPlayer = this;
             myPlayer.play();
-        });  */
-    // }
+        });
+    }
 
     //// Play selected song
     const play_song = async (uri) => {
@@ -169,24 +180,32 @@
         });
 
         jQuery('.post-slider').on('afterChange', function(event, slick, currentSlide) {
-            videoSlide(slick, currentSlide);
-            /*var vid = jQuery(slick.$slides[currentSlide]).find('video');
-            if (vid.length > 0) { console.log("bbb");
-                jQuery('.post-slider').slick('slickPause')
-                    .slick('slickSetOption', 'pauseOnDotsHover', false)
-                    .slick('slickSetOption', 'autoplay', false)
-                    .slick('slickSetOption', 'autoplaySpeed', 3000);
+            var vid = jQuery(slick.$slides[currentSlide]).find('video');
+            if (vid.length > 0) {
+                if (jQuery('#toggle').find('.play_pause').html() == 'Pause'){
+                    jQuery('.post-slider').slick('slickPause')
+                        .slick('slickSetOption', 'pauseOnDotsHover', false)
+                        .slick('slickSetOption', 'autoplay', false)
+                        .slick('slickSetOption', 'autoplaySpeed', 3000);
+                }
 
                 jQuery(vid).get(0).play();
-            } */
+            }
+        });
+
+        jQuery('.post-slider').on('load', function(event, slick, direction) {
+            alert('aaa');
+            $('video')[0].play();
         });
 
         jQuery('video').on('ended',function(){
             console.log('Video Complete')
-            jQuery('.post-slider').slick('slickPlay')
-                .slick('slickSetOption', 'pauseOnDotsHover', true)
-                .slick('slickSetOption', 'autoplay', true)
-                .slick('slickSetOption', 'autoplaySpeed', 3000);
+            if (jQuery('#toggle').find('.play_pause').html() == 'Pause'){
+                jQuery('.post-slider').slick('slickPlay')
+                    .slick('slickSetOption', 'pauseOnDotsHover', true)
+                    .slick('slickSetOption', 'autoplay', true)
+                    .slick('slickSetOption', 'autoplaySpeed', 3000);
+            }
         });
 
         jQuery(document).on('click', '#toggle', function () {
@@ -209,17 +228,5 @@
                 jQuery(this).html(pausebutton);
             }
         });
-
-        function videoSlide(slick, currentSlide) {
-            var vid = jQuery(slick.$slides[currentSlide]).find('video');
-            if (vid.length > 0) {
-                jQuery('.post-slider').slick('slickPause')
-                    .slick('slickSetOption', 'pauseOnDotsHover', false)
-                    .slick('slickSetOption', 'autoplay', false)
-                    .slick('slickSetOption', 'autoplaySpeed', 3000);
-
-                jQuery(vid).get(0).play();
-            }
-        }
     });
 </script>
