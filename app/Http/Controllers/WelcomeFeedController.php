@@ -112,7 +112,7 @@ class WelcomeFeedController extends Controller
                 'description'=>$request->description,
                 );
 
-            Mail::to('contactus@surfhub.net.au')
+            Mail::to('contactus@surfhub.au')
             ->send(new sendMail($data));
 
             return redirect()->back()->with('success','Thanks for Contacting Us, Feedback Submitted!');
