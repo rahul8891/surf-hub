@@ -60,7 +60,7 @@
             type: "get",
             async: true,
             success: function(data) {
-                jQuery("#full_screen_modal").load('');
+                jQuery("#full_screen_modal").html('');
                 jQuery("#full_screen_modal").append(data.html);
                 jQuery("#full_screen_modal").modal('show');
             },

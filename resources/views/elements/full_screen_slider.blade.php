@@ -72,6 +72,10 @@
     </div>
 </div>
 
+<script src="https://vjs.zencdn.net/5.19.2/video.js"></script>
+<script src="{{ asset('/js/hls/hls.min.js?v=v0.9.1') }}"></script>
+<script src="{{ asset('/js/hls/videojs5-hlsjs-source-handler.min.js?v=0.3.1') }}"></script>
+<script src="{{ asset('/js/hls/vjs-quality-picker.js?v=v0.0.2') }}"></script>
 <script src="https://sdk.scdn.co/spotify-player.js"></script>
 
 <script>
@@ -85,7 +89,7 @@
 
         var videoID = 'myVideoTags'+$(this).attr('data-id');
         var videoUrl = $(this).attr('data-src');
-        // console.log("Data = myVideoTag ----     "+videoID+"  --  "+videoUrl);
+        console.log("Data = myVideoTag ----     "+videoID+"  --  "+videoUrl);
         var options = {};
 
         videojs(videoID).ready(function () {
@@ -174,8 +178,11 @@
         player.connect();
     };
 
+    // jQuery('.post-slider').slick('refresh');
+
     jQuery(document).ready(function () {
         var homeCarousel = jQuery('.post-slider').slick({
+            refresh: true,
             dots: false,
             fade: true,
             pauseOnHover: false,
