@@ -17,7 +17,15 @@
         <!-- Carousel wrapper -->
         <div class="slider demo full-screen-slider post-slider">
             @if (!empty($postsList))
+                @php
+                $firstSlide = 0;
+                @endphp
             @foreach ($postsList as $key => $posts)
+                @php
+                    if($posts->id == $id) {
+                        $firstSlide = $key;
+                    }
+                @endphp
                 <div class="newsFeedImgVideoSlider" data-id="{{$posts->id}}">
                     @if(Auth::user())
                         @if(!empty($token))
@@ -54,7 +62,6 @@
                 </div>
             @endforeach
             @endif
-
         </div>
         <div class="col-md-12 text-center mb-2">
             <button id="toggle" class="btn btn-primary col-md-2 text-white">
@@ -93,8 +100,10 @@
         });
     });
 
+
+
     function focusPlay(post_id) {
-        console.log('aaaaa = '+post_id);
+        // console.log('aaaaa = '+post_id);
         // document.getElementById('myVideoTags' + post_id).play(true);
         videojs('myVideoTags' + post_id).ready(function () {
             var myPlayer = this;
@@ -176,7 +185,8 @@
             autoplaySpeed: 3000,
             speed: 300,
             slidesToShow: 1,
-            adaptiveHeight: false
+            adaptiveHeight: false,
+            initialSlide: <?php echo $firstSlide; ?>,
         });
 
         jQuery('.post-slider').on('afterChange', function(event, slick, currentSlide) {
@@ -191,11 +201,6 @@
 
                 jQuery(vid).get(0).play();
             }
-        });
-
-        jQuery('.post-slider').on('load', function(event, slick, direction) {
-            alert('aaa');
-            $('video')[0].play();
         });
 
         jQuery('video').on('ended',function(){
