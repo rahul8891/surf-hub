@@ -45,7 +45,7 @@
                         </button>
                     @else
                         <button class="follow-btn follow clicked Follow" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
-                            <span class="follow-icon"></span>  FOLLOW REQUEST SEND
+                            <span class="follow-icon"></span>  REQUEST SEND
                         </button>
                     @endif
                 @else
