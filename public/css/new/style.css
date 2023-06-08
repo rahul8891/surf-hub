@@ -1972,6 +1972,14 @@ header .notification {
 	width: 100px;
 	font-weight: bold;
 }
+.video-js .vjs-big-play-button{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100px;
+	font-weight: bold;
+    transform: translate(-50%, -50%)
+}
 #full_screen_modal .btn-close {
 	margin-top:5px;
 	z-index: 1;

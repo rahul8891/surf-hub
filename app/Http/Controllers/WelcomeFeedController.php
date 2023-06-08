@@ -104,8 +104,8 @@ class WelcomeFeedController extends Controller
         $validator = Validator::make($input, $rules);
 
 
-        if($validator -> passes()){
-            $data=array(
+        if($validator->passes()){
+            $data = array(
                 'name'=>$request->name,
                 'email'=>$request->email,
                 'subject'=>$request->subject,

@@ -296,8 +296,8 @@ class UserController extends Controller {
                 foreach ($resultData as $key => $value) {
                     $val = $value->user_name;
                     $img = (!empty($value->profile_photo_path)) ? "/storage/$value->profile_photo_path" : '/img/img_4.jpg';
-                    $returnObject .= '<li class="list-group-item" data-id="' . $value->id . '">
-                    <img src="' . $img . '" width="30px" style="float:right; border-radius: 50%; border: 1px solid #4c8df5;" class="img-fluid">' . $val . '
+                    $returnObject .= '<li style="display: flex;flex-direction: row-reverse;justify-content: space-between; text-align: right; align-items: center;" class="list-group-item" data-id="' . $value->id . '">
+                    <img src="' . $img . '" width="30px"  class="img-fluid">' . $val . '
                     </li>';
                 }
                 $returnObject .= '</ul>';
@@ -410,18 +410,14 @@ class UserController extends Controller {
 
     public function setTagUsers(Request $request) {
         $data = $request->all();
-        //dd($data);
+
         //check if user already tagged
         $result = $this->users->checkAlreadyTagged($data);
-        //dd($result->user);
         if ($result) {
-            //user already tagged
             return json_encode(array('status' => 'failure', 'message' => $result->user->user_name . ' ' . 'already tagged for this post.'));
         } else {
             $result = $this->users->tagUserOnPost($data);
             $responceResult = $this->users->getAllTaggedUsers($data);
-            // dd($responceResult[0]->user);
-            // dd($responceResult[0]->user->user_profiles);
             $returnObject = '';
             foreach ($responceResult as $key => $value) {
                 $val = ucfirst($value->user->user_profiles->first_name) . ' ' . ucfirst($value->user->user_profiles->last_name);

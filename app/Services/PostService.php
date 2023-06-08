@@ -32,6 +32,7 @@ use FFMpeg;
 use FFMpeg\Format\Video\X264;
 use FFMpeg\Filters\Video\VideoFilters;
 use willvincent\Rateable\Tests\models\Rating;
+use App\Services\UserService;
 
 class PostService {
     /**
@@ -749,10 +750,6 @@ class PostService {
 
     public function savePost($input, $fileType = '', $filename = '', &$message=''){
         try{
-//            $lines = [];
-//            $handle = fopen($file, "r");
-//            $content = file($file);
-//            echo '<pre>';dump($content);die;
             $posts = new Post();
             $posts->post_type = $input['post_type'];
             $posts->user_id = $input['user_id'];
@@ -773,6 +770,17 @@ class PostService {
             $posts->updated_at = Carbon::now();
 
             if($posts->save()){
+                if(isset($input['other_surfer']) && !empty($input['other_surfer'])) {
+                    $userID = User::where('user_name', $input['surfer'])->first('id');
+                    if(isset($userID->id) && ($input['user_id'] != $userID->id)) {
+                        $data['user_id'] = $userID->id;
+                        $data['post_id'] = $posts->id;
+
+                        $userService = New UserService();
+                        $userService->tagUserOnPost($data);
+                    }
+                }
+
                 if(isset($filename) && !empty($filename)) {
                     $upload = new Upload();
 
