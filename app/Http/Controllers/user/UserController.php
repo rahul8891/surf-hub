@@ -505,29 +505,33 @@ class UserController extends Controller {
 
     public function followCounts(Request $request) {
 //        $data = $request->all();
-        $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), Auth::user()->id);
-        $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), Auth::user()->id);
-        $followRequestCount = $this->users->getFollowDataCount('followed_user_id', array('1'), Auth::user()->id);
-        $notification = $this->users->getNotificationCount();
-        $userPosts = $this->post->getPostByUserId(Auth::user()->id);
+        if(Auth::user()){
+            $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), Auth::user()->id);
+            $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), Auth::user()->id);
+            $followRequestCount = $this->users->getFollowDataCount('followed_user_id', array('1'), Auth::user()->id);
+            $notification = $this->users->getNotificationCount();
+            $userPosts = $this->post->getPostByUserId(Auth::user()->id);
 
-        $postIds = array_filter(array_column($userPosts, 'id'));
-        $userPostsUnknown = $this->post->getPostUnknownByUserId();
-        $postUnIds = array_filter(array_column($userPostsUnknown, 'id'));
-        $surferRequests = $this->post->getSurferRequest($postUnIds, 0);
+            $postIds = array_filter(array_column($userPosts, 'id'));
+            $userPostsUnknown = $this->post->getPostUnknownByUserId();
+            $postUnIds = array_filter(array_column($userPostsUnknown, 'id'));
+            $surferRequests = $this->post->getSurferRequest($postUnIds, 0);
 
-        $uploads = $this->post->getUploads(Auth::user()->id);
-        $fCounts = array(
-            'follwers' => $followersCount,
-            'follwing' => $followingCount,
-            'follwerRequest' => $followRequestCount,
-            'posts' => count($userPosts),
-            'surferRequest' => count($surferRequests),
-            'uploads' => count($uploads),
-            'notification' => $notification
-        );
+            $uploads = $this->post->getUploads(Auth::user()->id);
+            $fCounts = array(
+                'follwers' => $followersCount,
+                'follwing' => $followingCount,
+                'follwerRequest' => $followRequestCount,
+                'posts' => count($userPosts),
+                'surferRequest' => count($surferRequests),
+                'uploads' => count($uploads),
+                'notification' => $notification
+            );
 
-        echo json_encode($fCounts);
+            echo json_encode($fCounts);
+
+        }
+
     }
 
     public function checkUsername(Request $request) {
