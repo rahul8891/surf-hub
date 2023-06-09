@@ -45,7 +45,7 @@
                             <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->parent_id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
                         @elseif(!empty($posts->upload->video))
                             <div class="jw-video-slider-player" style="height:700px;" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->parent_id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}"  data-id="{{$posts->id}}">
-                                <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTags{{$posts->id}}" oncanplay="focusPlay({{ $posts->id }})">
+                                <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTags{{$posts->id}}" autoplay oncanplay="focusPlay({{ $posts->id }})">
                                 </video>
                             </div>
                         @endif
@@ -54,7 +54,7 @@
                             <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
                         @elseif(!empty($posts->upload->video))
                             <div class="jw-video-slider-player" style="height:700px;" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}"  data-id="{{$posts->id}}">
-                                <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTags{{$posts->id}}" oncanplay="focusPlay({{ $posts->id }})">
+                                <video width="100%" preload="auto" data-setup="{}" autoplay controls playsinline muted class="video-js" id="myVideoTags{{$posts->id}}" oncanplay="focusPlay({{ $posts->id }})">
                                 </video>
                             </div>
                         @endif
@@ -187,8 +187,8 @@
             fade: true,
             pauseOnHover: false,
             arrows: true,
-            infinite: true,
-            autoplay: false,
+            infinite: false,
+            autoplay: true,
             autoplaySpeed: 3000,
             speed: 300,
             slidesToShow: 1,
