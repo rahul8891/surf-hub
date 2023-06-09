@@ -188,7 +188,7 @@
             pauseOnHover: false,
             arrows: true,
             infinite: false,
-            autoplay: true,
+            autoplay: false,
             autoplaySpeed: 3000,
             speed: 300,
             slidesToShow: 1,
