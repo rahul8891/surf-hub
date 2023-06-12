@@ -2063,6 +2063,7 @@ jQuery(document).ready(function () {
                 if (jsonResponse.status == "success") {
                     $this.addClass('clicked');
                     $this.removeClass('followPost');
+                    $this.text('REQUEST SEND');
 
                     spinner.hide();
                 } else {
@@ -2122,8 +2123,8 @@ function selectCountry(val) {
  * remove message after time set hit
  */
 function myTimerUserMessage() {
-    document.getElementById("error").innerHTML = "";
-    document.getElementById("error").className = "";
+    document.getElementById("error").innerHTML = " ";
+    document.getElementById("error").className = " ";
 }
 
 /* Beach Break Location Popup */

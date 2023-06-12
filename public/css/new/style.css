@@ -1312,7 +1312,8 @@ header .notification {
     background: #325CFD;
     color: #fff;
     border: #fff;
-
+    border-radius: 5px;
+    border: 2px solid grey;
 }
 
 .follow-icon {
