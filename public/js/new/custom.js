@@ -807,6 +807,9 @@ jQuery(document).ready(function () {
             dob: {
                 required: true,
             },
+            profile_photo_name: {
+                required: true
+            },
             first_name: {
                 required: true,
                 minlength: 3,
@@ -904,6 +907,9 @@ jQuery(document).ready(function () {
             },
             dob: {
                 required: "Please enter your dob",
+            },
+            profile_photo_name: {
+                required: "Please upload your picture",
             },
             first_name: {
                 required: "Please enter your first name",

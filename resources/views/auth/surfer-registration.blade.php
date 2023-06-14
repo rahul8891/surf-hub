@@ -7,7 +7,7 @@
             <div class="upload-photo">
                 <div>
                     <img src="" id="category-img-tag" alt="">
-                    <input type="file" accept=".png, .jpg, .jpeg" id="exampleInputFile" name="profile_photo_name">
+                    <input type="file" accept=".png, .jpg, .jpeg" required id="exampleInputFile" name="profile_photo_name">
                     <input type="hidden" accept=".png, .jpg, .jpeg" id="imagebase64" name="profile_photo_blob" />
                 </div>
                 <span class="align-middle d-inline-block ms-3">Upload Profile Pic</span>
