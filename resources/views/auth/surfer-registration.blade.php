@@ -137,7 +137,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 dropdownContainer">
             <input type="text" value="{{ old('local_beach_break')}}"
                    name="local_beach_break" data-beachID=""
                    placeholder="Local Beach"
