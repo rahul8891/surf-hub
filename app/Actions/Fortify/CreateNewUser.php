@@ -93,7 +93,7 @@ class CreateNewUser implements CreatesNewUsers {
                 $userProfile->suburb = !empty($input['suburb']) ? $input['suburb'] : '';
                 $userProfile->state_id = !empty($input['state_id']) ? $input['state_id'] : '';
 //                }
-                $userProfile->paypal = $input['paypal'];
+                $userProfile->paypal = !empty($input['paypal']) ? $input['paypal'] : '';
                 $userProfile->created_at = Carbon::now();
                 $userProfile->updated_at = Carbon::now();
                 if ($userProfile->save()) {
