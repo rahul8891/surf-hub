@@ -102,15 +102,16 @@ class CreateNewUser implements CreatesNewUsers {
             }
         } catch (\Exception $e) {
             if ($user->id) {
-                $this->deleteUplodedProfileImage($getImageArray['profile_photo_name']);
+                if(isset($getImageArray['profile_photo_name']) && !empty($getImageArray['profile_photo_name'])) {
+                    $this->deleteUplodedProfileImage($getImageArray['profile_photo_name']);
+                }
+
                 if (isset($input['resort_name']) && !empty($input['resort_name'])) {
                     $this->deleteUplodedResortImages($input['resort_name']);
                 }
                 $this->deletUserRecord($user->id);
             }
-//            echo '<pre>';
-//            print_r($e->getMessage());
-//            die;
+
             throw ValidationException::withMessages([$e->getMessage()]);
         }
     }
