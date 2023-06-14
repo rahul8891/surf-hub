@@ -9,12 +9,12 @@ jQuery('.left-navbar-toggler').on('click', function (e) {
     jQuery('.my-details-div').toggleClass('menu-slideIn');
 });
 
-/*jQuery(document).on('click', function (){
+jQuery(document).on('click', function (){
     if(jQuery('.my-details-div').hasClass('menu-slideIn')) {
         jQuery('body').toggleClass('overflow-hidden');
         jQuery('.my-details-div').toggleClass('menu-slideIn');
     }
-});*/
+});
 
 
 jQuery(document).on('click', '.rating-flex-child', function (e) {
