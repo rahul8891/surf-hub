@@ -329,10 +329,8 @@ class UserService {
     }
 
     public function getNotificationCount() {
-        $count = $this->userFollows->where('followed_user_id', Auth::user()->id)
-                ->where('status', 'FOLLOW')
-                ->where('follower_request_status', '1')
-                ->where('is_deleted', '0')
+        $count = $this->notification->where('receiver_id', Auth::user()->id)
+                ->where('status', '0')
                 ->count();
         return $count;
     }
