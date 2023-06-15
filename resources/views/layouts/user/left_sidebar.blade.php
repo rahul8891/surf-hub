@@ -11,7 +11,7 @@
                     {{ucwords(substr(Auth::user()->user_profiles->first_name,0,1))}}{{ucwords(substr(Auth::user()->user_profiles->last_name,0,1))}}
                 </div>
                 @endif
-                <span class="notification">0</span>
+                <span class="notification notification-count">0</span>
             </div>
             <div class="my-name">{{ ucwords(Auth::user()->user_profiles->first_name .' '.Auth::user()->user_profiles->last_name) }}</div>
             <div class="my-comp">Surfhub <span class="blue-txt">$2540</span> Earn</div>
@@ -52,7 +52,7 @@
             </div>
             <div class="profile-row">
                 <form method="POST" action="{{ route('logout') }}">
-                    
+
                     @csrf
                     <a href="#{{ route('logout') }}" onclick="event.preventDefault();this.closest('form').submit();"><img src="/img/logout.png" alt="Sign Out" class="mr-2"><span>Sign Out</span></a>
                 </form>

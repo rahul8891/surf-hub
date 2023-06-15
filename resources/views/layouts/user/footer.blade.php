@@ -79,7 +79,7 @@
 	          jQuery('#posts').html(jsonResponse['posts']);
 	          jQuery('#uploads').html(jsonResponse['uploads']);
 	          jQuery('#surferRequest').html(jsonResponse['surferRequest']);
-	          jQuery('#notification-count').html(jsonResponse['notification']);
+	          jQuery('#notification-count .notification-count').html(jsonResponse['notification']);
 	      }
 	  });
 	});
