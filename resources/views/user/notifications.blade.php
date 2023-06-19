@@ -63,7 +63,7 @@
                                                 @if($requests['notification_type'] == 'Surfer Request')
                                                     <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
-                                                        surfer has request for the post.
+                                                        surfer has nominated himself the post.
                                                     </a>
                                                 @endif
                                                 <p class="time mb-0">{{ postedDateTime($requests['created_at']) }}</p>
