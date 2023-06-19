@@ -247,7 +247,7 @@ class MyHubController extends Controller {
                             ->orWhere('uploads.video', '<>', '');
                         })
                         ->orderBy('posts.created_at', 'DESC')
-                        ->paginate(20);
+                        ->get();
             } elseif($type == 'surfer-upload') {
                 $postsList = Post::select('posts.*')
                         ->join('uploads', 'uploads.post_id', '=', 'posts.id')
@@ -259,13 +259,13 @@ class MyHubController extends Controller {
                             ->orWhere('uploads.video', '<>', '');
                         })
                         ->orderBy('posts.created_at', 'DESC')
-                        ->paginate(20);
+                        ->get();
             } elseif($type == 'home') {
                 $postsList =  $this->posts->whereNull('deleted_at')
                                 ->where('is_feed', '1')
                                 ->where('is_deleted','0')
                                 ->orderBy('id','DESC')
-                                ->paginate(20);
+                                ->get();
             }
 
             $trackArray = array();
@@ -274,9 +274,7 @@ class MyHubController extends Controller {
             if (Auth::user()) {
                 $trackArray = $this->masterService->getSpotifyTrack();
             }
-//            echo '<pre>';print_r($trackArray);die;
         } catch (\Exception $e) {
-//            echo '<pre>';print_r($e->getMessage());die;
             throw ValidationException::withMessages([$e->getMessage()]);
         }
 
