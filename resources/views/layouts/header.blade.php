@@ -3,7 +3,7 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#"><img src="/img/logo.png" alt="Logo"></a>
+        <a class="navbar-brand" href="/"><img src="/img/logo.png" alt="Logo"></a>
         <div class="navbar-nav middle-menu" style="<?php echo!Auth::user() ? 'width:400px !important;margin-right:220px;' : '' ?>">
             <div class="{{ userActiveMenu('dashboard') }}">
                 <a class="nav-link" href="/">

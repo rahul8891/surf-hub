@@ -490,7 +490,7 @@ class PostService {
 
         // dd($postArray->toSql());
         if(isset($page) && !empty($page)) {
-            return $postArray->paginate($page);
+            return $postArray->get();
         } else {
             return $postArray->paginate(10);
         }
@@ -544,7 +544,7 @@ class PostService {
         }
 
         if(isset($page) && !empty($page)) {
-            return $postsList->paginate($page);
+            return $postsList->get();
         } else {
             return $postsList->paginate(10);
         }
@@ -1593,7 +1593,19 @@ class PostService {
             $this->surferRequest->user_id = Auth::user()->id;
             $this->surferRequest->status = 0;
             $this->surferRequest->created_at = Carbon::now();
-            $this->surferRequest->save();
+
+            if($this->surferRequest->save()) {
+                $post = Post::where('id', $id)->first();
+                $notification = New Notification();
+
+                $notification->post_id = $post->id;
+                $notification->sender_id =  Auth::user()->id;
+                $notification->receiver_id = $post->user_id;
+                $notification->notification_type = 'Surfer Request';
+                $notification->created_at = Carbon::now();
+
+                $notification->save();
+            }
 
             return 'Surfer request has been made successfully!';
         }
