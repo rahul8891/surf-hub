@@ -454,12 +454,12 @@ class UserService {
         try {
             $userFollows = $this->userFollows->find($input['id']);
             if ($userFollows) {
-                //dd($userFollows);
                 $userFollows->id = $input['id'];
                 $userFollows->follower_request_status = $input['follower_request_status'];
-                $result = $this->saveFollowRequestAcceptRejectNotification($userFollows, 'Accept');
-                //dd($result);
+
                 if ($userFollows->save()) {
+                    $this->saveFollowRequestAcceptRejectNotification($userFollows, 'Accept');
+
                     $resultArray['message'] = 'Status has been updated!';
                     $resultArray['status'] = 'success';
                     $resultArray['count'] = $this->getFollowCount($column, '1');
@@ -639,17 +639,17 @@ class UserService {
      * @param  requestInput get all the requested input data
      * @param  message return message based on the condition
      * @return dataArray with message
-     */
+    **/
     public function saveFollowRequestAcceptRejectNotification($input, $notification_type = '') {
-        //dd($input);
+        // dd($input);
         try {
-            $this->notification->post_id = $input['id'];
+            $this->notification->post_id = '';
             $this->notification->sender_id = Auth::user()->id;
-            $this->notification->receiver_id = $input['followed_user_id'];
+            $this->notification->receiver_id = $input['follower_user_id'];
             $this->notification->notification_type = $notification_type;
             $this->notification->created_at = Carbon::now();
             $this->notification->updated_at = Carbon::now();
-            //dd($this->comments);
+
             $this->notification->save();
         } catch (\Exception $e) {
             $message = '"' . $e->getMessage() . '"';

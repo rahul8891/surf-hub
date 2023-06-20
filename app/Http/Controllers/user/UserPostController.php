@@ -427,18 +427,17 @@ class UserPostController extends Controller {
     public function acceptRejectRequest($id, $type) {
         try {
             $request_id = Crypt::decrypt($id);
-            $surferRequest = SurferRequest::select("*")->where("id", "=", $request_id)->get()->toArray();
-            foreach ($surferRequest as $res) {
-                $userName = User::select("user_name")->where("id", "=", $res['user_id'])->get();
-            }
-//            echo '<pre>';            print_r($userName);die;
+            $surferRequest = SurferRequest::where("id", $request_id)->first();
+
+            $userName = User::select("user_name")->where("id", "=", $surferRequest->user_id)->first();
+
             if ($type == 'accept') {
                 SurferRequest::where(['id' => $request_id])
                         ->update(['status' => 1]);
-                foreach ($userName as $uu) {
-                    $result = Post::where(['id' => $surferRequest[0]['post_id']])
-                            ->update(['surfer' => $uu['user_name']]);
-                }
+
+                $result = Post::where(['id' => $surferRequest->post_id])
+                        ->update(['surfer' => $userName->user_name]);
+
                 $message = 'Surfer request accepted';
             }
             if ($type == 'reject') {
@@ -447,7 +446,6 @@ class UserPostController extends Controller {
                 $message = 'Surfer request rejected';
             }
 
-//            echo '<pre>';            print_r($data);die;
             if ($result) {
                 return redirect()->route('surferRequestList')->withSuccess($message);
             } else {
@@ -512,6 +510,7 @@ class UserPostController extends Controller {
         $countries = $this->masterService->getCountries();
         $customArray = $this->customArray;
         $postData = Post::where('id', $post_id)->first();
+        // dd($post_id);
         $currentUserCountryId = UserProfile::where('user_id', $postData->user_id)->pluck('country_id')->first();
 
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
