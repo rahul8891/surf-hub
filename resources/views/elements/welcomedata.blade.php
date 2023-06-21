@@ -41,7 +41,7 @@
             <div class="right-options">
                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                     <img src={{asset("/img/location.png")}} alt="Location"></a>
-                <a onclick="openFullscreen({{$posts->id}}, 'home');"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
+                <a onclick="openFullscreenSilder({{$posts->id}}, 'home');"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
                 <div class="d-inline-block info dropdown" title="Info">
                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -182,4 +182,20 @@
         });
     });
     //End auto play
+
+    $(document).on('click', '.editBtnVideo', function() {
+        var id = $(this).data('id');
+
+        $.ajax({
+            url: '/getPostData/' + id,
+            type: "get",
+            async: false,
+            success: function(data) {
+                // console.log(data.html);
+                $("#edit_image_upload_main").html("");
+                $("#edit_image_upload_main").append(data.html);
+                $("#edit_image_upload_main").modal('show');
+            }
+        });
+    });
 </script>

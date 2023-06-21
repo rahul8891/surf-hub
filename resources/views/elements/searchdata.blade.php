@@ -95,7 +95,7 @@
 
                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                     <img src={{asset("img/location.png")}} alt="Location"></a>
-                <a onclick="openFullscreen({{$posts->id}}, 'search');"><img src={{asset("img/expand.png")}} alt="Expand"></a>
+                <a onclick="openFullscreenSilder({{$posts->id}}, 'search');"><img src={{asset("img/expand.png")}} alt="Expand"></a>
                 <div class="d-inline-block info dropdown" title="Info">
                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
