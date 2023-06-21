@@ -36,7 +36,7 @@
             </div>
             <div class="profile-row {{ userActiveMenu('upload') }}">
                 <img src="/img/upload.png" alt="Uploads">
-                 <a class="" href="{{ route('profile') }}">Uploads - <span class="blue-txt num" id="uploads"> </span></a>
+                 <a class="" href="{{ route('dashboard') }}">Uploads - <span class="blue-txt num" id="uploads"> </span></a>
             </div>
             <div class="profile-row {{ userActiveMenu('followRequests') }}">
                 <img src="/img/follow-request.png" alt="Follow Requests">

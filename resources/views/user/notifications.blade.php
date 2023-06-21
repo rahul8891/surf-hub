@@ -55,7 +55,7 @@
                                                         reject your following request </a>
                                                 @endif
                                                 @if($requests['notification_type'] == 'Tag')
-                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0">
+                                                    <a href="{{ route('getPostData', $requests['post_id']) }}" class="mb-0">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         tagged you on a post
                                                     </a>
