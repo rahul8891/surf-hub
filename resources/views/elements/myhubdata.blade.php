@@ -253,10 +253,31 @@
             });
         });
 
-        /* jQuery('.rating').rating({
+        jQuery('.rating').rating({
             showClear:false,
             showCaption:false
-        }); */
+        });
+
+        jQuery('.pos-rel a').each(function(){
+            jQuery(this).on('hover, mouseover, click', function() {
+                jQuery(this).children('.userinfoModal').find('input[type="text"]').focus();
+            });
+        });
+
+        jQuery('.right-options').on('click', '.editBtnVideo', function() {
+            var id = jQuery(this).data('id');
+
+            jQuery.ajax({
+                url: '/getPostData/' + id,
+                type: "get",
+                async: false,
+                success: function(data) {
+                    jQuery("#edit_image_upload_main").html("");
+                    jQuery("#edit_image_upload_main").append(data.html);
+                    jQuery("#edit_image_upload_main").modal('show');
+                }
+            });
+        });
 
         //Auto play videos when view in scroll
         function isInView(el) {
@@ -279,43 +300,6 @@
                 }
             });
         });
-
-        $(document).on('click', '.editBtnVideo', function() {
-            var id = $(this).data('id');
-
-            $.ajax({
-                url: '/getPostData/' + id,
-                type: "get",
-                async: false,
-                success: function(data) {
-                    // console.log(data.html);
-                    $("#edit_image_upload_main").html("");
-                    $("#edit_image_upload_main").append(data.html);
-                    $("#edit_image_upload_main").modal('show');
-                }
-            });
-        });
         //End auto play
-        /*jQuery(function () {
-            jQuery(".vjs-tech").each(function () {
-                if (isInView(jQuery(this)[0])) {// visible?
-                    if (jQuery(this)[0].paused)
-                        jQuery(this)[0].play();// play if not playing
-                } else {
-                    if (!jQuery(this)[0].paused)
-                        jQuery(this)[0].pause();// pause if not paused
-                }
-            });
-        });*/
-
-        /*$(function () {
-            jQuery('video').focusin(function () { console.log('aaa');
-                jQuery(this)[0].paused();
-            });
-
-            jQuery('.vjs-tech').focusout(function () { console.log('bbb');
-                $(this)[0].pause();
-            });
-        });*/
     </script>
 @endif
