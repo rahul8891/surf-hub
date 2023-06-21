@@ -1013,7 +1013,7 @@ class PostService {
         $posts = Post::findOrFail($input['id']);
 
         $posts->post_type = $input['post_type'];
-        $posts->user_id = $input['user_id'];
+        // $posts->user_id = $input['user_id'];
         $posts->post_text = $input['post_text'];
         $posts->country_id =$input['country_id'];
         $posts->surf_start_date = $input['surf_date'];
@@ -1028,7 +1028,7 @@ class PostService {
         $posts->fin_set_up = (!empty($input['fin_set_up'])) ? $input['fin_set_up'] : null;
         $posts->created_at = Carbon::now();
         $posts->updated_at = Carbon::now();
-        if($posts->save()){ echo "Type = ".$type." -- File =".$filename."<pre>";
+        if($posts->save()){
             //for store media into upload table
             if (isset($filename) && !empty($filename)) {
                 $upload = Upload::where('post_id', $posts->id)->first();

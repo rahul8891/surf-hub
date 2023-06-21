@@ -212,7 +212,7 @@
                                         @foreach($customArray['optional'] as $key => $value)
                                         <div class="col-sm-4 col-6">
                                             <div class="form-check d-inline-block">
-                                                <input type="checkbox" class="form-check-input" name="optional_info[]" value="{{ __($key) }}"
+                                                <input type="checkbox" class="form-check-input" name="optional_info[]" value="{{ __($key) }}" {{ (!empty($myHubs->optional_info) && (in_array($key, explode(" ", $myHubs->optional_info))))?"checked":'' }}
                                                        id="{{ __($key) }}" />
                                                 <label for="{{ __($key) }}" class="">{{ __($value) }}</label>
                                             </div>
