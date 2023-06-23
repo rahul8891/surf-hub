@@ -1581,6 +1581,12 @@ class PostService {
       return $result;
     }
 
+    public function updateNotificationCount($id)
+    {
+      $result = Notification::where('id', $id)->update(['count_status'=>'1', 'status'=>'1', 'updated_at'=>Carbon::now()]);
+      return $result;
+    }
+
     /**
      * [surferRequest] we are requesting as surfer for a post
      * @param  message return message based on the condition

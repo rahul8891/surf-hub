@@ -15,7 +15,7 @@
                 @else
                     <div class="">{{ucwords(substr($userProfile['surfer_name'],0,1))}}</div>
                 @endif
-                <span class="notification notification-count">0</span>
+                <!-- <span class="notification notification-count">0</span> -->
             </div>
             <div class="my-name">
                 <a class="" href="{{ route('surfer-profile', Crypt::encrypt($userProfile['user_id'])) }}">

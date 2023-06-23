@@ -26,42 +26,42 @@
                                             <div class="d-inline-block align-middle">
 
                                                 @if($requests['notification_type'] == 'Post')
-                                                    <a href="{{ route('getPostData', $requests['post_id']) }}" class="mb-0">
+                                                    <a href="{{ route('getPostData', $requests['post_id']) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         Added a new {{$requests['post_type']}}
                                                     </a>
                                                 @endif
                                                 @if($requests['notification_type'] == 'Comment')
-                                                    <a href="{{ route('getPostData', $requests['post_id']) }}" class="mb-0">
+                                                    <a href="{{ route('getPostData', $requests['post_id']) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         is commented on your {{$requests['post_type']}}
                                                     </a>
                                                 @endif
                                                 @if($requests['notification_type'] == 'Follow')
-                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0">
+                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         sent you a follow request
                                                     </a>
                                                 @endif
                                                 @if($requests['notification_type'] == 'Accept')
-                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0">
+                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         accept your following request
                                                     </a>
                                                 @endif
                                                 @if($requests['notification_type'] == 'Reject')
-                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0">
+                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         reject your following request </a>
                                                 @endif
                                                 @if($requests['notification_type'] == 'Tag')
-                                                    <a href="{{ route('getPostData', $requests['post_id']) }}" class="mb-0">
+                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         tagged you on a post
                                                     </a>
                                                 @endif
                                                 @if($requests['notification_type'] == 'Surfer Request')
-                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0">
+                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         surfer has nominated himself the post.
                                                     </a>
@@ -83,5 +83,24 @@
         </div>
     </div>
 </section>
+<script>
+    function updateNotificationCount(id) {
+        $.ajax({
+            type: "POST",
+            url: "updateNotificationCount",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                'id': id
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                if (jsonResponse.status == "success") {
+                    $('.followCountHead').hide();
+                }
+            }
+        });
 
+        return false;
+    }
+</script>
 @endsection

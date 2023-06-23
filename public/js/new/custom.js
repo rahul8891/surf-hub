@@ -2097,7 +2097,24 @@ jQuery(document).ready(function () {
         });
     });
 
+    function updateNotificationCount(id) { alert('aaa');
+        $.ajax({
+            type: "POST",
+            url: "updateNotificationCount",
+            data: {
+                _token: csrf_token,
+                'id': id
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                if (jsonResponse.status == "success") {
+                    $('.followCountHead').hide();
+                }
+            }
+        });
 
+        return false;
+    }
 
 
     jQuery('.commentOnPost').keyup(function () {

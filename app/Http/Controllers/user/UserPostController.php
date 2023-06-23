@@ -527,6 +527,20 @@ class UserPostController extends Controller {
         }
     }
 
+    /*
+     *Function use to update the notication count once read
+     *
+     */
+    public function updateNotificationCount(Request $request) {
+        $data = $request->all();
+        $result = $this->posts->updateNotificationCount($data['id']);
+        if ($result) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'fails'));
+        }
+    }
+
     public function uploadFiles(Request $request, PostService $postService) {
         $fileArray = [];
 
