@@ -2020,9 +2020,9 @@ header .notification {
     width: 100%;
     border: 1px solid #C0BCBC;
     height: 40px;
-    line-height: 2;
-    max-width: 100%;
-    box-sizing: content-box;
+    line-height: 2.5;
+    max-width: 100% !important;
+    box-sizing: border-box;
     border-radius: 0;
     box-shadow: none;
 }
@@ -2128,5 +2128,8 @@ form label.error {
     min-width: 200px;
     background: white;
     padding-top: 5px;
+}
+.multi-select-button:after {
+    pointer-events: none;
 }
 

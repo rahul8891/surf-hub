@@ -48,7 +48,6 @@
 <script src="{{ asset('js/new/post.js')}}"></script>
 <script src="{{ asset('js/new/script.js') }}"></script>
 <script src="http://jwpsrv.com/library/4+R8PsscEeO69iIACooLPQ.js"></script>
-<script src="{{ asset('js/new/jquery.multi-select.js') }}"></script>
 
 <script type="text/javascript" async>
 	jQuery.noConflict();
@@ -210,6 +209,7 @@
 		document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 	}
 </script>
+<script src="{{ asset('js/new/jquery.multi-select.js') }}"></script>
 @include('elements/location_popup_model')
 @include('layouts/models/edit_image_upload')
 @include('layouts/models/full_screen_modal')
