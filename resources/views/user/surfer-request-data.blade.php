@@ -122,14 +122,13 @@
                             </div>
                             @if(!empty($posts->upload->image))
                             <div class="newsFeedImgVideo">
-                                <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                                <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->parent_id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
                             </div>
                             @elseif(!empty($posts->upload->video))
                             @if (!File::exists($posts->upload->video))
-                            <div class="newsFeedImgVideo">
-                            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >
-                            </video>
+
+                            <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ config('config.file_path').'videos/'.$posts->user_id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                                <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
                             </div>
                             @else
                             <div class="newsFeedImgVideo">
