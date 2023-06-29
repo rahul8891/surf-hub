@@ -24,44 +24,43 @@
                                                 class="align-middle bg-white notification-img">
                                             @endif
                                             <div class="d-inline-block align-middle">
-
                                                 @if($requests['notification_type'] == 'Post')
-                                                    <a href="{{ route('getPostData', $requests['post_id']) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
+                                                    <a href="{{ route('surfer-request', ['post', Crypt::encrypt($requests['sender_id']), $requests['post_id']]) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         Added a new {{$requests['post_type']}}
                                                     </a>
                                                 @endif
                                                 @if($requests['notification_type'] == 'Comment')
-                                                    <a href="{{ route('getPostData', $requests['post_id']) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
+                                                    <a href="{{ route('surfer-request', ['comment', Crypt::encrypt($requests['sender_id']), $requests['post_id']]) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         is commented on your {{$requests['post_type']}}
                                                     </a>
                                                 @endif
                                                 @if($requests['notification_type'] == 'Follow')
-                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
+                                                    <a href="{{ route('surfer-request', ['follow', Crypt::encrypt($requests['sender_id'])]) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         sent you a follow request
                                                     </a>
                                                 @endif
                                                 @if($requests['notification_type'] == 'Accept')
-                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
+                                                    <a href="{{ route('surfer-request', ['accept', Crypt::encrypt($requests['sender_id'])]) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         accept your following request
                                                     </a>
                                                 @endif
                                                 @if($requests['notification_type'] == 'Reject')
-                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
+                                                    <a href="{{ route('surfer-request', ['reject', Crypt::encrypt($requests['sender_id'])]) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         reject your following request </a>
                                                 @endif
                                                 @if($requests['notification_type'] == 'Tag')
-                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
+                                                    <a href="{{ route('surfer-request', ['tag', Crypt::encrypt($requests['sender_id']), $requests['post_id']]) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         tagged you on a post
                                                     </a>
                                                 @endif
                                                 @if($requests['notification_type'] == 'Surfer Request')
-                                                    <a href="{{ route('surfer-profile', Crypt::encrypt($requests['sender_id'])) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
+                                                    <a href="{{ route('surfer-request', ['surfer-request', Crypt::encrypt($requests['sender_id'])]) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
                                                         <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
                                                         surfer has nominated himself the post.
                                                     </a>

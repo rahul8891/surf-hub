@@ -25,7 +25,7 @@ class Post extends Model
      ************************************************************************************************************/
 
     /**
-     * Relationship between Post and user model    
+     * Relationship between Post and user model
      * @return object
      */
     public function user()
@@ -34,37 +34,37 @@ class Post extends Model
     }
 
     /**
-     * Relationship between user and user_profile model    
+     * Relationship between user and user_profile model
      * @return object
      */
-    
+
     public function user_profiles()
     {
         return $this->hasOne(UserProfile::class, 'user_id', 'id');
     }
-    
+
     /**
-     * Relationship between post and upload model    
+     * Relationship between post and upload model
      * @return object
      */
-    
+
     public function upload()
     {
         return $this->hasOne(Upload::class, 'post_id', 'id');
     }
-    
+
     /**
-     * Relationship between post and search model    
+     * Relationship between post and search model
      * @return object
      */
-    
+
     public function search()
     {
         return $this->hasOne(search::class, 'post_id', 'id');
     }
 
     /**
-     * Relationship between country and user_follows model    
+     * Relationship between country and user_follows model
      * @return object
      */
     public function countries()
@@ -73,7 +73,7 @@ class Post extends Model
     }
 
     /**
-     * Relationship between country and user_follows model    
+     * Relationship between country and user_follows model
      * @return object
      */
     public function beach_breaks()
@@ -82,7 +82,7 @@ class Post extends Model
     }
 
     /**
-     * Relationship between country and user_follows model    
+     * Relationship between country and user_follows model
      * @return object
      */
     public function breakName()
@@ -91,7 +91,7 @@ class Post extends Model
     }
 
     /**
-     * Relationship between state and user_follows model    
+     * Relationship between state and user_follows model
      * @return object
      */
     public function states()
@@ -99,7 +99,7 @@ class Post extends Model
         return $this->belongsTo(State::class, 'state_id', 'id');
     }
     /**
-     * Relationship between state and advert_post model    
+     * Relationship between state and advert_post model
      * @return object
      */
     public function advert()
@@ -108,7 +108,7 @@ class Post extends Model
     }
 
     /**
-     * Relationship between posts and comments model    
+     * Relationship between posts and comments model
      * @return object
      */
     public function comments()
@@ -117,17 +117,17 @@ class Post extends Model
     }
 
     /**
-     * Relationship between posts and parent post record    
+     * Relationship between posts and parent post record
      * @return object
      */
     public function parentPost()
     {
         return $this->hasOne(User::class, 'id', 'parent_id');
     }
-    
+
 
     /**
-     * Relationship between posts and tags model    
+     * Relationship between posts and tags model
      * @return object
      */
     public function tags()
@@ -136,16 +136,16 @@ class Post extends Model
     }
 
     /**
-     * Relationship between posts and reports model    
+     * Relationship between posts and reports model
      * @return object
      */
     public function reports()
     {
         return $this->hasMany(Report::class, 'post_id', 'id');
     }
-    
+
     /**
-     * Relationship between posts and reports model    
+     * Relationship between posts and reports model
      * @return object
      */
     public function ratingPost() {
@@ -153,7 +153,7 @@ class Post extends Model
     }
 
     /**
-     * Relationship between posts and reports model    
+     * Relationship between posts and reports model
      * @return object
      */
     public function followPost() {
@@ -161,6 +161,18 @@ class Post extends Model
             return $this->hasOne(UserFollow::class, 'followed_user_id', 'user_id')->where('follower_user_id', Auth::user()->id)->where('is_deleted', '0');
         }else {
             return $this->hasOne(UserFollow::class, 'followed_user_id', 'user_id')->where('is_deleted', '0');
-        } 
+        }
+    }
+
+    /**
+     * Relationship between posts and follow  model
+     * @return object
+     */
+    public function followRequest() {
+        if(isset(Auth::user()->id) && !empty(Auth::user()->id)) {
+            return $this->hasOne(UserFollow::class, 'follower_user_id', 'user_id');
+        }else {
+            return $this->hasOne(UserFollow::class, 'follower_user_id', 'user_id')->where('is_deleted', '0');
+        }
     }
 }

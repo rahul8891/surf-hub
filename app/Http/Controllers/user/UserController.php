@@ -592,7 +592,7 @@ class UserController extends Controller {
                 ->where('user_id', $surfer_id)
                 ->where(function ($query) {
                     $query->where('post_type', 'PUBLIC')
-                    ->where('is_highlight', '1');
+                    ->orWhere('is_feed', '1');
                 })
                 ->orderBy('posts.created_at', 'DESC')
                 ->paginate(10);
@@ -604,7 +604,6 @@ class UserController extends Controller {
                     ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
 
             foreach ($surferRequest as $res) {
-//                echo '<pre>'; print_r($res['id']);die;
                 $requestSurfer[$val['id']]['id'] = $res['id'];
                 $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
             }
@@ -613,15 +612,16 @@ class UserController extends Controller {
         $userType = $userProfile['user_type'];
         $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $surfer_id);
         $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $surfer_id);
-        $userPosts = $this->post->getSurferPostData($surfer_id);
-        $uploads = $this->post->getUploads($surfer_id);
+        $userPosts = $this->post->getPostByUserId($surfer_id);
+        $postIds = array_filter(array_column($userPosts, 'id'));
+        $uploads = $this->post->getUploads($postIds);
         $fCounts = array(
             'follwers' => $followersCount,
             'follwing' => $followingCount,
             'posts' => count($userPosts),
             'uploads' => count($uploads),
         );
-//        echo '<pre>'; print_r($userProfile);die;
+
         if ($request->ajax()) {
             $view = view('elements/surferProfileData', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches'))->render();
             return response()->json(['html' => $view]);
@@ -629,10 +629,67 @@ class UserController extends Controller {
         return view('user.surfer-profile', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile', 'fCounts','userType'));
     }
 
+    /**
+     * Function to display user profile and surfer highlighted posts
+     *
+     * @param Request $request
+     * @param [string] $request_type
+     * @param [INT] $id
+     * @param [INT] $post_id
+     * @return Data to view surfer detials with highlighted post
+     */
+    public function surferRequestData(Request $request, $request_type, $id, $post_id = NULL) {
+        $surfer_id = Crypt::decrypt($id);
+        $url = url()->current();
+
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $beaches = $this->masterService->getBeaches();
+        $customArray = $this->customArray;
+
+        if(!empty($post_id)) {
+            $postsList = Post::with('followRequest')->where('is_deleted', '0')
+                ->where('id', $post_id)
+                ->get();
+        }else {
+            $postsList = Post::with('followRequest')->where('is_deleted', '0')
+                ->where('parent_id', '0')
+                ->where('user_id', $surfer_id)
+                ->where(function ($query) {
+                    $query->where('post_type', 'PUBLIC')
+                    ->where('is_highlight', '1');
+                })
+                ->orderBy('posts.created_at', 'DESC')
+                ->paginate(10);
+        }
+        // dd($postsList);
+        $requestSurfer = array();
+        foreach ($postsList as $val) {
+            $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
+                    ->where("surfer_requests.post_id", "=", $val['id'])
+                    ->where("surfer_requests.status", "=", 0)
+                    ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
+
+            foreach ($surferRequest as $res) {
+                $requestSurfer[$val['id']]['id'] = $res['id'];
+                $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
+            }
+        }
+        $userProfile = $this->users->getUserDetail($surfer_id);
+
+        $userType = $userProfile['user_type'];
+
+        if ($request->ajax()) {
+            $view = view('elements/surferRequestData', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'request_type'))->render();
+            return response()->json(['html' => $view]);
+        }
+        return view('user.surfer-request-data', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile','userType', 'request_type'));
+    }
+
     public function resortProfile(Request $request, $id) {
         $resort_id = Crypt::decrypt($id);
         $url = url()->current();
-//        print_r($resort_id);die;
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
@@ -650,11 +707,6 @@ class UserController extends Controller {
                 ->paginate(10);
         $requestSurfer = array();
         foreach ($postsList as $val) {
-//            $surferRequest = SurferRequest::select("*")
-//                    ->where("post_id", "=", $val['id'])
-//                    ->where("status", "=", 0)
-//                    ->get();
-
             $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
                     ->where("surfer_requests.post_id", "=", $val['id'])
                     ->where("surfer_requests.status", "=", 0)
