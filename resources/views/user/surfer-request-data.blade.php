@@ -79,7 +79,6 @@
                     @if (!empty($postsList))
                     @foreach ($postsList as $key => $posts)
                     <div class="news-feed">
-
                         <div class="inner-news-feed">
                             <div class="user-details">
                                 <div class="user-left">
