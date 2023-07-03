@@ -70,12 +70,6 @@
                 </div>
 
                 <div id="post-data">
-
-                    @if (isset($postsList) && empty($postsList[0]))
-                    <div class="post alert text-center alert-dismissible py-5" role="alert">
-                        {{ ucWords('no matches found') }}
-                    </div>
-                    @endif
                     @if (!empty($postsList))
                     @foreach ($postsList as $key => $posts)
                     <div class="news-feed">
@@ -120,22 +114,21 @@
                                 @endif
                             </div>
                             @if(!empty($posts->upload->image))
-                            <div class="newsFeedImgVideo">
-                                <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->parent_id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
-                            </div>
+                                <div class="newsFeedImgVideo">
+                                    <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->parent_id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                                </div>
                             @elseif(!empty($posts->upload->video))
-                            @if (!File::exists($posts->upload->video))
-
-                            <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ config('config.file_path').'videos/'.$posts->user_id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
-                                <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
-                            </div>
-                            @else
-                            <div class="newsFeedImgVideo">
-                            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >
-                            </video>
-                            </div>
-                            @endif
+                                @if (!File::exists($posts->upload->video))
+                                    <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ config('config.file_path').'videos/'.$posts->user_id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                                    </div>
+                                @else
+                                    <div class="newsFeedImgVideo">
+                                        <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
+                                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >
+                                        </video>
+                                    </div>
+                                @endif
                             @endif
                             <div class="user-bottom-options">
                                 <div class="rating-flex">
@@ -348,7 +341,7 @@
             $('.ajax-load').removeClass('requests');
             $('.ajax-load').hide();
 //            $("#post-data").insertBefore(data.html);
-            $(data.html).insertBefore(".ajax-load");
+            // $(data.html).insertBefore(".ajax-load");
         });
     }
 

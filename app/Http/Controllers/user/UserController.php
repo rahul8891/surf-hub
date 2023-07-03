@@ -590,6 +590,7 @@ class UserController extends Controller {
         $postsList = Post::with('followPost')->where('is_deleted', '0')
                 ->where('parent_id', '0')
                 ->where('user_id', $surfer_id)
+                ->where('is_highlight', '1')
                 ->where(function ($query) {
                     $query->where('post_type', 'PUBLIC')
                     ->orWhere('is_feed', '1');
@@ -656,6 +657,7 @@ class UserController extends Controller {
             $postsList = Post::with('followRequest')->where('is_deleted', '0')
                 ->where('parent_id', '0')
                 ->where('user_id', $surfer_id)
+                ->where('is_highlight', '1')
                 ->where(function ($query) {
                     $query->where('post_type', 'PUBLIC')
                     ->where('is_highlight', '1');
