@@ -9,6 +9,7 @@
                 <div class="notification-wrap">
                     <div class="notification-header">
                         <h2>Notification</h2>
+                        <button type="button" class="btn-default btnClearNotification" onclick="updateAllNotification()">Clear All</button>
                     </div>
                     <div class="notification-body">
                         @if(count(FollowNotification::instance()->getPostNotifications()) > 0)
@@ -100,6 +101,24 @@
         });
 
         return false;
+    }
+
+    function updateAllNotification() {
+        $.ajax({
+            type: "GET",
+            url: "/user/updateAllNotification",
+            data: {
+                "_token": "{{ csrf_token() }}"
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                if (jsonResponse.status == "success") {
+                    $('.followCountHead').hide();
+                }
+            }
+        });
+
+        location.reload(true);
     }
 </script>
 @endsection

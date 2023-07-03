@@ -34,9 +34,9 @@
                 <img src="/img/posts.png" alt="posts">
                  <a class="" href="{{ route('myhubs', 'posts') }}">Posts - <span class="blue-txt num" id="posts"> </span></a>
             </div>
-            <div class="profile-row {{ userActiveMenu('upload') }}">
+            <div class="profile-row {{ ((userActiveMenu('myhubs') == 'active') && ($post_type == 'upload'))?'active':'' }}">
                 <img src="/img/upload.png" alt="Uploads">
-                 <a class="" href="{{ route('myhubs', 'saved') }}">Uploads - <span class="blue-txt num" id="uploads"> </span></a>
+                 <a class="" href="{{ route('myhubs', 'upload') }}">Uploads - <span class="blue-txt num" id="uploads"> </span></a>
             </div>
             <div class="profile-row {{ userActiveMenu('followRequests') }}">
                 <img src="/img/follow-request.png" alt="Follow Requests">

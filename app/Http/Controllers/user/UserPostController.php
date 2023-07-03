@@ -527,6 +527,15 @@ class UserPostController extends Controller {
         }
     }
 
+    public function updateAllNotification() {
+        $result = $this->posts->updateAllNotification();
+        if ($result) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'fails'));
+        }
+    }
+
     /*
      *Function use to update the notication count once read
      *

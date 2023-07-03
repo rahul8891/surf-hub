@@ -328,6 +328,9 @@ class PostService {
         } elseif (($for == 'myhub') && ($type == 'saved')) {
             $postArray->where('posts.post_type', 'PRIVATE');
             $postArray->where('posts.parent_id','>=', 0);
+        } elseif (($for == 'myhub') && ($type == 'upload')) {
+            $postArray->where('posts.post_type', 'PRIVATE');
+            $postArray->where('posts.parent_id','=', 0);
         } elseif (($for == 'myhub') && ($type == 'tags')) {
             $postArray =  $this->posts
                         ->join('tags', 'posts.id', "=", 'tags.post_id')
@@ -413,7 +416,9 @@ class PostService {
         if (isset($params['country_id']) && !empty($params['country_id'])) {
             $postArray->where('posts.country_id',$params['country_id']);
         }
-        if (isset($params['local_beach_id']) && !empty($params['local_beach_id'])) {
+        if (isset($params['break']) && !empty($params['break'])) {
+            $postArray->where('local_break_id', $params['break']);
+        }elseif (isset($params['local_beach_id']) && !empty($params['local_beach_id'])) {
             $postArray->where('local_beach_id', $params['local_beach_id']);
         }
         if (isset($params['board_type']) && !empty($params['board_type'])) {
@@ -453,15 +458,20 @@ class PostService {
             $postArray->havingRaw('round(avg(ratings.rating)) = '. $params['rating']);
             // $postArray->where('avg(ratings.rating)', $params['rating']);
         }
-        if (isset($params['beach']) && $params['beach']>0 && empty($params['break'])) {
 
+        /*if (isset($params['break']) && !empty($params['break'])) {
+            $beachBreak = BeachBreak::where('id', $params['break'])->get()->toArray();
+            $beachName = $beachBreak[0]['beach_name'];
+            $postArray->where('beach_breaks.beach_name',$beachName);
+        }elseif (isset($params['beach']) && ($params['beach'] > 0)) {
             $beachBreak = BeachBreak::where('id', $params['beach'])->get()->toArray();
             $beachName = $beachBreak[0]['beach_name'];
             $postArray->where('beach_breaks.beach_name',$beachName);
         }
+
         if (isset($params['break']) && $params['break']>0) {
             $postArray->where('beach_breaks.id',$params['break']);
-        }
+        } */
         if (isset($params['sort'])) {
             if($params['sort'] == "dateAsc"){
                 $postArray->orderBy('posts.created_at','ASC');
@@ -488,7 +498,7 @@ class PostService {
             $postArray->orderBy('posts.id','DESC');
         }
 
-        // dd($postArray->toSql());
+        //dd($postArray->toSql());
         if(isset($page) && !empty($page)) {
             return $postArray->get();
         } else {
@@ -1573,6 +1583,11 @@ class PostService {
       $notification->status = '1';
       $notification->updated_at = Carbon::now();
       $notification->save();
+    }
+
+    public function updateAllNotification()
+    {
+      return $this->notification->where('receiver_id', Auth::user()->id)->update(['status' => '1']);
     }
 
     public function updateNotificationCountStatus($input)

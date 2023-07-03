@@ -2132,4 +2132,21 @@ form label.error {
 .multi-select-button:after {
     pointer-events: none;
 }
-
+.btnClearNotification {
+    min-width: 100px;
+    min-height: 40px;
+    border-radius: 6px;
+    outline: 0;
+    box-shadow: none;
+    border: 0;
+    background-color: #325cfd;
+    color: white;
+}
+.btnClearNotification:active, .btnClearNotification:focus {
+    outline: 0;
+    box-shadow: none;
+}
+.btnClearNotification:hover {
+    background: #4f70f6;
+    color: white;
+}

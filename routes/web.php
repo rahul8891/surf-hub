@@ -130,7 +130,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::post('/report', [UserPostController::class, 'report'])->name('report');
     Route::get('/posts/{post_id}/{notification_id}/{notification_type}', [UserPostController::class, 'posts'])->name('posts');
     Route::post('/user/updateNotificationCountStatus', [UserPostController::class, 'updateNotificationCountStatus'])->name('updateNotificationCountStatus');
-    Route::post('updateNotificationCountStatus', [UserPostController::class, 'updateNotificationCountStatus'])->name('updateNotificationCountStatus');
+    Route::get('/user/updateAllNotification', [UserPostController::class, 'updateAllNotification'])->name('updateAllNotification');
     Route::post('updateNotificationCount', [UserPostController::class, 'updateNotificationCount'])->name('updateNotificationCount');
     Route::get('notifications', [UserPostController::class, 'notifications'])->name('notifications');
     Route::get('surfer-follow-request/{id}', [UserPostController::class, 'surferFollowRequest'])->name('surferFollowRequest');

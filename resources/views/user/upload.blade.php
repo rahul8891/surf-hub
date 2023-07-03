@@ -4,14 +4,14 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
 <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
 <style>
- 
+
 </style>
 <section class="home-section">
 
     <div class="container">
         <div class="home-row">
 
-            @include('layouts.user.left_sidebar')    
+            @include('layouts.user.left_sidebar')
 
             <div class="middle-content">
                 <form method="POST" name="createPostForm" action="{{ route('storeVideoImagePost') }}" class="upload-form" enctype="multipart/form-data">
@@ -21,7 +21,7 @@
                             <h2>Upload Video/Photo</h2>
                             <select class="form-select ps-2 mb-0" name="post_type" required>
                                 @foreach($customArray['post_type'] as $key => $value)
-                                <option value="{{ $key }}">{{ $value}}</option>
+                                <option value="{{ $key }}" {{ ($key == 'PUBLIC')?'selected':'' }}>{{ $value}}</option>
                                 @endforeach
                             </select>
                         </div>
