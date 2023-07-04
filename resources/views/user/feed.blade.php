@@ -109,7 +109,7 @@
                                 <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/new/save.png" alt="Save"></a>
                                 @endif
                                 @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'] && empty($requestSurfer[$posts->id]))
-                                <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
+                                <a onclick='surferRequestDetail("{{ Crypt::encrypt($posts->id) }}")'><img src="/img/new/small-logo.png" alt="Logo"></a>
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                                     <img src={{asset("/img/location.png")}} alt="Location"></a>
@@ -362,5 +362,16 @@
         });
     });
     //End auto play
+
+    function surferRequestDetail(id) {
+        jQuery.ajax({
+            url: 'surfer-request/' + id,
+            type: "get",
+            async: false,
+            success: function() {
+                jQuery("main").append('<div class="alert alert-success alert-dismissible" role="alert" id="msg"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Surfer Request send successfully.</div>');
+            }
+        });
+    }
 </script>
 @endsection
