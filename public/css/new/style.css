@@ -86,6 +86,10 @@ input {
     box-shadow: none;
 }
 
+button, .btn, .highlight  {
+    border-radius: 6px !important;
+}
+
 header {
     border-bottom: 2px solid #C0BCBC;
     padding: 5px 0;
@@ -1368,7 +1372,7 @@ header .notification {
     width: 55px;
     height: 55px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .follwer-name span,
@@ -1895,6 +1899,7 @@ header .notification {
     line-height: 30px;
     cursor: pointer;
     user-select: none;
+    border-radius: 6px;
 }
 
 .avg-rating::before {

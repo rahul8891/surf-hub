@@ -222,7 +222,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
 
     Route::get('/feed', [AdminDashboard::class, 'feed'])->name('adminFeed');
     Route::get('/left-side-counts', [AdminDashboard::class, 'leftSideCounts'])->name('leftSideCounts');
-    Route::get('/myhub', [AdminDashboard::class, 'myHub'])->name('adminMyHub');
+    Route::get('/myhub/{post_type?}', [AdminDashboard::class, 'myHub'])->name('adminMyHub');
     Route::get('/search',[AdminDashboard::class, 'search'])->name('adminSearchPosts');
 
     // user Route

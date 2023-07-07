@@ -507,6 +507,216 @@ class PostService {
     }
 
     /**
+     * [getAdminFiltered] we are getiing all login user post with filter
+     * @param
+     * @param
+     * @return dataArray
+     */
+    public function getAdminFilteredData($params, $for, $type = null, $page = null) {
+        if ($for=='search'){
+            $postArray =  $this->posts
+                        ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
+                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->leftJoin('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
+                        ->leftJoin('users', 'posts.user_id', '=', 'users.id')
+                        ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
+                        ->whereNull('posts.deleted_at')
+                        ->groupBy('posts.id');
+        }
+
+        if ($for=='myhub'){
+            $postArray =  $this->posts
+                        ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
+                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
+                        ->whereNull('posts.deleted_at')
+                        ->where('parent_id', '0')
+                        ->groupBy('posts.id');
+        }
+
+        if (($for == 'myhub') && ($type == 'posts')) {
+            $postArray->where('posts.post_type', 'PUBLIC');
+        } elseif (($for == 'myhub') && ($type == 'saved')) {
+            $postArray->where('posts.post_type', 'PRIVATE');
+            $postArray->where('posts.parent_id','>=', 0);
+        } elseif (($for == 'myhub') && ($type == 'upload')) {
+            $postArray->where('posts.post_type', 'PRIVATE');
+            $postArray->where('posts.parent_id','=', 0);
+        } elseif (($for == 'myhub') && ($type == 'tags')) {
+            $postArray =  $this->posts
+                        ->join('tags', 'posts.id', "=", 'tags.post_id')
+                        ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
+                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
+                        ->where('tags.is_deleted', '0')
+                        ->groupBy('posts.id');
+        } elseif (($for == 'myhub') && ($type == 'reels')) {
+            $postArray->where('posts.is_highlight', '1');
+        }
+        // dd($postArray->toSql());
+        //************* applying conditions *****************/
+        if (isset($params['username_id']) && !empty($params['username_id'])) {
+            $postArray->where('posts.user_id', $params['username_id']);
+            $postArray->where('posts.parent_id', 0);
+        }
+
+        if (isset($params['filterUser']) && ($params['filterUser'] == 'me')) {
+            $username = Auth::user()->user_name;
+            $postArray->where('surfer', $username);
+        } elseif (isset($params['filterUser']) && ($params['filterUser'] == 'others') && isset($params['other_surfer']) && !empty($params['other_surfer'])) {
+            $postArray->where('surfer', $params['other_surfer']);
+        } elseif (isset($params['filterUser']) && ($params['filterUser'] == 'unknown')) {
+            $postArray->where('surfer', 'Unknown');
+        }
+
+        $optionalInfo = [];
+
+        if(isset($params['FLOATER']) && ($params['FLOATER']=='on')){
+            $optionalInfo[] = 'FLOATER';
+        }
+
+        if(isset($params['AIR']) && ($params['AIR']=='on')){
+            $optionalInfo[] = 'AIR';
+        }
+
+        if(isset($params['360']) && ($params['360']=='on')) {
+            $optionalInfo[] = '360';
+        }
+
+        if(isset($params['DROP_IN']) && ($params['DROP_IN']=='on')){
+            $optionalInfo[] = 'DROP_IN';
+        }
+
+        if(isset($params['BARREL_ROLL']) && ($params['BARREL_ROLL']=='on')){
+            $optionalInfo[] = 'BARREL_ROLL';
+        }
+
+        if(isset($params['WIPEOUT']) && ($params['WIPEOUT']=='on')){
+            $optionalInfo[] = 'WIPEOUT';
+        }
+
+        if(isset($params['CUTBACK']) && ($params['CUTBACK']=='on')){
+            $optionalInfo[] = 'CUTBACK';
+        }
+        if(isset($params['SNAP']) && ($params['SNAP']=='on')){
+            $optionalInfo[] = 'SNAP';
+            $postArray->where('optional_info','SNAP');
+        }
+
+        if(isset($optionalInfo[0]) && !empty($optionalInfo[0])) {
+            $postArray->whereIn('optional_info', $optionalInfo);
+        }
+        if(isset($params['additional_info']) && !empty($params['additional_info'])) {
+            $postArray->where(function($q) use($params){
+
+            foreach ($params['additional_info'] as $val) {
+            $q->orWhere('additional_info', 'LIKE',  '%' . $val .'%');
+            }
+
+            });
+        }
+
+        if (isset($params['surf_date']) && !empty($params['surf_date'])) {
+           $postArray->whereDate('surf_start_date','>=',$params['surf_date']);
+        }
+        if (isset($params['end_date']) && !empty($params['end_date'])) {
+           $postArray->whereDate('surf_start_date','<=',$params['end_date']);
+        }
+
+        if (isset($params['country_id']) && !empty($params['country_id'])) {
+            $postArray->where('posts.country_id',$params['country_id']);
+        }
+        if (isset($params['break']) && !empty($params['break'])) {
+            $postArray->where('local_break_id', $params['break']);
+        }elseif (isset($params['local_beach_id']) && !empty($params['local_beach_id'])) {
+            $postArray->where('local_beach_id', $params['local_beach_id']);
+        }
+        if (isset($params['board_type']) && !empty($params['board_type'])) {
+            $postArray->where('board_type',$params['board_type']);
+        }
+        if (isset($params['wave_size']) && !empty($params['wave_size'])) {
+            $postArray->where('wave_size',$params['wave_size']);
+        }
+
+        if (isset($params['state_id'])) {
+            $postArray->where('posts.state_id',$params['state_id']);
+        }
+
+        if (isset($params["user_type"])) {
+            $postArray->whereIn('user_type', $params["user_type"]);
+        }
+
+        if (isset($params["gender"])) {
+            $postArray->where('gender', '=', $params["gender"]);
+        }
+        if (isset($params["from_age"]) && !isset($params["to_age"])) {
+            $from_age = date('Y-m-d', strtotime('-'.$params["from_age"].' year'));
+            $postArray->where('dob', '<=', $from_age);
+        }
+        if (!isset($params["from_age"]) && isset($params["to_age"])) {
+            $to_age = date('Y-m-d', strtotime('-'.$params["to_age"].' year'));
+            $postArray->where('dob', '>=', $to_age);
+        }
+        if (isset($params["from_age"]) && isset($params["to_age"])) {
+            $from_age = date('Y-m-d', strtotime('-'.$params["from_age"].' year'));
+            $to_age = date('Y-m-d', strtotime('-'.$params["to_age"].' year'));
+            $postArray->where('dob', '<=', $from_age);
+            $postArray->where('dob', '>=', $to_age);
+        }
+
+        if (isset($params['rating']) && $params['rating']>0) {
+            $postArray->havingRaw('round(avg(ratings.rating)) = '. $params['rating']);
+            // $postArray->where('avg(ratings.rating)', $params['rating']);
+        }
+
+        /*if (isset($params['break']) && !empty($params['break'])) {
+            $beachBreak = BeachBreak::where('id', $params['break'])->get()->toArray();
+            $beachName = $beachBreak[0]['beach_name'];
+            $postArray->where('beach_breaks.beach_name',$beachName);
+        }elseif (isset($params['beach']) && ($params['beach'] > 0)) {
+            $beachBreak = BeachBreak::where('id', $params['beach'])->get()->toArray();
+            $beachName = $beachBreak[0]['beach_name'];
+            $postArray->where('beach_breaks.beach_name',$beachName);
+        }
+
+        if (isset($params['break']) && $params['break']>0) {
+            $postArray->where('beach_breaks.id',$params['break']);
+        } */
+        if (isset($params['sort'])) {
+            if($params['sort'] == "dateAsc"){
+                $postArray->orderBy('posts.created_at','ASC');
+            }
+            else if($params['sort'] == "dateDesc"){
+                $postArray->orderBy('posts.created_at','DESC');
+            }
+            else if($params['sort'] == "surfDateAsc"){
+                $postArray->orderBy('posts.surf_start_date','ASC');
+            }
+            else if($params['sort'] == "surfDateDesc"){
+                $postArray->orderBy('posts.surf_start_date','DESC');
+            }
+            else if($params['sort'] == "beach"){
+                $postArray->orderBy('beach_breaks.beach_name','ASC');
+            }
+            else if($params['sort'] == "star"){
+                $postArray->orderBy('average','DESC');
+            }
+            else{
+                $postArray->orderBy('posts.created_at','DESC');
+            }
+        } else {
+            $postArray->orderBy('posts.id','DESC');
+        }
+
+        //dd($postArray->toSql());
+        if(isset($page) && !empty($page)) {
+            return $postArray->get();
+        } else {
+            return $postArray->paginate(10);
+        }
+    }
+
+    /**
      * [getFeedFilteredList] we are getiing all login user post with filter
      * @param
      * @param
