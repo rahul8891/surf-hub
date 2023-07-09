@@ -33,7 +33,7 @@ return [
         'scope'=>'app-remote-control user-top-read user-read-currently-playing user-read-recently-played streaming app-remote-control user-read-playback-state user-modify-playback-state',
         'client_id' => env('SPOTIFY_CLIENT_ID'),
         'client_secret' => env('SPOTIFY_CLIENT_SECRET'),
-        'redirect' => 'http://surf.hub.info/spotify-call-back'
+        'redirect' => 'http://13.237.18.195/spotify-call-back'
     ],
 
 ];
