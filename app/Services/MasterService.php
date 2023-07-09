@@ -145,6 +145,7 @@ class MasterService {
     public function getSpotifyTrack(){
         $trackArray['track_uri'] = '';
         $spotifyUser = SpotifyUser::where('user_id', Auth::user()->id)->get()->toArray();
+        // echo '<pre>56';print_r($spotifyUser);die;
         if ($spotifyUser) {
             $client = new \GuzzleHttp\Client;
 
@@ -160,7 +161,7 @@ class MasterService {
                     'grant_type' => 'refresh_token'
                 ]
             ]);
-//            echo '<pre>';print_r(json_decode($getToken->getBody(), true));die;
+        //    echo '<pre>';print_r(json_decode($getToken->getBody(), true));die;
             $tokenArr = json_decode($getToken->getBody(), true);
             $token = $tokenArr['access_token'];
 
@@ -191,14 +192,17 @@ class MasterService {
 //                foreach ($val as $track) {
 //                $trackArray[$counter]['track_name'] = $track['name'];
 //                $trackArray[$counter]['track_link'] = $track['href'];
-                $trackArray['track_uri'] = $track['uri'];
+                $trackArray = $track['uri'];
 //                $trackArray[$counter]['duration'] = $duration;
                 $counter++;
 
 //                }
             }
+            $arr ['token'] = $token;
+            $arr ['track_uri'] = $trackArray;
+
         }
 
-        return $trackArray;
+        return $arr;
     }
 }

@@ -1880,10 +1880,15 @@ header .notification {
 .spotify-btn {
     position: absolute;
     top: 3px;
+    right: 40px;
+    z-index: 1;
+  }
+.spotify-pause-btn {
+    position: absolute;
+    top: 3px;
     right: 0px;
     z-index: 1;
   }
-
 .rating-xs {
     font-size: 18px;
 }

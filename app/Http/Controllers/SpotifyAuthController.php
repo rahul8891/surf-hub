@@ -19,6 +19,8 @@ class SpotifyAuthController extends Controller
     {
         $user = Socialite::driver('spotify')->user();
 
+        // echo "<pre>";print_r($user);die;
+
         if(!$user) {
             $SpotifyUser =  new SpotifyUser();
             $SpotifyUser->user_id = Auth::user()->id;
@@ -30,7 +32,18 @@ class SpotifyAuthController extends Controller
             //dd($this->comments);
             $SpotifyUser->save();
         } else {
-            $SpotifyUser = $user;
+            // $SpotifyUser = $user;
+
+            $SpotifyUser = SpotifyUser::updateOrCreate(
+                ['user_id' => Auth::user()->id],
+                [
+                 'spotify_user_id'=> $user->id,
+                 'token'=>$user->token,
+                 'refresh_token'=>$user->refreshToken,
+                 'created_at' => Carbon::now(),
+                 'updated_at' => Carbon::now()
+                ]
+             );
         }
 
 

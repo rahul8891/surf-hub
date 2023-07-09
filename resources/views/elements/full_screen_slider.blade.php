@@ -15,7 +15,17 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
         </div>
-
+        <div class="">
+            <button  class="btn spotify-btn" id='togglePlay' >
+                <img src="/img/listen-on-spotify-button.png" alt=""></img>
+            </button>
+            <button  class="btn spotify-pause-btn d-none" id='pause-song' >
+                <img src="/img/pause.png">
+            </button>
+            <button  class="btn spotify-pause-btn d-none" id='play-song' >
+                <img src="/img/play.png">
+            </button>
+        </div>
 
         <!-- Carousel wrapper -->
         <div class="slider demo full-screen-slider post-slider">
@@ -32,7 +42,7 @@
                 <div class="newsFeedImgVideoSlider" data-id="{{$posts->id}}">
                     @if(Auth::user())
                         @if(!empty($token))
-                            <button  class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></button>
+                            <!-- <button  class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></button> -->
                         @else
                             <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'>
                                 <picture>
@@ -118,68 +128,160 @@
         });
     }
 
+    const token = @json($token);
+    const track_uri = @json($trackArray['track_uri']);
     //// Play selected song
-    const play_song = async (uri) => {
-        console.log("Changing song");
-        let request_answer = fetch(
-            `https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
-            {
-                method: "PUT",
-                body: JSON.stringify({ uris: [uri] }),
-                headers: {
-                '   Content-Type': 'application/json',
-                    'Authorization': `Bearer ${access_token}`
-                },
-            }
-        ).then((data) => console.log(data));
-    };
+    
+
+    // window.onSpotifyWebPlaybackSDKReady = () => {
+    //     const token = @json($token);
+    //     const track_uri = @json($trackArray['track_uri']);
+    //     // Define the Spotify Connect device, getOAuthToken has an actual token
+    //     // hardcoded for the sake of simplicity
+    //     var player = new Spotify.Player({
+    //     name: 'A Spotify Web SDK Player',
+    //             getOAuthToken: callback => {
+    //             callback(token);
+    //             },
+    //             volume: 0.1
+    //     });
+    //     // Called when connected to the player created beforehand successfully
+    //     player.addListener('ready', ({ device_id }) => {
+    //         console.log('Ready with Device ID', device_id);
+    //         const play = ({
+    //         spotify_uri,
+    //             playerInstance: {
+    //                 _options: {
+    //                     getOAuthToken,
+    //                     id
+    //                 }
+    //             }
+    //         }) => {
+    //             getOAuthToken(access_token => {
+    //                 fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
+    //                     method: 'PUT',
+    //                     body: JSON.stringify({ uris: [spotify_uri] }),
+    //                     headers: {
+    //                         'Content-Type': 'application/json',
+    //                         'Authorization': `Bearer ${access_token}`
+    //                     },
+    //                 });
+    //             });
+    //         };
+
+    //         play({
+    //             playerInstance: player,
+    //             spotify_uri: track_uri,
+    //         });
+    //     });
+
+    //     // Connect to the player created beforehand, this is equivalent to
+    //     // creating a new device which will be visible for Spotify Connect
+    //     player.connect();
+    // };
+
+
+        
+
 
     window.onSpotifyWebPlaybackSDKReady = () => {
-        const token = @json($token);
-        const track_uri = @json($trackArray['track_uri']);
-        // Define the Spotify Connect device, getOAuthToken has an actual token
-        // hardcoded for the sake of simplicity
-        var player = new Spotify.Player({
-        name: 'A Spotify Web SDK Player',
-                getOAuthToken: callback => {
-                callback(token);
-                },
-                volume: 0.1
-        });
-        // Called when connected to the player created beforehand successfully
-        player.addListener('ready', ({ device_id }) => {
-            console.log('Ready with Device ID', device_id);
-            const play = ({
-            spotify_uri,
-                playerInstance: {
-                    _options: {
-                        getOAuthToken,
-                        id
-                    }
-                }
-            }) => {
-                getOAuthToken(access_token => {
-                    fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
-                        method: 'PUT',
-                        body: JSON.stringify({ uris: [spotify_uri] }),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${access_token}`
-                        },
-                    });
-                });
-            };
+        
+        const player = new Spotify.Player({
+            name: "Music Player",
+            getOAuthToken: (cb) => {
+            cb(token);
+            },
+            volume: 0.5,
+    });
 
-            play({
-                playerInstance: player,
-                spotify_uri: track_uri,
-            });
-        });
+  // Player Ready
+  player.addListener("ready", ({ device_id }) => {
+    console.log("Ready with Device ID", device_id);
 
-        // Connect to the player created beforehand, this is equivalent to
-        // creating a new device which will be visible for Spotify Connect
-        player.connect();
+    // After player is ready, change current device to this player
+    const connect_to_device = () => {
+      let change_device = fetch("https://api.spotify.com/v1/me/player", {
+        method: "PUT",
+        body: JSON.stringify({
+          device_ids: [device_id],
+          play: false,
+        }),
+        headers: new Headers({
+          Authorization: "Bearer " + token,
+        }),
+      }).then((response) => console.log(response));
     };
+    connect_to_device();
+  });
+
+  // Not Ready
+  player.addListener("not_ready", ({ device_id }) => {
+    console.log("Device ID has gone offline", device_id);
+  });
+
+  // Error Handling
+  player.addListener("initialization_error", ({ message }) => {
+    console.error(message);
+  });
+  player.addListener("authentication_error", ({ message }) => {
+    console.error(message);
+  });
+  player.addListener("account_error", ({ message }) => {
+    console.error(message);
+  });
+
+  // Start device connection
+  player.connect().then((success) => {
+    if (success) {
+      console.log("The Web Playback SDK successfully connected to Spotify!");
+    }
+  });
+
+  // Toggle Play Button
+//   document.getElementById("togglePlay").onclick = function () {
+//     player.togglePlay();
+//   };
+document.getElementById("togglePlay").onclick = function () {
+        console.log("Changing song");
+        let request_answer = fetch(
+            `https://api.spotify.com/v1/me/player/play`,
+            {
+                method: "PUT",
+                body: JSON.stringify({ uris: [track_uri] }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            }
+        ).then(() => {
+            document.getElementById("pause-song").classList.remove("d-none");
+            });
+    }
+
+    document.getElementById("pause-song").onclick = function () {
+        player.pause().then(() => {
+            document.getElementById("pause-song").classList.add("d-none");
+            document.getElementById("play-song").classList.remove("d-none");
+        });
+    }
+    document.getElementById("play-song").onclick = function () {
+        player.resume().then(() => {
+            document.getElementById("pause-song").classList.remove("d-none");
+            document.getElementById("play-song").classList.add("d-none");
+        });
+    }
+
+};
+
+
+// Play selected song
+
+
+
+
+
+
+
 
     // jQuery('.post-slider').slick('refresh');
 
@@ -243,5 +345,9 @@
                 jQuery(this).html(pausebutton);
             }
         });
+
+        // jQuery(document).on('click', '#togglePlay', function () {
+        //     console.log('hhhhhhhhhhhhh');
+        // });
     });
 </script>

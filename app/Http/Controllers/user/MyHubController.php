@@ -272,7 +272,9 @@ class MyHubController extends Controller {
             $token = '';
             $trackArray['track_uri'] = '';
             if (Auth::user()) {
-                $trackArray = $this->masterService->getSpotifyTrack();
+                $data = $this->masterService->getSpotifyTrack();
+                $trackArray['track_uri'] = $data['track_uri'];
+                $token = $data['token'];
             }
         } catch (\Exception $e) {
             throw ValidationException::withMessages([$e->getMessage()]);
