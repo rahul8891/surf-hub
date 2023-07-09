@@ -30,20 +30,20 @@ class AdminDashboard extends Controller
      */
     public function __construct(UserService $user,AdminUserService $users, PostService $posts,MasterService $masterService)
     {
- 	$this->user = $user;   
-        $this->users = $users;       
-        $this->posts = $posts;  
+ 	$this->user = $user;
+        $this->users = $users;
+        $this->posts = $posts;
         $this->masterService = $masterService;
         $this->customArray = config('customarray');
 
-    }   
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    {
         $totalUser = $this->users->getUserTotal();
         $totalPost = $this->posts->getPostTotal();
         $uploads = $this->posts->getUploads();
@@ -71,11 +71,6 @@ class AdminDashboard extends Controller
                 ->paginate(10);
         $requestSurfer = array();
         foreach ($postsList as $val) {
-//            $surferRequest = SurferRequest::select("*")
-//                    ->where("post_id", "=", $val['id'])
-//                    ->where("status", "=", 0)
-//                    ->get();
-
             $surferRequest = SurferRequest::where("post_id", "=", $val['id'])
                     ->where("user_id", "=", Auth::user()->id)
                     ->get();
@@ -94,7 +89,48 @@ class AdminDashboard extends Controller
         }
         return view('admin/dashboard.admin_feed', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches'));
     }
-    public function myHub(Request $request) {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function myHub($post_type = null, Request $request) {
+        $beach_name = "";
+        $post_type = (!empty($post_type))?$post_type:'all';
+        $urlData = (!empty($request->getQueryString()))?$request->getQueryString():"";
+        $params = $request->all();
+        $order = $request->input('order');
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $customArray = $this->customArray;
+        $userDetail = Auth::user()->user_profiles;
+
+        if (isset($post_type) && !empty($post_type)) {
+            $postsList = $myHubs = $this->posts->getAdminFilteredData($params, 'myhub', $post_type);
+        } else {
+            $postsList = $myHubs = $this->posts->getAdminFilteredData($params, 'myhub');
+        }
+
+        $beaches = $this->masterService->getBeaches();
+
+        if (!empty($request->input('local_beach_break_id'))) {
+            $bb = BeachBreak::where('id', $request->input('local_beach_break_id'))->first();
+            $beach_name = $bb->beach_name . ',' . $bb->break_name . '' . $bb->city_region . ',' . $bb->state . ',' . $bb->country;
+        }
+
+        if ($request->ajax()) {
+            $data = $request->all();
+            $page = $data['page'];
+            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches','page','urlData','post_type'))->render();
+            return response()->json(['html' => $view]);
+        }
+
+        return view('admin/dashboard.myhub', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches', 'post_type','urlData'));
+    }
+
+    /*public function myHub(Request $request) {
         $beach_name = "";
         $post_type = 'all';
         $params = $request->all();
@@ -120,8 +156,8 @@ class AdminDashboard extends Controller
         }
 
         return view('admin/dashboard.myhub', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches', 'post_type'));
-    }
-    
+    } */
+
     /**
      * search the specified resource from storage.
      *
@@ -129,7 +165,7 @@ class AdminDashboard extends Controller
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request)
-    {    
+    {
         $beach_name="";
         $params = $request->all();
 //        $from_date = date('Y-m-d H:i:s', strtotime('-'.$params["from_age"].' year'));
@@ -153,10 +189,10 @@ class AdminDashboard extends Controller
             $view = view('elements/searchdata', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name','beaches'))->render();
             return response()->json(['html' => $view]);
         }
-        
+
         return view('admin/dashboard.search', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name','beaches'));
     }
-    
+
     public function leftSideCounts(Request $request) {
 //        $data = $request->all();
         $userPostsUnknown = $this->posts->getPostUnknownByUserId();
@@ -177,8 +213,8 @@ class AdminDashboard extends Controller
 
         echo json_encode($fCounts);
     }
-    
-    
+
+
     /**
      * Show the form for creating a new resource.
      *

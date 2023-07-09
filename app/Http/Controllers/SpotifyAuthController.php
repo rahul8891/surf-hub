@@ -11,14 +11,17 @@ use Carbon\Carbon;
 class SpotifyAuthController extends Controller
 {
     public function redirectToProvider()
-{
-    return Socialite::driver('spotify')->scopes(['user-read-email user-read-private app-remote-control user-top-read user-read-currently-playing user-read-recently-played streaming app-remote-control user-read-playback-state user-modify-playback-state'])->redirect();
-}
+    {
+        return Socialite::driver('spotify')->scopes(['user-read-email user-read-private app-remote-control user-top-read user-read-currently-playing user-read-recently-played streaming app-remote-control user-read-playback-state user-modify-playback-state'])->redirect();
+    }
 
-public function handleProviderCallback()
-{
-    $user = Socialite::driver('spotify')->user();
-//     echo '<pre>';    print_r($user);die;
+    public function handleProviderCallback()
+    {
+        $user = Socialite::driver('spotify')->user();
+
+        // echo "<pre>";print_r($user);die;
+
+        if(!$user) {
             $SpotifyUser =  new SpotifyUser();
             $SpotifyUser->user_id = Auth::user()->id;
             $SpotifyUser->spotify_user_id = $user->id;
@@ -28,10 +31,22 @@ public function handleProviderCallback()
             $SpotifyUser->updated_at = Carbon::now();
             //dd($this->comments);
             $SpotifyUser->save();
-            
-            return redirect()->intended('dashboard');
-   
-    
-    // $user->token;
-}
+        } else {
+            // $SpotifyUser = $user;
+
+            $SpotifyUser = SpotifyUser::updateOrCreate(
+                ['user_id' => Auth::user()->id],
+                [
+                 'spotify_user_id'=> $user->id,
+                 'token'=>$user->token,
+                 'refresh_token'=>$user->refreshToken,
+                 'created_at' => Carbon::now(),
+                 'updated_at' => Carbon::now()
+                ]
+             );
+        }
+
+
+        return redirect()->intended('dashboard');
+    }
 }

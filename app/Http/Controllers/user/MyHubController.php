@@ -18,8 +18,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Services\AdminUserService;
 use Carbon\Carbon;
 use App\Models\Upload;
-use File,
-    URL;
+use File, URL, Route;
 use FFMpeg;
 use FFMpeg\Format\Video\X264;
 use FFMpeg\Filters\Video\VideoFilters;
@@ -49,6 +48,7 @@ class MyHubController extends Controller {
      */
     public function index($post_type = null, Request $request) {
         $beach_name = "";
+        $urlData = (!empty($request->getQueryString()))?$request->getQueryString():"";
         $params = $request->all();
         $order = $request->input('order');
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
@@ -73,11 +73,11 @@ class MyHubController extends Controller {
         if ($request->ajax()) {
             $data = $request->all();
             $page = $data['page'];
-            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches','page'))->render();
+            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches','page','urlData','post_type'))->render();
             return response()->json(['html' => $view]);
         }
 
-        return view('user.myhub', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches', 'post_type'));
+        return view('user.myhub', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches', 'post_type','urlData'));
     }
 
     /**
@@ -108,14 +108,14 @@ class MyHubController extends Controller {
         if ($request->ajax()) {
             $data = $request->all();
             $page = $data['page'];
-            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches','page'))->render();
+            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches','page', 'post_type'))->render();
             return response()->json(['html' => $view]);
         }
 
         return view('user.myhub', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches', 'post_type'));
     }
 
-    /**11
+    /**
      * Display a listing of post with sorting.
      *
      * @return \Illuminate\Http\Response
@@ -222,39 +222,68 @@ class MyHubController extends Controller {
             $view = view('elements/edit_image_upload', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'users', 'beach_name', 'breaks', 'breakId'))->render();
             return response()->json(['html' => $view]);
         }
-        // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));    
+        // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));
     }
 
-    public function getPostFullScreen($id, Request $request) {
+    public function getPostFullScreen($id, $type, Request $request) {
+        $param = $request->all();
+
         try {
-            $postsList = Post::select('posts.*')
-                    ->join('uploads', 'uploads.post_id', '=', 'posts.id')
-//                ->where('post.is_deleted', '0')   
-                    ->where('posts.id', '<=', $id)
-                    ->where('parent_id', '0')
-                    ->where(function ($query) {
-                        $query->where('uploads.image', '<>', '')
-                        ->orWhere('uploads.video', '<>', '');
-                    })
-                    ->orderBy('posts.created_at', 'DESC')
-                    ->paginate(100);
+            if($type == 'search') {
+                $postsList = $this->postService->getFilteredData($param, $type, '', 20);
+            } elseif($type == 'feed') {
+                $postsList = $this->postService->getFeedFilteredList($param, 20);
+            } elseif(str_contains($type, 'myhub')) {
+                $post_type = explode('-', $type);
+                $postsList = $this->postService->getFilteredData($param, $post_type[0], $post_type[1], 20);
+            } elseif($type == 'surfer-profile') {
+                $postsList = Post::select('posts.*')
+                        ->join('uploads', 'uploads.post_id', '=', 'posts.id')
+                        ->where('posts.is_deleted', '0')
+                        ->where('posts.id', '<=', $id)
+                        ->where('parent_id', '0')
+                        ->where(function ($query) {
+                            $query->where('uploads.image', '<>', '')
+                            ->orWhere('uploads.video', '<>', '');
+                        })
+                        ->orderBy('posts.created_at', 'DESC')
+                        ->get();
+            } elseif($type == 'surfer-upload') {
+                $postsList = Post::select('posts.*')
+                        ->join('uploads', 'uploads.post_id', '=', 'posts.id')
+                        ->where('posts.is_deleted', '0')
+                        ->where('posts.id', '<=', $id)
+                        ->where('parent_id', '0')
+                        ->where(function ($query) {
+                            $query->where('uploads.image', '<>', '')
+                            ->orWhere('uploads.video', '<>', '');
+                        })
+                        ->orderBy('posts.created_at', 'DESC')
+                        ->get();
+            } elseif($type == 'home') {
+                $postsList =  $this->posts->whereNull('deleted_at')
+                                ->where('is_feed', '1')
+                                ->where('is_deleted','0')
+                                ->orderBy('id','DESC')
+                                ->get();
+            }
+
             $trackArray = array();
             $token = '';
             $trackArray['track_uri'] = '';
             if (Auth::user()) {
-                $trackArray = $this->masterService->getSpotifyTrack();
+                $data = $this->masterService->getSpotifyTrack();
+                $trackArray['track_uri'] = $data['track_uri'];
+                $token = $data['token'];
             }
-//            echo '<pre>';print_r($trackArray);die;
         } catch (\Exception $e) {
-//            echo '<pre>';print_r($e->getMessage());die;  
             throw ValidationException::withMessages([$e->getMessage()]);
         }
 
         if ($request->ajax()) {
-            $view = view('elements/full_screen_slider', compact('postsList', 'trackArray', 'token'))->render();
+            $view = view('elements/full_screen_slider', compact('postsList', 'id', 'trackArray', 'token'))->render();
             return response()->json(['html' => $view]);
         }
-        // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));    
     }
 
     /**

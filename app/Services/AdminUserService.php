@@ -160,7 +160,7 @@ class AdminUserService {
 
         $userArray = $this->beach_break
                 ->where('beach_breaks.flag','1')
-                ->orderBy('beach_breaks.id', 'DESC');
+                ->orderBy('beach_breaks.beach_name', 'ASC');
         if (isset($params['user_type']) && !empty($params['user_type'])) {
             $userArray->where('users.user_type', $params['user_type']);
         }
@@ -189,8 +189,8 @@ class AdminUserService {
             $userArray->where('user_profiles.last_name', 'LIKE',  '%' . $params['lName'] .'%');
         }
         
-//         dd($userArray->toSql());
-        return $userArray->paginate(10);
+        // dd($userArray->toSql());
+        return $userArray->get();
     }
 
     /**

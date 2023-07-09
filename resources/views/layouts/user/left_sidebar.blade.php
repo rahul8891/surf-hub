@@ -11,7 +11,7 @@
                     {{ucwords(substr(Auth::user()->user_profiles->first_name,0,1))}}{{ucwords(substr(Auth::user()->user_profiles->last_name,0,1))}}
                 </div>
                 @endif
-                <span class="notification">0</span>
+                <span class="notification notification-count">0</span>
             </div>
             <div class="my-name">{{ ucwords(Auth::user()->user_profiles->first_name .' '.Auth::user()->user_profiles->last_name) }}</div>
             <div class="my-comp">Surfhub <span class="blue-txt">$2540</span> Earn</div>
@@ -34,9 +34,9 @@
                 <img src="/img/posts.png" alt="posts">
                  <a class="" href="{{ route('myhubs', 'posts') }}">Posts - <span class="blue-txt num" id="posts"> </span></a>
             </div>
-            <div class="profile-row {{ userActiveMenu('upload') }}">
+            <div class="profile-row {{ ((userActiveMenu('myhubs') == 'active') && ($post_type == 'upload'))?'active':'' }}">
                 <img src="/img/upload.png" alt="Uploads">
-                 <a class="" href="{{ route('profile') }}">Uploads - <span class="blue-txt num" id="uploads"> </span></a>
+                 <a class="" href="{{ route('myhubs', 'upload') }}">Uploads - <span class="blue-txt num" id="uploads"> </span></a>
             </div>
             <div class="profile-row {{ userActiveMenu('followRequests') }}">
                 <img src="/img/follow-request.png" alt="Follow Requests">
@@ -52,7 +52,7 @@
             </div>
             <div class="profile-row">
                 <form method="POST" action="{{ route('logout') }}">
-                    
+
                     @csrf
                     <a href="#{{ route('logout') }}" onclick="event.preventDefault();this.closest('form').submit();"><img src="/img/logout.png" alt="Sign Out" class="mr-2"><span>Sign Out</span></a>
                 </form>
@@ -64,22 +64,3 @@
         <img src="/img/advertisement1.png" alt="advertisement">
     </div>
 </div>
-<script>
-                                    $(document).ready(function () {
-                                        $.ajax({
-                                            type: "GET",
-                                            url: "/follow-counts",
-                                            dataType: "json",
-                                            success: function (jsonResponse) {
-                                                $('#follwers').html(jsonResponse['follwers']);
-                                                $('#follwing').html(jsonResponse['follwing']);
-                                                $('#followRequest').html(jsonResponse['follwerRequest']);
-                                                $('#posts').html(jsonResponse['posts']);
-                                                $('#uploads').html(jsonResponse['uploads']);
-                                                $('#surferRequest').html(jsonResponse['surferRequest']);
-                                                $('#notification-count').html(jsonResponse['notification']);
-//                setInterval(myTimerUserMessage, 4000);
-                                            }
-                                        });
-                                    });
-</script>

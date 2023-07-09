@@ -47,11 +47,12 @@ class WelcomeFeedController extends Controller
                 // admin not allow to access this page
                 return Redirect::to('/admin/dashboard/index')->withErrors('Sorry, You Are Not Authorized to Access This Page');
             }else{
-                
+
                 // return Logged-in user to dashbord
                 return Redirect::to('/dashboard');
             }
         }
+
         $customArray = $this->customArray;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId(1);
@@ -62,26 +63,26 @@ class WelcomeFeedController extends Controller
             $view = view('elements/welcomedata',compact('customArray','postsList','countries','states','beaches'))->render();
             return response()->json(['html' => $view]);
         }
-        
+
         return view('welcome', compact('customArray','postsList','countries','states','beaches'));
     }
 
     public function privacy(){
         $pages = new Page();
-        $pages = $pages->where('alias','privacy')->first();      
+        $pages = $pages->where('alias','privacy')->first();
         return view('static-pages.privacy',compact('pages'));
     }
 
     public function terms(){
         $pages = new Page();
-        $pages = $pages->where('alias','terms')->first();      
+        $pages = $pages->where('alias','terms')->first();
         return view('static-pages.terms',compact('pages'));
     }
 
 
     public function faq(){
         $pages = new Page();
-        $pages = $pages->where('alias','help')->first();      
+        $pages = $pages->where('alias','help')->first();
         return view('static-pages.faq',compact('pages'));
     }
 
@@ -89,9 +90,9 @@ class WelcomeFeedController extends Controller
     public function contact(){
         return view('static-pages.contact');
     }
-    
+
     public function query_submit(Request $request){
-        
+
         $input= $request->all();
         $rules = array (
                 'name' => ['required','string','min:3'],
@@ -102,16 +103,16 @@ class WelcomeFeedController extends Controller
 
         $validator = Validator::make($input, $rules);
 
-        
-        if($validator -> passes()){
-            $data=array(
+
+        if($validator->passes()){
+            $data = array(
                 'name'=>$request->name,
                 'email'=>$request->email,
                 'subject'=>$request->subject,
                 'description'=>$request->description,
                 );
 
-            Mail::to('contactus@surfhub.net.au')
+            Mail::to('contactus@surfhub.au')
             ->send(new sendMail($data));
 
             return redirect()->back()->with('success','Thanks for Contacting Us, Feedback Submitted!');

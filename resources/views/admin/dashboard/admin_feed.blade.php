@@ -8,8 +8,8 @@
                 @include('layouts.admin.admin_left_sidebar')
             </div>
             <div class="middle-content" id="post-data">
-                
-                
+
+
                 @if (isset($postsList) && empty($postsList[0]))
                 <div class="post alert text-center alert-dismissible py-5" role="alert">
                     {{ ucWords('no matches found') }}
@@ -32,7 +32,7 @@
                                 @elseif($posts->user->user_type == 'SURFER CAMP')
                                 <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
                                 @endif
-                                
+
                                 @else
                                 <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
                                 @endif
@@ -49,7 +49,7 @@
                                 <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
                                 @endif
-                                <div>     
+                                <div>
                                     @if($posts->user_id != Auth::user()->id)
                                     @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
                                     <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
@@ -65,40 +65,30 @@
                                     </p>
                                     @endif
                                     <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
-                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
+                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                                 </div>
                             </div>
                         </div>
                         @if(!empty($posts->upload->image))
-                        <div class="newsFeedImgVideo">
-                            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
-                        </div>
+                            <div class="newsFeedImgVideo">
+                                <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                            </div>
                         @elseif(!empty($posts->upload->video))
-                        @if (!File::exists($posts->upload->video))
-                        <div class="newsFeedImgVideo">
-                            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-                            </video>
-                        </div>    
-                        @else
-                        <div class="newsFeedImgVideo">
-                            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-                            </video>
-                        </div>
-                        @endif
+                            <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                                <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                            </div>
                         @endif
                         <div class="user-bottom-options">
                             <div class="rating-flex">
                                 <div class="rating-flex-child">
-                                    <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">     
+                                    <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">
                                     <span class="avg-rating">{{ round(floatval($posts->averageRating)) }} (<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span>)</span>
-                                </div>                       
-                                @if($posts->is_feed == 1)    
-                            <div class="highlight">
-                                <a class="remove-from-feed" data-id="{{ $posts->id }}">Remove</a>
-                            </div>
-                            @endif
+                                </div>
+
+                                    <div class="highlight">
+                                        <a class="remove-from-feed" data-id="{{ $posts->id }}">Remove</a>
+                                    </div>
+
                             </div>
                             <div class="right-options">
                                 @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'] && empty($requestSurfer[$posts->id]))
@@ -166,7 +156,7 @@
                                                 @endif
                                                 <span>{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
                                             </div>
-                                            @endforeach 
+                                            @endforeach
                                         </div>
                                         @endif
                                         <div>
@@ -187,7 +177,7 @@
 
                                     <div class="dropdown-menu">
                                         <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
-                                            @csrf    
+                                            @csrf
                                             <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
                                             <h6 class="text-center fw-bold">Report Content</h6>
 

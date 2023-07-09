@@ -1,13 +1,13 @@
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
 <form method="POST" id="register" name="register-surfer" action="{{ route('register') }}"
       enctype="multipart/form-data">
     @csrf
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="upload-photo">
                 <div>
                     <img src="" id="category-img-tag" alt="">
-                    <input type="file" accept=".png, .jpg, .jpeg" id="exampleInputFile" name="profile_photo_name">
+                    <input type="file" accept=".png, .jpg, .jpeg" required id="exampleInputFile" name="profile_photo_name">
                     <input type="hidden" accept=".png, .jpg, .jpeg" id="imagebase64" name="profile_photo_blob" />
                 </div>
                 <span class="align-middle d-inline-block ms-3">Upload Profile Pic</span>
@@ -27,7 +27,7 @@
             <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
             <div class="white-bg user-type-icon">
                 <select class="form-select">
                     <option selected>Select User Type</option>
@@ -36,7 +36,7 @@
                     <option value="3">Three</option>
                 </select>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="row">
         <div class="col-md-6">
@@ -137,7 +137,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 dropdownContainer">
             <input type="text" value="{{ old('local_beach_break')}}"
                    name="local_beach_break" data-beachID=""
                    placeholder="Local Beach"
@@ -168,7 +168,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-6">
             <input type="text" class="form-control paypal-icon" placeholder="Paypal" name="paypal"
                    autocomplete="paypal">
@@ -176,7 +176,7 @@
             <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
-    </div>
+    </div> -->
     <div class="row">
         <div class="col-md-6">
             <input type="password" class="form-control password-icon" placeholder="Password" id="password2" name="password" autocomplete="new-password"
@@ -207,3 +207,4 @@
     </div>
     <div class="sign-in-anchor">Already have an account? <a href="/login" class="blue-txt">Sign In</a></div>
 </form>
+

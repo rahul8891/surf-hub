@@ -27,14 +27,15 @@ use Closure;
 use Redirect;
 use Session;
 use File;
-use DB,
-    URL;
+use DB, URL;
 use FFMpeg;
 use FFMpeg\Format\Video\X264;
 use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Facades\Storage;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use Config;
+use PreSignedUrl;
 
 class UserPostController extends Controller {
 
@@ -68,24 +69,6 @@ class UserPostController extends Controller {
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index() {
-        
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create() {
-        //
-    }
-
-    /**
      * Show the form for creating a new comment.
      *
      * @return \Illuminate\Http\Response
@@ -99,7 +82,7 @@ class UserPostController extends Controller {
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to current page.
-                //return response()->json(['error'=>$validate->errors()]); 
+                //return response()->json(['error'=>$validate->errors()]);
                 return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors('The comment field is required.');
             } else {
                 $result = $this->posts->saveComment($data, $message);
@@ -163,96 +146,20 @@ class UserPostController extends Controller {
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    /* public function store(Request $request)
-      {
-      $postArray = [];
-
-      try{
-      $data = $request->all();
-      if(!empty($data['other_surfer'])){
-      $data['surfer'] = $data['other_surfer'];
-      } elseif (isset($data['surfer']) && ($data['surfer'] == 'Me')) {
-      $data['surfer'] = Auth::user()->user_name;
-      }
-
-      $imageArray = (isset($data['files'][0]) && !empty($data['files'][0]))?$data['files']:[];
-      $videoArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];
-
-      $postArray = array_filter(array_merge($imageArray, $videoArray));
-
-      $rules = array(
-      'post_type' => ['required'],
-      'user_id' => ['required'],
-      'surf_date' => ['required'],
-      'wave_size' => ['required'],
-      'surfer' => ['required'],
-      'country_id' => ['required'],
-      );
-      $validate = Validator::make($data, $rules);
-      if ($validate->fails()) {
-      // If validation falis redirect back to register.
-      return response()->json(['error'=>$validate->errors()]);
-      }else {
-      if(!empty($postArray)) {
-      $fileData = [];
-      foreach ($postArray as $value) {
-      $fileName = "";
-
-      $fileType = explode('/', $value->getMimeType());
-
-      if($fileType[0] == 'image'){
-      $destinationPath = public_path('storage/images/');
-      } elseif ($fileType[0] == 'video') {
-      $destinationPath = public_path('storage/fullVideos/');
-      }
-
-      $timeDate = strtotime(Carbon::now()->toDateTimeString());
-      $filenameWithExt= $value->getClientOriginalName();
-      $extension = $value->getClientOriginalExtension();
-      while (in_array($timeDate, $fileData)) {
-      $timeDate = $timeDate . 1;
-      }
-
-      $fileData[] = $timeDate;
-      $fileName = $timeDate.'.'.$extension;
-      $value->move($destinationPath, $fileName);
-
-      $result = $this->posts->savePost($data, $fileType[0], $fileName, $message);
-      }
-      } else {
-      $result = $this->posts->savePost($data, '', '', $message);
-      }
-
-      if($result){
-      return Redirect()->route('myhub')->withSuccess($message);
-      }else{
-      return Redirect()->route('myhub')->withErrors($message);
-      }
-      }
-      }catch (\Exception $e) {
-      throw ValidationException::withMessages([$e->getMessage()]);
-      }
-      } */
     public function store(Request $request) {
         try {
             $data = $request->all();
-//    echo "<pre>";print_r($data);die;
+
             if (!empty($data['other_surfer'])) {
                 $data['surfer'] = $data['other_surfer'];
             } elseif (isset($data['surfer']) && ($data['surfer'] == 'Me')) {
                 $data['surfer'] = Auth::user()->user_name;
             }
 
-            $postArray = (isset($data['files']) && !empty($data['files'])) ? $data['files'] : [];
-//            $videoArray$postArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];
-//            $postArray = array_filter(array_merge($imageArray, $videoArray));
-//            echo '<pre>';print_r($postArray);die;
+            $imageArray["images"] = (isset($data['imagesHid_input'][0]) && !empty($data['imagesHid_input'][0]))?json_decode($data['imagesHid_input'][0]):[];
+            $videoArray["videos"] = (isset($data['videosHid_input'][0]) && !empty($data['videosHid_input'][0]))?json_decode($data['videosHid_input'][0]):[];
+            $postArray = array_filter(array_merge($imageArray, $videoArray));
+
             $rules = array(
                 'post_type' => ['required'],
                 'user_id' => ['required'],
@@ -266,46 +173,27 @@ class UserPostController extends Controller {
                 // If validation falis redirect back to register.
                 return response()->json(['error' => $validate->errors()]);
             } else {
-                if (!empty($postArray)) {
-                    $fileData = [];
-                    foreach ($postArray as $value) {
-
-                        $fileType = explode('/', $value->getMimeType());
-
-                        if ($fileType[0] == 'image') {
-                            $fileFolder = 'images/' . $request->user_id;
-                            // $destinationPath = public_path('storage/images/');
-                        } elseif ($fileType[0] == 'video') {
-                            $fileFolder = 'videos/' . $request->user_id;
-                            // $destinationPath = public_path('storage/fullVideos/');
+                // dd($data);
+                if (!empty($postArray["images"]) || !empty($postArray["videos"])) {
+                    if (!empty($postArray["images"])) {
+                        foreach ($postArray["images"] as $value) {
+                            $result = $this->posts->savePost($data, "image", $value, $message);
                         }
-
-                        $path = Storage::disk('s3')->put($fileFolder, $value);
-                        $filePath = Storage::disk('s3')->url($path);
-
-                        $fileArray = explode("/", $filePath);
-                        $filename = end($fileArray);
-
-                        // $timeDate = strtotime(Carbon::now()->toDateTimeString());
-                        // $filenameWithExt= $value->getClientOriginalName();
-                        // $extension = $value->getClientOriginalExtension();
-                        // while (in_array($timeDate, $fileData)) {
-                        //     $timeDate = $timeDate . 1;
-                        // }
-                        // $fileData[] = $timeDate;
-                        // $fileName = $timeDate.'.'.$extension;
-                        // $value->move($destinationPath, $fileName);
-
-                        $result = $this->posts->savePost($data, $fileType[0], $filename, $message);
+                    }
+                    if (!empty($postArray["videos"])) {
+                        foreach ($postArray["videos"] as $value) {
+                            $result = $this->posts->savePost($data, "video", $value, $message);
+                        }
                     }
                 } else {
                     $result = $this->posts->savePost($data, '', '', $message);
                 }
-
                 if ($result) {
-                    return Redirect()->route('myhub')->withSuccess($message);
+                    // return Redirect()->route('myhub')->withSuccess($message);
+                    return json_encode(array('message' => 'Post has been upload successfully'));
                 } else {
-                    return Redirect()->route('myhub')->withErrors($message);
+                    return json_encode(array('message' => 'Error'));
+//                    return Redirect()->route('myhub')->withErrors($message);
                 }
             }
         } catch (\Exception $e) {
@@ -338,7 +226,7 @@ class UserPostController extends Controller {
                     foreach ($postArray as $value) {
 
                         $fileType = explode('/', $value->getMimeType());
-                        
+
                         if ($fileType[0] == 'image') {
                             $fileFolder = 'images/' . Auth::user()->id;
                             // $destinationPath = public_path('storage/images/');
@@ -382,17 +270,17 @@ class UserPostController extends Controller {
             throw ValidationException::withMessages([$e->getMessage()]);
         }
     }
-    
+
     public function publishAdvert(Request $request) {
         try {
             $data = $request->all();
-                        
+
                         if (isset($data['post_id']) && $data['post_id']) {
                             $advertPost = AdvertPost::where('post_id', $data['post_id'])->first();
                             $advertPost->preview_ad = 0;
                             $advertPost->save();
-                        } 
-                        return Redirect()->route('payment', Crypt::encrypt($data['post_id']))->withSuccess('Advertisment has been published successfully!');     
+                        }
+                        return Redirect()->route('payment', Crypt::encrypt($data['post_id']))->withSuccess('Advertisment has been published successfully!');
         } catch (\Exception $e) {
             throw ValidationException::withMessages([$e->getMessage()]);
         }
@@ -521,12 +409,12 @@ class UserPostController extends Controller {
             $result = $this->posts->surferRequest(Crypt::decrypt($id), $message);
             if ($result) {
 //                echo '<pre>';            print_r($result);die;
-                return redirect()->route('dashboard')->withSuccess($result);
+                return true;
             } else {
-                return redirect()->route('dashboard')->withErrors($message);
+                return false;
             }
         } catch (\Exception $e) {
-            return redirect()->route('dashboard')->withErrors($e->getMessage());
+            return false;
         }
     }
 
@@ -539,18 +427,17 @@ class UserPostController extends Controller {
     public function acceptRejectRequest($id, $type) {
         try {
             $request_id = Crypt::decrypt($id);
-            $surferRequest = SurferRequest::select("*")->where("id", "=", $request_id)->get()->toArray();
-            foreach ($surferRequest as $res) {
-                $userName = User::select("user_name")->where("id", "=", $res['user_id'])->get();
-            }
-//            echo '<pre>';            print_r($userName);die;
+            $surferRequest = SurferRequest::where("id", $request_id)->first();
+
+            $userName = User::select("user_name")->where("id", "=", $surferRequest->user_id)->first();
+
             if ($type == 'accept') {
                 SurferRequest::where(['id' => $request_id])
                         ->update(['status' => 1]);
-                foreach ($userName as $uu) {
-                    $result = Post::where(['id' => $surferRequest[0]['post_id']])
-                            ->update(['surfer' => $uu['user_name']]);
-                }
+
+                $result = Post::where(['id' => $surferRequest->post_id])
+                        ->update(['surfer' => $userName->user_name]);
+
                 $message = 'Surfer request accepted';
             }
             if ($type == 'reject') {
@@ -559,7 +446,6 @@ class UserPostController extends Controller {
                 $message = 'Surfer request rejected';
             }
 
-//            echo '<pre>';            print_r($data);die;
             if ($result) {
                 return redirect()->route('surferRequestList')->withSuccess($message);
             } else {
@@ -624,6 +510,7 @@ class UserPostController extends Controller {
         $countries = $this->masterService->getCountries();
         $customArray = $this->customArray;
         $postData = Post::where('id', $post_id)->first();
+        // dd($post_id);
         $currentUserCountryId = UserProfile::where('user_id', $postData->user_id)->pluck('country_id')->first();
 
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
@@ -633,6 +520,29 @@ class UserPostController extends Controller {
     public function updateNotificationCountStatus(Request $request) {
         $data = $request->all();
         $result = $this->posts->updateNotificationCountStatus($data);
+        if ($result) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'fails'));
+        }
+    }
+
+    public function updateAllNotification() {
+        $result = $this->posts->updateAllNotification();
+        if ($result) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'fails'));
+        }
+    }
+
+    /*
+     *Function use to update the notication count once read
+     *
+     */
+    public function updateNotificationCount(Request $request) {
+        $data = $request->all();
+        $result = $this->posts->updateNotificationCount($data['id']);
         if ($result) {
             echo json_encode(array('status' => 'success'));
         } else {
@@ -742,12 +652,21 @@ class UserPostController extends Controller {
 //        echo '<pre>'; print_r($postsList);die;
         $url = url()->current();
         $usersList = $this->masterService->getAllUsers();
+//        dd($presignedUrl);
 
-        if ($request->ajax()) {
-            $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url'))->render();
-            return response()->json(['html' => $view]);
-        }
         return view('user.upload', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches'));
+    }
+    public function getPresignedUrl(Request $request) {
+
+        $data = $request->all();
+
+        $key = $data['filepath'];
+        $type = $data['fileType'];
+
+        $presignedUrl = PreSignedUrl::getPreSignedUrl($key, $type);
+
+        return response()->json($presignedUrl);
+
     }
 
 }

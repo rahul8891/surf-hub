@@ -1,13 +1,13 @@
 <?php
 use App\Providers\RouteServiceProvider;
 use Laravel\Fortify\Features;
-return [   
-    
+return [
+
     /**********************************************************************************************************
      *                                  Enum Data Type
      **********************************************************************************************************/
-    // User Type 
-     'userType'=>[
+    // User Type
+    'userType'=>[
         'ADMIN'=>'ADMIN',
         'USER'=>'USER',
         'PHOTOGRAPHER'=>'PHOTOGRAPHER',
@@ -15,8 +15,8 @@ return [
         'ADVERTISEMENT'=>'ADVERTISEMENT'
     ],
 
-    
-     // User status    
+
+     // User status
     'status'=>[
         'ACTIVE'=>'ACTIVE',
         'PENDING'=>'PENDING',
@@ -30,19 +30,19 @@ return [
     ],
 
     // User accountType
-    'accountType'=>[     
+    'accountType'=>[
         'PUBLIC'=>'Public',
         'PRIVATE'=>'Private'
     ],
 
     // Post post_type
-    'post_type'=>[        
-        'PRIVATE'=>'MyHub',
+    'post_type'=>[
+        'PRIVATE'=>'MyHub Only',
         'PUBLIC'=>'MyHub & Post'
     ],
-    
+
     // Gender type
-    'gender_type'=>[        
+    'gender_type'=>[
         '1'=>'Male',
         '2'=>'Female',
         '3'=>'Other',
@@ -58,40 +58,40 @@ return [
         '6'=>'13-16 FT',
         '7'=>'17 FT+',
     ],
-    
+
     // BOARD TYPE drop down menu
     'board_type'=>[
-        'SHORTBOARD'=>'Shortboard', 
-        'GUN'=>'Gun', 
-        'LONGBOARD'=>'Longboard', 
-        'BODYBOARD'=>'Bodyboard', 
-        'KNEEBOARD'=>'Kneeboard', 
+        'SHORTBOARD'=>'Shortboard',
+        'GUN'=>'Gun',
+        'LONGBOARD'=>'Longboard',
+        'BODYBOARD'=>'Bodyboard',
+        'KNEEBOARD'=>'Kneeboard',
         'SKIMBOARD'=>'Skimboard',
         'SUP'=>'SUP',
     ],
 
     // FIN SET UP drop down menu
     'fin_set_up'=>[
-        'SINGLE FIN'=>'Single Fin', 
-        'TWIN FIN'=>'Twin Fin', 
-        'THRUSTER'=>'Thruster', 
-        'QUAD BONZA'=>'Quad Bonza', 
+        'SINGLE FIN'=>'Single Fin',
+        'TWIN FIN'=>'Twin Fin',
+        'THRUSTER'=>'Thruster',
+        'QUAD BONZA'=>'Quad Bonza',
         'FINLESS'=>'Finless'
     ],
 
 
     // Optional Info drop down menu
     'optional'=>[
-        'FLOATER'=>'Floater', 
-        'DROP_IN'=>'Drop In', 
-        'CUTBACK'=>'Cutback', 
-        'AIR'=>'Air', 
-        'BARREL_ROLL'=>'Barrel', 
+        'FLOATER'=>'Floater',
+        'DROP_IN'=>'Drop In',
+        'CUTBACK'=>'Cutback',
+        'AIR'=>'Air',
+        'BARREL_ROLL'=>'Barrel',
         'SNAP'=>'Snap',
         '360'=>'360',
         'WIPEOUT'=>'Wipeout',
     ],
-    
+
     'surfer'=>[
         'ME'=>'Me',
         'OTHERS'=>'Others',
@@ -101,20 +101,20 @@ return [
      /**********************************************************************************************************
      *                                  Global Access Data
      **********************************************************************************************************/
-    
+
     // image storage path
     'image_path'=>'/storage/images',
 
-    // Admin dashboard redirect 
+    // Admin dashboard redirect
     'adminhome' => RouteServiceProvider::ADMINHOME,
-    
-    // photographer dashboard redirect 
+
+    // photographer dashboard redirect
     'photographerhome' => RouteServiceProvider::PHOTOGRAPHER_HOME,
-    
-    // advertiser dashboard redirect   
+
+    // advertiser dashboard redirect
     'advertiserhome' => RouteServiceProvider::ADVERTISER_HOME,
-    
-    // surfer camp dashboard redirect 
+
+    // surfer camp dashboard redirect
     'surfercamphome' => RouteServiceProvider::SURFERCAMP_HOME,
 
     // Site Title for user and admin
@@ -122,14 +122,14 @@ return [
         'admin'=>'Surf Hub Admin',
         'user'=>'Surf Hub'
     ],
-    
-    
-    
+
+
+
 
     /****************************************************************************************************
      *                                              Error/Succcess Message
      *****************************************************************************************************/
-    
+
      'common'=>[
         'unauthorized'=>'You Are Not Authorized to Access This Page',
         'unauthorizedType'=>'You Are Not Authorized',
@@ -148,7 +148,7 @@ return [
         'MODEL_NOT_FOUND'=>'Requested entity does not exists!',
         'NO_FILE_SELECTED'=> 'Please select a file to upload!',
         'NO_RECORDS'=> 'No record found!',
-        'UPDATE_SUCCESS'=> 'updated successfully.',       
+        'UPDATE_SUCCESS'=> 'updated successfully.',
      ],
 
     'error'=>[
@@ -158,7 +158,7 @@ return [
         "DEFAULT_ERROR"=> "Something went wrong!",
         "MODEL_ERROR"=>"Model not found",
     ],
-     
+
     'success'=>[
         'UPDATE_SUCCESS'=>'Record has been successfully updated',
         'IMAGE_UPDATE_SUCCESS'=>'Profile Image has been successfully updated'

@@ -155,15 +155,14 @@ class UserController extends Controller {
         $beachData = BeachBreak::where('id',$user->user_profiles->local_beach_break_id)->get()->toArray();
         $beach = $beachData[0]['beach_name'];
         }
-//        echo '<pre>';dump($beach[0]['beach_name']);die;
-//        foreach ($user as $v) {
-//        }
+
+        // dd($user);
         if($user->user_type == 'USER') {
         return view('user.edit_surfer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','board_type','beach'));
-            
+
         } elseif ($user->user_type == 'PHOTOGRAPHER') {
         return view('user.edit_photographer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','beach'));
-        
+
         } elseif ($user->user_type == 'SURFER CAMP') {
         return view('user.edit_resort_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','beach'));
         } elseif ($user->user_type == 'ADVERTISEMENT') {
@@ -174,7 +173,7 @@ class UserController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request    
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function storeProfile(Request $request) {
@@ -183,16 +182,10 @@ class UserController extends Controller {
         Validator::make($data, [
             'first_name' => ['required', 'min:3', 'string'],
             'last_name' => ['required', 'min:3', 'string'],
-//            'user_name' => ['required', 'string', 'min:5', 'alpha_dash'],
-//            'email' => ['required', 'string', 'email:rfc,dns', 'max:255'],
             'phone' => ['required'],
-//            'language' => ['required', 'string'],
-            'country_id' => ['required', 'numeric'],
-//            'account_type' => ['required', 'string'],
-            'paypal' => ['required', 'string'],
-//            'local_beach_break' => ['required', 'string'],         
+            'country_id' => ['required', 'numeric']
         ])->validate();
-//        
+
         $result = $this->users->updateUserProfile($data, $message,$user_id);
         if ($result) {
             return Redirect::to('dashboard')->withSuccess($message);
@@ -256,12 +249,12 @@ class UserController extends Controller {
             }
         }
     }
-    
+
     public function getAdditionalBoardTypeInfo(Request $request) {
         $data = $request->all();
         $board_type = $data['board_type'];
         if (!empty($board_type)) {
-            
+
             $resultData = BoardTypeAdditionalInfo::where('board_type', $board_type)->get();
             $returnObject = '';
             if (!$resultData->isEmpty()) {
@@ -303,6 +296,39 @@ class UserController extends Controller {
                 foreach ($resultData as $key => $value) {
                     $val = $value->user_name;
                     $img = (!empty($value->profile_photo_path)) ? "/storage/$value->profile_photo_path" : '/img/img_4.jpg';
+                    $returnObject .= '<li style="display: flex;flex-direction: row-reverse;justify-content: space-between; text-align: right; align-items: center;" class="list-group-item" data-id="' . $value->id . '">
+                    <img src="' . $img . '" width="30px"  class="img-fluid">' . $val . '
+                    </li>';
+                }
+                $returnObject .= '</ul>';
+                return response()->json($returnObject);
+            } else {
+                return response()->json($returnObject);
+            }
+        }
+    }
+
+    public function getFilterUsers(Request $request) {
+        $data = $request->all();
+
+        $searchTerm = $data['searchTerm'];
+        if (!empty($searchTerm)) {
+            $searchTerm = explode(",", $searchTerm);
+            $string = $searchTerm['0'];
+
+            if(isset($data['user_type']) && !empty($data['user_type'])) {
+                $user_type = $data['user_type'];
+                $resultData = $this->users->getUsersFilterByUserType($string, $user_type);
+            } else {
+                $resultData = $this->users->getUsersForTagging($string);
+            }
+
+            $returnObject = '';
+            if (!$resultData->isEmpty()) {
+                $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1; width:50%; height:25%;overflow: scroll;overflow-x: hidden;">';
+                foreach ($resultData as $key => $value) {
+                    $val = $value->user_name;
+                    $img = (!empty($value->profile_photo_path)) ? "/storage/$value->profile_photo_path" : '/img/img_4.jpg';
                     $returnObject .= '<li class="list-group-item" data-id="' . $value->id . '">
                     <img src="' . $img . '" width="30px" style="float:right; border-radius: 50%; border: 1px solid #4c8df5;" class="img-fluid">' . $val . '
                     </li>';
@@ -314,28 +340,22 @@ class UserController extends Controller {
             }
         }
     }
-    
-    public function getFilterUsers(Request $request) {
+
+    public function getFilterUsernames(Request $request) {
         $data = $request->all();
-//        
+
         $searchTerm = $data['searchTerm'];
         if (!empty($searchTerm)) {
             $searchTerm = explode(",", $searchTerm);
             $string = $searchTerm['0'];
 
-            
-            /* $resultData = DB::Table('users')->Where(function ($query) use($string, $field) {
-              for ($i = 0; $i < count($field); $i++){
-              $query->orWhere($field[$i], 'LIKE',  '%' . $string .'%');
-              }
-              })->get(); */
-            
             if(isset($data['user_type']) && !empty($data['user_type'])) {
-            $user_type = $data['user_type'];
-            $resultData = $this->users->getUsersFilterByUserType($string,$user_type);
+                $user_type = $data['user_type'];
+                $resultData = $this->users->getUsersFilterByUsername($string, $user_type);
             } else {
-            $resultData = $this->users->getUsersForTagging($string);
+                $resultData = $this->users->getUsersFilterByUsername($string);
             }
+
             $returnObject = '';
             if (!$resultData->isEmpty()) {
                 $returnObject = '<ul class="list-group" style="display: block; position: absolute; z-index: 1; width:50%; height:25%;overflow: scroll;overflow-x: hidden;">';
@@ -390,18 +410,14 @@ class UserController extends Controller {
 
     public function setTagUsers(Request $request) {
         $data = $request->all();
-        //dd($data);
+
         //check if user already tagged
         $result = $this->users->checkAlreadyTagged($data);
-        //dd($result->user);
         if ($result) {
-            //user already tagged
             return json_encode(array('status' => 'failure', 'message' => $result->user->user_name . ' ' . 'already tagged for this post.'));
         } else {
             $result = $this->users->tagUserOnPost($data);
             $responceResult = $this->users->getAllTaggedUsers($data);
-            // dd($responceResult[0]->user);
-            // dd($responceResult[0]->user->user_profiles);
             $returnObject = '';
             foreach ($responceResult as $key => $value) {
                 $val = ucfirst($value->user->user_profiles->first_name) . ' ' . ucfirst($value->user->user_profiles->last_name);
@@ -430,7 +446,7 @@ class UserController extends Controller {
         $common = $this->common;
         return view('user.followers', compact('followers', 'common'));
     }
-   
+
     public function following() {
         $following = $this->users->following(Auth::user()->id);
         $common = $this->common;
@@ -489,29 +505,33 @@ class UserController extends Controller {
 
     public function followCounts(Request $request) {
 //        $data = $request->all();
-        $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), Auth::user()->id);
-        $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), Auth::user()->id);
-        $followRequestCount = $this->users->getFollowDataCount('followed_user_id', array('1'), Auth::user()->id);
-        $notification = $this->users->getNotificationCount();
-        $userPosts = $this->post->getPostByUserId(Auth::user()->id);
+        if(Auth::user()){
+            $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), Auth::user()->id);
+            $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), Auth::user()->id);
+            $followRequestCount = $this->users->getFollowDataCount('followed_user_id', array('1'), Auth::user()->id);
+            $notification = $this->users->getNotificationCount();
+            $userPosts = $this->post->getPostByUserId(Auth::user()->id);
 
-        $postIds = array_filter(array_column($userPosts, 'id'));
-        $userPostsUnknown = $this->post->getPostUnknownByUserId();
-        $postUnIds = array_filter(array_column($userPostsUnknown, 'id'));
-        $surferRequests = $this->post->getSurferRequest($postUnIds, 0);
-//          echo '<pre>';        print_r($notification);die;
-        $uploads = $this->post->getUploads($postIds);
-        $fCounts = array(
-            'follwers' => $followersCount,
-            'follwing' => $followingCount,
-            'follwerRequest' => $followRequestCount,
-            'posts' => count($userPosts),
-            'surferRequest' => count($surferRequests),
-            'uploads' => count($uploads),
-            'notification' => $notification
-        );
+            $postIds = array_filter(array_column($userPosts, 'id'));
+            $userPostsUnknown = $this->post->getPostUnknownByUserId();
+            $postUnIds = array_filter(array_column($userPostsUnknown, 'id'));
+            $surferRequests = $this->post->getSurferRequest($postUnIds, 0);
 
-        echo json_encode($fCounts);
+            $uploads = $this->post->getUploads(Auth::user()->id);
+            $fCounts = array(
+                'follwers' => $followersCount,
+                'follwing' => $followingCount,
+                'follwerRequest' => $followRequestCount,
+                'posts' => count($userPosts),
+                'surferRequest' => count($surferRequests),
+                'uploads' => count($uploads),
+                'notification' => $notification
+            );
+
+            echo json_encode($fCounts);
+
+        }
+
     }
 
     public function checkUsername(Request $request) {
@@ -561,7 +581,7 @@ class UserController extends Controller {
     public function surferProfile(Request $request, $id) {
         $surfer_id = Crypt::decrypt($id);
         $url = url()->current();
-//        print_r($surfer_id);die;
+
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
@@ -570,6 +590,7 @@ class UserController extends Controller {
         $postsList = Post::with('followPost')->where('is_deleted', '0')
                 ->where('parent_id', '0')
                 ->where('user_id', $surfer_id)
+                ->where('is_highlight', '1')
                 ->where(function ($query) {
                     $query->where('post_type', 'PUBLIC')
                     ->orWhere('is_feed', '1');
@@ -578,17 +599,12 @@ class UserController extends Controller {
                 ->paginate(10);
         $requestSurfer = array();
         foreach ($postsList as $val) {
-//            $surferRequest = SurferRequest::select("*")
-//                    ->where("post_id", "=", $val['id'])
-//                    ->where("status", "=", 0)
-//                    ->get();
             $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
                     ->where("surfer_requests.post_id", "=", $val['id'])
                     ->where("surfer_requests.status", "=", 0)
                     ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
 
             foreach ($surferRequest as $res) {
-//                echo '<pre>'; print_r($res['id']);die;
                 $requestSurfer[$val['id']]['id'] = $res['id'];
                 $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
             }
@@ -606,18 +622,76 @@ class UserController extends Controller {
             'posts' => count($userPosts),
             'uploads' => count($uploads),
         );
-//        echo '<pre>'; print_r($userProfile);die;
+
         if ($request->ajax()) {
             $view = view('elements/surferProfileData', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches'))->render();
             return response()->json(['html' => $view]);
         }
         return view('user.surfer-profile', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile', 'fCounts','userType'));
     }
-    
+
+    /**
+     * Function to display user profile and surfer highlighted posts
+     *
+     * @param Request $request
+     * @param [string] $request_type
+     * @param [INT] $id
+     * @param [INT] $post_id
+     * @return Data to view surfer detials with highlighted post
+     */
+    public function surferRequestData(Request $request, $request_type, $id, $post_id = NULL) {
+        $surfer_id = Crypt::decrypt($id);
+        $url = url()->current();
+
+        $currentUserCountryId = Auth::user()->user_profiles->country_id;
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        $beaches = $this->masterService->getBeaches();
+        $customArray = $this->customArray;
+
+        if(!empty($post_id)) {
+            $postsList = Post::with('followRequest')->where('is_deleted', '0')
+                ->where('id', $post_id)
+                ->get();
+        }else {
+            $postsList = Post::with('followRequest')->where('is_deleted', '0')
+                ->where('parent_id', '0')
+                ->where('user_id', $surfer_id)
+                ->where('is_highlight', '1')
+                ->where(function ($query) {
+                    $query->where('post_type', 'PUBLIC')
+                    ->where('is_highlight', '1');
+                })
+                ->orderBy('posts.created_at', 'DESC')
+                ->paginate(10);
+        }
+        // dd($postsList);
+        $requestSurfer = array();
+        foreach ($postsList as $val) {
+            $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
+                    ->where("surfer_requests.post_id", "=", $val['id'])
+                    ->where("surfer_requests.status", "=", 0)
+                    ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
+
+            foreach ($surferRequest as $res) {
+                $requestSurfer[$val['id']]['id'] = $res['id'];
+                $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
+            }
+        }
+        $userProfile = $this->users->getUserDetail($surfer_id);
+
+        $userType = $userProfile['user_type'];
+
+        if ($request->ajax()) {
+            $view = view('elements/surferRequestData', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'request_type'))->render();
+            return response()->json(['html' => $view]);
+        }
+        return view('user.surfer-request-data', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile','userType', 'request_type'));
+    }
+
     public function resortProfile(Request $request, $id) {
         $resort_id = Crypt::decrypt($id);
         $url = url()->current();
-//        print_r($resort_id);die;
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
@@ -635,18 +709,13 @@ class UserController extends Controller {
                 ->paginate(10);
         $requestSurfer = array();
         foreach ($postsList as $val) {
-//            $surferRequest = SurferRequest::select("*")
-//                    ->where("post_id", "=", $val['id'])
-//                    ->where("status", "=", 0)
-//                    ->get();
-            
             $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
                     ->where("surfer_requests.post_id", "=", $val['id'])
                     ->where("surfer_requests.status", "=", 0)
                     ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
 
             foreach ($surferRequest as $res) {
-               
+
                 $requestSurfer[$val['id']]['id'] = $res['id'];
                 $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
             }
@@ -673,7 +742,7 @@ class UserController extends Controller {
         }
         return view('layouts.resort.resort-profile', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile', 'fCounts','userType','resortImages'));
     }
-    
+
     public function photographerProfile(Request $request, $id) {
         $photographer_id = Crypt::decrypt($id);
         $url = url()->current();
@@ -699,14 +768,14 @@ class UserController extends Controller {
 //                    ->where("post_id", "=", $val['id'])
 //                    ->where("status", "=", 0)
 //                    ->get();
-            
+
             $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
                     ->where("surfer_requests.post_id", "=", $val['id'])
                     ->where("surfer_requests.status", "=", 0)
                     ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
 
             foreach ($surferRequest as $res) {
-               
+
                 $requestSurfer[$val['id']]['id'] = $res['id'];
                 $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
             }
@@ -732,14 +801,14 @@ class UserController extends Controller {
         }
         return view('layouts.photographer.photographer-profile', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches', 'userProfile', 'fCounts','userType'));
     }
-    
+
     public function uploadAdvertisment(Request $request, $id = null) {
-        
+
         $url = url()->current();
         $gender_type = config('customarray.gender_type');
         $countries = DB::table('countries')->select('id', 'name','phone_code')->orderBy('name','asc')->get();
         $states = State::select('id', 'name')->where('country_id',1)->orderBy('name','asc')->get();
-        $customArray = $this->customArray; 
+        $customArray = $this->customArray;
 //        echo '<pre>';print_r($post_id);die;$post_id
         $advertPost = array();
         $breaks = '';
@@ -749,97 +818,133 @@ class UserController extends Controller {
         $advertPost = $this->users->getAdvertPost($post_id);
         $breaks = $this->masterService->getBreakByBeachName($advertPost['local_beach']);
         }
-        
-        
+
+
         return view('layouts.advertisment.upload-advertisment', compact('url','gender_type','countries','states','customArray','advertPost','breaks','post_id'));
     }
-    
+
     public function uploadPreview(Request $request, $id) {
         $post_id = Crypt::decrypt($id);
         $url = url()->current();
         $gender_type = config('customarray.gender_type');
         $countries = DB::table('countries')->select('id', 'name','phone_code')->orderBy('name','asc')->get();
         $states = State::select('id', 'name')->orderBy('name','asc')->get();
-        $customArray = $this->customArray; 
+        $customArray = $this->customArray;
         $advertPost = $this->users->getAdvertPost($post_id);
 //        echo '<pre>';print_r($advertPost);die;
-        
+
         return view('layouts.advertisment.upload-preview', compact('url','gender_type','countries','states','customArray','advertPost','post_id'));
     }
-    
+
     public function myAds(Request $request) {
 //        $post_id = Crypt::decrypt($id);
         $url = url()->current();
         $gender_type = config('customarray.gender_type');
         $countries = DB::table('countries')->select('id', 'name','phone_code')->orderBy('name','asc')->get();
         $states = State::select('id', 'name')->orderBy('name','asc')->get();
-        $customArray = $this->customArray; 
+        $customArray = $this->customArray;
         $advertPost = $this->users->getMyAds();
 //        echo '<pre>';print_r($advertPost);die;
-        
+
         return view('layouts.advertisment.my-ads', compact('url','gender_type','countries','states','customArray','advertPost'));
     }
-    
+
     public function surferFollowers($id) {
         $surfer_id = Crypt::decrypt($id);
         $followers = $this->users->followers($surfer_id);
         $common = $this->common;
-        $postsList = Post::with('followPost')->where('is_deleted', '0')
-                ->where('parent_id', '0')
-                ->where('user_id', $surfer_id)
-                ->where(function ($query) {
-                    $query->where('post_type', 'PUBLIC')
-                    ->orWhere('is_feed', '1');
-                })
-                ->orderBy('posts.created_at', 'DESC')
-                ->paginate(10);
+        $postsList = $this->post->getSurferPostData($surfer_id);
         $userProfile = $this->users->getUserDetail($surfer_id);
         $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $surfer_id);
 //        echo '<pre>'; print_r($followersCount);die;
         $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $surfer_id);
-        $userPosts = $this->post->getPostByUserId($surfer_id);
+        // $userPosts = $this->post->getPostByUserId($surfer_id);
         $userType = $userProfile['user_type'];
-        $postIds = array_filter(array_column($userPosts, 'id'));
-        $uploads = $this->post->getUploads($postIds);
+        // $postIds = array_filter(array_column($userPosts, 'id'));
+        $uploads = $this->post->getUploads($surfer_id);
         $fCounts = array(
             'follwers' => $followersCount,
             'follwing' => $followingCount,
-            'posts' => count($userPosts),
+            'posts' => count($postsList),
             'uploads' => count($uploads),
         );
-        
+
         return view('user.surfer-followers', compact('followers', 'common', 'userProfile', 'fCounts','postsList','userType'));
     }
-    
+
     public function surferFollowing($id) {
         $surfer_id = Crypt::decrypt($id);
         $following = $this->users->following($surfer_id);
         $common = $this->common;
-        $postsList = Post::with('followPost')->where('is_deleted', '0')
-                ->where('parent_id', '0')
-                ->where('user_id', $surfer_id)
-                ->where(function ($query) {
-                    $query->where('post_type', 'PUBLIC')
-                    ->orWhere('is_feed', '1');
-                })
-                ->orderBy('posts.created_at', 'DESC')
-                ->paginate(10);
+        $postsList = $this->post->getSurferPostData($surfer_id);
         $userProfile = $this->users->getUserDetail($surfer_id);
         $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $surfer_id);
 //        echo '<pre>'; print_r($followersCount);die;
         $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $surfer_id);
-        $userPosts = $this->post->getPostByUserId($surfer_id);
-        $postIds = array_filter(array_column($userPosts, 'id'));
-        $uploads = $this->post->getUploads($postIds);
+        // $userPosts = $this->post->getPostByUserId($surfer_id);
+        // $postIds = array_filter(array_column($userPosts, 'id'));
+        $uploads = $this->post->getUploads($surfer_id);
         $userType = $userProfile['user_type'];
         $fCounts = array(
             'follwers' => $followersCount,
             'follwing' => $followingCount,
-            'posts' => count($userPosts),
+            'posts' => count($postsList),
             'uploads' => count($uploads),
         );
-        
+
         return view('user.surfer-following', compact('following', 'common', 'userProfile', 'fCounts','postsList','userType'));
+    }
+
+    public function surferPost($id) {
+        $surfer_id = Crypt::decrypt($id);
+
+        // dd($userProfile);
+        // $userDetail = UserProfile::where("user_id", $surfer_id)->first();
+        $customArray = $this->customArray;
+        $userProfile = $this->users->getUserDetail($surfer_id);
+        $postsList = $this->post->getSurferPostData($surfer_id);
+        $following = $this->users->following($surfer_id);
+
+
+        $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $surfer_id);
+        $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $surfer_id);
+        $uploads = $this->post->getUploads($surfer_id);
+        $userType = $userProfile['user_type'];
+
+        $fCounts = array(
+            'follwers' => $followersCount,
+            'follwing' => $followingCount,
+            'posts' => count($postsList),
+            'uploads' => count($uploads),
+        );
+
+        return view('user.surfer-post', compact('following', 'userProfile', 'fCounts','userType', 'postsList', 'customArray'));
+    }
+
+    public function surferUpload($id) {
+        $surfer_id = Crypt::decrypt($id);
+
+        // dd($userProfile);
+        // $userDetail = UserProfile::where("user_id", $surfer_id)->first();
+        $customArray = $this->customArray;
+        $userProfile = $this->users->getUserDetail($surfer_id);
+        $postsList = $this->post->getSurferPostData($surfer_id);
+        $following = $this->users->following($surfer_id);
+
+
+        $followersCount = $this->users->getFollowDataCount('followed_user_id', array('0', '1'), $surfer_id);
+        $followingCount = $this->users->getFollowDataCount('follower_user_id', array('0', '1'), $surfer_id);
+        $uploads = $this->post->getUploads($surfer_id);
+        $userType = $userProfile['user_type'];
+
+        $fCounts = array(
+            'follwers' => $followersCount,
+            'follwing' => $followingCount,
+            'posts' => count($postsList),
+            'uploads' => count($uploads),
+        );
+
+        return view('user.surfer-upload', compact('following', 'userProfile', 'fCounts','userType', 'uploads', 'customArray', 'postsList'));
     }
 
 }

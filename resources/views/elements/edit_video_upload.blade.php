@@ -5,7 +5,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"><img src="{{ asset("/img/logo_small.png")}}">Upload
-                        Video</h5>
+                        Videogjkljklj</h5>
                     <div class="selectWrap pos-rel">
                         <select class="form-control" name="post_type" required>
                             @foreach($customArray['post_type'] as $key => $value)
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class="row" id="filesInfo">
-                            
+
                         </div>
 
                         <span id="imageError" class="notDisplayed required">{{ __('Please upload files having extensions: jpg, jpeg, png') }}</span>
@@ -67,7 +67,7 @@
                                                 </select>
                                                 <span><img src="{{ asset("/img/select-downArrow.png")}}" alt=""></span>
                                             </div>
-                                        </div>  
+                                        </div>
                                     </div>
 
                                 </div>
@@ -166,7 +166,7 @@
                                                     <label for="{{$value}}" class="form-check-label text-primary">{{$value}}</label>
                                                 </div>
                                                 @endforeach
-                                            </div>  
+                                            </div>
                                         </div>
                                     </div>
                                         <div class="col-md-8 col-sm-4 float-right" style="display:none" id="othersSurfer">

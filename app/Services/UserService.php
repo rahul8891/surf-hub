@@ -67,7 +67,7 @@ class UserService {
      * @return [object]              [description]
      */
     public function updateUserProfile($dataRequest, &$message = '',$user_id) {
-
+        //dd($dataRequest);
         $users = $this->users->find($user_id);
         $userProfiles = new UserProfile();
         try {
@@ -79,6 +79,7 @@ class UserService {
                 }
 
                 $userType = $users->user_type;
+
                 if (isset($dataRequest['profile_photo_blob']) && !empty($dataRequest['profile_photo_blob'])) {
 
                     $path = public_path() . "/storage/images/";
@@ -96,20 +97,20 @@ class UserService {
                         $users->profile_photo_path = $image_path_forDB;
                     }
                 }
-                $users->user_name = !empty($dataRequest['user_name']) ? $dataRequest['user_name'] : '';
-                $user_profiles->first_name = $dataRequest['first_name'];
-                $user_profiles->last_name = $dataRequest['last_name'];
-                $user_profiles->phone = $dataRequest['phone'];
-                $user_profiles->paypal = $dataRequest['paypal'];
-                $user_profiles->country_id = $dataRequest['country_id'];
-                $user_profiles->postal_code = $dataRequest['postal_code'];
-                $user_profiles->local_beach_break_id = !empty($dataRequest['local_beach_break_id']) ? $dataRequest['local_beach_break_id'] : '';
+                $users->user_name = !empty($dataRequest['user_name']) ? $dataRequest['user_name']:$users->user_name;
+                $user_profiles->first_name = (isset($dataRequest['first_name']) && !empty($dataRequest['first_name']))?$dataRequest['first_name']:$user_profiles->first_name;
+                $user_profiles->last_name = (isset($dataRequest['last_name']) && !empty($dataRequest['last_name']))?$dataRequest['last_name']:$user_profiles->last_name;
+                $user_profiles->phone = (isset($dataRequest['phone']) && !empty($dataRequest['phone']))?$dataRequest['phone']:$user_profiles->phone;
+                $user_profiles->paypal = (isset($dataRequest['paypal']) && !empty($dataRequest['paypal']))?$dataRequest['paypal']:$user_profiles->paypal;
+                $user_profiles->country_id = (isset($dataRequest['country_id']) && !empty($dataRequest['country_id']))?$dataRequest['country_id']:$user_profiles->country_id;
+                $user_profiles->postal_code = (isset($dataRequest['postal_code']) && !empty($dataRequest['postal_code']))?$dataRequest['postal_code']:$user_profiles->postal_code;
+                $user_profiles->local_beach_break_id = !empty($dataRequest['local_beach_break_id']) ? $dataRequest['local_beach_break_id']:$user_profiles->local_beach_break_id;
                 $users->account_type = !empty($dataRequest['account_type']) ? $dataRequest['account_type'] : $users->account_type;
 
                 if ($userType == 'USER') {
-                    $user_profiles->preferred_board = $dataRequest['board_type'];
-                    $user_profiles->dob = $dataRequest['dob'];
-                    $user_profiles->gender = $dataRequest['gender'];
+                    $user_profiles->preferred_board = (isset($dataRequest['board_type']) && !empty($dataRequest['board_type']))?$dataRequest['board_type']:$user_profiles->preferred_board;
+                    $user_profiles->dob = (isset($dataRequest['dob']) && !empty($dataRequest['dob']))?$dataRequest['dob']:$user_profiles->dob;
+                    $user_profiles->gender = (isset($dataRequest['gender']) && !empty($dataRequest['gender']))?$dataRequest['gender']:$user_profiles->gender;
                 } elseif ($userType == 'PHOTOGRAPHER') {
                     $user_profiles->business_name = $dataRequest['business_name'];
                     $user_profiles->business_type = $dataRequest['photographer_type'];
@@ -128,9 +129,11 @@ class UserService {
                     $user_profiles->state_id = $dataRequest['state_id'];
                     $user_profiles->suburb = $dataRequest['suburb'];
                 }
+                // dd($users);
                 if ($users->save() && $user_profiles->save()) {
+                    Auth::setUser($users);
                     $message = $this->checkUserType['success']['UPDATE_SUCCESS'];
-                    ;
+
                     return true;
                 }
             } else {
@@ -179,13 +182,13 @@ class UserService {
                 $users->id = $id;
                 $users->profile_photo_path = $image_path_forDB;
                 $users->profile_photo_name = $image_name;
-                // update user auth image 
+                // update user auth image
                 if (empty($dataRequest['userId'])) {
                     Auth::user()->profile_photo_path = $image_path_forDB;
                     Auth::user()->profile_photo_path = $image_name;
                 }
                 if ($users->save()) {
-                    // delete old image file 
+                    // delete old image file
                     File::delete(public_path("/storage/images/" . $userOldProfileImageName));
                     $message = $this->checkUserType['success']['IMAGE_UPDATE_SUCCESS'];
                     return true;
@@ -245,7 +248,6 @@ class UserService {
                 ->where('user_id', '!=', Auth::user()->id)
                 ->whereIn('user_type', $user_type)
                 ->where(function ($q) use ($string) {
-
                     $q->orWhere('first_name', 'LIKE', '%' . $string . '%');
                     $q->orWhere('users.user_name', 'LIKE', '%' . $string . '%');
                     $q->orWhere('last_name', 'LIKE', '%' . $string . '%');
@@ -256,9 +258,36 @@ class UserService {
                 })
                 ->groupBy('users.id')
                 ->get();
-//         $quries = DB::getQueryLog();
-//         dd($quries);
-        //dd($result);
+
+        return $result;
+    }
+
+    /*** Search by username autocomplete in filters */
+    public function getUsersFilterByUsername($string, $user_type='') {
+        $userProfiles = new UserProfile();
+//        DB::enableQueryLog();
+
+        if(isset($user_type) && !empty($user_type)) {
+            $result = $userProfiles
+                    ->join('users', 'users.id', '=', 'user_profiles.user_id')
+                    ->where('user_id', '!=', 1)
+                    ->whereIn('user_type', $user_type)
+                    ->where(function ($q) use ($string) {
+                        $q->orWhere('users.user_name', 'LIKE', '%' . $string . '%');
+                    })
+                    ->groupBy('users.id')
+                    ->get();
+        } else {
+            $result = $userProfiles
+                    ->join('users', 'users.id', '=', 'user_profiles.user_id')
+                    ->where('user_id', '!=', 1)
+                    ->where(function ($q) use ($string) {
+                        $q->orWhere('users.user_name', 'LIKE', '%' . $string . '%');
+                    })
+                    ->groupBy('users.id')
+                    ->get();
+        }
+
         return $result;
     }
 
@@ -300,10 +329,8 @@ class UserService {
     }
 
     public function getNotificationCount() {
-        $count = $this->userFollows->where('followed_user_id', Auth::user()->id)
-                ->where('status', 'FOLLOW')
-                ->where('follower_request_status', '1')
-                ->where('is_deleted', '0')
+        $count = $this->notification->where('receiver_id', Auth::user()->id)
+                ->where('status', '0')
                 ->count();
         return $count;
     }
@@ -322,7 +349,7 @@ class UserService {
     public function followers($user_id) {
         $followers = $this->userFollows->where('followed_user_id', $user_id)
                         ->where('status', 'FOLLOW')
-//                    ->where('follower_request_status','0') 
+//                    ->where('follower_request_status','0')
                         ->where('is_deleted', '0')
                         ->orderBy('id', 'desc')->get();
         return $followers;
@@ -361,7 +388,7 @@ class UserService {
         } else {
             $followers = $this->userFollows->where('followed_user_id', $user_id)
                             ->where('status', 'FOLLOW')
-//                    ->where('follower_request_status','0') 
+//                    ->where('follower_request_status','0')
                             ->where('is_deleted', '0')
                             ->orderBy('id', 'desc')->get();
         }
@@ -381,7 +408,7 @@ class UserService {
         } else {
             $following = $this->userFollows->where('follower_user_id', $user_id)
                             ->where('status', 'FOLLOW')
-//                    ->where('follower_request_status','0') 
+//                    ->where('follower_request_status','0')
                             ->where('is_deleted', '0')
                             ->orderBy('id', 'desc')->get();
         }
@@ -393,7 +420,7 @@ class UserService {
         Notification::where(['receiver_id' => $user_id, 'notification_type' => 'Accept'])->orWhere(['notification_type' => 'Reject'])->update(['status' => '1', 'count_status' => '1', 'updated_at' => Carbon::now()]);
         $following = $this->userFollows->where('follower_user_id', $user_id)
                         ->where('status', 'FOLLOW')
-//                    ->where('follower_request_status','0') 
+//                    ->where('follower_request_status','0')
                         ->where('is_deleted', '0')
                         ->orderBy('id', 'desc')->get();
         return $following;
@@ -427,12 +454,12 @@ class UserService {
         try {
             $userFollows = $this->userFollows->find($input['id']);
             if ($userFollows) {
-                //dd($userFollows);
                 $userFollows->id = $input['id'];
                 $userFollows->follower_request_status = $input['follower_request_status'];
-                $result = $this->saveFollowRequestAcceptRejectNotification($userFollows, 'Accept');
-                //dd($result);
+
                 if ($userFollows->save()) {
+                    $this->saveFollowRequestAcceptRejectNotification($userFollows, 'Accept');
+
                     $resultArray['message'] = 'Status has been updated!';
                     $resultArray['status'] = 'success';
                     $resultArray['count'] = $this->getFollowCount($column, '1');
@@ -499,7 +526,7 @@ class UserService {
                 ->count();
 
         }
-        
+        // dd($count);
         return $count;
     }
 
@@ -588,7 +615,7 @@ class UserService {
     /**
      * [saveFollowRequestNotification] we are storing the follow request notifications
      * @param  requestInput get all the requested input data
-     * @param  message return message based on the condition 
+     * @param  message return message based on the condition
      * @return dataArray with message
      */
     public function saveFollowRequestNotification($input, &$message = '') {
@@ -610,19 +637,19 @@ class UserService {
     /**
      * [saveFollowRequestAcceptRejectNotification] we are storing the accept and reject notifications
      * @param  requestInput get all the requested input data
-     * @param  message return message based on the condition 
+     * @param  message return message based on the condition
      * @return dataArray with message
-     */
+    **/
     public function saveFollowRequestAcceptRejectNotification($input, $notification_type = '') {
-        //dd($input);
+        // dd($input);
         try {
-            $this->notification->post_id = $input['id'];
+            $this->notification->post_id = '';
             $this->notification->sender_id = Auth::user()->id;
-            $this->notification->receiver_id = $input['followed_user_id'];
+            $this->notification->receiver_id = $input['follower_user_id'];
             $this->notification->notification_type = $notification_type;
             $this->notification->created_at = Carbon::now();
             $this->notification->updated_at = Carbon::now();
-            //dd($this->comments);
+
             $this->notification->save();
         } catch (\Exception $e) {
             $message = '"' . $e->getMessage() . '"';
@@ -639,12 +666,13 @@ class UserService {
         $userData = UserProfile::where('user_id', $surfer_id)->get();
         $userProfile = array();
         foreach ($userData as $val) {
+            // dd($val->local_beach_break_id);
             $userProfile['user_id'] = $surfer_id;
             $userProfile['surfer_name'] = $val->first_name . ' ' . $val->last_name;
             $userProfile['profile_photo_path'] = $val->user->profile_photo_path;
             $userProfile['email'] = $val->user->email;
             $userProfile['gender'] = (isset($val->gender) && $val->gender != 0) ? $this->checkUserType['gender_type'][$val->gender] : '-';
-            $userProfile['beach_break'] = isset($val->local_beach_break_id) ? $val->beach_breaks->beach_name . " " . $val->beach_breaks->break_name : '-';
+            $userProfile['beach_break'] = (isset($val->local_beach_break_id) && ($val->local_beach_break_id != 0)) ? $val->beach_breaks->beach_name . " " . $val->beach_breaks->break_name : '-';
             $userProfile['country'] = isset($val->country_id) ? $val->countries->name : '-';
             $userProfile['dob'] = isset($val->dob) ? $val->dob : '-';
             $userProfile['preferred_board'] = (isset($val->preferred_board) && !empty($val->preferred_board)) ? $this->checkUserType['board_type'][$val->preferred_board] : '-';
@@ -653,6 +681,7 @@ class UserService {
             $userProfile['camera'] = isset($val->preferred_camera) ? $val->preferred_camera : '-';
             $userProfile['phone'] = isset($val->phone) ? $val->phone : '-';
             $userProfile['user_type'] = $val->user->user_type;
+            $userProfile['account_type'] = $val->user->account_type;
         }
         return $userProfile;
     }
@@ -661,7 +690,7 @@ class UserService {
         $advertPost = array();
         $post = AdvertPost::where('post_id', $id)
                 ->get();
-        
+
 //        echo '<pre>';print_r($post);die;
         foreach ($post as $val) {
          $advertPost['ad_link']  = $val->ad_link;
@@ -700,7 +729,7 @@ class UserService {
         }
         return $advertPost;
     }
-    
+
     public function getMyAds() {
         $advertPost = array();
         $post = Post::where('user_id', Auth::user()->id)

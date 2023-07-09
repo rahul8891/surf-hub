@@ -24,7 +24,7 @@
                         @foreach ($following as $key => $followings)
                         <div class="row-listFollowers">
                             <div class="row align-items-center gap-2 gap-md-0">
-                                <div class="col-md-6 follwer-name">
+                                <div class="col follwer-name pe-0">
                                     @if($followings->follower->profile_photo_path)
                                     <img src="{{ asset('storage/'.$followings->followed->profile_photo_path) }}" alt=""
                                          class="align-middle bg-white">
@@ -34,8 +34,8 @@
                                     @endif
                                     <span class="align-middle">{{ucfirst($followings->followed->user_profiles->first_name)}} {{ucfirst($followings->followed->user_profiles->last_name)}}</span>
                                 </div>
-                                <div class="col-md-6 text-md-end">
-                                    <button class="btn grey-borderBtn me-3 unfollow" data-id="{{$followings->id}}">
+                                <div class="col text-end">
+                                    <button class="btn grey-borderBtn unfollow" data-id="{{$followings->id}}">
                                         <img src="/img/follow-user.png" class="me-1 align-middle" alt="Unfollow">
                                         <span class="align-middle">UNFOLLOW</span>
                                     </button>
@@ -48,7 +48,7 @@
                     </div>
                 @endif
                     </div>
-                    
+
                 </div>
             </div>
             <div class="right-advertisement">

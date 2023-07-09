@@ -3,7 +3,7 @@
       enctype="multipart/form-data">
     @csrf
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="upload-photo">
                 <div>
                     <img src="" id="category-img-tag" alt="">
@@ -60,7 +60,7 @@
             @enderror
         </div>
         <div class="col-md-6">
-            <div class="company-icon white-bg">
+            <!-- <div class="company-icon white-bg">
                 <select class="form-select" name="industry" required>
                     <option selected>Industry</option>
                     <option value="1">One</option>
@@ -70,7 +70,7 @@
                 @error('industry')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="row">
@@ -143,7 +143,8 @@
     <div class="row">
         <div class="col-md-6">
             <input type="text" class="form-control paypal-icon" placeholder="Paypal" name="paypal"
-                   autocomplete="paypal">
+                   autocomplete="paypal" require>
+            <span class="align-middle d-inline-block ms-3">Compulsory to link PayPal account for billing.</span>
             @error('paypal')
             <div class="text-danger">{{ $message }}</div>
             @enderror

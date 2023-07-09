@@ -23,19 +23,193 @@
 #scrollToTop span {position:absolute;top:50%;left:50%;margin-left:-8px;margin-top:-12px;height:0;width:0;border:8px solid transparent;border-bottom-color:#ffffff}
 #scrollToTop:hover {background-color:#007bff;opacity:1;filter:"alpha(opacity=100)";-ms-filter:"alpha(opacity=100)";}
 </style>
-<script type='text/javascript' async >
+
+<script src="{{ asset('js/new/jquery-3.5.1.min.js') }}"></script>
+
+<script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('/js/new/bootstrap.js') }}"></script>
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<script src="{{ asset('js/new/croppie.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.5.1/jquery.nicescroll.min.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5JiYXogWVNPfX_L4uA0oWb-qiNSfKfYk"></script>
+<script src="https://vjs.zencdn.net/5.19.2/video.js"></script>
+<script src="{{ asset('/js/hls/hls.min.js?v=v0.9.1') }}"></script>
+<script src="{{ asset('/js/hls/videojs5-hlsjs-source-handler.min.js?v=0.3.1') }}"></script>
+<script src="{{ asset('/js/hls/vjs-quality-picker.js?v=v0.0.2') }}"></script>
+
+<script src="{{ asset('js/new/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('js/new/star-rating.min.js')}}"></script>
+<script src="{{ asset('js/new/slick.js')}}"></script>
+
+<script src="{{ asset('js/new/custom.js') }}"></script>
+<script src="{{ asset('js/new/post.js')}}"></script>
+<script src="{{ asset('js/new/script.js') }}"></script>
+<script src="http://jwpsrv.com/library/4+R8PsscEeO69iIACooLPQ.js"></script>
+
+<script type="text/javascript" async>
+	jQuery.noConflict();
+
+    function openFullscreenSilder(id, type) {
+        // event.preventDefault();
+        jQuery.ajax({
+            url: '/getPostFullScreen/' + id +'/'+type+'?<?php echo (isset($urlData) && !empty($urlData))?$urlData:'' ?>',
+            type: "get",
+            async: true,
+            success: function(data) {
+                jQuery("#full_screen_modal").html('');
+                jQuery("#full_screen_modal").append(data.html);
+                jQuery("#full_screen_modal").modal('show');
+            }
+        });
+    }
+
+	jQuery(document).ready(function () {
+	  jQuery.ajax({
+	      type: "GET",
+	      url: "/follow-counts",
+	      dataType: "json",
+	      success: function (jsonResponse) {
+	          jQuery('#follwers').html(jsonResponse['follwers']);
+	          jQuery('#follwing').html(jsonResponse['follwing']);
+	          jQuery('#followRequest').html(jsonResponse['follwerRequest']);
+	          jQuery('#posts').html(jsonResponse['posts']);
+	          jQuery('#uploads').html(jsonResponse['uploads']);
+	          jQuery('#surferRequest').html(jsonResponse['surferRequest']);
+	          jQuery('#notification-count').html(jsonResponse['notification']);
+              jQuery('.notification-count').html(jsonResponse['notification']);
+	      }
+	  });
+	});
+
+	jQuery('.rating-filter').rating({
+		showClear: false,
+		showCaption: false
+	});
+
+    jQuery(function(){
+        jQuery('#filter_user_type').multiSelect();
+    });
+
+    function ratingShow(e) {
+        jQuery(e).children(".rating-container").show();
+        jQuery(e).children(".avg-rating").hide();
+    }
+    jQuery(document).on('click', '.rating-container', function (e) {
+        jQuery(e).children(".rating-container").hide();
+        jQuery(e).children(".avg-rating").hide();
+    });
+
+    jQuery('.rating').rating({
+        showClear: false,
+        showCaption: false
+    });
+    jQuery('.rating-filter').rating({
+        showClear: false,
+        showCaption: false
+    });
+    jQuery(document).ready(function () {
+        jQuery("#My-Profile").click(function () {
+            jQuery(".profileChangePswd").toggleClass("show");
+        });
+    });
+
+    window.HELP_IMPROVE_VIDEOJS = false;
+
+    jQuery( ".jw-video-player" ).each(function( i ) {
+        var videoID = $(this).attr('data-id');
+        var video = $(this).attr('data-src');
+        // console.log("Data = myVideoTag"+videoID+"  --  "+video);
+        var options = {};
+
+        videojs('myVideoTag'+videoID).ready(function () {
+            var myPlayer = this;
+            myPlayer.qualityPickerPlugin();
+            myPlayer.src({
+                type: 'application/x-mpegURL',
+                src: video
+            });
+        });
+    });
+    //
+    function openFullscreen(id) {
+        var elem = document.getElementById("myImage" + id);
+        if (elem.requestFullScreen) {
+            elem.requestFullScreen();
+            elem.webkitEnterFullscreen();
+            elem.enterFullscreen();
+        } else if (elem.webkitRequestFullScreen) { /* Safari */
+            elem.webkitRequestFullScreen();
+            elem.webkitEnterFullscreen();
+            elem.enterFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+            elem.enterFullscreen();
+        } else if (elem.msRequestFullScreen) { /* IE11 */
+            elem.msRequestFullScreen();
+            elem.enterFullscreen();
+        }
+    }
+
+    jQuery('.right-options').on('click', '.editBtnVideo', function() {
+        var id = jQuery(this).data('id');
+
+        jQuery.ajax({
+            url: '/getPostData/' + id,
+            type: "get",
+            async: true,
+            success: function(data) {
+                jQuery("#edit_image_upload_main").html("");
+                jQuery("#edit_image_upload_main").append(data.html);
+                jQuery("#edit_image_upload_main").modal('show');
+            }
+        });
+    });
+
+    jQuery('.pos-rel a').each(function(){
+       jQuery(this).on('hover, mouseover, click', function() {
+            jQuery(this).children('.userinfoModal').find('input[type="text"]').focus();
+        });
+    });
+
+	jQuery(document).on('click', '.highlightPost', function (e) {
+		var that = $(this);
+		var postID = $(this).data('id');
+
+		jQuery.ajax({
+		    url: '/highlight-post/' + postID,
+		    type: "get",
+		    async: false,
+		    success: function(result) {
+		        if(result.data.is_highlight == "1") {
+		            that.addClass('blue');
+		        } else {
+		            that.removeClass('blue');
+		        }
+		    }
+		});
+	});
+
+
     mybutton = document.getElementById("scrollToTop");
     window.onscroll = function() {scrollFunction()};
 
-    function scrollFunction() {
-      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        mybutton.style.display = "block";
-      } else {
-        mybutton.style.display = "none";
-      }
-    }
-    function topFunction() {
-      document.body.scrollTop = 0; // For Safari
-      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-    } 
+	function scrollFunction() {
+		if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+			mybutton.style.display = "block";
+		} else {
+			mybutton.style.display = "none";
+		}
+	}
+
+	function topFunction() {
+		document.body.scrollTop = 0; // For Safari
+		document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+	}
 </script>
+<script src="{{ asset('js/new/jquery.multi-select.js') }}"></script>
+@include('elements/location_popup_model')
+@include('layouts/models/edit_image_upload')
+@include('layouts/models/full_screen_modal')

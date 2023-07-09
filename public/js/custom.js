@@ -1,7 +1,7 @@
 $(document).ready(function () {
     var csrf_token = $('meta[name="csrf-token"]').attr("content");
 
-    /*$('#login').click(function (event) {		
+    /*$('#login').click(function (event) {
      var email = $('#email').val();
      var password = $('#password').val();
      if(email && password){
@@ -13,7 +13,7 @@ $(document).ready(function () {
     $('#register .country option:selected').prop("selected", false);
     $('#register .phone').val('');
 
-    
+
 
 
     /************** spiner code ****************************/
@@ -101,7 +101,7 @@ $(document).ready(function () {
                 $image_crop.croppie('bind', {
                     url: e.target.result
                 }).then(function (blob) {
-                    // console.log(blob);               
+                    // console.log(blob);
                 });
             };
             reader.readAsDataURL(input.files[0]);
@@ -170,7 +170,7 @@ $(document).ready(function () {
     });
 
     /**
-     * Model Cancle 
+     * Model Cancle
      */
     $(".close").click(function () {
         $('#imagebase64').val("");
@@ -224,7 +224,7 @@ $(document).ready(function () {
                 $image_crop.croppie('bind', {
                     url: e.target.result
                 }).then(function (blob) {
-                    // console.log(blob);               
+                    // console.log(blob);
                 });
             };
             reader.readAsDataURL(input.files[0]);
@@ -714,6 +714,10 @@ $(document).ready(function () {
                 required: true
             },
 
+            paypal: {
+                required: true
+            },
+
             password: {
                 minlength: 8,
                 required: true,
@@ -771,6 +775,11 @@ $(document).ready(function () {
             country_id: {
                 required: "Please select your country"
             },
+
+            paypal: {
+                required: "Please enter your paypal ID"
+            },
+
             password: {
                 required: "Please enter your password",
                 pwcheck: "The password must be at least 8 characters and contain at least one uppercase character, one number, and one special character."
@@ -1241,7 +1250,7 @@ $(document).ready(function () {
 
     /**
      * Execute a function given a delay time
-     * 
+     *
      * @param {type} func
      * @param {type} wait
      * @param {type} immediate
@@ -1266,7 +1275,7 @@ $(document).ready(function () {
 
     // ajax form field data for post
     $('.search-box').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         if ($(this).val().length > 2) {
             $.ajax({
                 type: "GET",
@@ -1290,7 +1299,7 @@ $(document).ready(function () {
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
     $('#searchFollower').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         var user_id = $('#user_id').val();
         var keyword = $('#searchFollower').val();
 //        if ($(this).val().length > 2) {
@@ -1314,7 +1323,7 @@ $(document).ready(function () {
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
     $('#searchFollowing').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         var keyword = $('#searchFollowing').val();
         var user_id = $('#user_id').val();
 //        if ($(this).val().length > 2) {
@@ -1338,7 +1347,7 @@ $(document).ready(function () {
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
     $('#searchFollowRequest').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         var keyword = $('#searchFollowRequest').val();
 //        if ($(this).val().length > 2) {
         $.ajax({
@@ -1362,7 +1371,7 @@ $(document).ready(function () {
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
     $('.search-box4').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         if ($(this).val().length > 2) {
             $.ajax({
                 type: "GET",
@@ -1386,7 +1395,7 @@ $(document).ready(function () {
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
     $('.search-box3').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         if ($(this).val().length > 2) {
             $.ajax({
                 type: "GET",
@@ -1410,7 +1419,7 @@ $(document).ready(function () {
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
     $('.ad-search-box').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         if ($(this).val().length > 2) {
             $.ajax({
                 type: "GET",
@@ -1590,7 +1599,7 @@ $(document).ready(function () {
 
     // ajax form field data for filter
     $('.search-box2').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
 
         if ($(this).val().length > 2) {
 
@@ -1628,7 +1637,7 @@ $(document).ready(function () {
 
 
     $('.other_surfer').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         if ($(this).val().length > 1) {
             $.ajax({
                 type: "GET",
@@ -1666,11 +1675,18 @@ $(document).ready(function () {
         $('#filter_other_surfer_data').html("");
     });
 
+    $(document).on('click', '#filter_username_data li', function () {
+        var value = $(this).text().trim();
+
+        $('.filter_username').val(value);
+        $('#filter_username_data').html("");
+    });
+
 
     $('.filter_other_surfer').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         var userType = $('#filter_user_type').val();
-//        alert(userType);
+
         if ($(this).val().length > 1) {
             $.ajax({
                 type: "GET",
@@ -1691,10 +1707,33 @@ $(document).ready(function () {
         }
     }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
+    $('.filter_username').keyup(debounce(function () { alert('aaa');
+        // the following function will be executed every half second
+        var userType = $('#filter_user_type').val();
+
+        if ($(this).val().length > 1) {
+            $.ajax({
+                type: "GET",
+                url: "/getFilterUsers",
+                data: {
+                    user_type: userType,
+                    searchTerm: $(this).val(),
+                    _token: csrf_token
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    $('#filter_username_data').html(jsonResponse);
+                }
+            });
+        } else {
+            $('#filter_username_data').html("");
+        }
+    }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
+
 
 
     $('.tag_user').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
 
         var post_id = $(this).attr('data-post_id');
         if ($(this).val().length > 1) {

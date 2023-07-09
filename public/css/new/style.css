@@ -86,6 +86,10 @@ input {
     box-shadow: none;
 }
 
+button, .btn, .highlight  {
+    border-radius: 6px !important;
+}
+
 header {
     border-bottom: 2px solid #C0BCBC;
     padding: 5px 0;
@@ -502,6 +506,10 @@ footer .navbar-nav .nav-link {
     height: 100%;
     opacity: 0;
     cursor: pointer;
+}
+
+#category-img-tag {
+    position: absolute;
 }
 
 input[type="date"]::-webkit-inner-spin-button,
@@ -1112,14 +1120,18 @@ header .notification {
     color: #616161;
 }
 
-.sort.dropdown .dropdown-menu,
-.filter.dropdown .dropdown-menu {
-    transform: none !important;
+.filter.dropdown .dropdown-menu{
+    transform:none !important;
     top: 40px !important;
     right: 0 !important;
     left: auto !important;
-
 }
+.sort.dropdown .dropdown-menu {
+
+    right: 0 !important;
+    left: auto !important;
+}
+
 
 .filter-body {
     padding-top: 20px;
@@ -1304,7 +1316,8 @@ header .notification {
     background: #325CFD;
     color: #fff;
     border: #fff;
-
+    border-radius: 5px;
+    border: 2px solid grey;
 }
 
 .follow-icon {
@@ -1359,7 +1372,7 @@ header .notification {
     width: 55px;
     height: 55px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .follwer-name span,
@@ -1822,19 +1835,27 @@ header .notification {
     text-align: center;
     height: 325px;
 }
+.newsFeedImgVideoSlider{
+    height:100vh;
+    overflow-y:auto;
+    /* display:flex !important; */
+    /* display:inline-block !important; */
+    /* align-items:center !important; */
+}
+.video-js .vjs-tech {
+    position: static !important;
+}
 
 .newsFeedImgVideoSlider>img,
 .newsFeedImgVideoSlider>video {
+    width:100%;
     height: 100vh;
-    width: auto;
-    margin: 0 auto;
+    margin: auto;
     display: block;
+    object-fit: contain;
 }
 
-.modal-dialog.editPostM {
-    max-width: initial !important;
-    width: calc(100% - 90px);
-}
+
 
 .newsFeedImgVideoSlider {
     background: #000;
@@ -1858,11 +1879,16 @@ header .notification {
 
 .spotify-btn {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 3px;
+    right: 40px;
     z-index: 1;
-}
-
+  }
+.spotify-pause-btn {
+    position: absolute;
+    top: 3px;
+    right: 0px;
+    z-index: 1;
+  }
 .rating-xs {
     font-size: 18px;
 }
@@ -1878,6 +1904,7 @@ header .notification {
     line-height: 30px;
     cursor: pointer;
     user-select: none;
+    border-radius: 6px;
 }
 
 .avg-rating::before {
@@ -1922,6 +1949,9 @@ header .notification {
     max-height: 175px;
     overflow: auto;
 }
+.name-row:nth-of-type(odd) {
+    background: #e0e0e0;
+}
 
 
 #full_screen_modal .modal-dialog {
@@ -1947,15 +1977,186 @@ header .notification {
 }
 
 #full_screen_modal #toggle.btn {
-    position: absolute;
-    bottom: 46px;
-    left: 50%;
-    transform: translateX(-50%);
+	position: absolute;
+	top: 10px;
+	left: 2%;
+	width: 100px;
+	font-weight: bold;
+}
+.video-js .vjs-big-play-button{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100px;
+	font-weight: bold;
+    transform: translate(-50%, -50%)
 }
 #full_screen_modal .btn-close {
-  position: absolute;
-  left: 15px;
-  top: 15px;
-  z-index: 1;
-  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FFFFFF'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+	margin-top:5px;
+	z-index: 1;
+	background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FFFFFF'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+	height: 50px;
+	width: 50px;
+}
+
+/********** Static Page Style ***********/
+.titleRow {
+    color: #325CFD;
+    margin-bottom: 1em;
+}
+.followRequestMainWrap p, .followRequestMainWrap ul li {
+    font-size: 16px !important;
+    color: #3c3c3c !important;
+    letter-spacing: 0.7px !important;
+    font-family: inherit !important;
+    text-align: left !important;
+}
+.followRequestMainWrap ul li{
+    font-size: 15px !important;
+    margin-bottom: 15px !important;
+}
+
+/********* Filter Multi Select Box **********/
+.selectcover {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+.multi-select-container {
+    width: 100%;
+}
+.multi-select-button {
+    width: 100%;
+    border: 1px solid #C0BCBC;
+    height: 40px;
+    line-height: 2.5;
+    max-width: 100% !important;
+    box-sizing: border-box;
+    border-radius: 0;
+    box-shadow: none;
+}
+.multi-select-button:after {
+    border-color: #787878 transparent transparent transparent;
+    position: absolute;
+    right: 14px;
+    top: 15px;
+}
+
+
+/************ Full Screen slider ***********/
+/* .full-screen-slider .slick-active {
+    top: 95vh !important;
+} */
+
+
+/************** Style-rv ************/
+input.error,
+.form-control.error,
+.form-select.error {
+    border: 1px solid #f00;
+    color: #f00;
+}
+form label.error {
+    position: relative;
+    top: -20px;
+    color: #f00;
+    font-size: 14px;
+}
+.form-control, .form-select {
+    border-radius:  6px ;
+}
+.user-bottom-options .right-options {
+    display: inline-flex;
+}
+.user-bottom-options .right-options a:hover {
+    transform: scale(1.2);
+}
+/** Modal Dialog **/
+#full_screen_modal .btn-close {
+    background-color: #616161;
+    border-radius: 50%;
+}
+.modal-dialog .slider button.slick-arrow {
+    width: inherit;
+    height: inherit;
+    min-width: 20px;
+    min-height: 46px;
+    background: rgba(194, 194, 194, 0.5);
+    /* padding: 5px 15px 5px 15px; */
+    border-radius: 50% 50%;
+}
+.modal-dialog .slider button.slick-arrow:hover {
+    background: rgba(194, 194, 194, 0.96);
+}
+.modal-dialog .slider button.slick-prev {
+    padding: 5px 10px 5px 20px;
+}
+.modal-dialog .slider button.slick-next {
+    padding: 5px 20px 5px 10px;
+}
+.modal-dialog .slider button.slick-arrow::before {
+    display: inline-block;
+    border-right: 4px solid #fff;
+    border-bottom: 4px solid #fff;
+    width: 20px;
+    height: 20px;
+    content: '';
+    color: #fff;
+}
+.modal-dialog .slider button.slick-prev::before {
+    transform: rotate(-225deg);
+}
+.modal-dialog .slider button.slick-next::before {
+    transform: rotate(-45deg);
+}
+.news-feed .user-details .name span {
+    color: #000;
+}
+
+.jw-video-slider-player{
+    width: 100%;
+    height: 100vh !important;
+}
+#country_list {
+    position: relative;
+}
+#country_list ul{
+    width: 100%;
+}
+
+.dropdownContainer {
+    position: relative;
+}
+
+.dropdownContainer ul{
+    top: 39px;
+    width: calc(100% - 24px);
+}
+#exampleInputFile + label {
+    top: -20px;
+    min-width: 200px;
+    background: white;
+    padding-top: 5px;
+}
+.multi-select-button:after {
+    pointer-events: none;
+}
+.btnClearNotification {
+    min-width: 100px;
+    min-height: 40px;
+    border-radius: 6px;
+    outline: 0;
+    box-shadow: none;
+    border: 0;
+    background-color: #325cfd;
+    color: white;
+}
+.btnClearNotification:active, .btnClearNotification:focus {
+    outline: 0;
+    box-shadow: none;
+}
+.btnClearNotification:hover {
+    background: #4f70f6;
+    color: white;
 }

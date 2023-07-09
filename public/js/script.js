@@ -1,25 +1,24 @@
-$('.left-navbar-toggler').on('click', function (e) {
-    $('body').toggleClass('overflow-hidden');
-    $('.my-details-div').toggleClass('menu-slideIn');
+jQuery('.left-navbar-toggler').on('click', function (e) {
+  jQuery('body').toggleClass('overflow-hidden');
+  jQuery('.my-details-div').toggleClass('menu-slideIn');
 });
 
-$(".avg-rating").click(function(){
-  $(".rating-container").show(2500);
+jQuery(".avg-rating").click(function(){
+  jQuery(".rating-container").show(2500);
 });
-$(document).ready(function() { 
-    
-    $('.slider').slick({
-        dots: false,
-        infinite: true,
-        speed: 500,
-        fade: true,
-        cssEase: 'linear'
-      });
+
+jQuery(document).ready(function() { 
+  jQuery('.slider').slick({
+    dots: false,
+    infinite: true,
+    speed: 500,
+    fade: true,
+    cssEase: 'linear'
+  });
    
    
-   $('.modal').on('shown.bs.modal', function (e) {
-    $('.slider').slick('setPosition');
-    // $('.wrap-modal-slider').addClass('open');
-  })
+  jQuery('.modal').on('shown.bs.modal', function (e) {
+    jQuery('.slider').slick('setPosition');
+  });
 });
 

@@ -85,55 +85,66 @@
                                         <div class="col-md-8">
                                             <div class="white-bg">
                                                 <select class="form-control select2 select2-hidden-accessible country local_beach_break_id"
-                                                        name="user_type" id="filter_user_type" multiple="multiple">
+                                                        name="user_type[]" id="filter_user_type" multiple="multiple">
                                                     <option value="USER">Surfer</option>
                                                     <option value="PHOTOGRAPHER">Photographer</option>
                                                     <option value="SURFER CAMP">Surf Camp</option>
-                                                    <option value="ADVERTISEMENT">Advertiser</option>
+                                                    <!-- <option value="ADVERTISEMENT">Advertiser</option> -->
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    
+
                                     <div class="row align-items-center mb-4">
-                                        <!--<div class=" align-items-center">-->
+                                        <div class="col-md-4">
+                                            <label class="form-label">Username</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="white-bg">
+                                                <input type="hidden" value="" name="username_id" id="username_id_filter" class="form-control username_id" />
+                                                <input type="text" name="filter_username" class="form-control ps-2 mb-0 filter_username" placeholder="Search Username">
+                                                <div class="auto-search" id="filter_username_data"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row align-items-center mb-4">
                                         <div class="col-md-4">
                                             <label for="surfe" class="form-label">Surfer</label>
                                         </div>
                                         <div class="col-md-8">
                                             @if(Auth::user())
                                             <div class="d-inline-block form-check mb-0 me-3">
-                                                <input type="checkbox" class="form-check-input mt-0"
-                                                       id="me-surfe" name="filterUser" value="me">
+                                                <input type="checkbox" class="form-check-input mt-0" id="me-surfe" name="filterUser" value="me">
                                                 <label class="form-check-label" for="me-surfe">Me</label>
                                             </div>
                                             @endif
                                             <div class="d-inline-block form-check mb-0">
-                                                <input type="checkbox" class="form-check-input mt-0"
-                                                       id="test-other" name="filterUser" value="others">
+                                                <input type="checkbox" class="form-check-input mt-0" id="test-other" name="filterUser" value="others">
                                                 <label class="form-check-label"
                                                        for="test-other">Other</label>
                                             </div>
+                                            <div class="d-inline-block form-check mb-0">
+                                                <input type="checkbox" class="form-check-input mt-0" id="test-other" name="filterUser" value="unknown">
+                                                <label class="form-check-label" for="test-other">Unknown</label>
+                                            </div>
                                         </div>
-                                    <!--</div>-->
-                                        
-                                        
-                                        
                                     </div>
+
                                     <div class="row align-items-center d-none mb-4" id="othersFilterSurfer">
-                                        
+
                                      <div class="col-md-4">
                                             <label for="surfe" class="form-label"></label>
-                                        </div>   
-                                    <div class="col-md-8">    
+                                        </div>
+                                    <div class="col-md-8">
                                     <input type="hidden" value="" name="surfer_id" id="surfer_id_filter" class="form-control surfer_id" />
                                     <input type="text" name="other_surfer" class="form-control ps-2 mb-0 filter_other_surfer" placeholder="Search">
                                     <div class="auto-search" id="filter_other_surfer_data"></div>
                                     </div>
-                                    
+
                                     </div>
-                                    
+
                                     <div class="row align-items-center mb-4">
                                         <div class="col-md-4">
                                             <label class="form-label">Start Date</label>
@@ -180,7 +191,7 @@
                                                 <select class="form-control" name="state_id" id="filter_state_id">
                                                     <option selected="selected" value="">-- State --</option>
                                                     @foreach($states as $key => $value)
-                                                    <option value="{{ $value->id }}" 
+                                                    <option value="{{ $value->id }}"
                                                             {{ old('state_id',Request::get('state_id')) == $value->id ? "selected" : "" }}>
                                                         {{ $value->name }}</option>
                                                     @endforeach
@@ -223,7 +234,7 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="white-bg">
-                                                <select class="form-control" name="wave_size">  
+                                                <select class="form-control" name="wave_size">
                                                     <option value="">{{ __('-- Select --')}}</option>
                                                     @foreach($customArray['wave_size'] as $key => $value)
                                                     <option value="{{ $key }}" {{ old('wave_size',Request::get('wave_size')) == $key ? "selected" : "" }}>{{ $value}}
@@ -235,7 +246,7 @@
                                     </div>
                                     <div class="row align-items-center mb-4">
                                         <div class="col-md-4">
-                                            <label class="form-label">Board Size</label>
+                                            <label class="form-label">Board Type</label>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="white-bg">
@@ -304,9 +315,9 @@
 
                                     </div>
                                     <div class="filter-checkbox start-rating mb-4">
-                                        <label class="form-label">Start Rating</label>
+                                        <label class="form-label">Star Rating</label>
                                         <div class="rating-flex" onclick="ratingShow(this)">
-                                            <input id="rating" name="rating" class="rating-filter rating-loading" data-min="0" data-max="5" data-step="1" data-size="xs" value="0">                            
+                                            <input id="rating" name="rating" class="rating-filter rating-loading" data-min="0" data-max="5" data-step="1" data-size="xs" value="0">
                                             <span class="avg-rating"></span>
                                         </div>
                                     </div>
@@ -331,19 +342,3 @@
 
 
                     </div>
-                    <script type="text/javascript">
-                        $('.rating-filter').rating({
-                            showClear: false,
-                            showCaption: false
-                        });
-
-                        function ratingShow(e) {
-                            $(e).children(".rating-container").show();
-                            $(e).children(".avg-rating").hide();
-                        }
-                        $(document).on('click', '.rating-container', function (e) {
-                            $(e).children(".rating-container").hide();
-                            $(e).children(".avg-rating").hide();
-                        });
-
-                    </script>

@@ -1,4 +1,4 @@
-$(document).ready(function () {
+jQuery(document).ready(function () {
     var csrf_token = $('meta[name="csrf-token"]').attr('content');
 
     /**
@@ -6,33 +6,33 @@ $(document).ready(function () {
      * remove image preview on close (pip)
      */
 
-    $("#file_button").click(function () {
-        $("input[name='files[]']").trigger("click");
+    jQuery("#file_button").click(function () {
+        jQuery("input[name='files[]']").trigger("click");
     });
 
-    $("#video_button").click(function () {
-        $("input[name='videos[]']").trigger("click");
+    jQuery("#video_button").click(function () {
+        jQuery("input[name='videos[]']").trigger("click");
     });
 
-    $("input[name='files[]']").on("change", function () {
+    jQuery("input[name='files[]']").on("change", function () {
         if (parseInt($("input[name='files[]']").get(0).files.length) > 50) {
             alert("You can select only 10 images");
-            $(this).val('');
+            jQuery(this).val('');
         }
     });
 
-    $("input[name='videos[]']").on("change", function () {
+    jQuery("input[name='videos[]']").on("change", function () {
         if (parseInt($("input[name='videos[]']").get(0).files.length) > 50) {
             alert("You can select only 10 videos");
-            $(this).val('');
+            jQuery(this).val('');
         }
     });
 
 
-    $(".close").click(function (e) {
-        var validator = $("#postForm").validate();
+    jQuery(".close").click(function (e) {
+        var validator = jQuery("#postForm").validate();
         validator.resetForm();
-        $('.pip').remove();
+        jQuery('.pip').remove();
     });
 
     // get application base url
@@ -43,24 +43,24 @@ $(document).ready(function () {
     var dataImage = new Array();
     var dataVideo = new Array();
 
-    $("#input_multifileSelect1").change(function () {
+    jQuery("#input_multifileSelect1").change(function () {
         readImageURL(this);
     });
 
-    $("#input_multifileSelect2").change(function () {
+    jQuery("#input_multifileSelect2").change(function () {
         readVideoURL(this);
     });
 
-    $("#input_multifile").change(function () {
+    jQuery("#input_multifile").change(function () {
         previewFile(this);
     });
 
     function previewFile(input) {
         var newFileList = Array.from(input.files);
-        $.each(newFileList, function (index, mediaFile) {
+        jQuery.each(newFileList, function (index, mediaFile) {
             var ext = mediaFile.name.substring(mediaFile.name.lastIndexOf(".") + 1).toLowerCase();
             if (mediaFile && (ext == "mov" || ext == "mp4" || ext == "wmv" || ext == "mkv" || ext == "gif" || ext == "mpeg4")) {
-                $("#videoError").hide();
+                jQuery("#videoError").hide();
                 var f = newFileList[index]
                 dataVideo.push(input.files[index]);
                 
@@ -69,11 +69,11 @@ $(document).ready(function () {
                 i=0;while(_size>900){_size/=1024;i++;}
                 var exactSize = (Math.round(_size*100)/100)+' '+fSExt[i];
                 
-                $("#filesInfo").append('<div class="name-row pip"><img src="/img/video-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div>');
-                $(".remove-photo").click(function () {
-                    var indexRemoved = $(this).data('index');
+                jQuery("#filesInfo").prepend('<div class="name-row pip"><img src="/img/video-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div>');
+                jQuery(".remove-photo").click(function () {
+                    var indexRemoved = jQuery(this).data('index');
                     dataImage.splice(indexRemoved, 1);
-                    $(this).parent(".pip").remove();
+                    jQuery(this).parent(".pip").remove();
                 });
             }
             if(mediaFile && (ext == "png" || ext == "jpeg" || ext == "jpg")) {
@@ -85,24 +85,24 @@ $(document).ready(function () {
                 i=0;while(_size>900){_size/=1024;i++;}
                 var exactSize = (Math.round(_size*100)/100)+' '+fSExt[i];
                 
-                $("#filesInfo").append('<div class="name-row pip"><img src="/img/img-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div>');
-                $(".remove-photo").click(function () {
-                    var indexRemoved = $(this).data('index');
+                jQuery("#filesInfo").prepend('<div class="name-row pip"><img src="/img/img-upload.png"><span>'+ mediaFile.name +' '+ exactSize +'</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div>');
+                jQuery(".remove-photo").click(function () {
+                    var indexRemoved = jQuery(this).data('index');
                     dataImage.splice(indexRemoved, 1);
-                    $(this).parent(".pip").remove();
+                    jQuery(this).parent(".pip").remove();
                 });  
             }
             if (newFileList.length == 0) {
-                $("#videoError").show();
+                jQuery("#videoError").show();
             }
         });
     }
     function readVideoURL(input) {
         var newFileList = Array.from(input.files);
-        $.each(newFileList, function (index, videoFile) {
+        jQuery.each(newFileList, function (index, videoFile) {
             var ext = videoFile.name.substring(videoFile.name.lastIndexOf(".") + 1).toLowerCase();
             if (videoFile && (ext == "mov" || ext == "mp4" || ext == "wmv" || ext == "mkv" || ext == "gif" || ext == "mpeg4")) {
-                $("#videoError").hide();
+                jQuery("#videoError").hide();
                 var f = newFileList[index]
                 dataVideo.push(input.files[index]);
                 
@@ -112,21 +112,21 @@ $(document).ready(function () {
                 
                 //storeFiles(videoFile, filename);
                 
-                $("<span class=\"pip\">" +
+                jQuery("<span class=\"pip\">" +
                 "<img style=\"width: 50px;\" class=\"imageThumb\" src=\"/img/play.png\" title=\"" + videoFile.name + "\"/>" +
                 "<br/><span class=\"remove\" data-index=\"" + index + "\"><img src=\"" + base_url + "\/img/close.png\" id=\"remove\" style=\"margin: 0px;position: inherit;padding: 0px 0px 10px 0px;top: 148px;cursor: pointer;\" width=\"14px\"></span>" +
                 "</span>").insertAfter("#filesInfo");
-                $(".remove").click(function () {
-                    var indexRemoved = $(this).data('index');
+                jQuery(".remove").click(function () {
+                    var indexRemoved = jQuery(this).data('index');
                     dataImage.splice(indexRemoved, 1);
-                    $(this).parent(".pip").remove();
+                    jQuery(this).parent(".pip").remove();
                 });
             } else {
                 // REMOVE IMAGE INDEX IF NOT IMAGE 
                 newFileList.splice(index);
             }
             if (newFileList.length == 0) {
-                $("#videoError").show();
+                jQuery("#videoError").show();
             }
         });
     }
@@ -136,7 +136,7 @@ $(document).ready(function () {
         formData.append("file", videoFile);
         formData.append("filename", filename);
 
-        $.ajax({
+        jQuery.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -153,10 +153,10 @@ $(document).ready(function () {
 
     function readImageURL(input) {
         var newFileList = Array.from(input.files);
-        $.each(newFileList, function (index, img) {
+        jQuery.each(newFileList, function (index, img) {
             var ext = img.name.substring(img.name.lastIndexOf(".") + 1).toLowerCase();
             if (img && (ext == "png" || ext == "jpeg" || ext == "jpg")) {
-                $("#imageError").hide();
+                jQuery("#imageError").hide();
                 var f = newFileList[index]
                 dataImage.push(input.files[index]);
                 
@@ -169,14 +169,14 @@ $(document).ready(function () {
                 reader = new FileReader();
                 reader.onload = (function (e) {
                     var file = e.target;
-                    $("<span class=\"pip\">" +
+                    jQuery("<span class=\"pip\">" +
                             "<img style=\"width: 50px;\" class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
                             "<br/><span class=\"remove\" data-index=\"" + index + "\"><img src=\"" + base_url + "\/img/close.png\" id=\"remove\" style=\"margin: 0px;position: inherit;padding: 0px 0px 10px 0px;top: 148px;cursor: pointer;\" width=\"14px\"></span>" +
                             "</span>").insertAfter("#filesInfo");
-                    $(".remove").click(function () {
-                        var indexRemoved = $(this).data('index');
+                    jQuery(".remove").click(function () {
+                        var indexRemoved = jQuery(this).data('index');
                         dataImage.splice(indexRemoved, 1);
-                        $(this).parent(".pip").remove();
+                        jQuery(this).parent(".pip").remove();
                     });
                 });
                 reader.readAsDataURL(f);
@@ -185,7 +185,7 @@ $(document).ready(function () {
                 newFileList.splice(index);
             }
             if (newFileList.length == 0) {
-                $("#imageError").show();
+                jQuery("#imageError").show();
             }
         });
 
@@ -231,7 +231,7 @@ $(document).ready(function () {
     /**
      * Validate post form befor submit
      */
-    $("form[name='postForm']").validate({
+    jQuery("form[name='postForm']").validate({
         rules: {
             post_type: {
                 required: true,
@@ -305,28 +305,28 @@ $(document).ready(function () {
             // Manage Form Data 
             e.preventDefault();
 
-            var myCheckboxes = $('input[name="optional_info[]"]:checked').map(function () {
-                return $(this).val();
+            var myCheckboxes = jQuery('input[name="optional_info[]"]:checked').map(function () {
+                return jQuery(this).val();
             }).get();
 
             var result = new Array();
             var files = new Array();
-            files = $('input[name="files[]"]').map(function () {
-                return $(this).val();
+            files = jQuery('input[name="files[]"]').map(function () {
+                return jQuery(this).val();
             }).get();
 
             // Updated part
-            $.each($('form').serializeArray(), function () {
+            jQuery.each(jQuery('form').serializeArray(), function () {
                 result[this.name] = this.value;
             });
 
             result['optional'] = myCheckboxes;
 
-            $.each(dataImage, function (i, file) {
+            jQuery.each(dataImage, function (i, file) {
                 result['file-' + i, file]
             });
 
-            $.ajax({
+            jQuery.ajax({
                 type: "POST",
                 url: "/create-post",
                 enctype: 'multipart/form-data',
@@ -343,11 +343,11 @@ $(document).ready(function () {
     });
 
     function postResult(jsonResponse) {
-        if ($.isEmptyObject(jsonResponse.error)) {
-            $('.alert-block').css('display', 'block').append('<strong>' + jsonResponse.success + '</strong>');
+        if (jQuery.isEmptyObject(jsonResponse.error)) {
+            jQuery('.alert-block').css('display', 'block').append('<strong>' + jsonResponse.success + '</strong>');
         } else {
-            $.each(jsonResponse.error, function (key, value) {
-                $(document).find('[name=' + key + ']').after('<lable class="text-strong textdanger error">' + value + '</lable>');
+            jQuery.each(jsonResponse.error, function (key, value) {
+                jQuery(document).find('[name=' + key + ']').after('<lable class="text-strong textdanger error">' + value + '</lable>');
             });
         }
     }
@@ -355,37 +355,37 @@ $(document).ready(function () {
     /**
      * Manage radio button
      */
-    $('input[type=radio]').on('change', function () {
-        switch ($(this).val()) {
+    jQuery('input[type=radio]').on('change', function () {
+        switch (jQuery(this).val()) {
             case 'Me':
-                $("#othersSurfer").hide();
-                $("#other_surfer").val("");
-                $('.other_surfer').val('');
+                jQuery("#othersSurfer").hide();
+                jQuery("#other_surfer").val("");
+                jQuery('.other_surfer').val('');
                 break;
             case 'Others':
-                $("#othersSurfer").show();
-                $("#other_surfer").val("");
+                jQuery("#othersSurfer").show();
+                jQuery("#other_surfer").val("");
                 break;
             case 'Unknown':
-                $("#othersSurfer").hide();
-                $("#other_surfer").val("");
-                $('.other_surfer').val('');
+                jQuery("#othersSurfer").hide();
+                jQuery("#other_surfer").val("");
+                jQuery('.other_surfer').val('');
                 break;
             default:
-                $("#othersSurfer").hide();
-                $("#other_surfer").val("");
+                jQuery("#othersSurfer").hide();
+                jQuery("#other_surfer").val("");
         }
     });
     
     /************** rating js ****************************/
-    $(document).on('change', '.rating', function () {
-        var value = $(this).val();
-        var id = $(this).attr("data-id");
+    jQuery(document).on('change', '.rating', function () {
+        var value = jQuery(this).val();
+        var id = jQuery(this).attr("data-id");
 
         if (id != '') {
-            var csrf_token = $('meta[name="csrf-token"]').attr("content");
+            var csrf_token = jQuery('meta[name="csrf-token"]').attr("content");
 
-            $.ajax({
+            jQuery.ajax({
                 type: "POST",
                 url: "/rating",
                 data: {
@@ -395,15 +395,15 @@ $(document).ready(function () {
                 },
                 dataType: "json",
                 success: function (jsonResponse) {
-                    $('#average-rating' + id).html(Math.floor(jsonResponse['averageRating']));
-                    $('#users-rated' + id).html(Math.floor(jsonResponse['usersRated']));
-                    $(".rating-container").hide();
-                    $(".rating-container").siblings(".avg-rating").show();
+                    jQuery('#average-rating' + id).html(Math.floor(jsonResponse['averageRating']));
+                    jQuery('#users-rated' + id).html(Math.floor(jsonResponse['usersRated']));
+                    jQuery(".rating-container").hide();
+                    jQuery(".rating-container").siblings(".avg-rating").show();
 
                 }
             });
         } else {
-            $(this).val(value);
+            jQuery(this).val(value);
         }
     });
     

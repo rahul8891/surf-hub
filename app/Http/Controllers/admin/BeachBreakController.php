@@ -62,13 +62,13 @@ class BeachBreakController extends Controller
      */
     public function index(Request $request)
     {
-        $params=$request->all();
+        $params = $request->all();
         $currentUserCountryId = (isset(Auth::user()->user_profiles->country_id) && !empty(Auth::user()->user_profiles->country_id))?Auth::user()->user_profiles->country_id:'';      
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $gender_type = config('customarray.gender_type');
         $beach_break = $this->users->getBeachBreakListing($params);
-//        dd($beach_break);
+        // dd($beach_break);
         $spiner = ($beach_break) ? true : false;
         return view('admin/beach_break/index', compact('beach_break','spiner','countries','states','gender_type'));     
     }

@@ -27,16 +27,16 @@
                                                                               
                                     @if(!empty($detail->post->upload->image))
                                     <div class="pos-rel editBtnWrap">
-                                        <img src="{{ env('FILE_CLOUD_PATH').'images/'.$detail->post->user->id.'/'.$detail->post->upload->image }}" alt="" width="100%" class="img-fluid" id="myImage{{$detail->post->id}}">
+                                        <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$detail->post->user->id.'/'.$detail->post->upload->image }}" alt="" width="100%" class="img-fluid" id="myImage{{$detail->post->id}}">
                                         <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
                                     </div>
                                     @endif
                                     @if(!empty($detail->post->upload->video))
                                     <br>
                                     <div class="pos-rel editBtnWrap">
-                                        <video width="100%" controls autoplay playsinline playsinline="playsinline" muted id="myImage{{$detail->post->id}}">
-                                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$detail->post->user->id.'/'.$detail->post->upload->video }}" >    
-                                        </video>
+                                        <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                                            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                                        </div>    
                                         <button class="editBtn"><img src="/img/edit.png" class="img-fluid"></button>
                                     </div>
                                     
@@ -115,7 +115,7 @@
                                                                     </div>
                                                                     <div class="col-2 text-center">:</div>
                                                                     <div class="col-5">
-                                                                        {{$detail->post->beach_breaks->beach_name}}/{{$detail->post->beach_breaks->break_name}}
+                                                                        {{ (isset($detail->post->beach_breaks->beach_name))?$detail->post->beach_breaks->beach_name:'' }} {{ (isset($detail->post->breakName->break_name))?$detail->post->breakName->break_name:'' }}
                                                                     </div>
                                                                     <div class="col-5">
                                                                         Country

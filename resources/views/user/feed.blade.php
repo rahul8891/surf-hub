@@ -9,7 +9,7 @@
             </div>
             <div class="middle-content" id="post-data">
                 @include('layouts.user.content_menu')
-                @if (isset($postsList) && empty($postsList[0]))
+                @if (isset($postsList) && empty($postsList))
                 <div class="post alert text-center alert-dismissible py-5" role="alert">
                     {{ ucWords('no matches found') }}
                 </div>
@@ -49,7 +49,7 @@
                                 <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
                                 @endif
-                                <div>     
+                                <div>
                                     @if($posts->user_id != Auth::user()->id)
                                     @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
                                     <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
@@ -64,44 +64,44 @@
                                     <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span>
                                     </p>
                                     @endif
-                                    <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
-                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
+                                    <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
+                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                                 </div>
                             </div>
                             @if($posts->user_id != Auth::user()->id)
-                            <div class="user-right"> 
+                            <div class="user-right">
                                 <img src="/img/new/normal-user.png" alt="normal-user">
-
-                                <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
-                                    <span class="follow-icon"></span> FOLLOW
-                                </button>
-
+                                @if(isset($posts->followPost->id) && !empty($posts->followPost->id))
+                                    @if(($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0'))
+                                        <button class="follow-btn follow clicked" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
+                                            <span class="follow-icon"></span> FOLLOWING
+                                        </button>
+                                    @else
+                                        <button class="follow-btn follow clicked Follow" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
+                                            <span class="follow-icon"></span>  REQUEST SEND
+                                        </button>
+                                    @endif
+                                @else
+                                    <button class="follow-btn follow followPost" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
+                                        <span class="follow-icon"></span> FOLLOW
+                                    </button>
+                                @endif
 
                             </div>
                             @endif
                         </div>
                         @if(!empty($posts->upload->image))
-                        <div class="newsFeedImgVideo">
-                            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
-                        </div>
+                            <div class="newsFeedImgVideo">
+                                <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                            </div>
                         @elseif(!empty($posts->upload->video))
-                        @if (!File::exists($posts->upload->video))
-                        <div class="newsFeedImgVideo">
-                            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-                            </video>
-                        </div>    
-                        @else
-                        <div class="newsFeedImgVideo">
-                            <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-                            </video>
-                        </div>
-                        @endif
+                            <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                                <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                            </div>
                         @endif
                         <div class="user-bottom-options">
                             <div class="rating-flex rating-flex-child">
-                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
+                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">
                                 <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
                             </div>
                             <div class="right-options">
@@ -109,11 +109,11 @@
                                 <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/new/save.png" alt="Save"></a>
                                 @endif
                                 @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'] && empty($requestSurfer[$posts->id]))
-                                <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
+                                <a onclick='surferRequestDetail("{{ Crypt::encrypt($posts->id) }}")'><img src="/img/new/small-logo.png" alt="Logo"></a>
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                                     <img src={{asset("/img/location.png")}} alt="Location"></a>
-                                <a onclick="openFullscreenSilder({{$posts->id}});"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
+                                <a onclick="openFullscreenSilder({{$posts->id}}, 'feed');"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
                                 <div class="d-inline-block info dropdown" title="Info">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false">
@@ -173,7 +173,7 @@
                                                 @endif
                                                 <span>{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
                                             </div>
-                                            @endforeach 
+                                            @endforeach
                                         </div>
                                         @endif
                                         <div>
@@ -194,7 +194,7 @@
 
                                     <div class="dropdown-menu">
                                         <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
-                                            @csrf    
+                                            @csrf
                                             <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
                                             <h6 class="text-center fw-bold">Report Content</h6>
 
@@ -247,7 +247,7 @@
                             @foreach ($posts->comments as $comments)
                             <div class="comment-row">
                                 <span class="comment-name">{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :
-                                </span> 
+                                </span>
                                 {{$comments->value}}
                             </div>
                             @endforeach
@@ -270,14 +270,14 @@
                 <div class="news-feed">
                     <div class="inner-news-feed">
                         <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$requests['user_id'].'/'.$requests['video'] }}" >    
+                            <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$requests['user_id'].'/'.$requests['video'] }}" >
                         </video>
-                    </div>    
-                </div>    
+                    </div>
+                </div>
                 @endif
 
                 @php ($c = 0)
-                @break 
+                @break
                 @endforeach
                 @php ($i++)
                 @endif
@@ -299,77 +299,79 @@
 @include('elements/location_popup_model')
 @include('layouts/models/edit_image_upload')
 @include('layouts/models/full_screen_modal')
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
     var page = 1;
-    $(window).scroll(function() {
-    if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    page++;
-    loadMoreData(page);
-    }
-    });
-    function loadMoreData(page) {
-    var url = window.location.href;
-    if (url.indexOf("?") !== - 1) {
-    var url = window.location.href + '&page=' + page;
-    } else {
-    var url = window.location.href + '?page=' + page;
-    }
 
-    $.ajax({
-    url: url,
+    $(window).scroll(function() {
+        if($(window).scrollTop() + $(window).height() >= ($(document).height() - 10)) {
+            page++;
+            loadMoreData(page);
+        }
+    });
+
+    function loadMoreData(page) {
+        var url = window.location.href;
+        if(url.indexOf("?") !== -1) {
+            var url = window.location.href + '&page=' + page;
+        }else {
+            var url = window.location.href + '?page=' + page;
+        }
+
+        $.ajax({
+            url: url,
             type: "get",
             async: false,
             beforeSend: function() {
-            $('.ajax-load').show();
+                $('.ajax-load').show();
             }
-    })
-            .done(function(data) {
-            if (data.html == "") {
-            $('.ajax-load').addClass('requests');
-            $('.ajax-load').html("No more records found");
-            return;
+        })
+        .done(function(data) {
+            if(data.html == "") {
+                $('.ajax-load').addClass('requests');
+                $('.ajax-load').html("No more records found");
+                return;
             }
 
             $('.ajax-load').removeClass('requests');
             $('.ajax-load').hide();
-//            $("#post-data").insertBefore(data.html);
+    //            $("#post-data").insertBefore(data.html);
             $(data.html).insertBefore(".ajax-load");
-            });
+        });
     }
 
-    $(document).on('click', '.editBtnVideo', function() {
-    var id = $(this).data('id');
-    $.ajax({
-    url: '/getPostData/' + id,
-            type: "get",
-            async: false,
-            success: function(data) {
-            // console.log(data.html);
-            $("#edit_image_upload_main").html("");
-            $("#edit_image_upload_main").append(data.html);
-            $("#edit_image_upload_main").modal('show');
-            }
-    });
-    });
-    $('.pos-rel a').each(function(){
-    $(this).on('hover, mouseover, click', function() {
-    $(this).children('.userinfoModal').find('input[type="text"]').focus();
-    });
-    });
-    function openFullscreenSilder(id) {
-    $.ajax({
-    url: '/getPostFullScreen/' + id,
-            type: "get",
-            async: false,
-            success: function(data) {
-            // console.log(data.html);
-            $("#full_screen_modal").html("");
-            $("#full_screen_modal").append(data.html);
-            $("#full_screen_modal").modal('hide');
-            $("#full_screen_modal").modal('show');
-            }
-    });
+    //Auto play videos when view in scroll
+    function isInView(el) {
+        var rect = el.getBoundingClientRect();// absolute position of video element
+        return !(rect.top > (jQuery(window).height() / 2) || rect.bottom < (jQuery(window).height() / 4));// visible?
     }
 
+    jQuery(document).on("scroll", function () {
+        jQuery("video").each(function () { //console.log('aa');
+            // jQuery("video").get(0).pause();
+            // visible?
+            if (isInView(jQuery(this).get(0))) { // console.log('video = '+ jQuery.parseJSON(jQuery(this).get(0).paused));
+                if (jQuery(this).get(0).paused) { //console.log('1111');
+                    jQuery(this).get(0).play(true);// play if not playing
+                }
+            } else {
+                if (!jQuery(this).get(0).paused) { //console.log('2222');
+                    jQuery(this).get(0).pause();// pause if not paused
+                }
+           }
+        });
+    });
+    //End auto play
+
+    function surferRequestDetail(id) {
+        jQuery.ajax({
+            url: 'surfer-request/' + id,
+            type: "get",
+            async: false,
+            success: function() {
+                jQuery("main").append('<div class="alert alert-success alert-dismissible" role="alert" id="msg"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Surfer Request send successfully.</div>');
+            }
+        });
+    }
 </script>
 @endsection

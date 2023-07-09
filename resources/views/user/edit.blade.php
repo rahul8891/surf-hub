@@ -28,7 +28,7 @@
                                         <option value="">{{ __('-- Select --')}}</option>
                                         @foreach($customArray['post_type'] as $key => $value)
                                         <option value="{{ $key }}"
-                                            {{ old('post_type',$posts->post_type) == $key ? "selected" : "" }}>{{ $value}}
+                                            {{ ($posts->post_type == $key) ? "selected" : "" }}>{{ $value}}
                                         </option>
                                         @endforeach
                                     </select>

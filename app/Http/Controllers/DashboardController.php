@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use Redirect;
+use App\Models\Post;
+use App\Models\UserFollow;
 use Illuminate\Http\Request;
+use App\Models\SurferRequest;
+use App\Services\PostService;
+use App\Services\UserService;
+use App\Services\MasterService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use App\Services\MasterService;
-use App\Services\UserService;
-use App\Services\PostService;
-use App\Models\Post;
-use App\Models\SurferRequest;
-use App\Models\UserFollow;
-use Redirect;
+use Illuminate\Database\Eloquent\Builder;
 
 class DashboardController extends Controller {
 
@@ -26,48 +28,43 @@ class DashboardController extends Controller {
         $this->customArray = config('customarray');
         $this->userService = $userService;
         $this->postService = $postService;
+
+        // post model object
+        $this->posts = new Post();
     }
 
     public function dashboard(Request $request) {
+        $urlData = (!empty($request->getQueryString()))?$request->getQueryString():"";
+
+        $param = $request->all();
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $beaches = $this->masterService->getBeaches();
         $customArray = $this->customArray;
-        $postsList = Post::with('followPost')->where('is_deleted', '0')
-                ->where('parent_id', '0')
-                ->where(function ($query) {
-                    $query->where('post_type', 'PUBLIC')
-                    ->orWhere('is_feed', '1');
-                })
-                ->orderBy('posts.created_at', 'DESC')
-                ->paginate(10);
+
+        $postsList = $this->postService->getFeedFilteredList($param);
+
         $requestSurfer = array();
         foreach ($postsList as $val) {
-//            $surferRequest = SurferRequest::select("*")
-//                    ->where("post_id", "=", $val['id'])
-//                    ->where("status", "=", 0)
-//                    ->get();
-
             $surferRequest = SurferRequest::where("post_id", "=", $val['id'])
                     ->where("user_id", "=", Auth::user()->id)
                     ->get();
             foreach ($surferRequest as $res) {
-//                echo '<pre>'; print_r($res['id']);die;
                 $requestSurfer[$res->post_id] = $res->user_id;
             }
         }
-        
+
         $url = url()->current();
         $usersList = $this->masterService->getAllUsers();
 
         if ($request->ajax()) {
-            $data = $request->all();
-            $page = $data['page'];
-            $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches','page'))->render();
+            $page = $param['page'];
+            $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches','page', 'urlData'))->render();
             return response()->json(['html' => $view]);
         }
-        return view('user.feed', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches'));
+
+        return view('user.feed', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches', 'urlData'));
     }
 
     public function photographerDashboard(Request $request) {
@@ -207,6 +204,7 @@ class DashboardController extends Controller {
         }
         die;
     }
+
     public function getBreak(Request $request) {
         $data = $request->all();
 
@@ -223,72 +221,21 @@ class DashboardController extends Controller {
     }
 
     /**
-     * Display a listing of the resource.
+     * Check the user first time login
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        //
-    }
+    public function checkLoginAttempt() {
+        dd(Auth::user()->first_time_login);
+        if (Auth::user()->first_time_login) {
+            $first_time_login = true;
+            Auth::user()->first_time_login = false;
+            Auth::user()->save();
+        } else {
+            $first_time_login = false;
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create() {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request) {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id) {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id) {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id) {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id) {
-        //
+        return $first_time_login;
     }
 
 }

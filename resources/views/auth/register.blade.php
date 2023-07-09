@@ -10,9 +10,9 @@
                     <select class="form-select ps-2" name="user_type" id="user_type" required onchange="getform(this.value)">
                         <option value="">Select User Type</option>
                         <option value="2" selected="">Surfer</option>
-                        <option value="3">Advertisement</option>
                         <option value="5">Photographer</option>
                         <option value="6">Surf Camp</option>
+                        <option value="3">Advertiser</option>
                     </select>
                     @error('language')
                     <div class="text-danger">{{ $message }}</div>
@@ -98,7 +98,7 @@
                                     </span>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="d-flex uploadBtnMainWrap align-items-center form-group">
                                             <div class="upload-btn-wrapper">
                                                 <button class="">
@@ -121,10 +121,10 @@
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                     <input type="file" name="upload" id="upload" /> 
-                                     Error display 
+                                     <input type="file" name="upload" id="upload" />
+                                     Error display
                                     <div class="col-md-6">
-                                         <x-jet-validation-errors class="errorMsg" /> 
+                                         <x-jet-validation-errors class="errorMsg" />
                                         @if (session('status'))
                                         <div class="successMsg">
                                             {{ __('Registration Successfull, Please verify the email sent on your email address.') }}
@@ -132,11 +132,11 @@
                                         @endif
                                     </div>
                                     </div>
-                                     End Error display 
+                                     End Error display
                                     <div class="row">
-                                        
+
                                     <div class="d-none row" id="common-fields">
-                                        
+
                                         <div class="col-md-6 d-none photographer-fileds">
                                             <div class="form-group pos-rel">
                                                 <div class="inputWrap">
@@ -171,7 +171,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-6 d-none resort-fields">
                                             <div class="form-group pos-rel">
                                                 <div class="inputWrap">
@@ -206,8 +206,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        
+
+
                                         <div class="col-md-6 d-none advertise">
                                             <div class="form-group pos-rel">
                                                 <div class="inputWrap">
@@ -488,7 +488,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-6 d-none advertise">
                                             <div class="form-group pos-rel">
                                                 <div class="inputWrap">
@@ -540,7 +540,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-6 d-none hide-for-advertise">
                                             <div class="form-group pos-rel">
                                                 <div class="selectWrap pos-rel">
@@ -557,7 +557,7 @@
                                                             '.$value->state.', '.$value->country
                                                             !!}</option>
                                                         @endforeach
-                                                    </select> 
+                                                    </select>
                                                     <input type="text" value="{{ old('local_beach_break')}}"
                                                            name="local_beach_break" data-beachID=""
                                                            placeholder="Your Local Break / Beach"
@@ -604,7 +604,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                          <div class="col-md-6 d-none photographer-fileds">
                                             <div class="form-group pos-rel">
                                                 <div class="selectWrap pos-rel">
@@ -626,7 +626,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
 
                                                                         <div class="col-md-6">
@@ -676,7 +676,7 @@
                                 </div>
                             </div>
                         </form>
-                         End form 
+                         End form
                     </div>
                 </div>
             </div>

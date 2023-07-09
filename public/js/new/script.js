@@ -1,32 +1,46 @@
-$('.left-navbar-toggler').on('click', function (e) {
-    $('body').toggleClass('overflow-hidden');
-    $('.my-details-div').toggleClass('menu-slideIn');
+/*jQuery('.left-navbar-toggler').on('click', function (e) {
+    jQuery('body').toggleClass('overflow-hidden');
+    jQuery('.my-details-div').toggleClass('menu-slideIn');
+});*/
+
+jQuery('.left-navbar-toggler').on('click', function (e) {
+    e.stopPropagation();
+    jQuery('body').toggleClass('overflow-hidden');
+    jQuery('.my-details-div').toggleClass('menu-slideIn');
 });
 
-$(document).on('click', '.rating-flex-child', function (e) {
-  $(this).children(".rating-container").show();
-  $(this).children(".avg-rating").hide();
+jQuery(document).on('click', function (){
+    if(jQuery('.my-details-div').hasClass('menu-slideIn')) {
+        jQuery('body').toggleClass('overflow-hidden');
+        jQuery('.my-details-div').toggleClass('menu-slideIn');
+    }
 });
 
-//$(document).on('click', '.rating-stars', function (e) {
-//  $(this).parents(".rating-container").hide();
-//  $(this).parents(".rating-container").siblings(".avg-rating").show();
+
+jQuery(document).on('click', '.rating-flex-child', function (e) {
+  jQuery(this).children(".rating-container").show();
+  jQuery(this).children(".avg-rating").hide();
+});
+
+//jQuery(document).on('click', '.rating-stars', function (e) {
+//  jQuery(this).parents(".rating-container").hide();
+//  jQuery(this).parents(".rating-container").siblings(".avg-rating").show();
 //});
 
-$(document).ready(function() { 
-    
-    $('.slider').slick({
+jQuery(document).ready(function() {
+
+    jQuery('.slider').slick({
         dots: false,
         infinite: true,
         speed: 500,
         fade: true,
         cssEase: 'linear'
       });
-   
-   
-   $('.modal').on('shown.bs.modal', function (e) {
-    $('.slider').slick('setPosition');
-    // $('.wrap-modal-slider').addClass('open');
+
+
+   jQuery('.modal').on('shown.bs.modal', function (e) {
+    jQuery('.slider').slick('setPosition');
+    // jQuery('.wrap-modal-slider').addClass('open');
   })
 });
 
