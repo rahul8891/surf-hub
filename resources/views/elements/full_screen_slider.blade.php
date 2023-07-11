@@ -44,12 +44,12 @@
                         @if(!empty($token))
                             <!-- <button  class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></button> -->
                         @else
-                            <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'>
+                            <!-- <a href="{{route('spotify-auth')}}" target="_blank" class="btn spotify-btn" id='togglePlay'>
                                 <picture>
                                     <source media="(min-width:575px)"  srcset="/img/listen-on-spotify-button.png">
                                     <img src="/img/new/spotify.png" style="height:40px;"  alt="Flowers" style="width:auto;">
                                 </picture>
-                            </a>
+                            </a> -->
                         @endif
                     @endif
 
@@ -131,7 +131,7 @@
     const token = @json($token);
     const track_uri = @json($trackArray['track_uri']);
     //// Play selected song
-    
+
 
     // window.onSpotifyWebPlaybackSDKReady = () => {
     //     const token = @json($token);
@@ -181,11 +181,11 @@
     // };
 
 
-        
+
 
 
     window.onSpotifyWebPlaybackSDKReady = () => {
-        
+
         const player = new Spotify.Player({
             name: "Music Player",
             getOAuthToken: (cb) => {

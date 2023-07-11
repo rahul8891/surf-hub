@@ -142,15 +142,15 @@ class MasterService {
 
         return $users;
     }
-    public function getSpotifyTrack(){
+    public function getSpotifyTrack() {
+        $arr = [];
         $trackArray['track_uri'] = '';
         $spotifyUser = SpotifyUser::where('user_id', Auth::user()->id)->get()->toArray();
-        // echo '<pre>56';print_r($spotifyUser);die;
+        // dd($spotifyUser);
         if ($spotifyUser) {
             $client = new \GuzzleHttp\Client;
 
             // get new access token in case if old is expire
-
             $getToken = $client->post('https://accounts.spotify.com/api/token', [
                 'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded',
@@ -161,12 +161,11 @@ class MasterService {
                     'grant_type' => 'refresh_token'
                 ]
             ]);
-        //    echo '<pre>';print_r(json_decode($getToken->getBody(), true));die;
+
             $tokenArr = json_decode($getToken->getBody(), true);
             $token = $tokenArr['access_token'];
 
             // get tracks of the user
-
             $response = $client->get('https://api.spotify.com/v1/me/top/tracks', [
                 'headers' => [
                     'Content-Type' => 'application/json',
@@ -175,32 +174,14 @@ class MasterService {
             ]);
             $top_user_tracks = json_decode($response->getBody(), true);
 
-//            echo '<pre>';print_r($top_user_tracks);die;
-//
             $counter = 0;
             foreach ($top_user_tracks['items'] as $track) {
-
-//                $milliseconds = $track['duration_ms'];
-//                $seconds = floor($milliseconds / 1000);
-//                $minutes = floor($seconds / 60);
-//                $sec = $seconds % 60;
-//                $min = $minutes % 60;
-//                $duration = $min . ':' . $sec;
-//                echo '<pre>';
-//                    print_r($duration);
-//                    die;
-//                foreach ($val as $track) {
-//                $trackArray[$counter]['track_name'] = $track['name'];
-//                $trackArray[$counter]['track_link'] = $track['href'];
                 $trackArray = $track['uri'];
-//                $trackArray[$counter]['duration'] = $duration;
                 $counter++;
-
-//                }
             }
+
             $arr ['token'] = $token;
             $arr ['track_uri'] = $trackArray;
-
         }
 
         return $arr;
