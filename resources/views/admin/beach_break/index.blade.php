@@ -1,10 +1,10 @@
 @extends('layouts.admin.admin_layout')
 @section('content')
 <style>
-    
+
     </style>
 <div class="justify-content-center loadingWrap d-none">
-                    
+
 </div>
 <section class="home-section">
             <div class="container">
@@ -13,14 +13,14 @@
                         <div class="table-strip-wrap">
                             <div class="strip-table-header">
                                 <h2>Beach/Breaks</h2>
-                                
-                                    
+
+
                             </div>
                             <div class="table-responsive">
                                 <div class="dropdown d-inline-block map-details">
                                         <div class="btn greyBorder-btn ms-0 " >
                                             <input type="file" name="beach_break_excel" id="beach_break_excel">
-                                            <span>IMPORT EXCEL</span> 
+                                            <span>IMPORT EXCEL</span>
                                         </div>
 <!--                                        <button class="btn greyBorder-btn ms-0 ">
                                             <input type="file" name="beach_break_excel" id="beach_break_excel">IMPORT EXCEL
@@ -84,7 +84,7 @@
                                             </div>
                                             </form>
                                         </div>
-                                        
+
                                         <!-- <div class="d-inline-block d-lg-inline-block dropdown filter ms-2 my-lg-0 my-3 searchByFilter">
                                             <form class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <div class="row">
@@ -136,7 +136,7 @@
                                                     <div class="text-center">
                                                         <button type="submit" class="btn blue-btn w-150">Search</button>
                                                     </div>
-                                                </div> 
+                                                </div>
                                                 </form>
                                             </div>
                                         </div>
@@ -159,7 +159,7 @@
                                     <tbody>
                                          @foreach($beach_break as $key => $value)
                                         <tr>
-                                            
+
                                             <td>{{ $key + 1  }}</td>
                                             <td>{{ $value->beach_name }}</td>
                                             <td>{{ $value->break_name }}</td>
@@ -169,7 +169,7 @@
                                             <td>{{ $value->latitude }}</td>
                                             <td>{{ $value->longitude }}</td>
                                             <td>
-                                                
+
                                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$value->latitude ?? ''}}" data-long="{{$value->longitude ?? ''}}" data-id="" class="locationMap">
                                                 View Map</a>
                                                 |
@@ -187,9 +187,6 @@
 
             </div>
         </section>
-@include('elements/location_popup_model')    
+@include('elements/location_popup_model')
 @include('admin/beach_break/edit_beach_break_modal')
-<script type="text/javascript">
-    
-</script>
 @endsection

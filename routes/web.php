@@ -135,10 +135,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('notifications', [UserPostController::class, 'notifications'])->name('notifications');
     Route::get('surfer-follow-request/{id}', [UserPostController::class, 'surferFollowRequest'])->name('surferFollowRequest');
 
-
-
     Route::get('/surfer-request-list', [UserPostController::class, 'surferRequestList'])->name('surferRequestList');
     Route::get('/accept-reject-request/{id}/{type}', [UserPostController::class, 'acceptRejectRequest'])->name('acceptRejectRequest');
+    Route::get('/accept-reject-follow-request/{id}/{type}', [UserPostController::class, 'acceptRejectFollowRequest'])->name('acceptRejectFollowRequest');
 
     Route::post('/upload-media', [UserPostController::class, 'uploadMedia'])->name('uploadMedia');
 

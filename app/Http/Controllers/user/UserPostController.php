@@ -19,6 +19,7 @@ use App\Models\User;
 use App\Models\Post;
 use App\Models\Report;
 use App\Models\Notification;
+use App\Models\UserFollow;
 use App\Models\UserProfile;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -453,6 +454,53 @@ class UserPostController extends Controller {
             }
         } catch (\Exception $e) {
             return redirect()->route('surferRequestList')->withErrors($e->getMessage());
+        }
+    }
+
+    /**
+     * Accept and reject follow request
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function acceptRejectFollowRequest($id, $type) {
+        try {
+            $request_id = Crypt::decrypt($id);
+            $data = UserFollow::where("id", $request_id)->first();
+
+            if($data) {
+                if ($type == 'accept') {
+                    $result = UserFollow::where(['id' => $request_id])
+                            ->update(['follower_request_status' => '0', 'status' => 'FOLLOW']);
+
+                    $message = 'Surfer follow request accepted.';
+                }elseif ($type == 'reject') {
+                    $result = UserFollow::where(['id' => $request_id])
+                            ->update(['follower_request_status' => '2', 'status' => 'BLOCK']);
+
+                    $message = 'Surfer follow request rejected.';
+                }
+
+                if($message) {
+                    $notify = New Notification();
+
+                    $notify->sender_id = Auth::user()->id;
+                    $notify->receiver_id = $data->follower_user_id;
+                    $notify->notification_type = ucfirst($type);
+
+                    if($notify->save()) {
+                        return redirect()->route('notifications')->withSuccess($message);
+                    }
+                }
+            }
+
+            if ($result) {
+                return redirect()->route('notifications')->withSuccess($message);
+            } else {
+                return redirect()->route('notifications')->withErrors($message);
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('notifications')->withErrors($e->getMessage());
         }
     }
 

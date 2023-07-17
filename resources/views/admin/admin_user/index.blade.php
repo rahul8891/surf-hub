@@ -74,7 +74,7 @@
                                                 </div>
                                                 <div class="align-items-center d-flex mb-4">
                                                     <label class="form-label me-3 w-150" >Status</label>
-                                                    <select class="form-control mb-0" name="status"> 
+                                                    <select class="form-control mb-0" name="status">
                                                         <option value="">--Select--</option>
                                                         <option value="ACTIVE">Active</option>
                                                         <option value="DEACTIVATED">InActive</option>
@@ -96,7 +96,7 @@
                                                     <select class="form-control mb-0" name="state_id" id="filter_state_id">
                                                         <option selected="selected" value="">-- State --</option>
                                                         @foreach($states as $key => $value)
-                                                        <option value="{{ $value->id }}" 
+                                                        <option value="{{ $value->id }}"
                                                                 {{ old('state_id',Request::get('state_id')) == $value->id ? "selected" : "" }}>
                                                             {{ $value->name }}</option>
                                                         @endforeach
@@ -128,7 +128,6 @@
                     </div>
                     <div class="table-responsive">
                         <table class="table table-striped">
-
                             <thead>
                                 <tr>
                                     <th>User #</th>
@@ -144,7 +143,7 @@
                             <tbody>
                                 @foreach($users as $key => $value)
                                 <tr>
-                                    <td>{{ ($users->currentpage()-1) * $users->perpage() + $key + 1  }}</td>
+                                    <td>{{ $key + 1  }}</td>
                                     <td>{{$value->user_name}}</td>
                                     <td>{{ __(ucwords($value->first_name .' '.$value->last_name)) }}</td>
                                         @if($value->dob && $value->dob != '0000-00-00')

@@ -659,8 +659,8 @@ class UserController extends Controller {
                 ->where('user_id', $surfer_id)
                 ->where('is_highlight', '1')
                 ->where(function ($query) {
-                    $query->where('post_type', 'PUBLIC')
-                    ->where('is_highlight', '1');
+                    // $query->where('post_type', 'PUBLIC')
+                    $query->where('is_highlight', '1');
                 })
                 ->orderBy('posts.created_at', 'DESC')
                 ->paginate(10);

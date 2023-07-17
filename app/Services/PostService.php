@@ -1598,8 +1598,7 @@ class PostService {
      * @param  message return message based on the condition
      * @return dataArray with message
      */
-    public function saveFollow($input,&$message=''){
-
+    public function saveFollow($input,&$message='') {
         try{
             $this->userFollow->followed_user_id = $input['followed_user_id'];
             $this->userFollow->follower_user_id = Auth::user()->id;

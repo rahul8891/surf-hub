@@ -31,9 +31,9 @@ class AdminUserService {
     protected $userProfile;
 
     protected $checkUserType;
-    
+
     protected $beach_break;
-    
+
     protected $report;
 
     public function __construct() {
@@ -46,9 +46,9 @@ class AdminUserService {
         $this->upload = new Upload();
 
         $this->userProfile = new UserProfile();
-        
+
         $this->beach_break = new BeachBreak();
-        
+
         $this->report = new Report();
 
         // get custom config file
@@ -56,9 +56,9 @@ class AdminUserService {
     }
 
     /**
-     * [getUserTotal] we are getiing all the user count based on the condition 
-     * @param  
-     * @param  
+     * [getUserTotal] we are getiing all the user count based on the condition
+     * @param
+     * @param
      * @return dataArray
      */
     public function getUserTotal(){
@@ -75,36 +75,37 @@ class AdminUserService {
                                    ->whereNull('email_verified_at')
                                    ->whereNull('deleted_at')
                                    ->whereIn('status', [$this->checkUserType['status']['DEACTIVATED'], $this->checkUserType['status']['PENDING']])
-                                   ->count(); 
+                                   ->count();
         return $userArray;
-      
+
 
     }
 
    /**
-     * [getUsersListing] we are getiing all the user 
-     * @param  
-     * @param  
+     * [getUsersListing] we are getiing all the user
+     * @param
+     * @param
      * @return dataArray
      */
-    
+
     public function getUsersListing(){
 
         $userArray =  $this->users->where('user_type',$this->checkUserType['userType']['USER'])
-                                  ->whereIn('status', [$this->checkUserType['status']['ACTIVE'], 
+                                  ->whereIn('status', [$this->checkUserType['status']['ACTIVE'],
                                         $this->checkUserType['status']['DEACTIVATED']])
-                                  ->whereNull('deleted_at')                               
+                                  ->whereNull('deleted_at')
                                   ->orderBy('id','DESC')
                                   ->paginate(10);
         return $userArray;
     }
-    
+
    public function getUsersList($params) {
 
         $userArray = $this->users
                 ->join('user_profiles', 'user_profiles.user_id', '=', 'users.id')
                 ->whereNotNull('users.user_type')
                 ->whereNull('users.deleted_at')
+                ->where('users.id', '!=', 1)
                 ->orderBy('users.id', 'DESC');
         if (isset($params['user_type']) && !empty($params['user_type'])) {
             $userArray->where('users.user_type', $params['user_type']);
@@ -146,14 +147,15 @@ class AdminUserService {
         if (isset($params['lName']) && !empty($params['lName'])) {
             $userArray->where('user_profiles.last_name', 'LIKE',  '%' . $params['lName'] .'%');
         }
-        
+
 //         dd($userArray->toSql());
-        return $userArray->paginate(10);
+        // return $userArray->paginate(10);
+        return $userArray->get();
     }
    /**
-     * [getBeachBreakListing] we are getiing all the Beach Break 
-     * @param  
-     * @param  
+     * [getBeachBreakListing] we are getiing all the Beach Break
+     * @param
+     * @param
      * @return dataArray
      */
    public function getBeachBreakListing($params) {
@@ -188,15 +190,15 @@ class AdminUserService {
         if (isset($params['lName']) && !empty($params['lName'])) {
             $userArray->where('user_profiles.last_name', 'LIKE',  '%' . $params['lName'] .'%');
         }
-        
+
         // dd($userArray->toSql());
         return $userArray->get();
     }
 
     /**
-     * [saveAdminUser] we are storing the User Details from admin section 
+     * [saveAdminUser] we are storing the User Details from admin section
      * @param  requestInput get all the requested input data
-     * @param  message return message based on the condition 
+     * @param  message return message based on the condition
      * @return dataArray with message
      */
     public function saveAdminUser($input,&$message=''){
@@ -228,20 +230,20 @@ class AdminUserService {
                     return true;
                 }
             }
-        }catch (\Exception $e){            
+        }catch (\Exception $e){
             if($this->users->id){
                 $this->deleteUplodedProfileImage($getImageArray['profile_photo_name']);
                 $this->deletUserRecord($this->users->id);
-            }         
+            }
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message='"'.$e->getMessage().'"';
             return false;
         }
     }
     /**
-     * [saveBeachBreak] we are storing the Beach Break from admin section 
+     * [saveBeachBreak] we are storing the Beach Break from admin section
      * @param  requestInput get all the requested input data
-     * @param  message return message based on the condition 
+     * @param  message return message based on the condition
      * @return dataArray with message
      */
     public function saveBeachBreak($input,&$message=''){
@@ -257,10 +259,10 @@ class AdminUserService {
             $this->beach_break->created_at = Carbon::now();
             $this->beach_break->updated_at = Carbon::now();
             $this->beach_break->save();
-                
+
             $message = 'Beach Break has been added successfully.!';
             return $message;
-        }catch (\Exception $e){  
+        }catch (\Exception $e){
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message='"'.$e->getMessage().'"';
             die($message);
@@ -268,9 +270,9 @@ class AdminUserService {
         }
     }
     /**
-     * [importBeachBreak] we are storing the Beach Break from admin section 
+     * [importBeachBreak] we are storing the Beach Break from admin section
      * @param  requestInput get all the requested input data
-     * @param  message return message based on the condition 
+     * @param  message return message based on the condition
      * @return dataArray with message
      */
     public function importBeachBreak($data,&$message=''){
@@ -287,11 +289,11 @@ class AdminUserService {
             $beach_break->longitude = $input['longitude'];
             $beach_break->created_at = Carbon::now();
             $beach_break->updated_at = Carbon::now();
-            $beach_break->save(); 
+            $beach_break->save();
             }
             $message = 'Beach Break has been added successfully.!';
             return $message;
-        }catch (\Exception $e){  
+        }catch (\Exception $e){
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message='"'.$e->getMessage().'"';
             die($message);
@@ -299,15 +301,15 @@ class AdminUserService {
         }
     }
     /**
-     * [updateBeachBreak] we are updating the Beach Break from admin section 
+     * [updateBeachBreak] we are updating the Beach Break from admin section
      * @param  requestInput get all the requested input data
-     * @param  message return message based on the condition 
+     * @param  message return message based on the condition
      * @return dataArray with message
      */
     public function updateBeachBreak($input,&$message=''){
         try{
-            $beach_break = $this->beach_break->find($input['beach_break_id']); 
-            
+            $beach_break = $this->beach_break->find($input['beach_break_id']);
+
             $beach_break->beach_name = trim(ucwords($input['beach_name']));
             $beach_break->break_name = trim(ucwords($input['break_name']));
             $beach_break->city_region = trim(ucwords($input['city_region']));
@@ -319,40 +321,40 @@ class AdminUserService {
             $beach_break->created_at = Carbon::now();
             $beach_break->updated_at = Carbon::now();
             $beach_break->save();
-                
+
             $message = 'Beach Break has been updated successfully.!';
             return $message;
-        }catch (\Exception $e){  
+        }catch (\Exception $e){
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message='"'.$e->getMessage().'"';
             return false;
         }
     }
-    
+
     /**
-     * [deleteBeachBreak] we are updating the beach break section 
-     * @param  message return message based on the condition 
+     * [deleteBeachBreak] we are updating the beach break section
+     * @param  message return message based on the condition
      * @return dataArray with message
      */
     public function deleteBeachBreak($id,&$message=''){
-        
+
         $beach_break=$this->beach_break->find($id);
         try{
             $beach_break->flag = 0;
             $beach_break->updated_at = Carbon::now();
-            
+
             if($beach_break->save()){
                 $message = 'Beach/Break has been deleted successfully.!';
-                    return $message;                
+                    return $message;
             }
         }
-        catch (\Exception $e){     
+        catch (\Exception $e){
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message='"'.$e->getMessage().'"';
             return $message;
         }
     }
-    
+
     /**
      * upload image into directory
      * @param  object  $input
@@ -361,12 +363,12 @@ class AdminUserService {
     public function uploadImage($input){
         $returnArray = [];
         $path = public_path()."/storage/uploads/";
-        $timeDate = strtotime(Carbon::now()->toDateTimeString()); 
+        $timeDate = strtotime(Carbon::now()->toDateTimeString());
         $returnArray['status'] = false;
         if(isset($input['profile_photo_name']) && !empty($input['profile_photo_name'])){
             $requestImageName = $input['profile_photo_name'];
             $imageNameWithExt = $requestImageName->getClientOriginalName();
-            $filename = pathinfo($imageNameWithExt, PATHINFO_FILENAME); 
+            $filename = pathinfo($imageNameWithExt, PATHINFO_FILENAME);
             $ext = $requestImageName->getClientOriginalExtension();
             $image_name = $timeDate.'_'.rand().'.'.$ext;
             $image_path = 'uploads/'.$image_name;
@@ -380,7 +382,7 @@ class AdminUserService {
            return $returnArray;
         }
     }
-    
+
 
      /**
      * Delete profile image if data not stor in db
@@ -398,7 +400,7 @@ class AdminUserService {
      * @param  number  $id
      * @return void
      */
-    public function deletUserRecord($id){       
+    public function deletUserRecord($id){
         $user = $this->users->find($id);
         $user->delete();
     }
@@ -420,7 +422,7 @@ class AdminUserService {
         }catch(\Exception $e){
             $message=$e->getPrevious()->getMessage();
             return false;
-        }        
+        }
     }
 
 
@@ -526,5 +528,5 @@ class AdminUserService {
         //dd($result);
         return $report;
     }
-    
+
 }

@@ -96,11 +96,11 @@
                                     @if($request_type == 'follow')
                                         <div class="col-xl-6 text-xl-end">
                                             <div class="d-flex">
-                                                <a class="btn grey-borderBtn me-3 accept" href="{{ route('acceptRejectRequest', [Crypt::encrypt($posts->followRequest->id),'accept']) }}">
+                                                <a class="btn grey-borderBtn me-3 accept" href="{{ route('acceptRejectFollowRequest', [Crypt::encrypt($posts->followRequest->id),'accept']) }}">
                                                     <img src="/img/accept.png" class="me-1 align-middle" alt="ACCEPT">
                                                     <span class="align-middle">ACCEPT</span>
                                                 </a>
-                                                <a class="btn grey-borderBtn reject" href="{{ route('acceptRejectRequest', [Crypt::encrypt($posts->followRequest->id),'reject']) }}">
+                                                <a class="btn grey-borderBtn reject" href="{{ route('acceptRejectFollowRequest', [Crypt::encrypt($posts->followRequest->id),'reject']) }}">
                                                     <img src="/img/reject.png" class="me-1 align-middle" alt="REJECT">
                                                     <span class="align-middle">REJECT</span>
                                                 </a>
@@ -108,18 +108,37 @@
 
                                         </div>
                                     @else
-                                        <img src="/img/new/normal-user.png" alt="normal-user">
+                                        <!-- <img src="/img/new/normal-user.png" alt="normal-user">
 
                                         <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
                                         <span class="follow-icon"></span> FOLLOW
-                                        </button>
+                                        </button> -->
+
+                                        <div class="user-right">
+                                            <img src="/img/new/normal-user.png" alt="normal-user">
+                                            @if(isset($posts->followPost->id) && !empty($posts->followPost->id))
+                                                @if(($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0'))
+                                                    <button class="follow-btn follow clicked" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
+                                                        <span class="follow-icon"></span> FOLLOWING
+                                                    </button>
+                                                @else
+                                                    <button class="follow-btn follow clicked Follow" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
+                                                        <span class="follow-icon"></span>  REQUEST SEND
+                                                    </button>
+                                                @endif
+                                            @else
+                                                <button class="follow-btn follow followPost" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
+                                                    <span class="follow-icon"></span> FOLLOW
+                                                </button>
+                                            @endif
+                                        </div>
                                     @endif
                                 </div>
                                 @endif
                             </div>
                             @if(!empty($posts->upload->image))
                                 <div class="newsFeedImgVideo">
-                                    <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->parent_id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                                    <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user_id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
                                 </div>
                             @elseif(!empty($posts->upload->video))
                                 @if (!File::exists($posts->upload->video))
