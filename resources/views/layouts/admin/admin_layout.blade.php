@@ -19,7 +19,7 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('css/new/style.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/new/media.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('/css/loader.css')}}">
-        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
         <link href="https://vjs.zencdn.net/5.19.2/video-js.css" rel="stylesheet">
         <!-- script -->
 
@@ -32,6 +32,7 @@
 
         <script src="{{ asset('js/new/jquery-3.5.1.min.js') }}"></script>
         <script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
+
     </head>
 
     <body class="login-body">
@@ -86,7 +87,7 @@
         <script src="{{ asset('js/new/script.js')}}"></script>
 
         <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-        <script async defer src="//cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
         <script src="{{ asset('js/new/jquery.validate.min.js') }}"></script>
         <script src="{{ asset('js/new/star-rating.min.js')}}"></script>
         <script src="{{ asset('js/new/slick.js')}}"></script>
