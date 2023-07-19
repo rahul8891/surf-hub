@@ -23,31 +23,30 @@
                     <div class="inner-news-feed">
                         <div class="user-details">
                             <div class="user-left">
-
                                 @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
-                                @if($posts->user_id != Auth::user()->id)
-                                @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
-                                <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
-                                @elseif($posts->user->user_type == 'PHOTOGRAPHER')
-                                <a href="{{route('photographer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
-                                @elseif($posts->user->user_type == 'SURFER CAMP')
-                                <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
-                                @endif
+                                    @if($posts->user_id != Auth::user()->id)
+                                        @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
+                                            <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                        @elseif($posts->user->user_type == 'PHOTOGRAPHER')
+                                            <a href="{{route('photographer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                        @elseif($posts->user->user_type == 'SURFER CAMP')
+                                            <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                        @endif
+                                    @else
+                                        <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
+                                    @endif
                                 @else
-                                <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
-                                @endif
-                                @else
-                                @if($posts->user_id != Auth::user()->id)
-                                @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
-                                <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
-                                @elseif($posts->user->user_type == 'PHOTOGRAPHER')
-                                <a href="{{route('photographer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
-                                @elseif($posts->user->user_type == 'SURFER CAMP')
-                                <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
-                                @endif
-                                @else
-                                <img src="/img/logo_small.png" class="profileImg" alt="">
-                                @endif
+                                    @if($posts->user_id != Auth::user()->id)
+                                        @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
+                                            <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                        @elseif($posts->user->user_type == 'PHOTOGRAPHER')
+                                            <a href="{{route('photographer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                        @elseif($posts->user->user_type == 'SURFER CAMP')
+                                            <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                        @endif
+                                    @else
+                                        <img src="/img/logo_small.png" class="profileImg" alt="">
+                                    @endif
                                 @endif
                                 <div>
                                     @if($posts->user_id != Auth::user()->id)

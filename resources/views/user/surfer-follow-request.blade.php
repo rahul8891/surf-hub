@@ -30,7 +30,7 @@
                                     <div>
                                         <p class="name"><span>{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span>
                                         </p>
-                                        <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
+                                        <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                                         <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                                     </div>
                                 </div>
@@ -46,31 +46,21 @@
                                 </div>
                             </div>
                             @if(!empty($posts->upload->image))
-                            <div class="newsFeedImgVideo">
-                                <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
-                            </div>
+                                <div class="newsFeedImgVideo">
+                                    <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                                </div>
                             @elseif(!empty($posts->upload->video))
-                            @if (!File::exists($posts->upload->video))
-                            <div class="newsFeedImgVideo">
-                                <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                                    <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-                                </video>
-                            </div>    
-                            @else
-                            <div class="newsFeedImgVideo">
-                                <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myImage{{$posts->id}}">
-                                    <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.$posts->upload->video }}" >    
-                                </video>
-                            </div>
-                            @endif
+                                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                                    <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                                </div>
                             @endif
                             <div class="user-bottom-options">
-                               
+
                                     <div class="rating-flex">
-                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
+                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">
                                 <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
 
-                            
+
                                     <div class="highlight">Highlights</div>
                                 </div>
                                 <div class="right-options">
@@ -142,7 +132,7 @@
                                                     @endif
                                                     <span>{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
                                                 </div>
-                                                @endforeach 
+                                                @endforeach
                                             </div>
                                             @endif
                                             <div>
@@ -163,7 +153,7 @@
 
                                         <div class="dropdown-menu">
                                             <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
-                                                @csrf    
+                                                @csrf
                                                 <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
                                                 <h6 class="text-center fw-bold">Report Content</h6>
 
@@ -216,7 +206,7 @@
                                 @foreach ($posts->comments as $comments)
                                 <div class="comment-row">
                                     <span class="comment-name">{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :
-                                    </span> 
+                                    </span>
                                     {{$comments->value}}
                                 </div>
                                 @endforeach

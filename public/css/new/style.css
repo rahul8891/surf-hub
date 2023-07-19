@@ -2160,3 +2160,7 @@ form label.error {
     background: #4f70f6;
     color: white;
 }
+
+.username-tag .profileImg {
+    width: 50px;
+}
