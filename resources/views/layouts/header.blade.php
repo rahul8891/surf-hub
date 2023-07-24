@@ -11,11 +11,19 @@
                     <span class="align-middle">FEED</span>
                 </a>
             </div>
-            @if (Auth::user())
+            @if (Auth::user() && Auth::user()->user_type != 'ADVERTISEMENT')
             <div class="{{ userActiveMenu('myhub') }}">
                 <a class="nav-link" href="{{ route('myhub') }}">
                     <span class="header-icon my-hub"></span>
                     <span class="align-middle">MY HUB</span>
+                </a>
+            </div>
+            @endif
+            @if (Auth::user() && Auth::user()->user_type == 'ADVERTISEMENT')
+            <div class="{{ userActiveMenu('myAds') }}">
+                <a class="nav-link" href="{{route('myAds')}}">
+                    <span class="header-icon upload"></span>
+                    <span class="align-middle">My Ads</span>
                 </a>
             </div>
             @endif
@@ -25,14 +33,6 @@
                     <span class="align-middle">SEARCH</span>
                 </a>
             </div>
-            @if (Auth::user() && Auth::user()->user_type == 'ADVERTISEMENT')
-            <div class="{{ userActiveMenu('myAds') }}">
-                <a class="nav-link" href="{{route('myAds')}}">
-                    <span class="header-icon upload"></span>
-                    <span class="align-middle">My Ads</span>
-                </a>
-            </div>
-            @endif
             @if (Auth::user() && Auth::user()->user_type == 'ADVERTISEMENT')
             <div class="{{ userActiveMenu('uploadAdvertisment') }}">
                 <a class="nav-link" href="{{route('uploadAdvertisment')}}">

@@ -1,6 +1,6 @@
 @extends('layouts.user.new_layout')
 @section('content')
-
+<meta name="csrf-token" content="{{ csrf_token() }}" />
 <section class="home-section">
     <div class="container">
         <div class="home-row">
@@ -191,33 +191,33 @@
                                     </button>
 
                                     <div class="dropdown-menu">
-                                        <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
+                                        <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}" id="formReportSubmit">
                                             @csrf
                                             <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
                                             <h6 class="text-center fw-bold">Report Content</h6>
 
                                             <div class="mb-3 form-check">
-                                                <input type="checkbox" class="form-check-input" id="incorrectInfo{{$posts->id}}" name="incorrect" value="1">
+                                                <input type="checkbox" class="form-check-input incorrect" id="incorrectInfo{{$posts->id}}" name="incorrect" value="1">
                                                 <label class="form-check-label" for="incorrectInfo{{$posts->id}}">Report Info as
                                                     incorrect</label>
                                             </div>
                                             <div class="mb-3 form-check">
-                                                <input type="checkbox" class="form-check-input" name="inappropriate" value="1"
+                                                <input type="checkbox" class="form-check-input inappropriate" name="inappropriate" value="1"
                                                        id="incorrectContent{{$posts->id}}">
                                                 <label class="form-check-label" for="incorrectContent{{$posts->id}}">Report
                                                     content as inappropriate</label>
                                             </div>
                                             <div class="mb-3 form-check">
-                                                <input type="checkbox" class="form-check-input" name="tolls" value="1" id="reportTrolls{{$posts->id}}">
+                                                <input type="checkbox" class="form-check-input tolls" name="tolls" value="1" id="reportTrolls{{$posts->id}}">
                                                 <label class="form-check-label" for="reportTrolls{{$posts->id}}">Report
                                                     tolls</label>
                                             </div>
                                             <div>
-                                                <textarea class="form-control ps-2" name="comments" id="{{$posts->id}}"
+                                                <textarea class="form-control ps-2 comments" name="comments" id="comments{{$posts->id}}"
                                                           placeholder="Additional Comments.."
                                                           style="height: 80px"></textarea>
                                             </div>
-                                            <button type="submit" id="submitReport{{$posts->id}}" class="btn blue-btn w-100">REPORT</button>
+                                            <button type="button" id="submitReport{{$posts->id}}" onclick="reportSubmit({{ $posts->id }})" class="btn blue-btn w-100">REPORT</button>
                                         </form>
                                     </div>
                                 </div>
@@ -367,9 +367,56 @@
             type: "get",
             async: false,
             success: function() {
-                jQuery("main").append('<div class="alert alert-success alert-dismissible" role="alert" id="msg"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Surfer Request send successfully.</div>');
+                jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Surfer Request send successfully.</div>');
             }
         });
+    }
+
+    function reportSubmit(id) {
+        var info = '';
+        var content = '';
+        var troll = '';
+
+        if($("#incorrectInfo"+id).is(':checked')) {
+            info = $("#incorrectInfo"+id).val();
+        }
+
+        if($("#incorrectContent"+id).is(':checked')) {
+            content = $("#incorrectContent"+id).val();
+        }
+
+        if($("#reportTrolls"+id).is(':checked')) {
+            troll = $("#reportTrolls"+id).val();
+        }
+
+        var formData = {
+            post_id: id,
+            incorrect: info,
+            inappropriate: content,
+            tolls: troll,
+            comments: $("#comments"+id).val(),
+        };
+
+        jQuery.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: 'report',
+            type: "post",
+            data: formData,
+            async: false,
+            success: function(data) {
+                data = $.parseJSON(data);
+
+                if(data.status == 'success') {
+                    jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                }else {
+                    jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                }
+            }
+        });
+
+        return false;
     }
 </script>
 @endsection

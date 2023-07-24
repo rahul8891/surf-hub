@@ -113,13 +113,16 @@ class UserPostController extends Controller {
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to current page.
-                return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors('The comment field is required.');
+                return json_encode(array('status'=>'failure', 'message' => 'The comment field is required.'));
+                // return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors('');
             } else {
                 $result = $this->posts->saveReport($data, $message);
                 if ($result) {
-                    return Redirect::to(redirect()->getUrlGenerator()->previous())->withSuccess($message);
+                    return json_encode(array('status'=>'success', 'message' => $message));
+                    //return Redirect::to(redirect()->getUrlGenerator()->previous())->withSuccess($message);
                 } else {
-                    return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors($message);
+                    return json_encode(array('status'=>'failure', 'message' => $message));
+                    // return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors($message);
                 }
             }
         } catch (\Exception $e) {
@@ -506,6 +509,7 @@ class UserPostController extends Controller {
 
     public function surferFollowRequest($id) {
         $request_id = Crypt::decrypt($id);
+        dd($request_id);
         $customArray = $this->customArray;
         $postsList = Post::where('is_deleted', '0')
                 ->join('surfer_requests', 'surfer_requests.post_id', '=', 'posts.id')
@@ -644,8 +648,7 @@ class UserPostController extends Controller {
     }
 
     public function surferRequestList() {
-        $posts = Post::select("*")
-                ->where("user_id", "=", Auth::user()->id)
+        $posts = Post::where("user_id", "=", Auth::user()->id)
                 ->where("is_deleted", '0')
                 ->where("surfer", 'Unknown')
                 ->get()
@@ -653,9 +656,9 @@ class UserPostController extends Controller {
         $postIds = array_filter(array_column($posts, 'id'));
 
         $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
-//                    ->join('posts', 'posts.user_id', '=', 'surfer_requests.user_id')
                 ->whereIn("surfer_requests.post_id", $postIds)
                 ->where("surfer_requests.status", "=", 0)
+                ->orderBy('surfer_requests.id', 'DESC')
                 ->get(['surfer_requests.*', 'user_profiles.first_name', 'user_profiles.last_name']);
 
         return view('user.surfersRequestList', compact('surferRequest'));

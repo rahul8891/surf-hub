@@ -16,7 +16,7 @@
                             @foreach (FollowNotification::instance()->getPostNotifications() as $key => $requests)
                                 <div class="notification-list">
                                     <div class="row align-items-center gap-2 gap-md-0">
-                                        <div class="col-md-6 follwer-name">
+                                        <div class="col-md-12 follwer-name">
                                             @if($requests['image'])
                                             <img src="{{ asset('storage/'.$requests['image']) }}" alt=""
                                                 class="align-middle bg-white">

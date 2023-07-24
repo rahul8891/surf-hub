@@ -59,7 +59,7 @@ class DashboardController extends Controller {
         $usersList = $this->masterService->getAllUsers();
 
         if ($request->ajax()) {
-            $page = $param['page'];
+            $page = (isset($param['page']) && !empty($param['page']))?$param['page']:1;
             $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches','page', 'urlData'))->render();
             return response()->json(['html' => $view]);
         }

@@ -12,7 +12,7 @@
                     </div>
                     <div class="surfer-body">
                         @if (count($surferRequest) > 0)
-                        @foreach ($surferRequest as $key => $val)  
+                        @foreach ($surferRequest as $key => $val)
                         <div class="surfer-request">
                             <div class="row align-items-center gap-2 gap-xl-0">
                                 <div class="col-xl-6">
@@ -23,14 +23,14 @@
                                     <img src="/img/follower-img.png" alt=""
                                          class="align-middle bg-white notification-img">
                                     @endif
-                                    
+
                                     <div class="d-inline-block align-middle">
                                         <p class="name mb-0">{{$val->first_name.' '.$val->last_name }}</p>
 				        <p class="time mb-0">2 day ago</p>
                                     </div>
                                 </div>
                                 <div class="col-xl-6 text-xl-end">
-                                    <a class="btn grey-borderBtn me-3 review" href="{{ route('surferFollowRequest', [Crypt::encrypt($val->id)]) }}" >
+                                    <a class="btn grey-borderBtn me-3 review" href="{{ route('surferFollowRequest', [Crypt::encrypt($val->post_id)]) }}" >
                                         <img src="/img/review.png" class="me-1 align-middle" alt="REVIEW">
                                         <span class="align-middle">REVIEW</span>
                                     </a>
