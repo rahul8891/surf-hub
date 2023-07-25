@@ -179,7 +179,7 @@
                     </button>
 
                     <div class="dropdown-menu">
-                        <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
+                        <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}" id="formReportSubmit">
                             @csrf
                             <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
                             <h6 class="text-center fw-bold">Report Content</h6>
@@ -201,11 +201,11 @@
                                     tolls</label>
                             </div>
                             <div>
-                                <textarea class="form-control ps-2" name="comments" id="{{$posts->id}}"
+                                <textarea class="form-control ps-2" name="comments" id="comments{{$posts->id}}"
                                           placeholder="Additional Comments.."
                                           style="height: 80px"></textarea>
                             </div>
-                            <button type="submit" id="submitReport{{$posts->id}}" class="btn blue-btn w-100">REPORT</button>
+                            <button type="submit" id="submitReport{{$posts->id}}" class="btn blue-btn w-100" onclick="reportSubmit({{ $posts->id }})">REPORT</button>
                         </form>
                     </div>
                 </div>
@@ -341,5 +341,52 @@
         });
     });
     //End auto play
+
+    function reportSubmit(id) {
+        var info = '';
+        var content = '';
+        var troll = '';
+
+        if($("#incorrectInfo"+id).is(':checked')) {
+            info = $("#incorrectInfo"+id).val();
+        }
+
+        if($("#incorrectContent"+id).is(':checked')) {
+            content = $("#incorrectContent"+id).val();
+        }
+
+        if($("#reportTrolls"+id).is(':checked')) {
+            troll = $("#reportTrolls"+id).val();
+        }
+
+        var formData = {
+            post_id: id,
+            incorrect: info,
+            inappropriate: content,
+            tolls: troll,
+            comments: $("#comments"+id).val(),
+        };
+
+        jQuery.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: 'report',
+            type: "post",
+            data: formData,
+            async: false,
+            success: function(data) {
+                data = $.parseJSON(data);
+
+                if(data.status == 'success') {
+                    jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                }else {
+                    jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                }
+            }
+        });
+
+        return false;
+    }
 </script>
 @endif
