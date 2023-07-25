@@ -205,7 +205,7 @@
                                           placeholder="Additional Comments.."
                                           style="height: 80px"></textarea>
                             </div>
-                            <button type="submit" id="submitReport{{$posts->id}}" class="btn blue-btn w-100" onclick="reportSubmit({{ $posts->id }})">REPORT</button>
+                            <button type="button" id="submitReport{{$posts->id}}" class="btn blue-btn w-100" onclick="reportSubmit({{ $posts->id }})">REPORT</button>
                         </form>
                     </div>
                 </div>
