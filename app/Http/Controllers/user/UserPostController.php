@@ -509,7 +509,7 @@ class UserPostController extends Controller {
 
     public function surferFollowRequest($id) {
         $request_id = Crypt::decrypt($id);
-        dd($request_id);
+        //dd($request_id);
         $customArray = $this->customArray;
         $postsList = Post::where('is_deleted', '0')
                 ->join('surfer_requests', 'surfer_requests.post_id', '=', 'posts.id')
