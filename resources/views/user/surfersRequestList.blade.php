@@ -26,7 +26,7 @@
 
                                     <div class="d-inline-block align-middle">
                                         <p class="name mb-0">{{$val->first_name.' '.$val->last_name }}</p>
-				        <p class="time mb-0">2 day ago</p>
+				                        <p class="time mb-0">2 day ago</p>
                                     </div>
                                 </div>
                                 <div class="col-xl-6 text-xl-end">

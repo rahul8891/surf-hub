@@ -21,6 +21,7 @@ use App\Models\Report;
 use App\Models\Notification;
 use App\Models\UserFollow;
 use App\Models\UserProfile;
+use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
@@ -59,9 +60,10 @@ class UserPostController extends Controller {
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct(PostService $posts, AdminUserService $users, MasterService $masterService) {
+    public function __construct(PostService $posts, AdminUserService $users, MasterService $masterService, UserService $userService) {
         $this->posts = $posts;
         $this->users = $users;
+        $this->userService = $userService;
         $this->masterService = $masterService;
         $this->customArray = config('customarray');
         $this->language = config('customarray.language');
@@ -509,20 +511,21 @@ class UserPostController extends Controller {
 
     public function surferFollowRequest($id) {
         $request_id = Crypt::decrypt($id);
-        //dd($request_id);
+        // dd($request_id);
         $customArray = $this->customArray;
-        $postsList = Post::where('is_deleted', '0')
-                ->join('surfer_requests', 'surfer_requests.post_id', '=', 'posts.id')
-                ->where('surfer_requests.id', $request_id)
-                ->where('parent_id', '0')
-                ->where(function ($query) {
-                    $query->where('post_type', 'PUBLIC')
-                    ->orWhere('is_feed', '1');
-                })
+        $postsList = Post::join('surfer_requests', 'surfer_requests.post_id', '=', 'posts.id')
+                ->join('user_profiles', 'user_profiles.user_id', '=', 'posts.user_id')
+                ->where('posts.is_deleted', '0')
+                ->where('posts.id', $request_id)
                 ->orderBy('posts.created_at', 'DESC')
-                ->get('posts.*');
-//        echo '<pre>';        print_r($postsList);die;
-        return view('user.surfer-follow-request', compact('customArray', 'postsList', 'request_id'));
+                ->get(['posts.*', 'surfer_requests.id as request_id']);
+        // echo '<pre>';print_r($postsList);die;
+
+        foreach($postsList as $post) {
+            $userProfile = $this->userService->getUserDetail($post->user_id);
+        }
+        // dd($userProfile);
+        return view('user.surfer-follow-request', compact('customArray', 'postsList', 'request_id', 'userProfile'));
     }
 
     /**
@@ -654,13 +657,14 @@ class UserPostController extends Controller {
                 ->get()
                 ->toArray();
         $postIds = array_filter(array_column($posts, 'id'));
-
-        $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
-                ->whereIn("surfer_requests.post_id", $postIds)
+        // dd($postIds);
+        $surferRequest = SurferRequest::join('posts', 'surfer_requests.post_id', '=', 'posts.id')
+                ->join('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
+                ->where("surfer_requests.user_id", '=', Auth::user()->id)
                 ->where("surfer_requests.status", "=", 0)
                 ->orderBy('surfer_requests.id', 'DESC')
                 ->get(['surfer_requests.*', 'user_profiles.first_name', 'user_profiles.last_name']);
-
+        // dd($surferRequest);
         return view('user.surfersRequestList', compact('surferRequest'));
     }
 

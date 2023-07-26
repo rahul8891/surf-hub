@@ -6,64 +6,16 @@
         <div class="home-row">
             @include('layouts.user.left_sidebar')
             <div class="middle-content">
-                <div class="profile-photo-edit">
-                    <div class="profile-pic">
-                        @if($userProfile['profile_photo_path'])
-                        <img src="{{ asset('storage/'.$userProfile['profile_photo_path']) }}"
-                                alt="" class="rounded-circle">
-                        @endif
-                    </div>
-                    <div class="name">
-                        <p>{{__(ucwords($userProfile['surfer_name']))}}</p>
-                        <p class="mb-0">Surfhub <span class="blue-txt">$2540</span> Earn</p>
-                    </div>
-                </div>
-                <div class="edit-profile-box">
-                    <!-- <a href="{{ url('user/edit-profile') }}" class="btn edit-btn"><img src="/img/new/edit.png" alt="edit" class="align-middle me-1"> <span class="align-middle">EDIT</span></a> -->
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>Surfer Name</td>
-                                <td>:</td>
-                                <td>{{ $userProfile['surfer_name'] }}</td>
-                            </tr>
-                            <tr>
-                                <td>Gender</td>
-                                <td>:</td>
-                                <td>{{ $userProfile['gender'] }}</td>
-                            </tr>
-                            <tr>
-                                <td>Country</td>
-                                <td>:</td>
-                                <td>{{ $userProfile['country'] }}</td>
-                            </tr>
-                            <tr>
-                                <td>Preferred Board</td>
-                                <td>:</td>
-                                <td>
-                                    @if($userProfile['preferred_board'])
-                                        {{ $userProfile['preferred_board'] }}
-                                    @else
-                                    -
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Local Beach</td>
-                                <td>:</td>
-                                <td>
-                                    @if($userProfile['beach_break'])
-                                        {{ $userProfile['beach_break'] }}
-                                    @else
-                                    -
-                                    @endif
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <div class="follow-wrap">
+                    <div class="search-follower">
+                        <div class="row align-items-center">
+                            <div class="col-sm-12">
+                                <label class="">Surfer Requests <span class="blue-txt">585</span></label>
+                            </div>
 
-                <div id="post-data">
+                        </div>
+                    </div>
+
                     @if (!empty($postsList))
                     @foreach ($postsList as $key => $posts)
                     <div class="news-feed">
@@ -83,11 +35,11 @@
                                     </div>
                                 </div>
                                 <div class="user-right">
-                                    <a class="btn grey-borderBtn me-3 accept" href="{{ route('acceptRejectRequest', [Crypt::encrypt($posts->request_id),'accept']) }}">
+                                    <a class="btn grey-borderBtn me-3 accept" href="{{ route('acceptRejectRequest', [Crypt::encrypt($request_id),'accept']) }}">
                                         <img src="/img/accept.png" class="me-1 align-middle" alt="ACCEPT">
                                         <span class="align-middle">ACCEPT</span>
                                     </a>
-                                    <a class="btn grey-borderBtn reject" href="{{ route('acceptRejectRequest', [Crypt::encrypt($posts->request_id),'reject']) }}">
+                                    <a class="btn grey-borderBtn reject" href="{{ route('acceptRejectRequest', [Crypt::encrypt($request_id),'reject']) }}">
                                         <img src="/img/reject.png" class="me-1 align-middle" alt="REJECT">
                                         <span class="align-middle">REJECT</span>
                                     </a>
