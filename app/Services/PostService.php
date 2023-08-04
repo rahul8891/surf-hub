@@ -132,7 +132,7 @@ class PostService {
      */
     public function getPostsListing() {
         $postArray =  $this->posts->whereNull('deleted_at')
-                                ->where('is_feed', '1')
+                                ->where('post_type', 'PUBLIC')
                                 ->where('is_deleted','0')
                                 ->orderBy('created_at','DESC')
                                 ->paginate(10);
@@ -1625,27 +1625,12 @@ class PostService {
      * @return dataArray
      */
     public function getPostNotificationsCount(){
-
-        /*$postArray =  $this->posts
-                                  //->where('user_id', '!=',Auth::user()->id)
-                                  ->where('post_type', 'PUBLIC')
-                                  ->where('is_deleted','0')
-                                  ->orderBy('posts.created_at','ASC')
-                                  ->count();
-        return $postArray;*/
         $notificationCount =  $this->notification
                                   ->where('receiver_id', Auth::user()->id)
                                   ->where('status', '0')
                                   ->where('count_status', '0')
                                   ->count();
         return $notificationCount;
-        /*$postArray =  $this->tag
-                                  //->where('user_id', '!=',Auth::user()->id)
-                                  ->where('user_id', Auth::user()->id)
-                                  ->where('is_seen','0')
-                                  ->orderBy('created_at','ASC')
-                                  ->count();
-        return $postArray;*/
     }
 
     /**
@@ -1863,8 +1848,6 @@ class PostService {
 
     }
     public function getReportsCount() {
-
-
         $reports = $this->report
                 ->orderBy('id', 'ASC')
                 ->get()
@@ -1872,8 +1855,6 @@ class PostService {
         return $reports;
     }
     public function getCommentsCount() {
-
-
         $comments = $this->comment
                 ->orderBy('id', 'ASC')
                 ->get()
@@ -1889,18 +1870,9 @@ class PostService {
                     ->whereNull('posts.deleted_at')
                     ->where('posts.user_id', $user_id)
                     ->where('posts.parent_id', 0)
-                    ->groupBy('posts.id');
+                    ->groupBy('posts.id')
+                    ->orderBy('posts.created_at','DESC');
 
-        $postArray->orderBy('posts.created_at','DESC');
-
-        // dd($postArray->toSql());
         return $postArray->get();
-        // $uploads =  $this->posts->where('user_id', $user_id)
-        //             ->where('is_deleted','0')
-        //             ->orderBy('created_at','ASC')
-        //             ->get()
-        //             ->toArray();
-
-        // return $uploads;
     }
 }
