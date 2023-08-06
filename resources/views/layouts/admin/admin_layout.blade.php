@@ -72,7 +72,7 @@
         <!-- jQuery -->
 
 
-
+        <script src="{{ asset('js/new/star-rating.min.js')}}"></script>
 
         <script src="{{ asset('/js/new/croppie.js')}}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -89,7 +89,7 @@
         <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
         <script src="{{ asset('js/new/jquery.validate.min.js') }}"></script>
-        <script src="{{ asset('js/new/star-rating.min.js')}}"></script>
+
         <script src="{{ asset('js/new/slick.js')}}"></script>
         <script src="https://vjs.zencdn.net/5.19.2/video.js"></script>
         <script src="{{ asset('/js/hls/hls.min.js?v=v0.9.1') }}"></script>

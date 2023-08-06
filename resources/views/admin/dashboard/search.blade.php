@@ -7,7 +7,7 @@
     <div class="container">
         <div class="home-row">
             @if (Auth::user())
-            @include('layouts.admin.admin_left_sidebar')    
+            @include('layouts.admin.admin_left_sidebar')
             @else
             <div class="left-advertisement">
                 </div>
@@ -25,7 +25,6 @@
                     <div class="inner-news-feed">
                         <div class="user-details">
                             <div class="user-left">
-                                
                                 @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
                                 @if(Auth::user() && $posts->user_id != Auth::user()->id)
                                 @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
@@ -47,21 +46,21 @@
                                 <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
                                 @endif
-                                <div>     
+                                <div>
                                     @if(Auth::user() && $posts->user_id != Auth::user()->id)
                                     @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
                                 <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
                                 @elseif($posts->user->user_type == 'SURFER CAMP')
                                 <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
                                 @endif
-                                    
-                                    
+
+
                                     @else
                                     <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span>
                                     </p>
                                     @endif
                                     <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
-                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p> 
+                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                                 </div>
                             </div>
                             @if (isset(Auth::user()->id) && ($posts->user_id != Auth::user()->id))
@@ -82,7 +81,7 @@
                             @if (!File::exists($posts->upload->video))
                                 <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
                                     <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
-                                </div>    
+                                </div>
                             @else
                                 <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'m3u8' }}">
                                     <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
@@ -93,11 +92,11 @@
                         <div class="user-bottom-options">
                             <div class="rating-flex">
                             <div class="rating-flex-child">
-                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">                            
+                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">
                                 <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
 
                             </div>
-                            @if($posts->is_feed == 0)    
+                            @if($posts->is_feed == 0)
                             <div class="highlight">
                                 <a class="add-to-feed" data-id="{{ $posts->id }}">Add to Feed</a>
                             </div>
@@ -151,7 +150,7 @@
                                 @if(Auth::user() && $posts->user_id == Auth::user()->id)
                                 <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a>
                                 <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
-                                
+
                                 @endif
                                 <div class="d-inline-block tag dropdown" title="Tag">
                                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
@@ -170,7 +169,7 @@
                                                 @endif
                                                 <span>{{ucfirst($tags->user->user_profiles->first_name)}} {{ucfirst($tags->user->user_profiles->last_name)}}</span>
                                             </div>
-                                            @endforeach 
+                                            @endforeach
                                         </div>
                                         @endif
                                         <div>
@@ -191,7 +190,7 @@
 
                                     <div class="dropdown-menu">
                                         <form role="form" method="POST" name="report{{$posts->id}}" action="{{ route('report') }}">
-                                            @csrf    
+                                            @csrf
                                             <input type="hidden" class="postID" name="post_id" value="{{$posts->id}}">
                                             <h6 class="text-center fw-bold">Report Content</h6>
 
@@ -245,7 +244,7 @@
                             @foreach ($posts->comments as $comments)
                             <div class="comment-row">
                                 <span class="comment-name">{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :
-                                </span> 
+                                </span>
                                 {{$comments->value}}
                             </div>
                             @endforeach
@@ -255,11 +254,11 @@
                 </div>
                 @endforeach
                 @endif
-                
+
                 <div class="justify-content-center ajax-load" style="display:none;margin-left: 40%">
                     <img src="/images/spiner4.gif" alt="loading" height="90px;" width="170px;">
               </div>
-                
+
             </div>
 
             <div class="right-advertisement">
@@ -293,7 +292,7 @@
         }else {
             var url = window.location.href + '?page=' + page;
         }
-        
+
         $.ajax({
             url: url,
             type: "get",
@@ -315,45 +314,45 @@
             $(data.html).insertBefore(".ajax-load");
         });
     }
-        
+
         $(document).on('click', '.editBtnVideo', function() {
             var id = $(this).data('id');
-            
+
             $.ajax({
                 url: '/getPostData/' + id,
-                type: "get", 
+                type: "get",
                 async: false,
                 success: function(data) {
                     // console.log(data.html);
                     $("#edit_image_upload_main").html("");
                     $("#edit_image_upload_main").append(data.html);
-                    $("#edit_image_upload_main").modal('show');                
+                    $("#edit_image_upload_main").modal('show');
                 }
             });
         });
-        
+
         $('.pos-rel a').each(function(){
            $(this).on('hover, mouseover, click', function() {
                 $(this).children('.userinfoModal').find('input[type="text"]').focus();
             });
         });
-        
+
         function openFullscreenSilder(id) {
           const myModal = new bootstrap.Modal(document.getElementById('full_screen_modal')); // creating modal object
- 
+
           $.ajax({
                 url: '/getPostFullScreen/' + id,
-                type: "get", 
+                type: "get",
                 async: false,
                 success: function(data) {
                     // console.log(data.html);
                     $("#full_screen_modal").html("");
                     $("#full_screen_modal").append(data.html);
-                    
+
                     $("#full_screen_modal").modal('show');
                 }
             });
       }
-        
+
 </script>
 @endsection

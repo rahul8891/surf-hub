@@ -300,6 +300,33 @@
             });
         });
 
+        $(document).on('click', '.submitBtn', function () {
+            $("#updateVideoPostData").submit(function(e) {
+                //prevent Default functionality
+                e.preventDefault();
+
+                $.ajax({
+                    url: '/updatePostData',
+                    type: 'POST',
+                    dataType: 'application/json',
+                    data: $("#updateVideoPostData").serialize(),
+                    success: function(data) { alert('aaaa');
+                        data = $.parseJSON(data);
+
+                        if(data.status == 'success') {
+                            $(".feed"+id).remove();
+                            jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                        }else {
+                            jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                        }
+                        jQuery("#edit_image_upload_main").modal('hide');
+
+                        return false;
+                    }
+                });
+            });
+        });
+
         $('.pos-rel a').each(function(){
            $(this).on('hover, mouseover, click', function() {
                 $(this).children('.userinfoModal').find('input[type="text"]').focus();

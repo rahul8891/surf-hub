@@ -104,12 +104,12 @@ $(document).ready(function () {
             }
         });
     });
-    
+
     $(document).on('change', '#beach_break_excel', function () {
         var fd = new FormData();
 
         var files = $('#beach_break_excel')[0].files;
-         // Append data 
+         // Append data
          fd.append('excel_file',files[0]);
          fd.append('_token',csrf_token);
          $('.loadingWrap').removeClass('d-none');
@@ -126,7 +126,7 @@ $(document).ready(function () {
             }
         });
     });
-    
+
     $("#exampleInputFile").change(function () {
         readURL(this);
     });
@@ -162,7 +162,7 @@ $(document).ready(function () {
                 $image_crop.croppie('bind', {
                     url: e.target.result
                 }).then(function (blob) {
-                    // console.log(blob);               
+                    // console.log(blob);
                 });
             };
             reader.readAsDataURL(input.files[0]);
@@ -230,7 +230,7 @@ $(document).ready(function () {
     });
 
     /**
-     * Model Cancle 
+     * Model Cancle
      */
     $(".close").click(function () {
         $('#imagebase64').val("");
@@ -248,7 +248,7 @@ $(document).ready(function () {
     });
     /**
      * Execute a function given a delay time
-     * 
+     *
      * @param {type} func
      * @param {type} wait
      * @param {type} immediate
@@ -272,7 +272,7 @@ $(document).ready(function () {
     };
     // ajax form field data for post
     $('.search-box').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         if ($(this).val().length > 2) {
             $.ajax({
                 type: "GET",
@@ -294,7 +294,7 @@ $(document).ready(function () {
         }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
-    
+
     $(document).on('click', '.search1 li', function () {
         var value = $(this).text();
         var dataId = $(this).attr("data-id");
@@ -339,9 +339,9 @@ $(document).ready(function () {
             $("#state_id").empty();
         }
     }
-    
+
     $('.other_surfer').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         if ($(this).val().length > 1) {
             $.ajax({
                 type: "GET",
@@ -369,7 +369,7 @@ $(document).ready(function () {
         $('#surfer_id').val(dataId);
         $('#other_surfer_list').html("");
     });
-    
+
     /**
      * State Baded on the selection on country
      */
@@ -403,7 +403,7 @@ $(document).ready(function () {
             $("#state_id").empty();
         }
     });
-    
+
     $("#board_type").change(function (e) {
 //    if ($('#beach_filter').is(":selected")) {
 //        $('#break_filter').find('option').remove();
@@ -475,7 +475,7 @@ $(document).on('click shown.bs.modal', '.locationMap', function () {
 });
 
 $('#searchReports').keyup(debounce(function () {
-        // the following function will be executed every half second	
+        // the following function will be executed every half second
         var keyword = $('#searchReports').val();
 //        if ($(this).val().length > 2) {
         $.ajax({
@@ -497,8 +497,8 @@ $('#searchReports').keyup(debounce(function () {
 //        }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
-    
-    $('.add-to-feed').click(function () { 
+
+    $('.add-to-feed').click(function () {
             let status =  1;
             let postId = $(this).data('id');
             $.ajax({
@@ -514,13 +514,13 @@ $('#searchReports').keyup(debounce(function () {
                     } else {
                         $("#errorSuccessmsg").removeClass('alert-success');
                         $("#errorSuccessmsg").addClass('alert-danger');
-                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>'); 
+                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
                     }
                     console.log(data.message);
                 }
             });
         });
-    $('.remove-from-feed').click(function () { 
+    $('.remove-from-feed').click(function () {
             let status =  0;
             let postId = $(this).data('id');
             $.ajax({
@@ -536,13 +536,40 @@ $('#searchReports').keyup(debounce(function () {
                     } else {
                         $("#errorSuccessmsg").removeClass('alert-success');
                         $("#errorSuccessmsg").addClass('alert-danger');
-                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>'); 
+                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
                     }
                     console.log(data.message);
                 }
             });
         });
-    
+
+    $("#beach_filter").change(function (e) {
+        $('#break_filter').find('option').remove();
+        $("#break_filter").append('<option value=""> -- Break --</option>');
+        var beachValue = $(this).val();
+        $.ajax({
+            type: "GET",
+            url: '/getBreak',
+            data: {
+                beach_id: beachValue,
+                _token: csrf_token
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                //console.log(jsonResponse);
+                if (jsonResponse.status == 'success') {
+                    var myJsonData = jsonResponse.data;
+
+                    $.each(myJsonData, function (key, value) {
+                        if (value.break_name != '') {
+                            $("#break_filter").append('<option value="' + value.id + '">' + value.break_name + '</option>');
+                        }
+                    });
+                }
+            }
+        });
+    });
+
 });
 /**
  * remove message after time set hit
@@ -551,3 +578,5 @@ function myTimerUserMessage() {
     document.getElementById("error").innerHTML = "";
     document.getElementById("error").className = "";
 }
+
+

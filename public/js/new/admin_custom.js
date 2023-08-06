@@ -578,13 +578,40 @@ $('#searchReports').keyup(debounce(function () {
 
         // no space allow in text box
     $.validator.addMethod(
-            "noSpace",
-            function (value, element) {
-                return value == "" || value.trim().length != 0;
-            },
-            "No space please and don't leave it empty"
-            );
+        "noSpace",
+        function (value, element) {
+            return value == "" || value.trim().length != 0;
+        },
+        "No space please and don't leave it empty"
+    );
 
+
+    $("#beach_filter").change(function (e) {
+        $('#break_filter').find('option').remove();
+        $("#break_filter").append('<option value=""> -- Break --</option>');
+        var beachValue = $(this).val();
+        $.ajax({
+            type: "GET",
+            url: '/getBreak',
+            data: {
+                beach_id: beachValue,
+                _token: csrf_token
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                //console.log(jsonResponse);
+                if (jsonResponse.status == 'success') {
+                    var myJsonData = jsonResponse.data;
+
+                    $.each(myJsonData, function (key, value) {
+                        if (value.break_name != '') {
+                            $("#break_filter").append('<option value="' + value.id + '">' + value.break_name + '</option>');
+                        }
+                    });
+                }
+            }
+        });
+    });
 });
 /**
  * remove message after time set hit
@@ -593,5 +620,8 @@ function myTimerUserMessage() {
     document.getElementById("error").innerHTML = "";
     document.getElementById("error").className = "";
 }
+
+
+
 
 
