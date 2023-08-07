@@ -1,6 +1,6 @@
 <div class="modal-dialog editPostM " role="document">
     <div class="modal-content">
-        <form id="updateVideoPostData" method="POST" name="updatePostData" action="{{ route('updatePostData') }}" class="upload-form" accept-charset="utf-8" enctype="multipart/form-data">
+        <form id="updateVideoPostData" method="POST" name="updatePostData"  class="upload-form" accept-charset="utf-8" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="id" value="{{ $myHubs->id }}">
             <div class="upload-wrap">
@@ -140,12 +140,11 @@
                                 <div class="col-md-8">
                                     @php
                                     $username = Auth::user()->user_name;
-                                    $surfer = (isset($myHubs->surfer) && ($myHubs->surfer == $username))?'Me':$myHubs->surfer;
+                                    $surfer = (isset($myHubs->surfer) && ($myHubs->surfer == $username))?'Me':(isset($myHubs->surfer) && ($myHubs->surfer != 'Unknown'))?"Others":$myHubs->surfer;
                                     @endphp
                                     @foreach ($customArray['surfer'] as $key => $value)
                                     <div class="form-check d-inline-block me-3">
-                                        <input class="form-check-input surfer-info" type="radio" name="surfer" value="{{$value}}"
-                                               id="{{$value}}" required {{ ($surfer == $value) ? 'checked' : '' }} />
+                                        <input class="form-check-input surfer-info" type="radio" name="surfer" value="{{$value}}" id="{{$value}}" required {{ ((in_array($surfer, $customArray['surfer'])) && ($surfer == $value)) ? 'checked' : '' }} />
                                         <label for="{{$value}}" class="form-check-label">{{$value}}</label>
                                     </div>
                                     @endforeach
@@ -153,13 +152,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row d-none" id="othersSurferInfo">
+                    <div class="row {{ ($surfer != "Others")?"d-none":"" }}" id="othersSurferInfo">
                         <div class="col-md-6">
                             <div class="row mb-3 align-items-center">
                                 <label class="col-md-4 d-md-block  d-none"></label>
                                 <div class="col-md-8">
-    <!--                                        <input type="text" class="form-control ps-2 mb-0" placeholder="Search another user">-->
-                                    <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
+                                    <input type="text" value="{{ $myHubs->surfer }}" name="other_surfer"
                                            class="form-control ps-2 mb-0 edit_other_surfer" placeholder="Search another user">
                                     <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id"
                                            id="edit_surfer_id" class="form-control surfer_id">
@@ -232,7 +230,7 @@
                             <div class="row mb-3 align-items-center">
                                 <label class="col-md-4">Board Type</label>
                                 <div class="col-md-8">
-                                    <select class="form-select ps-2 mb-0" id="board_type" name="board_type">
+                                    <select class="form-select ps-2 mb-0" id="board_type" name="board_type" onload="displayAdditionalInfo({{ $myHubs->board_type }})">
                                         <option value="">{{ __('-- Select --')}}</option>
                                         @foreach($customArray['board_type'] as $key => $value)
                                         <option value="{{ $key }}"
@@ -244,13 +242,30 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row d-none" id="additional_optional_info_edit">
-
+                    <div class="row {{ (isset($myHubs->board_type) && !empty($myHubs->board_type))?'':'d-none' }}" id="additional_optional_info_edit">
+                        @if(isset($myHubs->board_type) && !empty($myHubs->board_type))
+                        <div class="col-md-12">
+                            <div class="row mb-3 align-items-center">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        @foreach ($boardType as $key => $value)
+                                            <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                                                <div class="form-check d-flex">
+                                                    <input type="checkbox" class="form-check-input" name="additional_info[]" value="{{ $value->id }}" id="{{ $value->id }}" {{ (in_array($value->id, explode(" ", $myHubs->additional_info)))?"checked":'' }}/>
+                                                    <label for="{{ $value->id }}" class="">{{ $value->info_name }}</label>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
                 <div class="row justify-content-end">
                     <div class="col-md-10">
-                        <input class="btn blue-btn w-150 submitBtn" type="submit" value="UPDATE">
+                        <input class="btn blue-btn w-150 submitBtn" type="button" value="UPDATE">
                     </div>
                 </div>
 
@@ -315,9 +330,30 @@ $(document).ready(function () {
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
 
-    $(document).on('click', '.submitBtn', function () {
-        $("#updateVideoPostData").submit();
-    });
+    /*  $(document).on('click', '.submitBtn', function () {
+        $("#updateVideoPostData").submit(function(e) {
+            //prevent Default functionality
+            e.preventDefault();
+
+            $.ajax({
+                url: '/updatePostData',
+                type: 'POST',
+                dataType: 'application/json',
+                data: $("#updateVideoPostData").serialize(),
+                success: function(data) { alert('aaaa');
+                    data = $.parseJSON(data);
+
+                    if(data.status == 'success') {
+                        $(".feed"+id).remove();
+                        jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                    }else {
+                        jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                    }
+                    jQuery("#edit_image_upload_main").modal('hide');
+                }
+            });
+        });
+    });  */
 
 
     $('.surfer-info').click(function () {
@@ -371,8 +407,12 @@ $(document).ready(function () {
 
 
     $(document).on('change', '#board_type', function (e) {
-//        e.preventDefault();
         var board_type = $(this).val();
+
+        displayAdditionalInfo(board_type);
+    });
+
+    function displayAdditionalInfo(board_type) {
         if (board_type !== '') {
             $.ajax({
                 type: "GET",
@@ -396,7 +436,8 @@ $(document).ready(function () {
         } else {
             $('#additional_optional_info_edit').addClass('d-none');
         }
-    });
+    }
+
     $(document).on('change', '#input_multifile', function (e) {
         previewFile(this);
     });

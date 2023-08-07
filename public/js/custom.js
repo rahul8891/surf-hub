@@ -1707,7 +1707,7 @@ $(document).ready(function () {
         }
     }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
-    $('.filter_username').keyup(debounce(function () { alert('aaa');
+    $('.filter_username').keyup(debounce(function () {
         // the following function will be executed every half second
         var userType = $('#filter_user_type').val();
 

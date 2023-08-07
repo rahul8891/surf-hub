@@ -39,7 +39,7 @@
             </div>
             <div class="profile-row">
                 <form method="POST" action="{{ route('logout') }}">
-                    
+
                     @csrf
                     <a href="#{{ route('logout') }}" onclick="event.preventDefault();this.closest('form').submit();"><img src="/img/logout.png" alt="Sign Out" class="mr-2"><span>Sign Out</span></a>
                 </form>
@@ -62,7 +62,6 @@
                                                 $('#uploads').html(jsonResponse['uploads']);
                                                 $('#surferRequest').html(jsonResponse['surferRequest']);
                                                 $('#comments').html(jsonResponse['comments']);
-//                setInterval(myTimerUserMessage, 4000);
                                             }
                                         });
                                     });

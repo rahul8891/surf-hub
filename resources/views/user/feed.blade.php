@@ -18,7 +18,7 @@
                 @php ($c = 0)
                 @php ($i = 0)
                 @foreach ($postsList as $key => $posts)
-                <div class="news-feed">
+                <div class="news-feed feed{{ $posts->id }}">
 
                     <div class="inner-news-feed">
                         <div class="user-details">
@@ -104,7 +104,7 @@
                             </div>
                             <div class="right-options">
                                 @if(Auth::user()->id != $posts->user_id)
-                                <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/new/save.png" alt="Save"></a>
+                                <div onclick="deleteSaveUserPost({{$posts->id}}, 'saveToMyHub')"><img src="/img/new/save.png" alt="Save"></div>
                                 @endif
                                 @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'] && empty($requestSurfer[$posts->id]))
                                 <a onclick='surferRequestDetail("{{ Crypt::encrypt($posts->id) }}")'><img src="/img/new/small-logo.png" alt="Logo"></a>
@@ -151,7 +151,7 @@
                                     </div>
                                 </div>
                                 @if(Auth::user() && $posts->user_id == Auth::user()->id)
-                                <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a>
+                                <div onclick="deleteSaveUserPost({{$posts->id}}, 'delete')"><img src="/img/delete.png" alt="Delete"></div>
                                 <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
                                 @endif
                                 <div class="d-inline-block tag dropdown" title="Tag">
@@ -409,6 +409,29 @@
                 data = $.parseJSON(data);
 
                 if(data.status == 'success') {
+                    jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                }else {
+                    jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                }
+            }
+        });
+
+        return false;
+    }
+
+    function deleteSaveUserPost(id, type) {
+        jQuery.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: '/'+type+'/'+id,
+            type: "GET",
+            async: false,
+            success: function(data) {
+                data = $.parseJSON(data);b
+
+                if(data.status == 'success') {
+                    $(".feed"+id).remove();
                     jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
                 }else {
                     jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');

@@ -513,6 +513,7 @@ class PostService {
      * @return dataArray
      */
     public function getAdminFilteredData($params, $for, $type = null, $page = null) {
+        // dd($params);
         if ($for=='search'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
@@ -1835,13 +1836,12 @@ class PostService {
      * @param  message return message based on the condition
      * @return dataArray with message
      */
-    public function getSurferRequest($ids,$status){
+    public function getSurferRequest(){
 
 
         $surferRequest =  $this->surferRequest
-                                  ->whereIn('post_id', $ids)
-                                  ->where('status',$status)
-                                  ->orderBy('id','ASC')
+                                  ->where('user_id', Auth::user()->id)
+                                  ->where('status', '0')
                                   ->get()
                                   ->toArray();
         return $surferRequest;

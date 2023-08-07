@@ -25,6 +25,7 @@ use FFMpeg\Filters\Video\VideoFilters;
 use Spotify;
 use App\Models\SpotifyUser;
 use Laravel\Socialite\Facades\Socialite;
+use App\Models\BoardTypeAdditionalInfo;
 
 class MyHubController extends Controller {
 
@@ -203,6 +204,7 @@ class MyHubController extends Controller {
             $users = $this->users->getUsersListing();
             $customArray = $this->customArray;
             $myHubs = Post::findOrFail($id);
+            $boardType = BoardTypeAdditionalInfo::where('board_type', $myHubs->board_type)->get();
             $states = $this->masterService->getStateByCountryId($myHubs->country_id);
             $postMedia = Upload::where('post_id', $id)->get();
             $spiner = ($this->posts) ? true : false;
@@ -219,7 +221,8 @@ class MyHubController extends Controller {
         }
 
         if ($request->ajax()) {
-            $view = view('elements/edit_image_upload', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'users', 'beach_name', 'breaks', 'breakId'))->render();
+            $view = view('elements/edit_image_upload', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'users', 'beach_name', 'breaks', 'breakId', 'boardType'))->render();
+
             return response()->json(['html' => $view]);
         }
         // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));
@@ -296,6 +299,7 @@ class MyHubController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request) {
+
         try {
             $data = $request->all();
             if (!empty($data['other_surfer'])) {
@@ -348,9 +352,11 @@ class MyHubController extends Controller {
                     $result = $this->postService->updatePostData($data, '', '', $message);
                 }
                 if ($result['status'] === TRUE) {
-                    return Redirect()->route('myhub')->withSuccess($result['message']);
+                    return json_encode(array('status'=>'success', 'message' => $message));
+                    // return Redirect()->route('myhub')->withSuccess($result['message']);
                 } else {
-                    return Redirect()->route('myhub')->withErrors($result['message']);
+                    return json_encode(array('status'=>'failure', 'message' => $message));
+                    // return Redirect()->route('myhub')->withErrors($result['message']);
                 }
             }
         } catch (\Exception $e) {

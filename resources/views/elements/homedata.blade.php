@@ -306,6 +306,25 @@
             });
         });
 
+
+        //hang on event of form with id=myform
+        $("#updateVideoPostData").submit(function(e) {
+            //prevent Default functionality
+            e.preventDefault();
+
+            //do your own request an handle the results
+            $.ajax({
+                    url: actionurl,
+                    type: 'post',
+                    dataType: 'application/json',
+                    data: $("#updateVideoPostData").serialize(),
+                    success: function(data) {
+                        ... do something with the data...
+                    }
+            });
+
+        });
+
         //Auto play videos when view in scroll
         function isInView(el) {
             var rect = el.getBoundingClientRect();// absolute position of video element

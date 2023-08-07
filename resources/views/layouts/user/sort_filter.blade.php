@@ -133,16 +133,14 @@
                                     </div>
 
                                     <div class="row align-items-center d-none mb-4" id="othersFilterSurfer">
-
-                                     <div class="col-md-4">
+                                        <div class="col-md-4">
                                             <label for="surfe" class="form-label"></label>
                                         </div>
-                                    <div class="col-md-8">
-                                    <input type="hidden" value="" name="surfer_id" id="surfer_id_filter" class="form-control surfer_id" />
-                                    <input type="text" name="other_surfer" class="form-control ps-2 mb-0 filter_other_surfer" placeholder="Search">
-                                    <div class="auto-search" id="filter_other_surfer_data"></div>
-                                    </div>
-
+                                        <div class="col-md-8">
+                                            <input type="hidden" value="" name="surfer_id" id="surfer_id_filter" class="form-control surfer_id" />
+                                            <input type="text" name="other_surfer" class="form-control ps-2 mb-0 filter_other_surfer" placeholder="Search">
+                                            <div class="auto-search" id="filter_other_surfer_data"></div>
+                                        </div>
                                     </div>
 
                                     <div class="row align-items-center mb-4">

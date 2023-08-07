@@ -511,11 +511,7 @@ class UserController extends Controller {
             $followRequestCount = $this->users->getFollowDataCount('followed_user_id', array('1'), Auth::user()->id);
             $notification = $this->users->getNotificationCount();
             $userPosts = $this->post->getPostByUserId(Auth::user()->id);
-
-            $postIds = array_filter(array_column($userPosts, 'id'));
-            $userPostsUnknown = $this->post->getPostUnknownByUserId();
-            $postUnIds = array_filter(array_column($userPostsUnknown, 'id'));
-            $surferRequests = $this->post->getSurferRequest($postUnIds, 0);
+            $surferRequests = $this->post->getSurferRequest();
 
             $uploads = $this->post->getUploads(Auth::user()->id);
             $fCounts = array(
