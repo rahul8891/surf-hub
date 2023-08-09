@@ -356,14 +356,14 @@ class UserPostController extends Controller {
      */
     public function destroy($id) {
         try {
-            $result = $this->posts->deletePost(Crypt::decrypt($id), $message);
+            $result = $this->posts->deletePost($id, $message);
             if ($result) {
-                return redirect()->route('myhub')->withSuccess($message);
+                return json_encode(array('status'=>'success', 'message' => $message));
             } else {
-                return redirect()->route('myhub')->withErrors($message);
+                return json_encode(array('status'=>'error', 'message' => $message));
             }
         } catch (\Exception $e) {
-            return redirect()->route('myhub', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
+            return json_encode(array('status'=>'error', 'message' => $e->getMessage()));
         }
     }
     /**
@@ -392,15 +392,19 @@ class UserPostController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function saveToMyHub($id) {
+        $message = '';
         try {
-            $result = $this->posts->saveToMyHub(Crypt::decrypt($id), $message);
+            // $result = $this->posts->saveToMyHub(Crypt::decrypt($id), $message);
+            $result = $this->posts->saveToMyHub($id, $message);
             if ($result) {
-                return redirect()->route('dashboard')->withSuccess($message);
+                return json_encode(array('status'=>'success', 'message' => $message));
             } else {
-                return redirect()->route('dashboard')->withErrors($message);
+                return json_encode(array('status'=>'error', 'message' => $message));
+                // return redirect()->route('dashboard')->withErrors($message);
             }
         } catch (\Exception $e) {
-            return redirect()->route('dashboard', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
+            return json_encode(array('status'=>'error', 'message' => $e->getMessage()));
+            // return redirect()->route('dashboard', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
         }
     }
 

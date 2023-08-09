@@ -51,8 +51,8 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="/contact-us">Contact Us</a></li>
                                 <li><a class="dropdown-item" href="/privacy-policy">Privacy Policy</a></li>
-                                <li><a class="dropdown-item" href="terms-and-conditions">T&C's</a></li>
-                                <li><a class="dropdown-item" href="/help-faqs">Help/FAQ's</a></li>
+                                <li><a class="dropdown-item" href="terms-and-conditions">T&C`s</a></li>
+                                <li><a class="dropdown-item" href="/help-faq">Help/FAQ's</a></li>
                             </ul>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
         </nav>
     </header>
     <main class="pt-0">
-         <div id="loader"></div> 
+         <div id="loader"></div>
         <div class="loaderWrap">
             <div class="lds-hourglass"></div>
         </div>

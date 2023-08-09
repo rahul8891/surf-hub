@@ -2172,3 +2172,45 @@ form label.error {
 #msg-alert button{
     margin-right: 15px;
 }
+.feedHubNav {
+    padding: 0 22px;
+}
+
+header .navbar-nav.admin-middle-menu {
+    overflow-x: scroll;
+}
+
+header .navbar-nav.admin-middle-menu > div:nth-child(2) {
+    min-width: 85px;
+}
+
+header .navbar-nav .nav-link .header-icon {
+    margin: auto;
+    display: block;
+}
+
+@media (max-width: 992px){
+    nav .side-navbar{
+        width: 100%;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+    nav .side-navbar > div {
+        justify-content: flex-end;
+    }
+}
+header .profile-pic{
+    line-height: 2;
+    text-align: center;
+}
+#filter_username_data .list-group-item, #filter_other_surfer_data .list-group-item{
+    min-height: 46px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+
+}
+header .navbar-nav.admin-middle-menu > div > a span:nth-child(2){
+    font-weight: 400;
+}

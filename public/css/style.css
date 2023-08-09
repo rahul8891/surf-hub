@@ -811,7 +811,7 @@ header .dropdown-toggle::after {
     line-height: 24px;
 }
 /* .filterModal .cstm-check {
-    
+
 } */
 .form-control {
     box-shadow: -1px 0 1.5px rgba(0, 0, 1, 0.18);
@@ -1074,7 +1074,7 @@ header .dropdown-toggle::after {
 
 .uploadModal .formWrap label {
     font-size: 15px;
-    /* line-height: 44px; 
+    /* line-height: 44px;
     color: #333333;*/
     font-weight: 400;
     margin-bottom: 15px;
@@ -1107,7 +1107,7 @@ header .dropdown-toggle::after {
     border: none;
 }
 
-.uploadPost:hover, .uploadPost:focus, 
+.uploadPost:hover, .uploadPost:focus,
 .uploadModal .modal-footer button:focus,
 .uploadModal .modal-footer button:hover{
     background: #4076cd;

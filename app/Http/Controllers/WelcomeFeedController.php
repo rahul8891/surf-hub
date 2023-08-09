@@ -81,8 +81,8 @@ class WelcomeFeedController extends Controller
 
 
     public function faq(){
-        $pages = new Page();
-        $pages = $pages->where('alias','help')->first();
+        $pages = Page::where('alias','help')->first();
+        // dd($pages);
         return view('static-pages.faq',compact('pages'));
     }
 

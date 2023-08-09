@@ -352,16 +352,16 @@ class MyHubController extends Controller {
                     $result = $this->postService->updatePostData($data, '', '', $message);
                 }
                 if ($result['status'] === TRUE) {
-                    return json_encode(array('status'=>'success', 'message' => $message));
+                    return json_encode(array('status'=>'success', 'message' => $message['message']));
                     // return Redirect()->route('myhub')->withSuccess($result['message']);
                 } else {
-                    return json_encode(array('status'=>'failure', 'message' => $message));
+                    return json_encode(array('status'=>'failure', 'message' => $message['message']));
                     // return Redirect()->route('myhub')->withErrors($result['message']);
                 }
             }
         } catch (\Exception $e) {
 
-            return redirect()->route('myhub')->withErrors($e->getMessage());
+            return json_encode(array('status'=>'failure', 'message' => $e->getMessage()));
         }
     }
 

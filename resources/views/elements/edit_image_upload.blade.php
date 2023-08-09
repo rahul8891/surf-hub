@@ -265,7 +265,7 @@
                 </div>
                 <div class="row justify-content-end">
                     <div class="col-md-10">
-                        <input class="btn blue-btn w-150 submitBtn" type="button" value="UPDATE">
+                        <input class="btn blue-btn w-150 submitBtn" type="submit" value="UPDATE">
                     </div>
                 </div>
 
@@ -330,8 +330,8 @@ $(document).ready(function () {
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
 
-    /*  $(document).on('click', '.submitBtn', function () {
-        $("#updateVideoPostData").submit(function(e) {
+    /* $(document).on('click', '.submitBtn', function () {
+        $("#updateVideoPostData").submit(function(e) { alert('aaa');
             //prevent Default functionality
             e.preventDefault();
 
@@ -340,8 +340,9 @@ $(document).ready(function () {
                 type: 'POST',
                 dataType: 'application/json',
                 data: $("#updateVideoPostData").serialize(),
-                success: function(data) { alert('aaaa');
-                    data = $.parseJSON(data);
+                success: function(data) {
+                    alert("Post has been updated successfully.");
+                    /* data = $.parseJSON(data);
 
                     if(data.status == 'success') {
                         $(".feed"+id).remove();
@@ -349,11 +350,33 @@ $(document).ready(function () {
                     }else {
                         jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
                     }
-                    jQuery("#edit_image_upload_main").modal('hide');
+                    jQuery("#edit_image_upload_main").modal('hide'); */
+                   /* return false;
                 }
             });
         });
-    });  */
+    }); */
+
+    jQuery("#updateVideoPostData").submit(function(e) {
+        //prevent Default functionality
+        e.preventDefault();
+
+        jQuery.ajax({
+            url: '/updatePostData',
+            type: 'POST',
+            data: $("#updateVideoPostData").serialize(),
+            success: function(data) {
+                data = jQuery.parseJSON(data);
+                console.log(data.message);
+                alert(data.message);
+
+                jQuery("#edit_image_upload_main").modal('hide');
+            },
+            error: function() {
+                console.log('error');
+            }
+        });
+    });
 
 
     $('.surfer-info').click(function () {
