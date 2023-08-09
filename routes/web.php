@@ -36,6 +36,7 @@ Route::get('/', [WelcomeFeedController::class, 'welcome'])->name('feed');
 Route::get('/privacy-policy', [WelcomeFeedController::class, 'privacy'])->name('privacy');
 Route::get('/terms-and-conditions', [WelcomeFeedController::class, 'terms'])->name('terms');
 Route::get('/help-faq', [WelcomeFeedController::class, 'faq'])->name('faq');
+Route::get('/help-faqs', [WelcomeFeedController::class, 'faq'])->name('faq');
 Route::get('/contact-us', [WelcomeFeedController::class, 'contact'])->name('contact');
 Route::get('/getBeachBreach', [UserController::class, 'getBeachBreach'])->name('getBeachBreach');
 Route::get('/getState', [DashboardController::class, 'getState'])->name('getState');
