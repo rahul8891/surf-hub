@@ -252,6 +252,8 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::post('/post/update/{id}', [PostController::class, 'update'])->name('postUpdate');
     Route::get('/post/delete/{id}', [PostController::class, 'destroy'])->name('deletePost');
     Route::get('/post/status', [PostController::class, 'statusUpdate'])->name('statusUpdate');
+    Route::post('/post/status', [PostController::class, 'statusUpdate'])->name('statusUpdate');
+    Route::get('/post/feed-post', [PostController::class, 'statusFeed'])->name('statusFeed');
 
     /************ Report url **********/
     Route::get('/report/index', [ReportController::class, 'index'])->name('reportIndex');

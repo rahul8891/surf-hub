@@ -2,6 +2,7 @@
 @section('content')
 
 <section class="home-section">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <div class="container">
         <div class="home-row">
             <div class="my-details-div">
@@ -17,7 +18,7 @@
                 @endif
                 @if (!empty($postsList))
                 @foreach ($postsList as $key => $posts)
-                <div class="news-feed">
+                <div class="news-feed myPostData{{$posts->id}}">
 
                     <div class="inner-news-feed">
                         <div class="user-details">
@@ -231,73 +232,73 @@
 <script type="text/javascript">
     var page = 1;
     $(window).scroll(function() {
-    if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    page++;
-    loadMoreData(page);
-    }
+        if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+            page++;
+            loadMoreData(page);
+        }
     });
-    function loadMoreData(page) {
-    var url = window.location.href;
-    if (url.indexOf("?") !== - 1) {
-    var url = window.location.href + '&page=' + page;
-    } else {
-    var url = window.location.href + '?page=' + page;
-    }
 
-    $.ajax({
-    url: url,
+    function loadMoreData(page) {
+        var url = window.location.href;
+        if (url.indexOf("?") !== - 1) {
+            var url = window.location.href + '&page=' + page;
+        } else {
+            var url = window.location.href + '?page=' + page;
+        }
+
+        $.ajax({
+            url: url,
             type: "get",
             async: false,
             beforeSend: function() {
-            $('.ajax-load').show();
+                $('.ajax-load').show();
             }
-    })
-            .done(function(data) {
+        }).done(function(data) {
             if (data.html == "") {
-            $('.ajax-load').addClass('requests');
-            $('.ajax-load').html("No more records found");
-            return;
+                $('.ajax-load').addClass('requests');
+                $('.ajax-load').html("No more records found");
             }
 
             $('.ajax-load').removeClass('requests');
             $('.ajax-load').hide();
-//            $("#post-data").insertBefore(data.html);
             $(data.html).insertBefore(".ajax-load");
-            });
+        });
     }
 
     $(document).on('click', '.editBtnVideo', function() {
-    var id = $(this).data('id');
-    $.ajax({
-    url: '/getPostData/' + id,
-            type: "get",
-            async: false,
-            success: function(data) {
-            // console.log(data.html);
-            $("#edit_image_upload_main").html("");
-            $("#edit_image_upload_main").append(data.html);
-            $("#edit_image_upload_main").modal('show');
-            }
+        var id = $(this).data('id');
+        $.ajax({
+        url: '/getPostData/' + id,
+                type: "get",
+                async: false,
+                success: function(data) {
+                // console.log(data.html);
+                $("#edit_image_upload_main").html("");
+                $("#edit_image_upload_main").append(data.html);
+                $("#edit_image_upload_main").modal('show');
+                }
+        });
     });
-    });
+
     $('.pos-rel a').each(function(){
-    $(this).on('hover, mouseover, click', function() {
-    $(this).children('.userinfoModal').find('input[type="text"]').focus();
+        $(this).on('hover, mouseover, click', function() {
+            $(this).children('.userinfoModal').find('input[type="text"]').focus();
+        });
     });
-    });
+
     function openFullscreenSilder(id) {
-    $.ajax({
-    url: '/getPostFullScreen/' + id,
-            type: "get",
-            async: false,
-            success: function(data) {
-            // console.log(data.html);
-            $("#full_screen_modal").html("");
-            $("#full_screen_modal").append(data.html);
-            $("#full_screen_modal").modal('hide');
-            $("#full_screen_modal").modal('show');
-            }
-    });
+        $.ajax({
+        url: '/getPostFullScreen/' + id,
+                type: "get",
+                async: false,
+                success: function(data) {
+                // console.log(data.html);
+                $("#full_screen_modal").html("");
+                $("#full_screen_modal").append(data.html);
+                $("#full_screen_modal").modal('hide');
+                $("#full_screen_modal").modal('show');
+                }
+        });
     }
 
 </script>

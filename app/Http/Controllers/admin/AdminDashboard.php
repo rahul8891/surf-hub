@@ -75,16 +75,16 @@ class AdminDashboard extends Controller
                     ->where("user_id", "=", Auth::user()->id)
                     ->get();
             foreach ($surferRequest as $res) {
-//                echo '<pre>'; print_r($res['id']);die;
                 $requestSurfer[$res->post_id] = $res->user_id;
             }
         }
-//        echo '<pre>'; print_r($requestSurfer);die;
+
         $url = url()->current();
         $usersList = $this->masterService->getAllUsers();
 
         if ($request->ajax()) {
-            $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches'))->render();
+            $page = (isset($param['page']) && !empty($param['page']))?$param['page']:1;
+            $view = view('elements/homedata', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches', 'page'))->render();
             return response()->json(['html' => $view]);
         }
         return view('admin/dashboard.admin_feed', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer','beaches'));

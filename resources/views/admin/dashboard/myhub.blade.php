@@ -310,7 +310,7 @@
                     type: 'POST',
                     dataType: 'application/json',
                     data: $("#updateVideoPostData").serialize(),
-                    success: function(data) { alert('aaaa');
+                    success: function(data) {
                         data = $.parseJSON(data);
 
                         if(data.status == 'success') {

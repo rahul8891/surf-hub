@@ -499,44 +499,42 @@ $('#searchReports').keyup(debounce(function () {
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
     $('.add-to-feed').click(function () {
-            let status =  1;
-            let postId = $(this).data('id');
-            $.ajax({
-                type: "GET",
-                dataType: "json",
-                url: "/admin/post/status",
-                data: {'status': status, 'post_id': postId},
-                success: function (data) {
-                    if(data.statuscode == 200) {
-                        $("#errorSuccessmsg").removeClass('alert-danger');
-                        $("#errorSuccessmsg").addClass('alert-success');
-                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
-                    } else {
-                        $("#errorSuccessmsg").removeClass('alert-success');
-                        $("#errorSuccessmsg").addClass('alert-danger');
-                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
-                    }
-                    console.log(data.message);
+        let status =  1;
+        let postId = $(this).data('id');
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/admin/post/feed-post",
+            data: {'status': status, 'post_id': postId},
+            success: function (data) {
+                if(data.statuscode == 200) {
+                    $(".addFeed"+postId).remove();
+                    jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Feed has been added successfully.</div>');
+                } else {
+                    jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Something went wrong. Please try again later.</div>');
                 }
-            });
+                console.log(data.message);
+            }
         });
+    });
+
     $('.remove-from-feed').click(function () {
             let status =  0;
             let postId = $(this).data('id');
             $.ajax({
-                type: "GET",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
                 dataType: "json",
                 url: "/admin/post/status",
                 data: {'status': status, 'post_id': postId},
                 success: function (data) {
                     if(data.statuscode == 200) {
-                        $("#errorSuccessmsg").removeClass('alert-danger');
-                        $("#errorSuccessmsg").addClass('alert-success');
-                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                        $(".myPostData"+postId).remove();
+                        jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Feed has been deleted successfully.</div>');
                     } else {
-                        $("#errorSuccessmsg").removeClass('alert-success');
-                        $("#errorSuccessmsg").addClass('alert-danger');
-                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                        jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Something went wrong. Please try again later.</div>');
                     }
                     console.log(data.message);
                 }

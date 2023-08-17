@@ -366,10 +366,12 @@ $(document).ready(function () {
             type: 'POST',
             data: $("#updateVideoPostData").serialize(),
             success: function(data) {
-                data = jQuery.parseJSON(data);
-                console.log(data.message);
-                alert(data.message);
-
+                if(data.status == 'success') {
+                    $(".feed"+id).remove();
+                    jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                }else {
+                    jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                }
                 jQuery("#edit_image_upload_main").modal('hide');
             },
             error: function() {

@@ -21,7 +21,7 @@
                 </div>
                 @else
                 @foreach ($postsList as $key => $posts)
-                <div class="news-feed">
+                <div class="news-feed myPostData{{$posts->id}}">
                     <div class="inner-news-feed">
                         <div class="user-details">
                             <div class="user-left">
@@ -73,19 +73,24 @@
                             </div>
                             @endif
                         </div>
-                        @if(!empty($posts->upload->image))
-                        <div class="newsFeedImgVideo">
-                            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
-                        </div>
-                        @elseif(!empty($posts->upload->video))
-                            @if (!File::exists($posts->upload->video))
-                                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                        @if (isset($posts->parent_id) && ($posts->parent_id > 0))
+                            @if(!empty($posts->upload->image))
+                                <div class="newsFeedImgVideo">
+                                    <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->parent_id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                                </div>
+                            @elseif(!empty($posts->upload->video))
+                                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->parent_id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
                                     <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
                                 </div>
-                            @else
-                                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'m3u8' }}">
-                                    <video width="100%" preload="auto" data-setup="{}" controls playsinline muted class="video-js" id="myVideoTag{{$posts->id}}">
-                                    </video>
+                            @endif
+                        @else
+                            @if(!empty($posts->upload->image))
+                                <div class="newsFeedImgVideo">
+                                    <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                                </div>
+                            @elseif(!empty($posts->upload->video))
+                                <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                                    <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
                                 </div>
                             @endif
                         @endif
@@ -96,10 +101,10 @@
                                 <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
 
                             </div>
-                            @if($posts->is_feed == 0)
-                            <div class="highlight">
-                                <a class="add-to-feed" data-id="{{ $posts->id }}">Add to Feed</a>
-                            </div>
+                            @if(($posts->is_feed == 0) && ($posts->post_type != 'PUBLIC'))
+                                <div class="highlight addFeed{{ $posts->id }}">
+                                    <a class="add-to-feed" data-id="{{ $posts->id }}">Add to Feed</a>
+                                </div>
                             @endif
                             </div>
                             <div class="right-options">

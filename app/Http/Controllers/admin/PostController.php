@@ -52,7 +52,7 @@ class PostController extends Controller
         $this->users = $users;
         $this->masterService = $masterService;
         $this->customArray = config('customarray');
-        $this->language = config('customarray.language'); 
+        $this->language = config('customarray.language');
         $this->accountType = config('customarray.accountType');
         $this->post_type = config('customarray.post_type');
     }
@@ -66,10 +66,10 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $input = $request->all();
-        
+
         $posts = $this->posts->getAllPostsListing($input);
         $spiner = ($posts) ? true : false;
-        return view('admin/post/index', compact('posts','spiner', 'input'));     
+        return view('admin/post/index', compact('posts','spiner', 'input'));
     }
 
     /**
@@ -84,7 +84,7 @@ class PostController extends Controller
         $language = $this->language;
         $users= User::all();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
-        $customArray = $this->customArray;   
+        $customArray = $this->customArray;
         return view('admin/post/create', compact('users','countries','currentUserCountryId','customArray','language','states'));
     }
 
@@ -95,7 +95,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         try{
             $data = $request->all();
 //    echo "<pre>";print_r($data);die;
@@ -145,8 +145,8 @@ class PostController extends Controller
 //
 //                        $result = $this->posts->savePost($data, $fileType[0], $filename, $message);
 //                    }
-//                } 
-                
+//                }
+
                 if (!empty($postArray["images"]) || !empty($postArray["videos"])) {
                     if (!empty($postArray["images"])) {
                         foreach ($postArray["images"] as $value) {
@@ -164,23 +164,23 @@ class PostController extends Controller
 
                 if ($result) {
 //                    return Redirect()->route('adminMyHub')->withSuccess($message);
-                    return json_encode(array('message' => 'Post has been upload successfully')); 
+                    return json_encode(array('message' => 'Post has been upload successfully'));
                 } else {
-                    return json_encode(array('message' => 'Error while posting')); 
+                    return json_encode(array('message' => 'Error while posting'));
 //                    return Redirect()->route('adminMyHub')->withErrors($message);
                 }
             }
-        }catch (\Exception $e){ 
+        }catch (\Exception $e){
             throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
         }
-        
+
     }
 
     public function storeAdminAds(Request $request) {
         try {
             $data = $request->all();
 //    echo "<pre>";print_r($data);die;
-            
+
 
             $postArray = (isset($data['file']) && !empty($data['file'])) ? $data['file'] : [];
 //            $videoArray$postArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];
@@ -199,7 +199,7 @@ class PostController extends Controller
                 // If validation falis redirect back to register.
                 return response()->json(['error' => $validate->errors()]);
             } else {
-                
+
                 if (!empty($postArray)) {
                     $fileData = [];
 //                    foreach ($postArray as $value) {
@@ -210,8 +210,8 @@ class PostController extends Controller
                         if ($fileType[0] == 'image') {
                             $fileFolder = 'images/' . Auth::user()->id;
                             // $destinationPath = public_path('storage/images/');
-                        } 
-                        
+                        }
+
 //                        elseif ($fileType[0] == 'video') {
 //                            $fileFolder = 'videos/' . $request->user_id;
 //                            // $destinationPath = public_path('storage/fullVideos/');
@@ -225,7 +225,7 @@ class PostController extends Controller
 
                         $result = $this->posts->saveAdminAds($data, $fileType[0], $filename, $message);
 //                    }
-                } 
+                }
 
                 if ($result) {
                     return Redirect()->route('adminPageIndex')->withSuccess($message);
@@ -237,7 +237,7 @@ class PostController extends Controller
             throw ValidationException::withMessages([$e->getMessage()]);
         }
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -245,15 +245,15 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {   
+    {
         try{
         $post=Post::findOrFail(Crypt::decrypt($id));
         $postMedia=Upload::where('post_id',Crypt::decrypt($id))->get();
             $spiner = ($post) ? true : false;
-        }catch (\Exception $e){ 
+        }catch (\Exception $e){
             throw ValidationException::withMessages([$e->getMessage()]);
         }
-        return view('admin/post/show', compact('post','postMedia','spiner'));  
+        return view('admin/post/show', compact('post','postMedia','spiner'));
     }
 
     /**
@@ -263,21 +263,21 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {         
+    {
         try{
-            $currentUserCountryId = Auth::user()->user_profiles->country_id;    
+            $currentUserCountryId = Auth::user()->user_profiles->country_id;
             $countries = $this->masterService->getCountries();
             $language = $this->language;
             $users = $this->users->getUsersListing();
-            $customArray = $this->customArray;  
+            $customArray = $this->customArray;
             $posts = Post::findOrFail(Crypt::decrypt($id));
             $states = $this->masterService->getStateByCountryId($posts->country_id);
             $postMedia=Upload::where('post_id',Crypt::decrypt($id))->get();
             $spiner = ($this->posts) ? true : false;
-        }catch (\Exception $e){         
+        }catch (\Exception $e){
             throw ValidationException::withMessages([$e->getMessage()]);
         }
-        
+
         return view('admin/post/edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));
     }
 
@@ -289,7 +289,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   
+    {
         $id=Crypt::decrypt($id);
         try{
             $data = $request->all();
@@ -317,12 +317,12 @@ class PostController extends Controller
                 if($result){
                     return redirect()->route('postDetail', ['id' => Crypt::encrypt($id)])->withSuccess($message);
                 }else{
-                    return redirect()->route('postEdit', ['id' => Crypt::encrypt($id)])->withErrors($message); 
+                    return redirect()->route('postEdit', ['id' => Crypt::encrypt($id)])->withErrors($message);
                 }
             }
         }catch (\Exception $e){
-                
-            return redirect()->route('postEdit', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage()); 
+
+            return redirect()->route('postEdit', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
         }
     }
 
@@ -338,16 +338,16 @@ class PostController extends Controller
         try{
             $result = $this->posts->deletePost(Crypt::decrypt($id),$message);
             if($result){
-                return redirect()->route('postIndex')->withSuccess($message);  
+                return redirect()->route('postIndex')->withSuccess($message);
             }else{
-                return redirect()->route('postIndex')->withErrors($message); 
+                return redirect()->route('postIndex')->withErrors($message);
             }
         }catch (\Exception $e){
             return redirect()->route('postIndex', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
         }
 
     }
-    
+
     /**
      * Update feed status of the post.
      *
@@ -357,12 +357,31 @@ class PostController extends Controller
     public function statusUpdate(Request $request)
     {
         $post = Post::findOrFail($request->post_id);
-        $post->is_feed = $request->status;
+        //$post->is_feed = $request->status;
+        $post->is_deleted = '1';
         if ($post->save()) {
             return response()->json(['statuscode' => 200, 'status' => true, 'message' =>  "Feed status updated successfully.", 'data' => $post], 200);
         } else {
             return response()->json(['statuscode' => 400, 'status' => false, 'message' =>  "Something went wrong. Please try later."], 400);
         }
     }
-    
+
+    /**
+     * Delete post status of the post.
+     *
+     * @param  int  $id & $status
+     * @return \Illuminate\Http\Response
+     */
+    public function statusFeed(Request $request)
+    {
+        $post = Post::findOrFail($request->post_id);
+        //$post->is_feed = $request->status;
+        $post->is_feed = '1';
+        $post->post_type = 'PRIVATE';
+        if ($post->save()) {
+            return response()->json(['statuscode' => 200, 'status' => true, 'message' =>  "Feed status updated successfully.", 'data' => $post], 200);
+        } else {
+            return response()->json(['statuscode' => 400, 'status' => false, 'message' =>  "Something went wrong. Please try later."], 400);
+        }
+    }
 }

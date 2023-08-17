@@ -3,7 +3,7 @@
 @php ($f = $page + ( $page - 1) )
 @foreach ($postsList as $key => $posts)
 @if($posts->parent_id == 0)
-<div class="news-feed">
+<div class="news-feed myPostData{{ $posts->id }}">
     <div class="inner-news-feed">
         <div class="user-details">
             <div class="user-left">
@@ -37,7 +37,7 @@
                 @if(Auth::user()->id != $posts->user_id)
                     <a href="{{route('saveToMyHub', Crypt::encrypt($posts->id))}}"><img src="/img/new/save.png" alt="Save"></a>
                 @endif
-                <img src="img/normal-user.png" alt="normal-user">
+                <img src="/img/normal-user.png" alt="normal-user">
                 @if(isset($posts->followPost->id) && !empty($posts->followPost->id))
                     @if(($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0'))
                         <button class="follow-btn follow clicked" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
@@ -78,10 +78,17 @@
             @endif
         @endif
         <div class="user-bottom-options">
-            <div class="rating-flex rating-flex-child">
-                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">
-                <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
+            <div class="rating-flex">
+                <div class="rating-flex rating-flex-child">
+                    <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">
+                    <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
+                </div>
 
+                @if(($posts->is_feed == 0) && ($posts->post_type != 'PUBLIC') && (isset(Auth::user()->id)) && (Auth::user()->id == 1))
+                    <div class="highlight addFeed{{ $posts->id }}">
+                        <a class="add-to-feed" data-id="{{ $posts->id }}">Add to Feed</a>
+                    </div>
+                @endif
             </div>
 
             <div class="right-options">
@@ -94,8 +101,8 @@
                 @endif
 
                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
-                    <img src={{asset("img/location.png")}} alt="Location"></a>
-                <a onclick="openFullscreenSilder({{$posts->id}}, 'search');"><img src={{asset("img/expand.png")}} alt="Expand"></a>
+                    <img src={{asset("/img/location.png")}} alt="Location"></a>
+                <a onclick="openFullscreenSilder({{$posts->id}}, 'search');"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
                 <div class="d-inline-block info dropdown" title="Info">
                     <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -217,7 +224,7 @@
     <div class="comments-div">
         <a class="" data-bs-toggle="collapse" href="#collapseExample{{$posts->id}}" role="button"
            aria-expanded="false" aria-controls="collapseExample{{$posts->id}}">
-            Say Something <img src="img/dropdwon.png" alt="dropdown" class="ms-1">
+            Say Something <img src="/img/dropdwon.png" alt="dropdown" class="ms-1">
         </a>
         <div class="collapse" id="collapseExample{{$posts->id}}">
             <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
@@ -228,7 +235,7 @@
                         <input type="hidden" name="parent_user_id" value="{{$posts->user_id}}">
                         <input type="text" name="comment" id="{{$posts->id}}" class="form-control ps-2 mb-0 h-100 commentOnPost">
                     </div>
-                    <button type="submit" id="submitPost{{$posts->id}}" class="send-btn btn"><img src="img/send.png"></button>
+                    <button type="submit" id="submitPost{{$posts->id}}" class="send-btn btn"><img src="/img/send.png"></button>
                 </div>
             </form>
             @foreach ($posts->comments as $comments)
@@ -293,10 +300,10 @@
         });
     });
 
-    jQuery('.rating').rating({
+    /* jQuery('.rating').rating({
         showClear:false,
         showCaption:false
-    });
+    }); */
 
     jQuery('.pos-rel a').each(function(){
         jQuery(this).on('hover, mouseover, click', function() {
@@ -388,5 +395,25 @@
 
         return false;
     }
+
+    $('.add-to-feed').click(function () {
+        let status =  1;
+        let postId = $(this).data('id');
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/admin/post/feed-post",
+            data: {'status': status, 'post_id': postId},
+            success: function (data) {
+                if(data.statuscode == 200) {
+                    $(".addFeed"+postId).remove();
+                    jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Feed has been added successfully.</div>');
+                } else {
+                    jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Something went wrong. Please try again later.</div>');
+                }
+                console.log(data.message);
+            }
+        });
+    });
 </script>
 @endif

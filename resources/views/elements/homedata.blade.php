@@ -3,7 +3,7 @@
     @php ($f = $page + ( $page - 1) )
     @foreach ($postsList as $key => $posts)
         @if($posts->parent_id == 0)
-            <div class="news-feed">
+            <div class="news-feed myPostData{{$posts->id}}">
                 <div class="inner-news-feed">
                     <div class="user-details">
                         <div class="user-left">
@@ -80,9 +80,16 @@
                         @endif
                     @endif
                     <div class="user-bottom-options">
-                        <div class="rating-flex rating-flex-child">
-                            <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">
-                            <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
+                        <div class="rating-flex">
+                            <div class="rating-flex rating-flex-child">
+                                <input id="rating{{$posts->id}}" name="rating" class="rating rating-loading" data-id="{{$posts->id}}" data-min="0" data-max="5" data-step="1" data-size="xs" value="{{ round($posts->averageRating) }}">
+                                <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
+                            </div>
+                            @if((isset(Auth::user()->id)) && (Auth::user()->id == 1))
+                                <div class="highlight">
+                                    <a class="remove-from-feed" data-id="{{ $posts->id }}">Remove</a>
+                                </div>
+                            @endif
                         </div>
                         <div class="right-options">
                             @if(Auth::user()->id != $posts->user_id)
@@ -111,7 +118,9 @@
                                         <div class="col-5">{{ucfirst($posts->user->user_name)}}</div>
                                         <div class="col-5">Beach/Break</div>
                                         <div class="col-2 text-center">:</div>
-                                        <div class="col-5">{{$posts->beach_breaks->beach_name}}/{{$posts->beach_breaks->break_name}}</div>
+                                        <div class="col-5">
+                                            {{$posts->beach_breaks->beach_name}}/{{$posts->beach_breaks->break_name}}
+                                        </div>
                                         <div class="col-5">Country</div>
                                         <div class="col-2 text-center">:</div>
                                         <div class="col-5">{{$posts->countries->name}}</div>
@@ -280,10 +289,10 @@
             });
         });
 
-        jQuery('.rating').rating({
+        /*jQuery('.rating').rating({
             showClear:false,
             showCaption:false
-        });
+        }); */
 
         jQuery('.pos-rel a').each(function(){
             jQuery(this).on('hover, mouseover, click', function() {
@@ -314,13 +323,23 @@
 
             //do your own request an handle the results
             $.ajax({
-                    url: actionurl,
-                    type: 'post',
-                    dataType: 'application/json',
-                    data: $("#updateVideoPostData").serialize(),
-                    success: function(data) {
-                        ... do something with the data...
+                url: actionurl,
+                type: 'post',
+                dataType: 'application/json',
+                data: $("#updateVideoPostData").serialize(),
+                success: function(data) {
+                    data = $.parseJSON(data);
+
+                    if(data.status == 'success') {
+                        $(".feed"+id).remove();
+                        jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                    }else {
+                        jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
                     }
+                    jQuery("#edit_image_upload_main").modal('hide');
+
+                    return false;
+                }
             });
 
         });
@@ -405,5 +424,28 @@
 
             return false;
         }
+
+        jQuery('.remove-from-feed').click(function () {
+            let status =  0;
+            let postId = $(this).data('id');
+
+            jQuery.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                dataType: "json",
+                url: "/admin/post/status",
+                data: {'status': status, 'post_id': postId},
+                success: function (data) {
+                    if(data.statuscode == 200) {
+                        $(".myPostData"+postId).remove();
+                        jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Feed has been deleted successfully.</div>');
+                    } else {
+                        jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Something went wrong. Please try again later.</div>');
+                    }
+                }
+            });
+        });
     </script>
 @endif
