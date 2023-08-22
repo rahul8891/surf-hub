@@ -329,34 +329,6 @@ $(document).ready(function () {
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
-
-    /* $(document).on('click', '.submitBtn', function () {
-        $("#updateVideoPostData").submit(function(e) { alert('aaa');
-            //prevent Default functionality
-            e.preventDefault();
-
-            $.ajax({
-                url: '/updatePostData',
-                type: 'POST',
-                dataType: 'application/json',
-                data: $("#updateVideoPostData").serialize(),
-                success: function(data) {
-                    alert("Post has been updated successfully.");
-                    /* data = $.parseJSON(data);
-
-                    if(data.status == 'success') {
-                        $(".feed"+id).remove();
-                        jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
-                    }else {
-                        jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
-                    }
-                    jQuery("#edit_image_upload_main").modal('hide'); */
-                   /* return false;
-                }
-            });
-        });
-    }); */
-
     jQuery("#updateVideoPostData").submit(function(e) {
         //prevent Default functionality
         e.preventDefault();
@@ -368,7 +340,7 @@ $(document).ready(function () {
             success: function(data) {
                 if(data.status == 'success') {
                     $(".feed"+id).remove();
-                    jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                    jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Data updated successfully.</div>');
                 }else {
                     jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
                 }
