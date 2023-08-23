@@ -63,12 +63,10 @@ class AdminDashboard extends Controller
         $customArray = $this->customArray;
         $postsList = Post::with('followPost')->where('is_deleted', '0')
                 ->where('parent_id', '0')
-                ->where(function ($query) {
-                    $query->where('post_type', 'PUBLIC')
-                    ->orWhere('is_feed', '1');
-                })
-                ->orderBy('posts.created_at', 'DESC')
+                ->where('post_type', 'PUBLIC')
+                ->orderBy('posts.updated_at', 'DESC')
                 ->paginate(10);
+
         $requestSurfer = array();
         foreach ($postsList as $val) {
             $surferRequest = SurferRequest::where("post_id", "=", $val['id'])

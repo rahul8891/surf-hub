@@ -134,7 +134,7 @@ class PostService {
         $postArray =  $this->posts->whereNull('deleted_at')
                                 ->where('post_type', 'PUBLIC')
                                 ->where('is_deleted','0')
-                                ->orderBy('created_at','DESC')
+                                ->orderBy('updated_at','DESC')
                                 ->paginate(10);
 
         return $postArray;
@@ -761,7 +761,7 @@ class PostService {
                 $postsList->orderBy('posts.created_at','DESC');
             }
         } else {
-            $postsList->orderBy('posts.id','DESC');
+            $postsList->orderBy('posts.updated_at','DESC');
         }
 
         if(isset($page) && !empty($page)) {

@@ -30,9 +30,6 @@
             }
         </style>
 
-        <script src="{{ asset('js/new/jquery-3.5.1.min.js') }}"></script>
-        <script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
-
     </head>
 
     <body class="login-body">
@@ -71,6 +68,10 @@
         <!-- REQUIRED SCRIPTS -->
         <!-- jQuery -->
 
+        <script src="{{ asset('js/new/jquery-3.5.1.min.js') }}"></script>
+
+        <script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('/js/new/bootstrap.js') }}"></script>
 
         <script src="{{ asset('js/new/star-rating.min.js')}}"></script>
 
