@@ -1,14 +1,14 @@
-$(document).ready(function () {
-    var csrf_token = $('meta[name="csrf-token"]').attr("content");
+jQuery(document).ready(function () {
+    var csrf_token = jQuery('meta[name="csrf-token"]').attr("content");
 
     /************** spiner code ****************************/
     var stopSpiner = "{{ $spiner}}";
 
-    // var spinner = $('#loader');
+    // var spinner = jQuery('#loader');
 
-    var spinner = $(".loaderWrap");
+    var spinner = jQuery(".loaderWrap");
 
-    $("#next").click(function (event) {
+    jQuery("#next").click(function (event) {
         spinner.show();
     });
 
@@ -23,11 +23,11 @@ $(document).ready(function () {
     /************************************************************
      *              Admin Update user status
      ***********************************************************/
-    $(".changeStatus").on("switchChange.bootstrapSwitch", function (e, data) {
+    jQuery(".changeStatus").on("switchChange.bootstrapSwitch", function (e, data) {
         var currentStatus = data;
-        var userId = $(this).data("id");
+        var userId = jQuery(this).data("id");
         spinner.show();
-        $.ajax({
+        jQuery.ajax({
             type: "POST",
             url: "updateUserStatus",
             data: {
@@ -55,16 +55,16 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '.add-ads', function () {
-        var id = $(this).data('id');
-        $('#page_id').val(id);
+    jQuery(document).on('click', '.add-ads', function () {
+        var id = jQuery(this).data('id');
+        jQuery('#page_id').val(id);
 
     });
 
-    $(document).on('change', '#filter_country_id, #edit_country_id', function (e) {
-        var currentcountryValue = $(this).val();
+    jQuery(document).on('change', '#filter_country_id, #edit_country_id', function (e) {
+        var currentcountryValue = jQuery(this).val();
         if (currentcountryValue != 0) {
-            $.ajax({
+            jQuery.ajax({
                 type: "GET",
                 url: '/getState',
                 data: {
@@ -75,45 +75,46 @@ $(document).ready(function () {
                 success: function (jsonResponse) {
                     //console.log(jsonResponse);
                     if (jsonResponse.status == 'success') {
-                        $("#filter_state_id, #edit_state_id").empty();
+                        jQuery("#filter_state_id, #edit_state_id").empty();
                         var myJsonData = jsonResponse.data;
-                        $("#filter_state_id, #edit_state_id").append('<option value="">--Select--</option>');
-                        $.each(myJsonData, function (key, value) {
-                            $("#filter_state_id, #edit_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                        jQuery("#filter_state_id, #edit_state_id").append('<option value="">--Select--</option>');
+                        jQuery.each(myJsonData, function (key, value) {
+                            jQuery("#filter_state_id, #edit_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                         });
                     } else {
-                        $("#filter_state_id").empty();
+                        jQuery("#filter_state_id").empty();
                     }
                 }
             });
         } else {
-            $("#filter_state_id").empty();
+            jQuery("#filter_state_id").empty();
         }
     });
-    $(document).on('click', '.beachbreakmodal', function () {
-        var id = $(this).data('id');
-        $.ajax({
+
+    jQuery(document).on('click', '.beachbreakmodal', function () {
+        var id = jQuery(this).data('id');
+        jQuery.ajax({
             url: '/admin/get-beach-break-detail/' + id,
             type: "get",
             async: false,
             success: function (data) {
                 // console.log(data.html);
-                $("#editBeachBreakModal").html("");
-                $("#editBeachBreakModal").append(data.html);
-                $("#editBeachBreakModal").modal('show');
+                jQuery("#editBeachBreakModal").html("");
+                jQuery("#editBeachBreakModal").append(data.html);
+                jQuery("#editBeachBreakModal").modal('show');
             }
         });
     });
 
-    $(document).on('change', '#beach_break_excel', function () {
+    jQuery(document).on('change', '#beach_break_excel', function () {
         var fd = new FormData();
 
-        var files = $('#beach_break_excel')[0].files;
+        var files = jQuery('#beach_break_excel')[0].files;
          // Append data
          fd.append('excel_file',files[0]);
          fd.append('_token',csrf_token);
-         $('.loadingWrap').removeClass('d-none');
-        $.ajax({
+         jQuery('.loadingWrap').removeClass('d-none');
+        jQuery.ajax({
             type: "POST",
             url: "/admin/breachbreak/import-excel",
             data: fd,
@@ -127,13 +128,13 @@ $(document).ready(function () {
         });
     });
 
-    $("#exampleInputFile").change(function () {
+    jQuery("#exampleInputFile").change(function () {
         readURL(this);
     });
 
 
     var $image_crop;
-    $image_crop = $('#image').croppie({
+    $image_crop = jQuery('#image').croppie({
         enableExif: true,
         enableOrientation: true,
         viewport: {
@@ -156,7 +157,7 @@ $(document).ready(function () {
                 input.files[0] &&
                 (ext == "png" || ext == "jpeg" || ext == "jpg")
                 ) {
-            $("#imageError").hide();
+            jQuery("#imageError").hide();
             var reader = new FileReader();
             reader.onload = function (e) {
                 $image_crop.croppie('bind', {
@@ -166,85 +167,85 @@ $(document).ready(function () {
                 });
             };
             reader.readAsDataURL(input.files[0]);
-            $('#myModal').modal('show');
-            $("#remove-img").show();
-            $("form[name='register-surfer'] #remove-img").show();
-            $("form[name='register-resort'] #remove-img").show();
-            $("form[name='register-advertiser'] #remove-img").show();
+            jQuery('#myModal').modal('show');
+            jQuery("#remove-img").show();
+            jQuery("form[name='register-surfer'] #remove-img").show();
+            jQuery("form[name='register-resort'] #remove-img").show();
+            jQuery("form[name='register-advertiser'] #remove-img").show();
         } else {
-            $('#imagebase64').val("");
-            $("form[name='register-surfer'] #imagebase64").val("");
-            $("form[name='register-resort'] #imagebase64").val("");
-            $("form[name='register-advertiser'] #imagebase64").val("");
-            $("#exampleInputFile").val("");
-            $("form[name='register-surfer'] #exampleInputFile").val("");
-            $("form[name='register-resort'] #exampleInputFile").val("");
-            $("form[name='register-advertiser'] #exampleInputFile").val("");
+            jQuery('#imagebase64').val("");
+            jQuery("form[name='register-surfer'] #imagebase64").val("");
+            jQuery("form[name='register-resort'] #imagebase64").val("");
+            jQuery("form[name='register-advertiser'] #imagebase64").val("");
+            jQuery("#exampleInputFile").val("");
+            jQuery("form[name='register-surfer'] #exampleInputFile").val("");
+            jQuery("form[name='register-resort'] #exampleInputFile").val("");
+            jQuery("form[name='register-advertiser'] #exampleInputFile").val("");
 
-            $("#category-img-tag").attr("src", "/img/image-file.png");
-            $("#category-img-tag").attr("width", "auto");
+            jQuery("#category-img-tag").attr("src", "/img/image-file.png");
+            jQuery("#category-img-tag").attr("width", "auto");
 
 
-            $("form[name='register-surfer'] #category-img-tag").attr("src", "/img/image-file.png");
-            $("form[name='register-surfer'] #category-img-tag").attr("width", "auto");
+            jQuery("form[name='register-surfer'] #category-img-tag").attr("src", "/img/image-file.png");
+            jQuery("form[name='register-surfer'] #category-img-tag").attr("width", "auto");
 
-            $("form[name='register-resort'] #category-img-tag").attr("src", "/img/image-file.png");
-            $("form[name='register-resort'] #category-img-tag").attr("width", "auto");
+            jQuery("form[name='register-resort'] #category-img-tag").attr("src", "/img/image-file.png");
+            jQuery("form[name='register-resort'] #category-img-tag").attr("width", "auto");
 
-            $("form[name='register-advertiser'] #category-img-tag").attr("src", "/img/image-file.png");
-            $("form[name='register-advertiser'] #category-img-tag").attr("width", "auto");
+            jQuery("form[name='register-advertiser'] #category-img-tag").attr("src", "/img/image-file.png");
+            jQuery("form[name='register-advertiser'] #category-img-tag").attr("width", "auto");
 
-            $("#remove-img").hide();
-            $("#imageError").show();
-            $("form[name='register-surfer'] #remove-img").hide();
-            $("form[name='register-resort'] #remove-img").hide();
-            $("form[name='register-advertiser'] #remove-img").hide();
-            $("form[name='register-surfer'] #imageError").show();
-            $("form[name='register-resort'] #imageError").show();
-            $("form[name='register-advertiser'] #imageError").show();
+            jQuery("#remove-img").hide();
+            jQuery("#imageError").show();
+            jQuery("form[name='register-surfer'] #remove-img").hide();
+            jQuery("form[name='register-resort'] #remove-img").hide();
+            jQuery("form[name='register-advertiser'] #remove-img").hide();
+            jQuery("form[name='register-surfer'] #imageError").show();
+            jQuery("form[name='register-resort'] #imageError").show();
+            jQuery("form[name='register-advertiser'] #imageError").show();
         }
     }
-    $('.crop_image').click(function (event) {
+    jQuery('.crop_image').click(function (event) {
         $image_crop.croppie('result', {
             type: 'canvas',
             size: 'viewport'
         }).then(function (response) {
-            $('#imagebase64').val(response);
-            $("form[name='register-surfer'] #imagebase64").val(response);
-            $("form[name='register-resort'] #imagebase64").val(response);
-            $("form[name='register-advertiser'] #imagebase64").val(response);
-            $("#category-img-tag").attr("src", response);
-            $("#category-img-tag").attr("width", "100%");
+            jQuery('#imagebase64').val(response);
+            jQuery("form[name='register-surfer'] #imagebase64").val(response);
+            jQuery("form[name='register-resort'] #imagebase64").val(response);
+            jQuery("form[name='register-advertiser'] #imagebase64").val(response);
+            jQuery("#category-img-tag").attr("src", response);
+            jQuery("#category-img-tag").attr("width", "100%");
 
-            $("form[name='register-surfer'] #category-img-tag").attr("src", response);
-            $("form[name='register-surfer'] #category-img-tag").attr("width", "100%");
+            jQuery("form[name='register-surfer'] #category-img-tag").attr("src", response);
+            jQuery("form[name='register-surfer'] #category-img-tag").attr("width", "100%");
 
-            $("form[name='register-resort'] #category-img-tag").attr("src", response);
-            $("form[name='register-resort'] #category-img-tag").attr("width", "100%");
+            jQuery("form[name='register-resort'] #category-img-tag").attr("src", response);
+            jQuery("form[name='register-resort'] #category-img-tag").attr("width", "100%");
 
-            $("form[name='register-advertiser'] #category-img-tag").attr("src", response);
-            $("form[name='register-advertiser'] #category-img-tag").attr("width", "100%");
+            jQuery("form[name='register-advertiser'] #category-img-tag").attr("src", response);
+            jQuery("form[name='register-advertiser'] #category-img-tag").attr("width", "100%");
 
-            $('#myModal').modal('hide');
+            jQuery('#myModal').modal('hide');
         })
     });
 
     /**
      * Model Cancle
      */
-    $(".close").click(function () {
-        $('#imagebase64').val("");
-        $("form[name='register-surfer'] #imagebase64").val("");
-        $("form[name='register-resort'] #imagebase64").val("");
-        $("form[name='register-advertiser'] #imagebase64").val("");
-        $("#exampleInputFile").val("");
-        $("form[name='register-surfer'] #exampleInputFile").val("");
-        $("form[name='register-resort'] #exampleInputFile").val("");
-        $("form[name='register-advertiser'] #exampleInputFile").val("");
-        $("#category-img-tag").attr("src", "");
-        $("#category-img-tag").attr("src", "img/image-file.png");
-        $("#category-img-tag").attr("width", "auto");
-        $("#remove-img").hide();
+    jQuery(".close").click(function () {
+        jQuery('#imagebase64').val("");
+        jQuery("form[name='register-surfer'] #imagebase64").val("");
+        jQuery("form[name='register-resort'] #imagebase64").val("");
+        jQuery("form[name='register-advertiser'] #imagebase64").val("");
+        jQuery("#exampleInputFile").val("");
+        jQuery("form[name='register-surfer'] #exampleInputFile").val("");
+        jQuery("form[name='register-resort'] #exampleInputFile").val("");
+        jQuery("form[name='register-advertiser'] #exampleInputFile").val("");
+        jQuery("#category-img-tag").attr("src", "");
+        jQuery("#category-img-tag").attr("src", "img/image-file.png");
+        jQuery("#category-img-tag").attr("width", "auto");
+        jQuery("#remove-img").hide();
     });
     /**
      * Execute a function given a delay time
@@ -271,43 +272,45 @@ $(document).ready(function () {
         };
     };
     // ajax form field data for post
-    $('.search-box').keyup(debounce(function () {
+    jQuery('.search-box').keyup(debounce(function () {
         // the following function will be executed every half second
-        if ($(this).val().length > 2) {
-            $.ajax({
+        if (jQuery(this).val().length > 2) {
+            jQuery.ajax({
                 type: "GET",
                 url: "/getBeachBreach",
                 data: {
-                    searchTerm: $(this).val(),
+                    searchTerm: jQuery(this).val(),
                     _token: csrf_token
                 },
                 dataType: "json",
                 success: function (jsonResponse) {
 
-                    $('#country_list').html(jsonResponse);
+                    jQuery('#country_list').html(jsonResponse);
                 }
             })
 
         } else {
-            $('#local_beach_break_id').val('');
-            $('#country_list').html("");
+            jQuery('#local_beach_break_id').val('');
+            jQuery('#country_list').html("");
         }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
-    $(document).on('click', '.search1 li', function () {
-        var value = $(this).text();
-        var dataId = $(this).attr("data-id");
-        $('#country_list').html("");
-        $('.search-box').val(value);
-        $('#local_beach_break_id').val(dataId);
+    jQuery(document).on('click', '.search1 li', function () {
+        var value = jQuery(this).text();
+        var dataId = jQuery(this).attr("data-id");
+        jQuery('#country_list').html("");
+        jQuery('.search-box').val(value);
+        jQuery('#local_beach_break_id').val(dataId);
         getBreak(dataId);
-        $('#country_list').html("");
+        jQuery('#country_list').html("");
     });
+
+
     function getBreak(beachValue) {
-//        var beachValue = $(this).val();
+//        var beachValue = jQuery(this).val();
         if (beachValue != 0) {
-            $.ajax({
+            jQuery.ajax({
                 type: "GET",
                 url: '/getBreak',
                 data: {
@@ -318,66 +321,66 @@ $(document).ready(function () {
                 success: function (jsonResponse) {
                     //console.log(jsonResponse);
                     if (jsonResponse.status == 'success') {
-                        $("#break_id").empty();
+                        jQuery("#break_id").empty();
                         var myJsonData = jsonResponse.data;
-                        $("#break_id").append('<option value="">--Select--</option>');
-                        $.each(myJsonData, function (key, value) {
+                        jQuery("#break_id").append('<option value="">--Select--</option>');
+                        jQuery.each(myJsonData, function (key, value) {
                             if (value.break_name != '') {
-                                $("#break_id").append('<option value="' + value.id + '">' + value.break_name + '</option>');
-                                $("#break_id").rules("add", {required: true, messages: {required: "Break is required"}});
+                                jQuery("#break_id").append('<option value="' + value.id + '">' + value.break_name + '</option>');
+                                jQuery("#break_id").rules("add", {required: true, messages: {required: "Break is required"}});
 
                             } else {
-                                $("#break_id").rules("remove");
+                                jQuery("#break_id").rules("remove");
                             }
                         });
                     } else {
-                        $("#break_id").empty();
+                        jQuery("#break_id").empty();
                     }
                 }
             });
         } else {
-            $("#state_id").empty();
+            jQuery("#state_id").empty();
         }
     }
 
-    $('.other_surfer').keyup(debounce(function () {
+    jQuery('.other_surfer').keyup(debounce(function () {
         // the following function will be executed every half second
-        if ($(this).val().length > 1) {
-            $.ajax({
+        if (jQuery(this).val().length > 1) {
+            jQuery.ajax({
                 type: "GET",
                 url: "/getUsers",
                 data: {
-                    searchTerm: $(this).val(),
+                    searchTerm: jQuery(this).val(),
                     _token: csrf_token
                 },
                 dataType: "json",
                 success: function (jsonResponse) {
-                    $('#other_surfer_list').html(jsonResponse);
+                    jQuery('#other_surfer_list').html(jsonResponse);
                 }
             })
         } else {
-            $('#surfer_id').val('');
-            $('#other_surfer_list').html("");
+            jQuery('#surfer_id').val('');
+            jQuery('#other_surfer_list').html("");
         }
     }, 100)); // Milliseconds in which the ajax call should be executed (100 = half second)
 
-    $(document).on('click', '.search2 li', function () {
-        var value = $(this).text().trim();
-        var dataId = $(this).attr("data-id");
-        $('#other_surfer_list').html("");
-        $('.other_surfer').val(value);
-        $('#surfer_id').val(dataId);
-        $('#other_surfer_list').html("");
+    jQuery(document).on('click', '.search2 li', function () {
+        var value = jQuery(this).text().trim();
+        var dataId = jQuery(this).attr("data-id");
+        jQuery('#other_surfer_list').html("");
+        jQuery('.other_surfer').val(value);
+        jQuery('#surfer_id').val(dataId);
+        jQuery('#other_surfer_list').html("");
     });
 
     /**
      * State Baded on the selection on country
      */
 
-    $(document).on('change', '#country_id, #edit_country_id', function (e) {
-        var currentcountryValue = $(this).val();
+    jQuery(document).on('change', '#country_id, #edit_country_id', function (e) {
+        var currentcountryValue = jQuery(this).val();
         if (currentcountryValue != 0) {
-            $.ajax({
+            jQuery.ajax({
                 type: "GET",
                 url: '/getState',
                 data: {
@@ -388,29 +391,29 @@ $(document).ready(function () {
                 success: function (jsonResponse) {
                     //console.log(jsonResponse);
                     if (jsonResponse.status == 'success') {
-                        $("#state_id, #edit_state_id").empty();
+                        jQuery("#state_id, #edit_state_id").empty();
                         var myJsonData = jsonResponse.data;
-                        $("#state_id, #edit_state_id").append('<option value="">--Select--</option>');
-                        $.each(myJsonData, function (key, value) {
-                            $("#state_id, #edit_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                        jQuery("#state_id, #edit_state_id").append('<option value="">--Select--</option>');
+                        jQuery.each(myJsonData, function (key, value) {
+                            jQuery("#state_id, #edit_state_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                         });
                     } else {
-                        $("#state_id").empty();
+                        jQuery("#state_id").empty();
                     }
                 }
             });
         } else {
-            $("#state_id").empty();
+            jQuery("#state_id").empty();
         }
     });
 
-    $("#board_type").change(function (e) {
-//    if ($('#beach_filter').is(":selected")) {
-//        $('#break_filter').find('option').remove();
-//        $("#break_filter").append('<option value=""> -- Break --</option>');
-        var board_type = $(this).val();
+    jQuery("#board_type").change(function (e) {
+//    if (jQuery('#beach_filter').is(":selected")) {
+//        jQuery('#break_filter').find('option').remove();
+//        jQuery("#break_filter").append('<option value=""> -- Break --</option>');
+        var board_type = jQuery(this).val();
         if (board_type !== '') {
-            $.ajax({
+            jQuery.ajax({
                 type: "GET",
                 url: '/get-additional-board-info',
                 data: {
@@ -423,19 +426,21 @@ $(document).ready(function () {
 //                if (jsonResponse.status == 'success') {
                     var myJsonData = jsonResponse.data;
 
-                    $('#additional_optional_info').removeClass('d-none');
-                    $('#additional_optional_info').html(jsonResponse);
+                    jQuery('#additional_optional_info').removeClass('d-none');
+                    jQuery('#additional_optional_info').html(jsonResponse);
 //                } else {
-//                    $('#additional_optional_info').addClass('d-none');
+//                    jQuery('#additional_optional_info').addClass('d-none');
 //                }
                 }
             });
 
         } else {
-            $('#additional_optional_info').addClass('d-none');
-//        $("#break_filter").remove();
+            jQuery('#additional_optional_info').addClass('d-none');
+//        jQuery("#break_filter").remove();
         }
     });
+
+
     /* Beach Break Location Popup */
 function initializeMap(lat, long) {
     var map;
@@ -467,18 +472,19 @@ function initializeMap(lat, long) {
 
 }
     //show map on modal
-$(document).on('click shown.bs.modal', '.locationMap', function () {
-    var id = $(this).attr("data-id");
-    var lat = $(this).attr("data-lat");
-    var long = $(this).attr("data-long");
+jQuery(document).on('click shown.bs.modal', '.locationMap', function () {
+    var id = jQuery(this).attr("data-id");
+    var lat = jQuery(this).attr("data-lat");
+    var long = jQuery(this).attr("data-long");
+    jQuery("#beachLocationModal").modal('show');
     initializeMap(lat, long);
 });
 
-$('#searchReports').keyup(debounce(function () {
+jQuery('#searchReports').keyup(debounce(function () {
         // the following function will be executed every half second
-        var keyword = $('#searchReports').val();
-//        if ($(this).val().length > 2) {
-        $.ajax({
+        var keyword = jQuery('#searchReports').val();
+//        if (jQuery(this).val().length > 2) {
+        jQuery.ajax({
             type: "GET",
             url: "/admin/report/search",
             data: {
@@ -487,28 +493,28 @@ $('#searchReports').keyup(debounce(function () {
             },
             dataType: "json",
             success: function (jsonResponse) {
-                $('.list-followers').html(jsonResponse.html);
+                jQuery('.list-followers').html(jsonResponse.html);
             }
         })
 
 //        } else {
-//            $('#local_beach_break_id').val('');
-//            $('#country_list').html("");
+//            jQuery('#local_beach_break_id').val('');
+//            jQuery('#country_list').html("");
 //        }
 
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
-    $('.add-to-feed').click(function () {
+    jQuery('.add-to-feed').click(function () {
         let status =  1;
-        let postId = $(this).data('id');
-        $.ajax({
+        let postId = jQuery(this).data('id');
+        jQuery.ajax({
             type: "GET",
             dataType: "json",
             url: "/admin/post/feed-post",
             data: {'status': status, 'post_id': postId},
             success: function (data) {
                 if(data.statuscode == 200) {
-                    $(".addFeed"+postId).remove();
+                    jQuery(".addFeed"+postId).remove();
                     jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Feed has been added successfully.</div>');
                 } else {
                     jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Something went wrong. Please try again later.</div>');
@@ -518,12 +524,12 @@ $('#searchReports').keyup(debounce(function () {
         });
     });
 
-    $('.remove-from-feed').click(function () {
+    jQuery('.remove-from-feed').click(function () {
             let status =  0;
-            let postId = $(this).data('id');
-            $.ajax({
+            let postId = jQuery(this).data('id');
+            jQuery.ajax({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                 },
                 type: "POST",
                 dataType: "json",
@@ -531,7 +537,7 @@ $('#searchReports').keyup(debounce(function () {
                 data: {'status': status, 'post_id': postId},
                 success: function (data) {
                     if(data.statuscode == 200) {
-                        $(".myPostData"+postId).remove();
+                        jQuery(".myPostData"+postId).remove();
                         jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Feed has been deleted successfully.</div>');
                     } else {
                         jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Something went wrong. Please try again later.</div>');
@@ -575,7 +581,7 @@ $('#searchReports').keyup(debounce(function () {
         });
 
         // no space allow in text box
-    $.validator.addMethod(
+    jQuery.validator.addMethod(
         "noSpace",
         function (value, element) {
             return value == "" || value.trim().length != 0;
@@ -584,11 +590,11 @@ $('#searchReports').keyup(debounce(function () {
     );
 
 
-    $("#beach_filter").change(function (e) {
-        $('#break_filter').find('option').remove();
-        $("#break_filter").append('<option value=""> -- Break --</option>');
-        var beachValue = $(this).val();
-        $.ajax({
+    jQuery("#beach_filter").change(function (e) {
+        jQuery('#break_filter').find('option').remove();
+        jQuery("#break_filter").append('<option value=""> -- Break --</option>');
+        var beachValue = jQuery(this).val();
+        jQuery.ajax({
             type: "GET",
             url: '/getBreak',
             data: {
@@ -601,9 +607,9 @@ $('#searchReports').keyup(debounce(function () {
                 if (jsonResponse.status == 'success') {
                     var myJsonData = jsonResponse.data;
 
-                    $.each(myJsonData, function (key, value) {
+                    jQuery.each(myJsonData, function (key, value) {
                         if (value.break_name != '') {
-                            $("#break_filter").append('<option value="' + value.id + '">' + value.break_name + '</option>');
+                            jQuery("#break_filter").append('<option value="' + value.id + '">' + value.break_name + '</option>');
                         }
                     });
                 }

@@ -229,10 +229,11 @@
 @include('elements/location_popup_model')
 @include('layouts/models/edit_image_upload')
 @include('layouts/models/full_screen_modal')
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
     var page = 1;
-    $(window).scroll(function() {
-        if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+    jQuery(window).scroll(function() {
+        if (jQuery(window).scrollTop() + jQuery(window).height() >= jQuery(document).height()) {
             page++;
             loadMoreData(page);
         }
@@ -246,57 +247,57 @@
             var url = window.location.href + '?page=' + page;
         }
 
-        $.ajax({
+        jQuery.ajax({
             url: url,
             type: "get",
             async: false,
             beforeSend: function() {
-                $('.ajax-load').show();
+                jQuery('.ajax-load').show();
             }
         }).done(function(data) {
             if (data.html == "") {
-                $('.ajax-load').addClass('requests');
-                $('.ajax-load').html("No more records found");
+                jQuery('.ajax-load').addClass('requests');
+                jQuery('.ajax-load').html("No more records found");
             }
 
-            $('.ajax-load').removeClass('requests');
-            $('.ajax-load').hide();
-            $(data.html).insertBefore(".ajax-load");
+            jQuery('.ajax-load').removeClass('requests');
+            jQuery('.ajax-load').hide();
+            jQuery(data.html).insertBefore(".ajax-load");
         });
     }
 
-    $(document).on('click', '.editBtnVideo', function() {
+    jQuery(document).on('click', '.editBtnVideo', function() {
         var id = $(this).data('id');
-        $.ajax({
+        jQuery.ajax({
         url: '/getPostData/' + id,
                 type: "get",
                 async: false,
                 success: function(data) {
                 // console.log(data.html);
-                $("#edit_image_upload_main").html("");
-                $("#edit_image_upload_main").append(data.html);
-                $("#edit_image_upload_main").modal('show');
+                jQuery("#edit_image_upload_main").html("");
+                jQuery("#edit_image_upload_main").append(data.html);
+                jQuery("#edit_image_upload_main").modal('show');
                 }
         });
     });
 
-    $('.pos-rel a').each(function(){
-        $(this).on('hover, mouseover, click', function() {
-            $(this).children('.userinfoModal').find('input[type="text"]').focus();
+    jQuery('.pos-rel a').each(function(){
+        jQuery(this).on('hover, mouseover, click', function() {
+            jQuery(this).children('.userinfoModal').find('input[type="text"]').focus();
         });
     });
 
     function openFullscreenSilder(id) {
-        $.ajax({
+        jQuery.ajax({
         url: '/getPostFullScreen/' + id,
                 type: "get",
                 async: false,
                 success: function(data) {
                 // console.log(data.html);
-                $("#full_screen_modal").html("");
-                $("#full_screen_modal").append(data.html);
-                $("#full_screen_modal").modal('hide');
-                $("#full_screen_modal").modal('show');
+                jQuery("#full_screen_modal").html("");
+                jQuery("#full_screen_modal").append(data.html);
+                jQuery("#full_screen_modal").modal('hide');
+                jQuery("#full_screen_modal").modal('show');
                 }
         });
     }

@@ -68,14 +68,18 @@
         <!-- REQUIRED SCRIPTS -->
         <!-- jQuery -->
 
-        <script src="{{ asset('js/new/jquery-3.5.1.min.js') }}"></script>
 
-        <script src="{{ asset('js/new/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ asset('/js/new/bootstrap.js') }}"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script src="{{ asset('/js/new/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('js/new/bootstrap.js') }}"></script>
 
-        <script src="{{ asset('js/new/star-rating.min.js')}}"></script>
+        <script src="{{ asset('js/new/croppie.js')}}"></script>
 
-        <script src="{{ asset('/js/new/croppie.js')}}"></script>
+
+
+        <script src="{{ asset('/js/new/star-rating.min.js')}}"></script>
+
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.5.1/jquery.nicescroll.min.js"></script>
         <!-- ddslick -->
@@ -84,14 +88,14 @@
 
         <!-- Bootstrap -->
         <script src="{{ asset('/js/new/admin_custom.js')}}"></script>
-        <script src="{{ asset('js/new/post.js')}}"></script>
-        <script src="{{ asset('js/new/script.js')}}"></script>
+        <script src="{{ asset('/js/new/post.js')}}"></script>
+        <script src="{{ asset('/js/new/script.js')}}"></script>
 
-        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
         <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
-        <script src="{{ asset('js/new/jquery.validate.min.js') }}"></script>
+        <script src="{{ asset('/js/new/jquery.validate.min.js') }}"></script>
 
-        <script src="{{ asset('js/new/slick.js')}}"></script>
+        <script src="{{ asset('/js/new/slick.js')}}"></script>
         <script src="https://vjs.zencdn.net/5.19.2/video.js"></script>
         <script src="{{ asset('/js/hls/hls.min.js?v=v0.9.1') }}"></script>
         <script src="{{ asset('/js/hls/videojs5-hlsjs-source-handler.min.js?v=0.3.1') }}"></script>

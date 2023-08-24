@@ -471,6 +471,7 @@ $(document).on('click shown.bs.modal', '.locationMap', function () {
     var id = $(this).attr("data-id");
     var lat = $(this).attr("data-lat");
     var long = $(this).attr("data-long");
+    $("#beachLocationModal").show();
     initializeMap(lat, long);
 });
 

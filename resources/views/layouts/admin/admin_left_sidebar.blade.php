@@ -50,19 +50,20 @@
     <div class="left-advertisement">
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script>
-                                    $(document).ready(function () {
-                                        $.ajax({
-                                            type: "GET",
-                                            url: "/admin/left-side-counts",
-                                            dataType: "json",
-                                            success: function (jsonResponse) {
-                                                $('#reports').html(jsonResponse['reports']);
-                                                $('#posts').html(jsonResponse['posts']);
-                                                $('#uploads').html(jsonResponse['uploads']);
-                                                $('#surferRequest').html(jsonResponse['surferRequest']);
-                                                $('#comments').html(jsonResponse['comments']);
-                                            }
-                                        });
-                                    });
+    jQuery(document).ready(function () {
+        jQuery.ajax({
+            type: "GET",
+            url: "/admin/left-side-counts",
+            dataType: "json",
+            success: function (jsonResponse) {
+                jQuery('#reports').html(jsonResponse['reports']);
+                jQuery('#posts').html(jsonResponse['posts']);
+                jQuery('#uploads').html(jsonResponse['uploads']);
+                jQuery('#surferRequest').html(jsonResponse['surferRequest']);
+                jQuery('#comments').html(jsonResponse['comments']);
+            }
+        });
+    });
 </script>
