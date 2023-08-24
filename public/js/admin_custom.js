@@ -500,27 +500,28 @@ $('#searchReports').keyup(debounce(function () {
     }, 100)); // Milliseconds in which the ajax call should be executed (500 = half second)
 
     $('.add-to-feed').click(function () {
-            let status =  1;
-            let postId = $(this).data('id');
-            $.ajax({
-                type: "GET",
-                dataType: "json",
-                url: "/admin/post/status",
-                data: {'status': status, 'post_id': postId},
-                success: function (data) {
-                    if(data.statuscode == 200) {
-                        $("#errorSuccessmsg").removeClass('alert-danger');
-                        $("#errorSuccessmsg").addClass('alert-success');
-                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
-                    } else {
-                        $("#errorSuccessmsg").removeClass('alert-success');
-                        $("#errorSuccessmsg").addClass('alert-danger');
-                        $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
-                    }
-                    console.log(data.message);
+        let status =  1;
+        let postId = $(this).data('id');
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/admin/post/status",
+            data: {'status': status, 'post_id': postId},
+            success: function (data) {
+                if(data.statuscode == 200) {
+                    $("#errorSuccessmsg").removeClass('alert-danger');
+                    $("#errorSuccessmsg").addClass('alert-success');
+                    $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                } else {
+                    $("#errorSuccessmsg").removeClass('alert-success');
+                    $("#errorSuccessmsg").addClass('alert-danger');
+                    $("#errorSuccessmsg").append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
                 }
-            });
+                console.log(data.message);
+            }
         });
+    });
+
     $('.remove-from-feed').click(function () {
             let status =  0;
             let postId = $(this).data('id');

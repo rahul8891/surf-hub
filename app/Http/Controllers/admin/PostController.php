@@ -377,7 +377,7 @@ class PostController extends Controller
         $post = Post::findOrFail($request->post_id);
         //$post->is_feed = $request->status;
         $post->is_feed = '1';
-        $post->post_type = 'PRIVATE';
+        $post->post_type = 'PUBLIC';
         if ($post->save()) {
             return response()->json(['statuscode' => 200, 'status' => true, 'message' =>  "Feed status updated successfully.", 'data' => $post], 200);
         } else {
