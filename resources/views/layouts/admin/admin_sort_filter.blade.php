@@ -365,7 +365,7 @@
         }
     }); // Milliseconds in which the ajax call should be executed (100 = half second)
 
-    $("#beach_filter").change(function (e) {
+    /*$("#beach_filter").change(function (e) {
         $('#break_filter').find('option').remove();
         $("#break_filter").append('<option value=""> -- Break --</option>');
         var beachValue = $(this).val();
@@ -392,5 +392,5 @@
                 }
             }
         });
-    });
+    });*/
 </script>
