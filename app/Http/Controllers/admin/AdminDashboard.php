@@ -28,15 +28,16 @@ class AdminDashboard extends Controller
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct(UserService $user,AdminUserService $users, PostService $posts,MasterService $masterService)
+    public function __construct()
     {
- 	$this->user = $user;
-        $this->users = $users;
-        $this->posts = $posts;
-        $this->masterService = $masterService;
+ 	    $this->user = New UserService();
+        $this->users = New AdminUserService();
+        $this->posts = New PostService();
+        $this->masterService = New MasterService();
         $this->customArray = config('customarray');
 
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -56,16 +57,19 @@ class AdminDashboard extends Controller
     }
 
     public function feed(Request $request) {
+        $param = $request->all();
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $beaches = $this->masterService->getBeaches();
         $customArray = $this->customArray;
-        $postsList = Post::with('followPost')->where('is_deleted', '0')
+        /*$postsList = Post::with('followPost')->where('is_deleted', '0')
                 ->where('parent_id', '0')
                 ->where('post_type', 'PUBLIC')
                 ->orderBy('posts.updated_at', 'DESC')
-                ->paginate(10);
+                ->paginate(10);*/
+
+        $postsList = $this->posts->getFeedFilteredList($param);
 
         $requestSurfer = array();
         foreach ($postsList as $val) {
