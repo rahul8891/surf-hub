@@ -607,6 +607,7 @@ class PostService {
         if(isset($optionalInfo[0]) && !empty($optionalInfo[0])) {
             $postArray->whereIn('optional_info', $optionalInfo);
         }
+
         if(isset($params['additional_info']) && !empty($params['additional_info'])) {
             $postArray->where(function($q) use($params){
 
@@ -620,6 +621,7 @@ class PostService {
         if (isset($params['surf_date']) && !empty($params['surf_date'])) {
            $postArray->whereDate('surf_start_date','>=',$params['surf_date']);
         }
+
         if (isset($params['end_date']) && !empty($params['end_date'])) {
            $postArray->whereDate('surf_start_date','<=',$params['end_date']);
         }
@@ -627,11 +629,15 @@ class PostService {
         if (isset($params['country_id']) && !empty($params['country_id'])) {
             $postArray->where('posts.country_id',$params['country_id']);
         }
+        // dd($params);
         if (isset($params['break']) && !empty($params['break'])) {
             $postArray->where('local_break_id', $params['break']);
-        }elseif (isset($params['local_beach_id']) && !empty($params['local_beach_id'])) {
-            $postArray->where('local_beach_id', $params['local_beach_id']);
+        }elseif (isset($params['beach']) && !empty($params['beach'])) {
+            $beachID = $this->getBeachID($params['beach']);
+            // dd($beachID);
+            $postArray->whereIn('local_beach_id', $beachID);
         }
+
         if (isset($params['board_type']) && !empty($params['board_type'])) {
             $postArray->where('board_type',$params['board_type']);
         }
@@ -709,12 +715,18 @@ class PostService {
             $postArray->orderBy('posts.id','DESC');
         }
 
-        //dd($postArray->toSql());
+        // dd($postArray->toSql());
         if(isset($page) && !empty($page)) {
             return $postArray->get();
         } else {
             return $postArray->paginate(10);
         }
+    }
+
+    function getBeachID($beachID) {
+        $beachBreak = BeachBreak::where('id', $beachID)->get()->toArray();
+        $beachName = $beachBreak[0]['beach_name'];
+        return BeachBreak::where('beach_name', $beachName)->pluck('id')->toArray();
     }
 
     /**
