@@ -517,6 +517,7 @@ class UserPostController extends Controller {
         $request_id = Crypt::decrypt($id);
         // dd($request_id);
         $userProfile = '';
+        
         $customArray = $this->customArray;
         $postsList = Post::join('surfer_requests', 'surfer_requests.post_id', '=', 'posts.id')
                 ->join('user_profiles', 'user_profiles.user_id', '=', 'posts.user_id')

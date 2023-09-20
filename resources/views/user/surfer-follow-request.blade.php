@@ -27,7 +27,9 @@
                             <tr>
                                 <td>Surfer Name</td>
                                 <td>:</td>
-                                @if(!empty($userProfile['surfer_name']))<td>{{ $userProfile['surfer_name'] }}</td>@endif
+                                @if(!empty($userProfile['surfer_name']))
+                                <td>{{ $userProfile['surfer_name'] }}</td>
+                                @endif
                             </tr>
                             <tr>
                                 <td>Gender</td>
