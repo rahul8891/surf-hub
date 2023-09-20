@@ -418,8 +418,14 @@ class PostService {
         }
         if (isset($params['break']) && !empty($params['break'])) {
             $postArray->where('local_break_id', $params['break']);
-        }elseif (isset($params['local_beach_id']) && !empty($params['local_beach_id'])) {
-            $postArray->where('local_beach_id', $params['local_beach_id']);
+        }
+        // elseif (isset($params['local_beach_id']) && !empty($params['local_beach_id'])) {
+        //     $postArray->where('local_beach_id', $params['local_beach_id']);
+        // }
+        elseif (isset($params['beach']) && !empty($params['beach'])) {  
+            $beachID = $this->getBeachID($params['beach']); 
+            // dd($beachID);    
+            $postArray->whereIn('local_beach_id', $beachID);    
         }
         if (isset($params['board_type']) && !empty($params['board_type'])) {
             $postArray->where('board_type',$params['board_type']);

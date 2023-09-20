@@ -4,7 +4,6 @@
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
 <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
-
 <section class="postsWrap">
     <div class="container">
         <div class="row">

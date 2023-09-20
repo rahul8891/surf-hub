@@ -186,4 +186,29 @@ class MasterService {
 
         return $arr;
     }
+
+    public function getBeachNameLike($beach_name){
+        if(isset($beach_name) && !empty($beach_name)) {
+            $beach_lists = DB::table('beach_breaks')->select('id', 'beach_name')->where('beach_name', 'like', '%'.$beach_name.'%')->orderBy('break_name','asc')->get();
+
+            $result = '';
+            if (!$beach_lists->isEmpty()) {
+
+                $result = '<ul class="list-group" style="display: block; position: absolute; z-index: 1"  >';
+                $dupArr = [];
+                foreach ($beach_lists as $key => $value) {
+                    if (!in_array($value->beach_name, $dupArr)) {
+                        $dupArr[] = $value->beach_name;
+                        $val = ($value->beach_name) ? $value->beach_name : '';
+                        $result .= '<li class="list-group-item" data-id="' . $value->id . '">' . $val . '</li>';
+                    }
+                }
+                $result .= '</ul>';
+                return $result;
+            }
+        }
+        // else {
+        //     return $this->beach_break->select('id', 'break_name')->orderBy('break_name','asc')->get();
+        // }
+    }
 }

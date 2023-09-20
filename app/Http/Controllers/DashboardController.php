@@ -238,4 +238,22 @@ class DashboardController extends Controller {
         return $first_time_login;
     }
 
+    /**
+     * Get all Beach name which is similar to given input by User.
+     *
+     * @param  beach_name
+     * @return Custom Html with data
+     */
+    public function getBeachName(Request $request) {
+        $data = $request->all();
+
+        $beachLists = $this->masterService->getBeachNameLike($data['beach_name']);
+        if ($beachLists) {
+            echo json_encode(array('status' => 'success', 'message' => 'true', 'data' => $beachLists));
+        } else {
+            echo json_encode(array('status' => 'failure', 'message' => 'false', 'data' => null));
+        }
+        die;
+    }
+
 }

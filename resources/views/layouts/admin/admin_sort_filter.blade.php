@@ -168,14 +168,17 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="white-bg">
-                                    <select class="form-select" name="beach" id="beach_filter">
+                                    <input type="text" value="{{ old('other_beach')}}" name="other_beach"class="form-control other_beach" placeholder="Search Beach" id="beach_filtername">
+                                    <input type="hidden" value="{{ old('surfer_id')}}" name="beach" id="beach_id" class="form-control beach_id">
+                                    <div class="auto-search search2 beachlist" id="filter_beach_data"></div>
+                                    <!-- <select class="form-select" name="beach" id="beach_filter">
                                         <option value="">-- Beach --</option>
                                         @foreach($beaches as $val)
                                         @if(!empty($val['beach_name']))
                                         <option value="{{$val['id']}}">{{$val['beach_name']}}</option>
                                         @endif
                                         @endforeach
-                                    </select>
+                                    </select> -->
                                 </div>
                             </div>
                         </div>
@@ -365,6 +368,71 @@
         }
     }); // Milliseconds in which the ajax call should be executed (100 = half second)
 
+    /**
+     * Get beach name typed by user and fetch data according to that
+     */
+    jQuery('#beach_filtername').on('keyup', function() {
+        var beachValue = jQuery(this).val();
+        //if ( beachValue.length > 3 ) {
+            jQuery.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "GET",
+                url: '/getBeachName',
+                data: {
+                    beach_name: beachValue,
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    // console.log(jsonResponse);
+
+                    if (jsonResponse.status == 'success') {
+                        var myJsonData = jsonResponse.data;
+                        jQuery('#filter_beach_data').html(myJsonData);
+                    }
+                }
+            });
+        //}
+    });
+
+    /**
+     * Replace first input by selecting beach name by user on list
+     */
+    jQuery(document).on('click', '.search2.beachlist li', function () {
+        var value = jQuery(this).text().trim();
+        var dataId = jQuery(this).attr("data-id");
+        jQuery('#other_surfer_list').html("");
+        jQuery('.other_beach').val(value);
+        jQuery('#beach_id').val(dataId);
+        jQuery('#filter_beach_data').html("");
+
+        /** get all Break on the basis of Beach selected by user **/
+        jQuery('#break_filter').find('option').remove();
+        jQuery("#break_filter").append('<option value=""> -- Break --</option>');
+        var beachValue = dataId;
+        jQuery.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: "GET",
+            url: '/getBreak',
+            data: {
+                beach_id: beachValue,
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                if (jsonResponse.status == 'success') {
+                    var myJsonData = jsonResponse.data;
+                    jQuery.each(myJsonData, function (key, value) {
+                        if (value.break_name != '') {
+                            jQuery("#break_filter").append('<option value="' + value.id + '">' + value.break_name + '</option>');
+                        }
+                    });
+                }
+            }
+        });
+    });
     /*$("#beach_filter").change(function (e) {
         $('#break_filter').find('option').remove();
         $("#break_filter").append('<option value=""> -- Break --</option>');

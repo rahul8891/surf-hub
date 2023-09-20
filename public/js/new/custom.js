@@ -1531,42 +1531,108 @@ jQuery(document).ready(function () {
         }
     }
 
-    jQuery("#beach_filter").change(function (e) {
-//    if (jQuery('#beach_filter').is(":selected")) {
+//     jQuery("#beach_filter").change(function (e) {
+// //    if (jQuery('#beach_filter').is(":selected")) {
+//         jQuery('#break_filter').find('option').remove();
+//         jQuery("#break_filter").append('<option value=""> -- Break --</option>');
+//         var beachValue = jQuery(this).val();
+//         jQuery.ajax({
+//             type: "GET",
+//             url: '/getBreak',
+//             data: {
+//                 beach_id: beachValue,
+//                 _token: csrf_token
+//             },
+//             dataType: "json",
+//             success: function (jsonResponse) {
+//                 //console.log(jsonResponse);
+//                 if (jsonResponse.status == 'success') {
+//                     var myJsonData = jsonResponse.data;
+
+//                     jQuery.each(myJsonData, function (key, value) {
+//                         if (value.break_name != '') {
+//                             jQuery("#break_filter").append('<option value="' + value.id + '">' + value.break_name + '</option>');
+// //                            jQuery("#break_filter").append('<div class="cstm-check pos-rel break_rem'+beachValue+'"><input type="checkbox" id="break_' + value.id + '" name="filter_break_' + value.id + '" value="' + value.id + '" /><label for="break_' + value.id + '" class="width-138">' + value.break_name + '</label></div>');
+//                         }
+//                     });
+//                 } else {
+// //                    jQuery("#break_id").empty();
+//                 }
+//             }
+//         });
+
+// //        }
+// //        alert("checked Score: " + jQuery(this).val());
+// //    else {
+// //        var beachValue = jQuery(this).val();
+// ////        jQuery("#break_filter").remove();
+// //    }
+//     });
+
+    /**
+     * Get beach name typed by user and fetch data according to that
+     */
+    jQuery('#beach_filtername').on('keyup', function() {
+        var beachValue = jQuery(this).val();
+        //if ( beachValue.length > 3 ) {
+            jQuery.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "GET",
+                url: '/getBeachName',
+                data: {
+                    beach_name: beachValue,
+                },
+                dataType: "json",
+                success: function (jsonResponse) {
+                    // console.log(jsonResponse);
+
+                    if (jsonResponse.status == 'success') {
+                        var myJsonData = jsonResponse.data;
+                        jQuery('#filter_beach_data').html(myJsonData);
+                    }
+                }
+            });
+        //}
+    });
+
+    /**
+     * Replace first input by selecting beach name by user on list
+     */
+    jQuery(document).on('click', '.search2.beachlist li', function () {
+        var value = jQuery(this).text().trim();
+        var dataId = jQuery(this).attr("data-id");
+        jQuery('#other_surfer_list').html("");
+        jQuery('.other_beach').val(value);
+        jQuery('#beach_id').val(dataId);
+        jQuery('#filter_beach_data').html("");
+
+        /** get all Break on the basis of Beach selected by user **/
         jQuery('#break_filter').find('option').remove();
         jQuery("#break_filter").append('<option value=""> -- Break --</option>');
-        var beachValue = jQuery(this).val();
+        var beachValue = dataId;
         jQuery.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
             type: "GET",
             url: '/getBreak',
             data: {
                 beach_id: beachValue,
-                _token: csrf_token
             },
             dataType: "json",
             success: function (jsonResponse) {
-                //console.log(jsonResponse);
                 if (jsonResponse.status == 'success') {
                     var myJsonData = jsonResponse.data;
-
                     jQuery.each(myJsonData, function (key, value) {
                         if (value.break_name != '') {
                             jQuery("#break_filter").append('<option value="' + value.id + '">' + value.break_name + '</option>');
-//                            jQuery("#break_filter").append('<div class="cstm-check pos-rel break_rem'+beachValue+'"><input type="checkbox" id="break_' + value.id + '" name="filter_break_' + value.id + '" value="' + value.id + '" /><label for="break_' + value.id + '" class="width-138">' + value.break_name + '</label></div>');
                         }
                     });
-                } else {
-//                    jQuery("#break_id").empty();
                 }
             }
         });
-
-//        }
-//        alert("checked Score: " + jQuery(this).val());
-//    else {
-//        var beachValue = jQuery(this).val();
-////        jQuery("#break_filter").remove();
-//    }
     });
 
 

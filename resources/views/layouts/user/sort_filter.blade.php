@@ -203,14 +203,17 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="white-bg">
-                                                <select class="form-select" name="beach" id="beach_filter">
+                                                <input type="text" value="{{ old('other_beach')}}" name="other_beach"class="form-control other_beach" placeholder="Search Beach" id="beach_filtername">
+                                                <input type="hidden" value="{{ old('surfer_id')}}" name="beach" id="beach_id" class="form-control beach_id">
+                                                <div class="auto-search search2 beachlist" id="filter_beach_data"></div>
+                                                <!-- <select class="form-select" name="beach" id="beach_filter">
                                                     <option value="">-- Beach --</option>
                                                     @foreach($beaches as $val)
                                                     @if(!empty($val['beach_name']))
                                                     <option value="{{$val['id']}}">{{$val['beach_name']}}</option>
                                                     @endif
                                                     @endforeach
-                                                </select>
+                                                </select> -->
                                             </div>
                                         </div>
                                     </div>

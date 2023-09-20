@@ -53,6 +53,8 @@ Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
 Route::get('search/filter', [SearchController::class, 'filter'])->name('searchFilterIndex');
 Route::post('upload/file', [UserPostController::class, 'uploadFiles'])->name('uploadFiles');
 Route::get('/getBreak', [DashboardController::class, 'getBreak'])->name('getBreak');
+/* Get All Beach name according to user input */
+Route::get('/getBeachName', [DashboardController::class, 'getBeachName'])->name('getBeachName');
 
 
 $router->get('spotify-auth', [SpotifyAuthController::class, 'redirectToProvider'])->name('spotify-auth');
