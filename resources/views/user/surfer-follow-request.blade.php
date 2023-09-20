@@ -8,13 +8,15 @@
             <div class="middle-content">
                 <div class="profile-photo-edit">
                     <div class="profile-pic">
-                        @if($userProfile['profile_photo_path'])
+                        @if(!empty($userProfile['profile_photo_path']))
                         <img src="{{ asset('storage/'.$userProfile['profile_photo_path']) }}"
                                 alt="" class="rounded-circle">
                         @endif
                     </div>
                     <div class="name">
+                        @if(!empty($userProfile['surfer_name']))
                         <p>{{__(ucwords($userProfile['surfer_name']))}}</p>
+                        @endif
                         <p class="mb-0">Surfhub <span class="blue-txt">$2540</span> Earn</p>
                     </div>
                 </div>
@@ -25,23 +27,23 @@
                             <tr>
                                 <td>Surfer Name</td>
                                 <td>:</td>
-                                <td>{{ $userProfile['surfer_name'] }}</td>
+                                @if(!empty($userProfile['surfer_name']))<td>{{ $userProfile['surfer_name'] }}</td>@endif
                             </tr>
                             <tr>
                                 <td>Gender</td>
                                 <td>:</td>
-                                <td>{{ $userProfile['gender'] }}</td>
+                                @if(!empty($userProfile['gender']))<td>{{ $userProfile['gender'] }}</td>@endif
                             </tr>
                             <tr>
                                 <td>Country</td>
                                 <td>:</td>
-                                <td>{{ $userProfile['country'] }}</td>
+                                @if(!empty($userProfile['gender']))<td>{{ $userProfile['gender'] }}</td>@endif
                             </tr>
                             <tr>
                                 <td>Preferred Board</td>
                                 <td>:</td>
                                 <td>
-                                    @if($userProfile['preferred_board'])
+                                    @if(!empty($userProfile['preferred_board']))
                                         {{ $userProfile['preferred_board'] }}
                                     @else
                                     -
@@ -52,7 +54,7 @@
                                 <td>Local Beach</td>
                                 <td>:</td>
                                 <td>
-                                    @if($userProfile['beach_break'])
+                                    @if(!empty($userProfile['beach_break']))
                                         {{ $userProfile['beach_break'] }}
                                     @else
                                     -
