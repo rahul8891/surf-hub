@@ -1635,6 +1635,17 @@ jQuery(document).ready(function () {
         });
     });
 
+    /** Reset all form fields after submit manually **/
+    jQuery('.filter-header #close').on('click', function() {
+        jQuery("input[type=text]"). val("");
+        jQuery("input[type=date]").val("");
+        jQuery("#filter_country_id").find('option').attr('selected', false);
+        jQuery("#break_filter").find('option').attr('selected', false);
+        jQuery("#wave_size").find('option').attr('selected', false);
+        jQuery("#board_type").find('option').attr('selected', false);
+        jQuery('input[type=checkbox]').prop('checked', false);
+    });
+
 
     jQuery("#board_type").change(function (e) {
 //    if (jQuery('#beach_filter').is(":selected")) {
@@ -2135,7 +2146,8 @@ jQuery(document).ready(function () {
                 if (jsonResponse.status == "success") {
                     $this.addClass('clicked');
                     $this.removeClass('followPost');
-                    $this.text('REQUEST SEND');
+                    // $this.text('REQUEST SEND');
+                    $this.text('Request Sent');
 
                     spinner.hide();
                 } else {

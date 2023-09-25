@@ -16,7 +16,7 @@
                     </div>
                     <div class="name">
                         <p>{{__(ucwords($userProfile['surfer_name']))}}</p>
-                        <p class="mb-0">Surfhub <span class="blue-txt">$2540</span> Earn</p>
+                        <p class="mb-0">Surfhub <span class="blue-txt">$0</span> Earn</p>
                     </div>
                 </div>
                 <div class="edit-profile-box">

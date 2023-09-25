@@ -14,7 +14,7 @@
                 <span class="notification notification-count">0</span>
             </div>
             <div class="my-name">{{ ucwords(Auth::user()->user_profiles->first_name .' '.Auth::user()->user_profiles->last_name) }}</div>
-            <div class="my-comp">Surfhub <span class="blue-txt">$2540</span> Earn</div>
+            <div class="my-comp">Surfhub <span class="blue-txt">$0</span> Earn</div>
         </div>
         <div class="profile-menu">
             <div class="profile-row {{ userActiveMenu('profile') }}">

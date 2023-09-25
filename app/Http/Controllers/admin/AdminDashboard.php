@@ -57,6 +57,7 @@ class AdminDashboard extends Controller
     }
 
     public function feed(Request $request) {
+        // echo "admin"; die;
         $param = $request->all();
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();

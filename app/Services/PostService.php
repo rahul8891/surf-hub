@@ -130,14 +130,51 @@ class PostService {
      * @param
      * @return dataArray
      */
-    public function getPostsListing() {
+    public function getPostsListing($data, $page = null) {
+        // $postArray =  $this->posts->whereNull('deleted_at')
+        //                         ->where('post_type', 'PUBLIC')
+        //                         ->where('is_deleted','0')
+        //                         ->orderBy('updated_at','DESC')
+        //                         ->paginate(10);
+
+        // return $postArray;
         $postArray =  $this->posts->whereNull('deleted_at')
                                 ->where('post_type', 'PUBLIC')
-                                ->where('is_deleted','0')
-                                ->orderBy('updated_at','DESC')
-                                ->paginate(10);
+                                ->where('is_deleted','0');
+                                //->orderBy('updated_at','DESC')
+                                //->paginate(10);
 
-        return $postArray;
+        if (isset($data['sort'])) {
+            if($data['sort'] == "dateAsc"){
+                $postArray->orderBy('posts.created_at','ASC');
+            }
+            else if($data['sort'] == "dateDesc"){
+                $postArray->orderBy('posts.created_at','DESC');
+            }
+            else if($data['sort'] == "surfDateAsc"){
+                $postArray->orderBy('posts.surf_start_date','ASC');
+            }
+            else if($data['sort'] == "surfDateDesc"){
+                $postArray->orderBy('posts.surf_start_date','DESC');
+            }
+            else if($data['sort'] == "beach"){
+                $postArray->orderBy('beach_breaks.beach_name','ASC');
+            }
+            else if($data['sort'] == "star"){
+                $postArray->orderBy('average','DESC');
+            }
+            else{
+                $postArray->orderBy('posts.created_at','DESC');
+            }
+        } else {
+            $postArray->orderBy('posts.updated_at','DESC');
+        }
+
+        if(isset($page) && !empty($page)) {
+            return $postArray->get();
+        } else {
+            return $postArray->paginate(10);
+        }
     }
 
     /**
@@ -742,19 +779,24 @@ class PostService {
      * @return dataArray
      */
     public function getFeedFilteredList($data, $page = null) {
-        $postsList =  $this->posts
-            ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
-            ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
-            ->leftJoin('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
-            ->leftJoin('users', 'posts.user_id', '=', 'users.id')
-            ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
-            ->whereNull('posts.deleted_at')
-            ->where('posts.parent_id', '0')
-            ->where(function ($query) {
-                $query->where('posts.post_type', 'PUBLIC')
-                ->orWhere('posts.is_feed', '1');
-            })
-            ->groupBy('posts.id');
+        // $postsList =  $this->posts
+        //     ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
+        //     ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
+        //     ->leftJoin('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
+        //     ->leftJoin('users', 'posts.user_id', '=', 'users.id')
+        //     ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
+        //     ->whereNull('posts.deleted_at')
+        //     ->where('posts.parent_id', '0')
+        //     ->where(function ($query) {
+        //         $query->where('posts.post_type', 'PUBLIC')
+        //         ->orWhere('posts.is_feed', '1');
+        //     })
+        //     ->groupBy('posts.id');
+        $postsList =  $this->posts->whereNull('deleted_at')
+                                ->where('post_type', 'PUBLIC')
+                                ->where('is_deleted','0');
+                                //->orderBy('updated_at','DESC')
+                                //->paginate(10);
 
         if (isset($data['sort'])) {
             if($data['sort'] == "dateAsc"){

@@ -39,10 +39,7 @@
                                 <h5>Filter</h5>
                             </div>
                             <div class="col-md-3">
-                                <button type="button" id="close" data-dismiss="modal" aria-label="Close"
-                                        onclick="this.form.reset();"> Clear
-
-                                </button>
+                                <button type="button" id="close" data-dismiss="modal" aria-label="Close"> Clear</button>
                             </div>
                             <!--<a href="javascript:void(0)" onclick="this.form.reset();">Clear</a>-->
                         </div>

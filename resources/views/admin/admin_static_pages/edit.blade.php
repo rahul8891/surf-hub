@@ -36,8 +36,7 @@
                                     <div class="form-group">
 
                                         <div class="">
-                                            <textarea class="textarea" name="body" style="height:300px;"
-                                                      placeholder="Place some text here" required>{{ __($pages->body) }} </textarea>
+                                            <textarea class="textarea" id="ckplot" name="body" style="height:300px;" placeholder="Place some text here" required>{{ __($pages->body) }} </textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -55,4 +54,9 @@
     </div>
 </section>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" ></script>
+<script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+<script type="text/javascript">
+    CKEDITOR.replace("ckplot");
+</script> 
 @endsection

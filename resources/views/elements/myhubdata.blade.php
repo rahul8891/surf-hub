@@ -75,9 +75,9 @@
                             </div>
                         </div>
                         <div class="right-options">
-                            @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'])
+                            <!-- @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'])
                             <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
-                            @endif
+                            @endif -->
                             <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                                 <img src={{asset("img/location.png")}} alt="Location"></a>
                             <a onclick="openFullscreenSilder({{$posts->id}}, 'myhub-{{ $post_type }}');"><img src={{asset("img/expand.png")}} alt="Expand"></a>
@@ -339,7 +339,7 @@
                 success: function(result) {
                     if(result.data.is_highlight == "1") {
                         that.addClass('blue');
-                        jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Post has been highlighted.</div>');
+                        jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Post has been added to your Highlights Reel.</div>');
                     } else {
                         that.removeClass('blue');
                         jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Something went wrong.Please try again later.</div>');

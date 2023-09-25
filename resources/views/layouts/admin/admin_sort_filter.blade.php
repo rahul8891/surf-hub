@@ -33,9 +33,7 @@
                     <h5>Filter</h5>
                 </div>
                 <div class="col-md-3">
-                    <button type="button" id="close" data-dismiss="modal" aria-label="Close"
-                            onclick="this.form.reset();"> Clear
-                    </button>
+                    <button type="button" id="close" data-dismiss="modal" aria-label="Close"> Clear</button>
                 </div>
             </div>
             <div class="filter-body">
@@ -200,7 +198,7 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="white-bg">
-                                    <select class="form-control" name="wave_size">
+                                    <select class="form-control" name="wave_size" id="wave_size">
                                         <option value="">{{ __('-- Select --')}}</option>
                                         @foreach($customArray['wave_size'] as $key => $value)
                                         <option value="{{ $key }}" {{ old('wave_size',Request::get('wave_size')) == $key ? "selected" : "" }}>{{ $value}}
@@ -432,6 +430,17 @@
                 }
             }
         });
+    });
+
+    /** Reset all form fields after submit manually **/
+    jQuery('.filter-header #close').on('click', function() {
+        jQuery("input[type=text]"). val("");
+        jQuery("input[type=date]").val("");
+        jQuery("#filter_country_id").find('option').attr('selected', false);
+        jQuery("#break_filter").find('option').attr('selected', false);
+        jQuery("#wave_size").find('option').attr('selected', false);
+        jQuery("#board_type").find('option').attr('selected', false);
+        jQuery('input[type=checkbox]').prop('checked', false);
     });
     /*$("#beach_filter").change(function (e) {
         $('#break_filter').find('option').remove();

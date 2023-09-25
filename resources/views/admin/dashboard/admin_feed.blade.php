@@ -9,7 +9,8 @@
                 @include('layouts.admin.admin_left_sidebar')
             </div>
             <div class="middle-content" id="post-data">
-                @include('layouts.user.content_menu')
+                
+                @include('layouts.admin.admin_sort_filter')
 
                 @if (isset($postsList) && empty($postsList[0]))
                 <div class="post alert text-center alert-dismissible py-5" role="alert">
@@ -19,7 +20,6 @@
                 @if (!empty($postsList))
                 @foreach ($postsList as $key => $posts)
                 <div class="news-feed myPostData{{$posts->id}}">
-
                     <div class="inner-news-feed">
                         <div class="user-details">
                             <div class="user-left">
@@ -65,7 +65,7 @@
                                     <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span>
                                     </p>
                                     @endif
-                                    <p class="address">{{ $posts->beach_breaks->beach_name ?? '' }} {{ $posts->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
+                                    <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                                     <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                                 </div>
                             </div>
@@ -92,9 +92,9 @@
 
                             </div>
                             <div class="right-options">
-                                @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'] && empty($requestSurfer[$posts->id]))
+                                <!-- @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'] && empty($requestSurfer[$posts->id]))
                                 <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
-                                @endif
+                                @endif -->
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                                     <img src={{asset("/img/location.png")}} alt="Location"></a>
                                 <a onclick="openFullscreenSilder({{$posts->id}}, 'feed');"><img src={{asset("/img/expand.png")}} alt="Expand"></a>

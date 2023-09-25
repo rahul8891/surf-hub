@@ -66,7 +66,7 @@ var page = 1;
             type: "get",
             async: false,
             success: function() {
-                jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Surfer Request send successfully.</div>');
+                jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Surfer Request sent successfully.</div>');
             }
         });
     }

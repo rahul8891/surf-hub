@@ -22,7 +22,7 @@
                     {{ ucwords($userProfile['surfer_name']) }}
                 </a>
             </div>
-            <div class="my-comp">Surfhub <span class="blue-txt">$2540</span> Earn</div>
+            <div class="my-comp">Surfhub <span class="blue-txt">$0</span> Earn</div>
             @foreach ($postsList as $key => $posts)
             <button class="mx-0 greyBorder-btn mt-2 follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
             <span class="follow-icon"></span> FOLLOW

@@ -52,13 +52,14 @@ class WelcomeFeedController extends Controller
                 return Redirect::to('/dashboard');
             }
         }
-
+        $param = $request->all();
         $customArray = $this->customArray;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId(1);
         $beaches = $this->masterService->getBeaches();
         // non logged in user redirect to home page
-        $postsList = $this->postService->getPostsListing();
+        // $postsList = $this->postService->getPostsListing($param);
+        $postsList = $this->postService->getFeedFilteredList($param);
         if ($request->ajax()) {
             $view = view('elements/welcomedata',compact('customArray','postsList','countries','states','beaches'))->render();
             return response()->json(['html' => $view]);

@@ -14,19 +14,19 @@ jQuery(document).ready(function () {
         jQuery("input[name='videos[]']").trigger("click");
     });
 
-    jQuery("input[name='files[]']").on("change", function () {
-        if (parseInt(jQuery("input[name='files[]']").get(0).files.length) > 50) {
-            alert("You can select only 10 images");
-            jQuery(this).val('');
-        }
-    });
+    // jQuery("input[name='files[]']").on("change", function () {
+    //     if (parseInt(jQuery("input[name='files[]']").get(0).files.length) > 50) {
+    //         alert("You can select only 10 images");
+    //         jQuery(this).val('');
+    //     }
+    // });
 
-    jQuery("input[name='videos[]']").on("change", function () {
-        if (parseInt(jQuery("input[name='videos[]']").get(0).files.length) > 50) {
-            alert("You can select only 10 videos");
-            jQuery(this).val('');
-        }
-    });
+    // jQuery("input[name='videos[]']").on("change", function () {
+    //     if (parseInt(jQuery("input[name='videos[]']").get(0).files.length) > 50) {
+    //         alert("You can select only 10 videos");
+    //         jQuery(this).val('');
+    //     }
+    // });
 
 
     jQuery(".close").click(function (e) {
@@ -604,4 +604,12 @@ jQuery(document).ready(function () {
         });
     }
 
+
+
+});
+
+jQuery(document).on('click', function(){
+    setTimeout(function(){
+       jQuery("div.alert").fadeOut();
+    }, 2000 ); // 2 secs
 });

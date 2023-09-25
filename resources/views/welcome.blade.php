@@ -149,7 +149,7 @@
 </section>
 @include('elements/location_popup_model')
 @include('layouts/models/full_screen_modal')
-
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script>
     var page = 1;
     jQuery(window).scroll(function() {

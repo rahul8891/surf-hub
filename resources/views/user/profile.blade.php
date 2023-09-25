@@ -17,7 +17,7 @@
                     </div>
                     <div class="name">
                         <p>{{__(ucwords($user->user_profiles->first_name .' '. $user->user_profiles->last_name))}}</p>
-                        <p class="mb-0">Surfhub <span class="blue-txt">$2540</span> Earn</p>
+                        <p class="mb-0">Surfhub <span class="blue-txt">$0</span> Earn</p>
                     </div>
                 </div>
                 <div class="edit-profile-box">
@@ -32,7 +32,7 @@
                             <tr>
                                 <td>Email</td>
                                 <td>:</td>
-                                <td>{{ $user->email }}</td>
+                                <td>******</td>
                             </tr>
                             <tr>
                                 <td>First Name</td>

@@ -332,17 +332,19 @@ $(document).ready(function () {
     jQuery("#updateVideoPostData").submit(function(e) {
         //prevent Default functionality
         e.preventDefault();
+        var postID = jQuery('#updateVideoPostData input[name="id"]').val();
 
         jQuery.ajax({
             url: '/updatePostData',
             type: 'POST',
             data: $("#updateVideoPostData").serialize(),
-            success: function(data) {
-                if(data.status == 'success') {
-                    $(".feed"+id).remove();
+            success: function(datas) {
+                var jsonData = JSON.parse(datas);
+                if(jsonData.status == 'success') {
+                    $(".feed"+postID).remove();
                     jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Data updated successfully.</div>');
                 }else {
-                    jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                    jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+jsonData.message+'</div>');
                 }
                 jQuery("#edit_image_upload_main").modal('hide');
             },

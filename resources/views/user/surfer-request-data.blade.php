@@ -16,7 +16,7 @@
                     </div>
                     <div class="name">
                         <p>{{__(ucwords($userProfile['surfer_name']))}}</p>
-                        <p class="mb-0">Surfhub <span class="blue-txt">$2540</span> Earn</p>
+                        <p class="mb-0">Surfhub <span class="blue-txt">$0</span> Earn</p>
                     </div>
                 </div>
                 <div class="edit-profile-box">
@@ -123,7 +123,7 @@
                                                     </button>
                                                 @else
                                                     <button class="follow-btn follow clicked Follow" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
-                                                        <span class="follow-icon"></span>  REQUEST SEND
+                                                        <span class="follow-icon"></span>  REQUEST SENT
                                                     </button>
                                                 @endif
                                             @else
