@@ -1,3 +1,8 @@
+@php
+$userType = Request::get('user_type');
+$user_type = str_replace( array( '%', '5', 'B' , 'D'), '', $userType);
+@endphp
+
 <div class="filter-sort">
 
     <div class="sort dropdown">
@@ -83,9 +88,9 @@
                                             <div class="white-bg">
                                                 <select class="form-control select2 select2-hidden-accessible country local_beach_break_id"
                                                         name="user_type[]" id="filter_user_type" multiple="multiple">
-                                                    <option value="USER">Surfer</option>
-                                                    <option value="PHOTOGRAPHER">Photographer</option>
-                                                    <option value="SURFER CAMP">Surf Camp</option>
+                                                    <option value="USER" {{ ( $user_type[0] == "USER" ) ? "Selected" : "" }}>Surfer</option>
+                                                    <option value="PHOTOGRAPHER" {{ ( $user_type[0] == "PHOTOGRAPHER" ) ? "Selected" : "" }}>Photographer</option>
+                                                    <option value="SURFER CAMP" {{ ( $user_type[0] == "SURFER CAM" ) ? "Selected" : "" }}>Surf Camp</option>
                                                     <!-- <option value="ADVERTISEMENT">Advertiser</option> -->
                                                 </select>
                                             </div>
