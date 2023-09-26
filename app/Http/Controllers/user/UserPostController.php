@@ -657,19 +657,25 @@ class UserPostController extends Controller {
     }
 
     public function surferRequestList() {
-        $posts = Post::where("user_id", "=", Auth::user()->id)
-                ->where("is_deleted", '0')
-                ->where("surfer", 'Unknown')
-                ->get()
-                ->toArray();
-        $postIds = array_filter(array_column($posts, 'id'));
+        // $posts = Post::where("user_id", "=", Auth::user()->id)
+        //         ->where("is_deleted", '0')
+        //         ->where("surfer", 'Unknown')
+        //         ->get()
+        //         ->toArray();
+        // $postIds = array_filter(array_column($posts, 'id'));
         // dd($postIds);
-        $surferRequest = SurferRequest::join('posts', 'surfer_requests.post_id', '=', 'posts.id')
+        // $surferRequest = SurferRequest::join('posts', 'surfer_requests.post_id', '=', 'posts.id')
+        //         ->join('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
+        //         ->where("surfer_requests.user_id", '=', Auth::user()->id)
+        //         ->where("surfer_requests.status", "=", 0)
+        //         ->orderBy('surfer_requests.id', 'DESC')
+        //         ->get(['surfer_requests.*', 'user_profiles.first_name', 'user_profiles.last_name']);
+        $surferRequest = Notification::join('posts', 'notifications.post_id', '=', 'posts.id')
                 ->join('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
-                ->where("surfer_requests.user_id", '=', Auth::user()->id)
-                ->where("surfer_requests.status", "=", 0)
-                ->orderBy('surfer_requests.id', 'DESC')
-                ->get(['surfer_requests.*', 'user_profiles.first_name', 'user_profiles.last_name']);
+                ->where("notifications.receiver_id", '=', Auth::user()->id)
+                ->where("notifications.status", "=", "0")
+                ->orderBy('notifications.id', 'DESC')
+                ->get(['notifications.*', 'user_profiles.first_name', 'user_profiles.last_name']);
         // dd($surferRequest);
         return view('user.surfersRequestList', compact('surferRequest'));
     }

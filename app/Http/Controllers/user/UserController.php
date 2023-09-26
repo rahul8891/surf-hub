@@ -17,6 +17,7 @@ use Illuminate\Auth\RequestGuard;
 use Illuminate\Support\Facades\DB;
 use App\Services\UserService;
 use App\Services\PostService;
+use App\Models\Notification;
 use Redirect;
 use App\Services\MasterService;
 use App\Models\Post;
@@ -511,7 +512,8 @@ class UserController extends Controller {
             $followRequestCount = $this->users->getFollowDataCount('followed_user_id', array('1'), Auth::user()->id);
             $notification = $this->users->getNotificationCount();
             $userPosts = $this->post->getPostByUserId(Auth::user()->id);
-            $surferRequests = $this->post->getSurferRequest();
+            // $surferRequests = $this->post->getSurferRequest();
+            $surferRequests = Notification::where("receiver_id", "=", Auth::user()->id)->get();
 
             $uploads = $this->post->getUploads(Auth::user()->id);
             $fCounts = array(

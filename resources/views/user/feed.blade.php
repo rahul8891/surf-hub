@@ -362,6 +362,7 @@
     //End auto play
 
     function surferRequestDetail(id) {
+        alert(id);
         jQuery.ajax({
             url: 'surfer-request/' + id,
             type: "get",

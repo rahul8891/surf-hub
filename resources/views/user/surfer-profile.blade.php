@@ -31,7 +31,8 @@
                             <tr>
                                 <td>Email</td>
                                 <td>:</td>
-                                <td>{{ $userProfile['email'] }}</td>
+                                <!-- <td>{{ $userProfile['email'] }}</td> -->
+                                <td>******</td>
                             </tr>
                             <tr>
                                 <td>Gender</td>

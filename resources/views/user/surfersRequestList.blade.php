@@ -16,7 +16,7 @@
                         <div class="surfer-request">
                             <div class="row align-items-center gap-2 gap-xl-0">
                                 <div class="col-xl-6">
-                                    @if($val->user->profile_photo_path)
+                                    @if(!empty($val->user->profile_photo_path))
                                     <img src="{{ asset('storage/'.$val->user->profile_photo_path) }}" alt=""
                                          class="align-middle bg-white notification-img">
                                     @else
