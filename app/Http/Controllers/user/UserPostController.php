@@ -736,4 +736,24 @@ class UserPostController extends Controller {
 
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyPost(Request $request) {
+        $param = $request->all();
+        try {
+            $result = $this->posts->deletePost($param['id']);
+            if ($result) {
+                return json_encode(array('status'=>'success', 'message' => $result));
+            } else {
+                return json_encode(array('status'=>'error', 'message' => $result));
+            }
+        } catch (\Exception $e) {
+            return json_encode(array('status'=>'error', 'message' => $e->getMessage()));
+        }
+    }
+
 }

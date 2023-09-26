@@ -106,6 +106,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
     Route::post('/delete', [UserPostController::class, 'destroy'])->name('deleteUserPost');
     Route::get('/delete/{id}', [UserPostController::class, 'destroy'])->name('deleteUserPost');
+    // Delete MyHub post by ajax
+    Route::post('/deletepost', [UserPostController::class, 'destroyPost'])->name('deleteUserPostByAjax');
 
     Route::get('/saveToMyHub/{id}', [UserPostController::class, 'saveToMyHub'])->name('saveToMyHub');
 

@@ -25,7 +25,7 @@
                 @php ($c = 0)
                 @php ($i = 0)
                 @foreach ($postsList as $key => $posts)
-                <div class="news-feed">
+                <div class="news-feed" id="{{$posts->id}}">
                     <div class="inner-news-feed">
                         <div class="user-details">
                             <div class="user-left">
@@ -149,7 +149,8 @@
                                     </div>
                                 </div>
                                 @if(Auth::user() && $posts->user_id == Auth::user()->id)
-                                <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a>
+                                <!-- <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a> -->
+                                <a href="javascript:void(0);" id="deletePost" data-id="{{$posts->id}}"><img src="/img/delete.png" alt="Delete"></a>
                                 @endif
                                 @if (isset($posts->parent_id) && ($posts->parent_id == 0))
                                     <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
@@ -359,5 +360,43 @@
         });
     });
     //End auto play
+
+
+    jQuery(document).ready(function() {
+        // Delete 
+        jQuery('#deletePost').click(function() {
+            var el = this;
+
+            // Delete id
+            var deleteid = jQuery(this).attr('data-id');
+            // alert(deleteid)
+
+            // Confirm box
+            // bootbox.confirm("Do you really want to delete this footage?", function(result) {
+
+                if (confirm('Do you really want to delete this footage?')) {
+                    // AJAX Request
+                    jQuery.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: '/deletepost',
+                        type: 'POST',
+                        data: { id:deleteid },
+                        success: function(responseData) {
+                            // console.log(responseData);
+                            // Removing row from HTML Table
+                            var result = JSON.parse(responseData);
+                            if(result.status == "success") {
+                                jQuery("#" + deleteid).fadeOut("normal");
+                            } else{
+                                alert('Record not deleted.');
+                            }
+                        }
+                    });
+                }
+            // });
+        });
+    });
 </script>
 @endsection
