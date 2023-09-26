@@ -2164,12 +2164,12 @@ form label.error {
 .username-tag .profileImg {
     width: 50px;
 }
-#msg-alert {
+#msg-alert, #msg {
     position: sticky;
     top: 0;
     z-index: 9;
 }
-#msg-alert button{
+#msg-alert button, #msg button {
     margin-right: 15px;
 }
 .feedHubNav {
