@@ -14,19 +14,19 @@ jQuery(document).ready(function () {
         jQuery("input[name='videos[]']").trigger("click");
     });
 
-    jQuery("input[name='files[]']").on("change", function () {
-        if (parseInt($("input[name='files[]']").get(0).files.length) > 50) {
-            alert("You can select only 10 images");
-            jQuery(this).val('');
-        }
-    });
+    // jQuery("input[name='files[]']").on("change", function () {
+    //     if (parseInt($("input[name='files[]']").get(0).files.length) > 50) {
+    //         alert("You can select only 10 images");
+    //         jQuery(this).val('');
+    //     }
+    // });
 
-    jQuery("input[name='videos[]']").on("change", function () {
-        if (parseInt($("input[name='videos[]']").get(0).files.length) > 50) {
-            alert("You can select only 10 videos");
-            jQuery(this).val('');
-        }
-    });
+    // jQuery("input[name='videos[]']").on("change", function () {
+    //     if (parseInt($("input[name='videos[]']").get(0).files.length) > 50) {
+    //         alert("You can select only 10 videos");
+    //         jQuery(this).val('');
+    //     }
+    // });
 
 
     jQuery(".close").click(function (e) {
