@@ -88,9 +88,9 @@ $user_type = str_replace( array( '%', '5', 'B' , 'D'), '', $userType);
                                             <div class="white-bg">
                                                 <select class="form-control select2 select2-hidden-accessible country local_beach_break_id"
                                                         name="user_type[]" id="filter_user_type" multiple="multiple">
-                                                    <option value="USER" {{ ( $user_type[0] == "USER" ) ? "Selected" : "" }}>Surfer</option>
-                                                    <option value="PHOTOGRAPHER" {{ ( $user_type[0] == "PHOTOGRAPHER" ) ? "Selected" : "" }}>Photographer</option>
-                                                    <option value="SURFER CAMP" {{ ( $user_type[0] == "SURFER CAM" ) ? "Selected" : "" }}>Surf Camp</option>
+                                                    <option value="USER" {{ ( isset($user_type[0]) && $user_type[0] == "USER" ) ? "Selected" : "" }}>Surfer</option>
+                                                    <option value="PHOTOGRAPHER" {{ ( isset($user_type[0]) && $user_type[0] == "Photographer" ) ? "Selected" : "" }}>Photographer</option>
+                                                    <option value="SURFER CAMP" {{ ( isset($user_type[0]) && $user_type[0] == "SURFER CAMP" ) ? "Selected" : "" }}>Surf Camp</option>
                                                     <!-- <option value="ADVERTISEMENT">Advertiser</option> -->
                                                 </select>
                                             </div>
