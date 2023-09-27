@@ -437,7 +437,17 @@ class UserPostController extends Controller {
     public function acceptRejectRequest($id, $type) {
         try {
             $request_id = Crypt::decrypt($id);
-            $surferRequest = SurferRequest::where("id", $request_id)->first();
+
+            $notification = Notification::where("id", $request_id)->first();
+            
+            // $post_id = $notification->post_id;
+            // $sender_id = $notification->receiver_id;
+            // $receiver_id = $notification->sender_id;
+
+            $this->posts->updateNotificationStatus($request_id);
+
+            $surferRequest = SurferRequest::where("post_id", $notification->post_id)
+                            ->where("user_id", $notification->sender_id)->first();
 
             $userName = User::select("user_name")->where("id", "=", $surferRequest->user_id)->first();
 
@@ -447,12 +457,16 @@ class UserPostController extends Controller {
 
                 $result = Post::where(['id' => $surferRequest->post_id])
                         ->update(['surfer' => $userName->user_name]);
+                // sender_id, reciver_id, status, post_id
+                // $this->posts->updateNotificationStatusAcceptReject($post_id, $sender_id, $receiver_id, 'Surfer Request Accept');
 
                 $message = 'Surfer request accepted';
             }
             if ($type == 'reject') {
                 $result = SurferRequest::where(['id' => $request_id])
                         ->update(['status' => 2]);
+                // sender_id, reciver_id, status, post_id
+                // $this->posts->updateNotificationStatusAcceptReject($post_id, $sender_id, $receiver_id, 'Surfer Request Reject');
                 $message = 'Surfer request rejected';
             }
 
@@ -674,6 +688,7 @@ class UserPostController extends Controller {
                 ->join('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
                 ->where("notifications.receiver_id", '=', Auth::user()->id)
                 ->where("notifications.status", "=", "0")
+                // ->where("notifications.notification_type", "=", "Surfer Request")
                 ->orderBy('notifications.id', 'DESC')
                 ->get(['notifications.*', 'user_profiles.first_name', 'user_profiles.last_name']);
         // dd($surferRequest);

@@ -36,12 +36,20 @@
                                     </a>
                                     <a class="btn grey-borderBtn me-3 accept" href="{{ route('acceptRejectRequest', [Crypt::encrypt($val->id),'accept']) }}">
                                         <img src="/img/accept.png" class="me-1 align-middle" alt="ACCEPT">
-                                        <span class="align-middle">ACCEPT</span>
+                                        <span class="align-middle">ACCEPT {{$val->id}}</span>
                                     </a>
                                     <a class="btn grey-borderBtn reject" href="{{ route('acceptRejectRequest', [Crypt::encrypt($val->id),'reject']) }}">
                                         <img src="/img/reject.png" class="me-1 align-middle" alt="REJECT">
-                                        <span class="align-middle">REJECT</span>
+                                        <span class="align-middle">REJECT {{$val->id}}</span>
                                     </a>
+                                    <!-- <a class="btn grey-borderBtn me-3 accept" href="{{ route('acceptRejectRequest', [Crypt::encrypt($val->receiver_id),'accept']) }}">
+                                        <img src="/img/accept.png" class="me-1 align-middle" alt="ACCEPT">
+                                        <span class="align-middle">ACCEPT</span>
+                                    </a>
+                                    <a class="btn grey-borderBtn reject" href="{{ route('acceptRejectRequest', [Crypt::encrypt($val->receiver_id),'reject']) }}">
+                                        <img src="/img/reject.png" class="me-1 align-middle" alt="REJECT">
+                                        <span class="align-middle">REJECT</span>
+                                    </a> -->
                                 </div>
                             </div>
                         </div>

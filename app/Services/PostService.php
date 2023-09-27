@@ -1935,4 +1935,16 @@ class PostService {
 
         return $postArray->get();
     }
+
+    // public function updateNotificationStatusAcceptReject($post_id, $sender_id, $receiver_id, $status) {
+    //     $notification = New Notification();
+
+    //     $notification->post_id = $post_id;
+    //     $notification->sender_id =  $sender_id;
+    //     $notification->receiver_id = $receiver_id;
+    //     $notification->notification_type = $status;
+    //     $notification->created_at = Carbon::now();
+
+    //     $notification->save();
+    // }
 }
