@@ -40,10 +40,12 @@ Route::get('/getUsers', [UserController::class, 'getUsers'])->name('getUsers');
 Route::get('/getTagUsers', [UserController::class, 'getTagUsers'])->name('getTagUsers');
 Route::post('/setTagUsers', [UserController::class, 'setTagUsers'])->name('setTagUsers');
 Route::post('/checkUsername', [UserController::class, 'checkUsername'])->name('checkUsername');
+Route::get('/follow-counts', [UserController::class, 'followCounts'])->name('follow-counts');
 
 Route::get('search',[SearchController::class, 'search'])->name('searchPosts');
 Route::get('search/filter', [SearchController::class, 'filter'])->name('searchFilterIndex');
 Route::post('upload/file', [UserPostController::class, 'uploadFiles'])->name('uploadFiles');
+Route::get('/getBreak', [DashboardController::class, 'getBreak'])->name('getBreak');
 
 /*********************************************************************************************
  *                              User Route
@@ -58,10 +60,15 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');  
      
     Route::post('/create-post', [UserPostController::class, 'store'])->name('storeVideoImagePost');
+    
+    Route::get('/upload', [UserPostController::class, 'upload'])->name('upload');
 
+    Route::post('/upload-large-files', [UserPostController::class, 'uploadLargeFiles'])->name('files.upload.large');
+    
     Route::get('/user/change-password', [UserController::class, 'showChangePassword'])->name('showPassword');
 
     Route::get('/user/profile', [UserController::class, 'showProfile'])->name('profile');
+    Route::get('/user/edit-profile', [UserController::class, 'editProfile'])->name('edit-profile');
 
     Route::post('/post/profile', [UserController::class, 'storeProfile'])->name('storeProfile');
 
@@ -90,6 +97,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/following', [UserController::class, 'following'])->name('following');
     Route::post('/unfollow', [UserController::class, 'unfollow'])->name('unfollow');
     Route::post('/accept', [UserController::class, 'accept'])->name('accept');
+    Route::get('/searchFollwers', [UserController::class, 'searchFollwers'])->name('searchFollwers');
+    Route::get('/searchFollowing', [UserController::class, 'searchFollowing'])->name('searchFollowing');
+    Route::get('/searchFollowRequest', [UserController::class, 'searchFollowRequest'])->name('searchFollowRequest');
     Route::post('/reject', [UserController::class, 'reject'])->name('reject');
     Route::post('/remove', [UserController::class, 'remove'])->name('remove');
     Route::post('/follow', [UserController::class, 'follow'])->name('follow');
@@ -97,8 +107,61 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/posts/{post_id}/{notification_id}/{notification_type}', [UserPostController::class, 'posts'])->name('posts');
     Route::post('/user/updateNotificationCountStatus', [UserPostController::class, 'updateNotificationCountStatus'])->name('updateNotificationCountStatus');
     Route::post('updateNotificationCountStatus', [UserPostController::class, 'updateNotificationCountStatus'])->name('updateNotificationCountStatus');
+    Route::get('notifications', [UserPostController::class, 'notifications'])->name('notifications');
+    Route::get('surfer-follow-request/{id}', [UserPostController::class, 'surferFollowRequest'])->name('surferFollowRequest');
+    
+    
+    Route::get('/surferRequest/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');
+    Route::get('/surferRequestList', [UserPostController::class, 'surferRequestList'])->name('surferRequestList');
+    Route::get('/acceptRejectRequest/{id}/{type}', [UserPostController::class, 'acceptRejectRequest'])->name('acceptRejectRequest');
+
+    Route::post('/upload-media', [UserPostController::class, 'uploadMedia'])->name('uploadMedia');
+    
     
 });
+
+/*********************************************************************************************
+ *                              photograher Route
+ * ********************************************************************************************/
+
+
+Route::group(['middleware' => ['auth:sanctum', 'verified', 'photographerAuth']], function () {
+
+    Route::get('/photographer/dashboard', [DashboardController::class, 'photographerDashboard'])->name('dashboard');  
+     
+    
+    
+});
+
+/*********************************************************************************************
+ *                              Advertise Route
+ * ********************************************************************************************/
+
+
+Route::group(['middleware' => ['auth:sanctum', 'verified', 'advertiseAuth']], function () {
+
+    Route::get('/advertiser/dashboard', [DashboardController::class, 'advertiserDashboard'])->name('dashboard');  
+     
+    
+    
+});
+
+
+
+/*********************************************************************************************
+ *                              Surfer camp Route
+ * ********************************************************************************************/
+
+Route::group(['middleware' => ['auth:sanctum', 'verified', 'surfercampAuth']], function () {
+
+    Route::get('/surfercamp/dashboard', [DashboardController::class, 'surfercampDashboard'])->name('dashboard');  
+     
+    
+    
+});
+
+
+
 
 Route::get('/postData/{post_id}', [UserPostController::class, 'getPostData'])->name('getPostData');
 /**

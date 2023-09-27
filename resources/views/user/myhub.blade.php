@@ -58,17 +58,17 @@
                                 <div class="imgRatingWrap">
                                     @if(!empty($myHub->upload->image)) 
                                         <div class="pos-rel editBtnWrap">
-                                            <img src="{{ $myHub->upload->image }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
+                                            <img src="{{ env('FILE_CLOUD_PATH').'images/'.$myHub->user->id.'/'.$myHub->upload->image }}" alt="" width="100%" class="img-fluid" id="myImage{{$myHub->id}}">
                                         </div>
                                     @elseif(!empty($myHub->upload->video))
                                         <div class="pos-rel editBtnWrap">
                                             @if ($myHub->upload->video)
                                             <video width="100%" preload="auto" data-setup="{}" controls  autoplay playsinline muted class="video-js" id="myImage{{$myHub->id}}">
-                                                <source src="{{ $myHub->upload->video }}" >    
+                                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$myHub->user->id.'/'.$myHub->upload->video }}" >    
                                             </video>
                                             @else
                                             <video width="100%" preload="auto" data-setup="{}" controls  autoplay playsinline muted class="video-js" id="myImage{{$myHub->id}}">
-                                                <source src="{{ $myHub->upload->video }}" >    
+                                                <source src="{{ env('FILE_CLOUD_PATH').'videos/'.$myHub->user->id.'/'.$myHub->upload->video }}" >    
                                             </video>
                                             @endif
                                         </div>
@@ -89,7 +89,7 @@
                                             <ul class="pl-0 mb-0 d-flex">
                                                 <li>
                                                     <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ url('/')."/postData/".$myHub->id }}">                                                
-                                                        <img src="{{ asset("/img/facebook.png")}}" alt="">
+                                                        <img src="{{ asset("/img/facebook.png") }}" alt="">
                                                     </a> 
                                                 </li>
                                                 <li>
@@ -97,14 +97,14 @@
                                                 </li>
                                                 <li>
                                                     <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$myHub->beach_breaks->latitude ?? ''}}" data-long="{{$myHub->beach_breaks->longitude ?? ''}}" data-id="{{$myHub->id}}" class="locationMap">
-                                                        <img src="{{ asset("/img/maps-and-flags.png")}}" alt="">
+                                                        <img src="{{ asset("/img/maps-and-flags.png") }}" alt="">
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <span class="divider"></span>
                                                 </li>
                                                 <li>
-                                                    <a onclick="openFullscreen({{$myHub->id}});"><img src="{{ asset("/img/full_screen.png")}}"
+                                                    <a onclick="openFullscreen({{ $myHub->id }});"><img src="{{ asset("/img/full_screen.png")}}"
                                                             alt=""></a>
                                                 </li>
                                                 <li>
@@ -410,12 +410,12 @@
             });
 	}
         
-        $(".editBtnVideo").click(function() {
+        $(document).on('click', '.editBtnVideo', function() {
             var id = $(this).data('id');
             
             $.ajax({
                 url: '/getPostData/' + id,
-                type: "get",
+                type: "get", 
                 async: false,
                 success: function(data) {
                     // console.log(data.html);
@@ -425,6 +425,7 @@
                 }
             });
         });
+        
         $('.pos-rel a').each(function(){
            $(this).on('hover, mouseover, click', function() {
                 $(this).children('.userinfoModal').find('input[type="text"]').focus();

@@ -9,7 +9,10 @@ return [
     // User Type 
      'userType'=>[
         'ADMIN'=>'ADMIN',
-        'USER'=>'USER'
+        'USER'=>'USER',
+        'PHOTOGRAPHER'=>'PHOTOGRAPHER',
+        'SURFER CAMP'=>'SURFER CAMP',
+        'ADVERTISEMENT'=>'ADVERTISEMENT'
     ],
 
     
@@ -36,6 +39,13 @@ return [
     'post_type'=>[        
         'PRIVATE'=>'MyHub',
         'PUBLIC'=>'MyHub & Post'
+    ],
+    
+    // Gender type
+    'gender_type'=>[        
+        '1'=>'Male',
+        '2'=>'Female',
+        '3'=>'Other',
     ],
 
     // Wave size drop down menu
@@ -89,6 +99,15 @@ return [
 
     // Admin dashboard redirect 
     'adminhome' => RouteServiceProvider::ADMINHOME,
+    
+    // photographer dashboard redirect 
+    'photographerhome' => RouteServiceProvider::PHOTOGRAPHER_HOME,
+    
+    // advertiser dashboard redirect   
+    'advertiserhome' => RouteServiceProvider::ADVERTISER_HOME,
+    
+    // surfer camp dashboard redirect 
+    'surfercamphome' => RouteServiceProvider::SURFERCAMP_HOME,
 
     // Site Title for user and admin
     'siteTitle'=> [

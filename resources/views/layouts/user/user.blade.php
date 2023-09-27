@@ -14,24 +14,28 @@
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/bootstrap.min.css")}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/style.css")}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset("/css/media.css")}}">
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/loader.css")}}">
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/responsive.css")}}">
     <link rel="stylesheet" href="{{ asset("/css/croppie.css") }}" />
 </head>
 
-<body>
+<body class="login-body">
 
     <!-- Header -->
 
     @php
     $profileClass = (Auth::user() && Request::path() == 'user/profile') ? 'contactUsWrap profileWrap' : '';
     @endphp
+    @include('layouts/header')
     <main class="{{ $profileClass }}">
+        <div id="loader"></div> 
         <div class="loaderWrap">
             <div class="lds-hourglass"></div>
         </div>
         <!--<div id="loader"></div> -->
-        @include('layouts/user/user_header')
+        <!--@include('layouts/user/user_header')-->
+        
         @include('layouts/user/user_banner')
         @if ($errors->any())
         <div class="alert alert-danger alert-dismissible" id="msg" role="alert">
@@ -68,8 +72,8 @@
   type="text/javascript"></script>
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
-    <!-- <script src="{{ asset('/js/bootstrap.js') }}"></script> -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="{{ asset('/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset("/js/jquery.validate.min.js") }}"></script>
     <script src="{{ asset("/js/custom.js") }}"></script>
     @if (Auth::user())
@@ -126,6 +130,7 @@
 
        function openFullscreen(id) {
             var elem = document.getElementById("myImage"+id);
+<<<<<<< HEAD
             if (elem.requestFullScreen) {
                 elem.requestFullScreen();
                 elem.webkitEnterFullscreen();
@@ -142,6 +147,27 @@
                 elem.enterFullscreen();
             }
         }      
+=======
+//            alert('here');
+            $('.home-row').hide();
+            $('.show-vid').html('<video width="100%" preload="auto" data-setup="{}" controls controlsList="nofullscreen nodownload" autoplay playsinline muted class="vid-expand" id="myImage"><source src="'+id+'" /></video>');
+//            if (elem.requestFullScreen) {
+//                elem.requestFullScreen();
+//                elem.webkitEnterFullscreen();
+//                elem.enterFullscreen();
+//            } else if (elem.webkitRequestFullScreen) { /* Safari */
+//                elem.webkitRequestFullScreen();
+//                elem.webkitEnterFullscreen();
+//                elem.enterFullscreen();
+//            } else if (elem.mozRequestFullScreen) {
+//                elem.mozRequestFullScreen();
+//                elem.enterFullscreen();
+//            } else if (elem.msRequestFullScreen) { /* IE11 */
+//                elem.msRequestFullScreen();
+//                elem.enterFullscreen();
+//            }
+        }    
+>>>>>>> c028a04a7da1ff49c66dfdc48399b92c0d295d36
     </script>
 </body>
 </html>

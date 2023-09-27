@@ -53,15 +53,17 @@ class WelcomeFeedController extends Controller
             }
         }
         $customArray = $this->customArray;
+        $countries = $this->masterService->getCountries();
+        $states = $this->masterService->getStateByCountryId(1);
+        $beaches = $this->masterService->getBeaches();
         // non logged in user redirect to home page
         $postsList = $this->postService->getPostsListing();
-        
         if ($request->ajax()) {
-            $view = view('elements/welcomedata',compact('customArray','postsList'))->render();
+            $view = view('elements/welcomedata',compact('customArray','postsList','countries','states','beaches'))->render();
             return response()->json(['html' => $view]);
         }
         
-        return view('welcome',compact('customArray','postsList'));
+        return view('welcome', compact('customArray','postsList','countries','states','beaches'));
     }
 
     public function privacy(){
