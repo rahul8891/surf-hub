@@ -613,3 +613,9 @@ jQuery(document).on('click', function(){
        jQuery("div.alert").fadeOut();
     }, 2000 ); // 2 secs
 });
+
+jQuery(document).on('load', function(){
+    setTimeout(function(){
+       jQuery("div.alert").fadeOut();
+    }, 2000 ); // 2 secs
+});
