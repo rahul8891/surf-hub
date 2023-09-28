@@ -513,7 +513,7 @@ class UserController extends Controller {
             $notification = $this->users->getNotificationCount();
             $userPosts = $this->post->getPostByUserId(Auth::user()->id);
             // $surferRequests = $this->post->getSurferRequest();
-            $surferRequests = Notification::where("receiver_id", "=", Auth::user()->id)->get();
+            $surferRequests = Notification::where("receiver_id", "=", Auth::user()->where("status", "=", 0)->get();
 
             $uploads = $this->post->getUploads(Auth::user()->id);
             $fCounts = array(
