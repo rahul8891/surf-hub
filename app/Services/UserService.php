@@ -330,6 +330,7 @@ class UserService {
 
     public function getNotificationCount() {
         $count = $this->notification->where('receiver_id', Auth::user()->id)
+                ->where('notification_type', '!=', 'Surfer Request')
                 ->where('status', '0')
                 ->count();
         return $count;
