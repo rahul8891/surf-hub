@@ -1,8 +1,8 @@
 jQuery(document).ready(function () {
     var csrf_token = jQuery('meta[name="csrf-token"]').attr('content');
-    // setTimeout(function(){
-    //    jQuery("div.alert").fadeOut();
-    // }, 2000 ); // 2 secs
+    setTimeout(function(){
+       jQuery("div.alert").fadeOut();
+    }, 2000 ); // 2 secs
     /**
      * resetForm Form  validator on close     
      * remove image preview on close (pip)
@@ -611,12 +611,6 @@ jQuery(document).ready(function () {
 });
 
 jQuery(document).on('click', function(){
-    setTimeout(function(){
-       jQuery("div.alert").fadeOut();
-    }, 2000 ); // 2 secs
-});
-
-jQuery(document).load(function(){
     setTimeout(function(){
        jQuery("div.alert").fadeOut();
     }, 2000 ); // 2 secs
