@@ -382,8 +382,9 @@
                         var result = JSON.parse(responseData);
                         if(result.status == "success") {
                             jQuery("#" + deleteid).fadeOut("normal");
+                            jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+result.message+'</div>');
                         } else{
-                            alert('Record not deleted.');
+                            jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+result.message+'</div>');
                         }
                     }
                 });
