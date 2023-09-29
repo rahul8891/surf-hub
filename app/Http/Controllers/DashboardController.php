@@ -82,18 +82,12 @@ class DashboardController extends Controller {
                 ->paginate(10);
         $requestSurfer = array();
         foreach ($postsList as $val) {
-//            $surferRequest = SurferRequest::select("*")
-//                    ->where("post_id", "=", $val['id'])
-//                    ->where("status", "=", 0)
-//                    ->get();
-
             $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
                     ->where("surfer_requests.post_id", "=", $val['id'])
                     ->where("surfer_requests.status", "=", 0)
                     ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
 
             foreach ($surferRequest as $res) {
-//                echo '<pre>'; print_r($res['id']);die;
                 $requestSurfer[$val['id']]['id'] = $res['id'];
                 $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
             }
@@ -124,18 +118,12 @@ class DashboardController extends Controller {
                 ->paginate(10);
         $requestSurfer = array();
         foreach ($postsList as $val) {
-//            $surferRequest = SurferRequest::select("*")
-//                    ->where("post_id", "=", $val['id'])
-//                    ->where("status", "=", 0)
-//                    ->get();
-
             $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
                     ->where("surfer_requests.post_id", "=", $val['id'])
                     ->where("surfer_requests.status", "=", 0)
                     ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
 
             foreach ($surferRequest as $res) {
-//                echo '<pre>'; print_r($res['id']);die;
                 $requestSurfer[$val['id']]['id'] = $res['id'];
                 $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
             }
@@ -166,18 +154,12 @@ class DashboardController extends Controller {
                 ->paginate(10);
         $requestSurfer = array();
         foreach ($postsList as $val) {
-//            $surferRequest = SurferRequest::select("*")
-//                    ->where("post_id", "=", $val['id'])
-//                    ->where("status", "=", 0)
-//                    ->get();
-
             $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
                     ->where("surfer_requests.post_id", "=", $val['id'])
                     ->where("surfer_requests.status", "=", 0)
                     ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
 
             foreach ($surferRequest as $res) {
-//                echo '<pre>'; print_r($res['id']);die;
                 $requestSurfer[$val['id']]['id'] = $res['id'];
                 $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
             }
@@ -211,7 +193,6 @@ class DashboardController extends Controller {
         $getBeachArray = $this->masterService->getBeachById($data['beach_id']);
         $beachName = $getBeachArray[0]['beach_name'];
         $getBreakArray = $this->masterService->getBreakByBeachName($beachName);
-//        echo '<pre>';        print_r($getBreakArray);die;
         if ($getBreakArray) {
             echo json_encode(array('status' => 'success', 'message' => 'true', 'data' => $getBreakArray));
         } else {

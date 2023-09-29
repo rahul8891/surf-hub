@@ -315,7 +315,6 @@
 
             $('.ajax-load').removeClass('requests');
             $('.ajax-load').hide();
-//            $("#search-data").append(data.html);
             $(data.html).insertBefore(".ajax-load");
         });
     }

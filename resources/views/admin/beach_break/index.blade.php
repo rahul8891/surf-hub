@@ -22,9 +22,6 @@
                                             <input type="file" name="beach_break_excel" id="beach_break_excel">
                                             <span>IMPORT EXCEL</span>
                                         </div>
-<!--                                        <button class="btn greyBorder-btn ms-0 ">
-                                            <input type="file" name="beach_break_excel" id="beach_break_excel">IMPORT EXCEL
-                                        </button>-->
                                         <button class="btn greyBorder-btn ms-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">MANUALLY ADD</button>
                                         <div class="dropdown-menu ">
                                             <div class="map-header">
@@ -84,63 +81,6 @@
                                             </div>
                                             </form>
                                         </div>
-
-                                        <!-- <div class="d-inline-block d-lg-inline-block dropdown filter ms-2 my-lg-0 my-3 searchByFilter">
-                                            <form class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <div class="row">
-                                                    <label for="serachBy" class="col-sm-4 col-form-label" id="serachBy">Search by</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control mb-0" id="serachBy">
-                                                    </div>
-                                                </div>
-                                            </form>
-
-                                            <div class="dropdown-menu" style="width: 400px;">
-                                                <form class="filterWrap" action="{{ route('beachBreakListIndex') }}" aria-labelledby="dropdownMenuButton2" name="searchFilter">
-                                                <div class="filter-header">
-                                                    <h5>Search by</h5>
-                                                    <a href="#">Clear</a>
-                                                </div>
-                                                <div class="filter-body">
-                                                    <div class="align-items-center d-flex mb-4">
-                                                        <label class="form-label me-3 w-150">Beach Name</label>
-                                                        <input type="text" class="form-control mb-0">
-                                                    </div>
-                                                    <div class="align-items-center d-flex mb-4">
-                                                        <label class="form-label me-3 w-150">Break Name</label>
-                                                        <input type="text" class="form-control mb-0">
-                                                    </div>
-                                                    <div class="align-items-center d-flex mb-4">
-                                                        <label class="form-label me-3 w-150">City/Region</label>
-                                                        <input type="text" class="form-control mb-0">
-                                                    </div>
-                                                    <div class="align-items-center d-flex mb-4">
-                                                        <label class="form-label me-3 w-150">State</label>
-                                                        <input type="text" class="form-control mb-0">
-                                                    </div>
-                                                    <div class="align-items-center d-flex mb-4">
-                                                        <label class="form-label me-3 w-150">Country</label>
-                                                        <input type="text" class="form-control mb-0">
-                                                    </div>
-
-                                                    <div class="align-items-center d-flex mb-4">
-                                                        <label class="form-label me-3 w-150">Latitude</label>
-                                                        <input type="text" class="form-control mb-0">
-                                                    </div>
-                                                    <div class="align-items-center d-flex mb-4">
-                                                        <label class="form-label me-3 w-150">Longitude</label>
-                                                        <input type="text" class="form-control mb-0">
-                                                    </div>
-
-
-                                                    <div class="text-center">
-                                                        <button type="submit" class="btn blue-btn w-150">Search</button>
-                                                    </div>
-                                                </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div> -->
                                 </div>
                                 <table class="table table-striped" id="beachBreak">
                                     <thead>

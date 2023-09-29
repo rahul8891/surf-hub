@@ -41,15 +41,7 @@ class PayPalController extends Controller {
                 ]
             ],
         ]);
-//        $mergeData = array_merge($data,['status' => TransactionStatus::PENDING, 'vendor_order_id' => $order['id']]);
-//        DB::beginTransaction();
-//        Order::create($mergeData);
-//        DB::commit();
         return response()->json($order);
-
-
-        //return redirect($order['links'][1]['href'])->send();
-       // echo('Create working');
     }
 
     public function capture(Request $request)
@@ -61,23 +53,7 @@ class PayPalController extends Controller {
         $token = $provider->getAccessToken();
         $provider->setAccessToken($token);
         $result = $provider->capturePaymentOrder($orderId);
-
-//            $result = $result->purchase_units[0]->payments->captures[0];
         try {
-//            DB::beginTransaction();
-//            if($result['status'] === "COMPLETED"){
-//                $transaction = new Transaction;
-//                $transaction->vendor_payment_id = $orderId;
-//                $transaction->payment_gateway_id  = $data['payment_gateway_id'];
-//                $transaction->user_id   = $data['user_id'];
-//                $transaction->status   = TransactionStatus::COMPLETED;
-//                $transaction->save();
-//                $order = Order::where('vendor_order_id', $orderId)->first();
-//                $order->transaction_id = $transaction->id;
-//                $order->status = TransactionStatus::COMPLETED;
-//                $order->save();
-//                DB::commit();
-//            }
         } catch (Exception $e) {
             DB::rollBack();
             dd($e);

@@ -77,8 +77,6 @@ class AdminUserService {
                                    ->whereIn('status', [$this->checkUserType['status']['DEACTIVATED'], $this->checkUserType['status']['PENDING']])
                                    ->count();
         return $userArray;
-
-
     }
 
    /**
@@ -147,12 +145,10 @@ class AdminUserService {
         if (isset($params['lName']) && !empty($params['lName'])) {
             $userArray->where('user_profiles.last_name', 'LIKE',  '%' . $params['lName'] .'%');
         }
-
-//         dd($userArray->toSql());
-        // return $userArray->paginate(10);
         return $userArray->get();
     }
-   /**
+
+    /**
      * [getBeachBreakListing] we are getiing all the Beach Break
      * @param
      * @param
@@ -191,7 +187,6 @@ class AdminUserService {
             $userArray->where('user_profiles.last_name', 'LIKE',  '%' . $params['lName'] .'%');
         }
 
-        // dd($userArray->toSql());
         return $userArray->get();
     }
 
@@ -498,7 +493,6 @@ class AdminUserService {
             }
         } catch (\Exception $e) {
             $message = $e->getMessage();
-//            echo '<pre>34';        print_r($message);die;
             return false;
         }
     }
@@ -525,7 +519,6 @@ class AdminUserService {
                             ->join('user_profiles', 'user_profiles.user_id', '=', 'users.id')
                             ->get();
         }
-        //dd($result);
         return $report;
     }
 

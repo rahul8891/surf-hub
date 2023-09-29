@@ -54,12 +54,6 @@
                                         </ul>
                                         <div>
                                             <ul class="pl-0 mb-0 d-flex">
-                                                <!-- <li>
-                                                    <a href="#"><img src="{{ asset("/img/instagram.png")}}" alt=""></a>
-                                                </li>
-                                                <li>
-                                                    <span class="divider"></span>
-                                                </li> -->
                                                 <li>
                                                     <a href="#">
                                                         <img src="{{ asset("/img/facebook.png")}}" alt="">
@@ -157,9 +151,6 @@
                                                 <li>
                                                     <span class="divider"></span>
                                                 </li>
-                                                <!-- <li>
-                                                    <a href="{{route('deleteUserPost', Crypt::encrypt($detail->id))}}">DELETE</a>
-                                                </li> -->
                                                 <li class="pos-rel">
                                                     <a href="{{route('saveToMyHub', Crypt::encrypt($detail->post->id))}}" class="">SAVE
                                                         <div class="saveInfo">

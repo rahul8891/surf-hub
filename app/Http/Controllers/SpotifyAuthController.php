@@ -18,9 +18,6 @@ class SpotifyAuthController extends Controller
     public function handleProviderCallback()
     {
         $user = Socialite::driver('spotify')->user();
-
-        // echo "<pre>";print_r($user);die;
-
         if(!$user) {
             $SpotifyUser =  new SpotifyUser();
             $SpotifyUser->user_id = Auth::user()->id;
@@ -29,11 +26,8 @@ class SpotifyAuthController extends Controller
             $SpotifyUser->refresh_token = $user->refreshToken;
             $SpotifyUser->created_at = Carbon::now();
             $SpotifyUser->updated_at = Carbon::now();
-            //dd($this->comments);
             $SpotifyUser->save();
         } else {
-            // $SpotifyUser = $user;
-
             $SpotifyUser = SpotifyUser::updateOrCreate(
                 ['user_id' => Auth::user()->id],
                 [

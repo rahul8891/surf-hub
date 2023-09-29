@@ -68,7 +68,6 @@ class BeachBreakController extends Controller
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $gender_type = config('customarray.gender_type');
         $beach_break = $this->users->getBeachBreakListing($params);
-        // dd($beach_break);
         $spiner = ($beach_break) ? true : false;
         return view('admin/beach_break/index', compact('beach_break','spiner','countries','states','gender_type'));     
     }
@@ -82,7 +81,6 @@ class BeachBreakController extends Controller
     public function getBeachBreakDetail($id)
     {
         $beach_break = BeachBreak::where('id', $id)->get()->toArray();
-//        dd($beach_break);
         $view = view('admin/beach_break/beach_break_data', compact('beach_break','id'))->render();
         return response()->json(['html' => $view]);  
     }
@@ -136,17 +134,7 @@ class BeachBreakController extends Controller
         try{
             $reqdata = $request->all();
             $file = $request->file('excel_file');
-//            dd($file);
-            $rules = array(
-//                'beach_name' => ['required', 'string'],
-//                'break_name' => ['required','string'],
-//                'city_region' => ['required','string'],
-//                'state' => ['required','string'],
-//                'country' => ['required','string'],
-//                'longitude' => ['required'],
-//                'latitude' => ['required'],
-            );
-            
+            $rules = array();
             $validate = Validator::make($reqdata, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to register.

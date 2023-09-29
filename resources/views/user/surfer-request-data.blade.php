@@ -20,7 +20,6 @@
                     </div>
                 </div>
                 <div class="edit-profile-box">
-                    <!-- <a href="{{ url('user/edit-profile') }}" class="btn edit-btn"><img src="/img/new/edit.png" alt="edit" class="align-middle me-1"> <span class="align-middle">EDIT</span></a> -->
                     <table>
                         <tbody>
                             <tr>
@@ -28,11 +27,6 @@
                                 <td>:</td>
                                 <td>{{ __(ucwords($userProfile['surfer_name'])) }}</td>
                             </tr>
-                            <!-- <tr>
-                                <td>Email</td>
-                                <td>:</td>
-                                <td>{{ $userProfile['email'] }}</td>
-                            </tr> -->
                             <tr>
                                 <td>Gender</td>
                                 <td>:</td>
@@ -108,12 +102,6 @@
 
                                         </div>
                                     @else
-                                        <!-- <img src="/img/new/normal-user.png" alt="normal-user">
-
-                                        <button class="follow-btn follow <?php echo (isset($posts->followPost->id) && !empty($posts->followPost->id)) ? ((($posts->followPost->status == 'FOLLOW') && ($posts->followPost->follower_request_status == '0')) ? 'clicked' : 'clicked Follow') : 'followPost' ?>" data-id="{{ $posts->user_id }}" data-post_id="{{ $posts->id }}">
-                                        <span class="follow-icon"></span> FOLLOW
-                                        </button> -->
-
                                         <div class="user-right">
                                             <img src="/img/new/normal-user.png" alt="normal-user">
                                             @if(isset($posts->followPost->id) && !empty($posts->followPost->id))
@@ -363,8 +351,6 @@
 
             $('.ajax-load').removeClass('requests');
             $('.ajax-load').hide();
-//            $("#post-data").insertBefore(data.html);
-            // $(data.html).insertBefore(".ajax-load");
         });
     }
 

@@ -37,10 +37,8 @@
                         'amount' : '{{$amount}}',
                     })
                 }).then(function(res) {
-                    //res.json();
                     return res.json();
                 }).then(function(orderData) {
-                    //console.log(orderData);
                     return orderData.id;
                 });
             },
@@ -55,12 +53,10 @@
                         user_id: "{{ auth()->user()->id }}",
                     })
                 }).then(function(res) {
-                   // console.log(res.json());
                     return res.json();
                 }).then(function(orderData) {
 
                     // Successful capture! For demo purposes:
-                  //  console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
                     var transaction = orderData.purchase_units[0].payments.captures[0];
                     iziToast.success({
                         title: 'Success',

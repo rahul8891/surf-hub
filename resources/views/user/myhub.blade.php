@@ -149,7 +149,6 @@
                                     </div>
                                 </div>
                                 @if(Auth::user() && $posts->user_id == Auth::user()->id)
-                                <!-- <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a> -->
                                 <a href="javascript:void(0);" class="deletePost" data-id="{{$posts->id}}"><img src="/img/delete.png" alt="Delete"></a>
                                 @endif
                                 @if (isset($posts->parent_id) && ($posts->parent_id == 0))
@@ -345,15 +344,15 @@
     }
 
     jQuery(document).on("scroll", function () {
-        jQuery("video").each(function () { //console.log('aa');
-            // jQuery("video").get(0).pause();
+        jQuery("video").each(function () {
+
             // visible?
-            if (isInView(jQuery(this).get(0))) { // console.log('video = '+ jQuery.parseJSON(jQuery(this).get(0).paused));
-                if (jQuery(this).get(0).paused) { //console.log('1111');
+            if (isInView(jQuery(this).get(0))) {
+                if (jQuery(this).get(0).paused) {
                     jQuery(this).get(0).play(true);// play if not playing
                 }
             } else {
-                if (!jQuery(this).get(0).paused) { //console.log('2222');
+                if (!jQuery(this).get(0).paused) {
                     jQuery(this).get(0).pause();// pause if not paused
                 }
            }

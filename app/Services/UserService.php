@@ -129,7 +129,6 @@ class UserService {
                     $user_profiles->state_id = $dataRequest['state_id'];
                     $user_profiles->suburb = $dataRequest['suburb'];
                 }
-                // dd($users);
                 if ($users->save() && $user_profiles->save()) {
                     Auth::setUser($users);
                     $message = $this->checkUserType['success']['UPDATE_SUCCESS'];
@@ -142,7 +141,6 @@ class UserService {
             }
         } catch (\Exception $e) {
             $message = $e->getMessage();
-//            echo '<pre>34';        print_r($message);die;
             return false;
         }
     }
@@ -154,7 +152,6 @@ class UserService {
      * @return [object]              [description]
      */
     public function updateUserProfileImage($dataRequest, &$message = '') {
-
         $id = Auth::user()->id;
 
         if (isset($dataRequest['userId']) && !empty($dataRequest['userId'])) {
@@ -233,16 +230,11 @@ class UserService {
                     ->groupBy('users.id')
                     ->get();
         }
-
-
-
-        //dd($result);
         return $result;
     }
 
     public function getUsersFilterByUserType($string, $user_type) {
         $userProfiles = new UserProfile();
-//        DB::enableQueryLog();
         $result = $userProfiles
                 ->join('users', 'users.id', '=', 'user_profiles.user_id')
                 ->where('user_id', '!=', Auth::user()->id)
@@ -265,8 +257,6 @@ class UserService {
     /*** Search by username autocomplete in filters */
     public function getUsersFilterByUsername($string, $user_type='') {
         $userProfiles = new UserProfile();
-//        DB::enableQueryLog();
-
         if(isset($user_type) && !empty($user_type)) {
             $result = $userProfiles
                     ->join('users', 'users.id', '=', 'user_profiles.user_id')
@@ -320,7 +310,6 @@ class UserService {
     }
 
     public function getAllTaggedUsers($input) {
-        //dd($input);
         $result = $this->tag
                         ->where('post_id', $input['post_id'])
                         ->where('is_deleted', '0')
@@ -350,7 +339,6 @@ class UserService {
     public function followers($user_id) {
         $followers = $this->userFollows->where('followed_user_id', $user_id)
                         ->where('status', 'FOLLOW')
-//                    ->where('follower_request_status','0')
                         ->where('is_deleted', '0')
                         ->orderBy('id', 'desc')->get();
         return $followers;
@@ -373,7 +361,6 @@ class UserService {
                             ->where('is_deleted', '0')
                             ->orderBy('id', 'desc')->get();
         }
-        //dd($result);
         return $followRequests;
     }
 
@@ -389,11 +376,9 @@ class UserService {
         } else {
             $followers = $this->userFollows->where('followed_user_id', $user_id)
                             ->where('status', 'FOLLOW')
-//                    ->where('follower_request_status','0')
                             ->where('is_deleted', '0')
                             ->orderBy('id', 'desc')->get();
         }
-        //dd($result);
         return $followers;
     }
 
@@ -409,11 +394,9 @@ class UserService {
         } else {
             $following = $this->userFollows->where('follower_user_id', $user_id)
                             ->where('status', 'FOLLOW')
-//                    ->where('follower_request_status','0')
                             ->where('is_deleted', '0')
                             ->orderBy('id', 'desc')->get();
         }
-        //dd($result);
         return $following;
     }
 
@@ -421,7 +404,6 @@ class UserService {
         Notification::where(['receiver_id' => $user_id, 'notification_type' => 'Accept'])->orWhere(['notification_type' => 'Reject'])->update(['status' => '1', 'count_status' => '1', 'updated_at' => Carbon::now()]);
         $following = $this->userFollows->where('follower_user_id', $user_id)
                         ->where('status', 'FOLLOW')
-//                    ->where('follower_request_status','0')
                         ->where('is_deleted', '0')
                         ->orderBy('id', 'desc')->get();
         return $following;
@@ -527,7 +509,6 @@ class UserService {
                 ->count();
 
         }
-        // dd($count);
         return $count;
     }
 
@@ -627,7 +608,6 @@ class UserService {
             $this->notification->notification_type = 'Follow';
             $this->notification->created_at = Carbon::now();
             $this->notification->updated_at = Carbon::now();
-            //dd($this->comments);
             $this->notification->save();
         } catch (\Exception $e) {
             $message = '"' . $e->getMessage() . '"';
@@ -667,7 +647,6 @@ class UserService {
         $userData = UserProfile::where('user_id', $surfer_id)->get();
         $userProfile = array();
         foreach ($userData as $val) {
-            // dd($val->local_beach_break_id);
             $userProfile['user_id'] = $surfer_id;
             $userProfile['surfer_name'] = $val->first_name . ' ' . $val->last_name;
             $userProfile['profile_photo_path'] = $val->user->profile_photo_path;
@@ -691,42 +670,40 @@ class UserService {
         $advertPost = array();
         $post = AdvertPost::where('post_id', $id)
                 ->get();
-
-//        echo '<pre>';print_r($post);die;
         foreach ($post as $val) {
-         $advertPost['ad_link']  = $val->ad_link;
-         $advertPost['surfhub_target']  = $val->surfhub_target;
-         $advertPost['profile_target']  = $val->profile_target;
-         $advertPost['search_target']  = $val->search_target;
-         $advertPost['gender']  = $val->gender;
-         $advertPost['optional_user_type']  = $val->optional_user_type;
-         $advertPost['optional_country_id']  = $val->optional_country_id;
-         $advertPost['optional_state_id']  = $val->optional_state_id;
-         $advertPost['optional_postcode']  = $val->optional_postcode;
-         $advertPost['optional_beach_id']  = $val->optional_beach_id;
-         $advertPost['optional_beach']  = $val->beach->beach_name;
-         $advertPost['optional_board_type']  = $val->optional_board_type;
-         $advertPost['optional_camera_brand']  = $val->optional_camera_brand;
-         $advertPost['optional_surf_resort']  = $val->optional_surf_resort;
-         $advertPost['search_user_type']  = $val->search_user_type;
-         $advertPost['search_surf_resort']  = $val->search_surf_resort;
-         $advertPost['currency_type']  = $val->currency_type;
-         $advertPost['your_budget']  = $val->your_budget;
-         $advertPost['per_view']  = $val->per_view;
-         $advertPost['start_date']  = $val->start_date;
-         $advertPost['end_date']  = $val->end_date;
-         $advertPost['country_id']  = $val->advert_post->country_id;
-         $advertPost['state_id']  = $val->advert_post->state_id;
-         $advertPost['local_beach_id']  = $val->advert_post->local_beach_id;
-         $advertPost['local_beach']  = $val->advert_post->beach_breaks->beach_name;
-         $advertPost['local_break']  = $val->advert_post->beach_breaks->break_name;
-         $advertPost['local_break_id']  = $val->advert_post->local_break_id;
-         $advertPost['board_type']  = $val->advert_post->board_type;
-         $advertPost['surfer']  = $val->advert_post->surfer;
-         $advertPost['fin_set_up']  = $val->advert_post->fin_set_up;
-         $advertPost['post_text']  = $val->advert_post->post_text;
-         $advertPost['advert_img']  = $val->advert_post->upload->image;
-         $advertPost['advert_vid']  = $val->advert_post->upload->video;
+            $advertPost['ad_link']  = $val->ad_link;
+            $advertPost['surfhub_target']  = $val->surfhub_target;
+            $advertPost['profile_target']  = $val->profile_target;
+            $advertPost['search_target']  = $val->search_target;
+            $advertPost['gender']  = $val->gender;
+            $advertPost['optional_user_type']  = $val->optional_user_type;
+            $advertPost['optional_country_id']  = $val->optional_country_id;
+            $advertPost['optional_state_id']  = $val->optional_state_id;
+            $advertPost['optional_postcode']  = $val->optional_postcode;
+            $advertPost['optional_beach_id']  = $val->optional_beach_id;
+            $advertPost['optional_beach']  = $val->beach->beach_name;
+            $advertPost['optional_board_type']  = $val->optional_board_type;
+            $advertPost['optional_camera_brand']  = $val->optional_camera_brand;
+            $advertPost['optional_surf_resort']  = $val->optional_surf_resort;
+            $advertPost['search_user_type']  = $val->search_user_type;
+            $advertPost['search_surf_resort']  = $val->search_surf_resort;
+            $advertPost['currency_type']  = $val->currency_type;
+            $advertPost['your_budget']  = $val->your_budget;
+            $advertPost['per_view']  = $val->per_view;
+            $advertPost['start_date']  = $val->start_date;
+            $advertPost['end_date']  = $val->end_date;
+            $advertPost['country_id']  = $val->advert_post->country_id;
+            $advertPost['state_id']  = $val->advert_post->state_id;
+            $advertPost['local_beach_id']  = $val->advert_post->local_beach_id;
+            $advertPost['local_beach']  = $val->advert_post->beach_breaks->beach_name;
+            $advertPost['local_break']  = $val->advert_post->beach_breaks->break_name;
+            $advertPost['local_break_id']  = $val->advert_post->local_break_id;
+            $advertPost['board_type']  = $val->advert_post->board_type;
+            $advertPost['surfer']  = $val->advert_post->surfer;
+            $advertPost['fin_set_up']  = $val->advert_post->fin_set_up;
+            $advertPost['post_text']  = $val->advert_post->post_text;
+            $advertPost['advert_img']  = $val->advert_post->upload->image;
+            $advertPost['advert_vid']  = $val->advert_post->upload->video;
         }
         return $advertPost;
     }

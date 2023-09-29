@@ -173,14 +173,7 @@
                                         @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'])
                                         <span class="divider"></span>
                                         <li class="pos-rel">
-                                            <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}" class="">REQUEST
-<!--                                                <div class="saveInfo">
-                                                    <div class="pos-rel">
-                                                        <img src="img/tooltipArrowDown.png" alt="">
-                                                        Request to post
-                                                    </div>
-                                                </div>-->
-                                            </a>
+                                            <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}" class="">REQUEST</a>
                                         </li>
                                         @endif
                                         @if(Auth::user()->id != $posts->user_id)

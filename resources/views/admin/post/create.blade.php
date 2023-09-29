@@ -158,7 +158,6 @@
                                 <div class="row mb-3 align-items-center">
                                     <label class="col-md-4 d-md-block d-none"></label>
                                     <div class="col-md-8">
-<!--                                        <input type="text" class="form-control ps-2 mb-0" placeholder="Search another user">-->
                                     <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
                                                class="form-control ps-2 mb-0 other_surfer" placeholder="Search another user" required>
                                         <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id"

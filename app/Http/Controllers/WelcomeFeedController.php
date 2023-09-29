@@ -58,7 +58,6 @@ class WelcomeFeedController extends Controller
         $states = $this->masterService->getStateByCountryId(1);
         $beaches = $this->masterService->getBeaches();
         // non logged in user redirect to home page
-        // $postsList = $this->postService->getPostsListing($param);
         $postsList = $this->postService->getFeedFilteredList($param);
         if ($request->ajax()) {
             $view = view('elements/welcomedata',compact('customArray','postsList','countries','states','beaches'))->render();
@@ -83,7 +82,6 @@ class WelcomeFeedController extends Controller
 
     public function faq(){
         $pages = Page::where('alias','help')->first();
-        // dd($pages);
         return view('static-pages.faq',compact('pages'));
     }
 
@@ -101,9 +99,7 @@ class WelcomeFeedController extends Controller
                 'subject' => ['required', 'string', 'max:50'],
                 'description' => ['required', 'string'],
         );
-
         $validator = Validator::make($input, $rules);
-
 
         if($validator->passes()){
             $data = array(

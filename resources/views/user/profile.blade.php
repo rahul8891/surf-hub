@@ -29,11 +29,6 @@
                                 <td>:</td>
                                 <td>{{ __(ucwords($user->user_name)) }}</td>
                             </tr>
-                            <!-- <tr>
-                                <td>Email</td>
-                                <td>:</td>
-                                <td>******</td>
-                            </tr> -->
                             <tr>
                                 <td>First Name</td>
                                 <td>:</td>

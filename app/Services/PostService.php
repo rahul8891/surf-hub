@@ -131,18 +131,9 @@ class PostService {
      * @return dataArray
      */
     public function getPostsListing($data, $page = null) {
-        // $postArray =  $this->posts->whereNull('deleted_at')
-        //                         ->where('post_type', 'PUBLIC')
-        //                         ->where('is_deleted','0')
-        //                         ->orderBy('updated_at','DESC')
-        //                         ->paginate(10);
-
-        // return $postArray;
         $postArray =  $this->posts->whereNull('deleted_at')
                                 ->where('post_type', 'PUBLIC')
                                 ->where('is_deleted','0');
-                                //->orderBy('updated_at','DESC')
-                                //->paginate(10);
 
         if (isset($data['sort'])) {
             if($data['sort'] == "dateAsc"){
@@ -215,10 +206,8 @@ class PostService {
                 ->select('posts.*')
                 ->paginate(10);
         } else if($el=='star') {
-            //////// code for rating, make replica of above condition
+            // code for rating, make replica of above condition
             $sortedData = $postList->with(['beach_breaks', 'ratingPost'])->orderByDesc('average_rating')->paginate(10);
-
-
         } else {
             $sortedData =  $postList
                 ->with('beach_breaks')
@@ -226,7 +215,6 @@ class PostService {
                 ->orderBy($el,$order)
                 ->paginate(10);
         }
-        //dd($sortedData);
         return $sortedData;
     }
 
@@ -380,7 +368,6 @@ class PostService {
         } elseif (($for == 'myhub') && ($type == 'reels')) {
             $postArray->where('posts.is_highlight', '1');
         }
-        // dd($postArray->toSql());
         //************* applying conditions *****************/
         if (isset($params['username_id']) && !empty($params['username_id'])) {
             $postArray->where('posts.user_id', $params['username_id']);
@@ -455,13 +442,8 @@ class PostService {
         }
         if (isset($params['break']) && !empty($params['break'])) {
             $postArray->where('local_break_id', $params['break']);
-        }
-        // elseif (isset($params['local_beach_id']) && !empty($params['local_beach_id'])) {
-        //     $postArray->where('local_beach_id', $params['local_beach_id']);
-        // }
-        elseif (isset($params['beach']) && !empty($params['beach'])) {  
-            $beachID = $this->getBeachID($params['beach']); 
-            // dd($beachID);    
+        } elseif (isset($params['beach']) && !empty($params['beach'])) {  
+            $beachID = $this->getBeachID($params['beach']);
             $postArray->whereIn('local_beach_id', $beachID);    
         }
         if (isset($params['board_type']) && !empty($params['board_type'])) {
@@ -499,22 +481,7 @@ class PostService {
 
         if (isset($params['rating']) && $params['rating']>0) {
             $postArray->havingRaw('round(avg(ratings.rating)) = '. $params['rating']);
-            // $postArray->where('avg(ratings.rating)', $params['rating']);
         }
-
-        /*if (isset($params['break']) && !empty($params['break'])) {
-            $beachBreak = BeachBreak::where('id', $params['break'])->get()->toArray();
-            $beachName = $beachBreak[0]['beach_name'];
-            $postArray->where('beach_breaks.beach_name',$beachName);
-        }elseif (isset($params['beach']) && ($params['beach'] > 0)) {
-            $beachBreak = BeachBreak::where('id', $params['beach'])->get()->toArray();
-            $beachName = $beachBreak[0]['beach_name'];
-            $postArray->where('beach_breaks.beach_name',$beachName);
-        }
-
-        if (isset($params['break']) && $params['break']>0) {
-            $postArray->where('beach_breaks.id',$params['break']);
-        } */
         if (isset($params['sort'])) {
             if($params['sort'] == "dateAsc"){
                 $postArray->orderBy('posts.created_at','ASC');
@@ -541,7 +508,6 @@ class PostService {
             $postArray->orderBy('posts.id','DESC');
         }
 
-        //dd($postArray->toSql());
         if(isset($page) && !empty($page)) {
             return $postArray->get();
         } else {
@@ -556,7 +522,6 @@ class PostService {
      * @return dataArray
      */
     public function getAdminFilteredData($params, $for, $type = null, $page = null) {
-        // dd($params);
         if ($for=='search'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
@@ -597,7 +562,6 @@ class PostService {
         } elseif (($for == 'myhub') && ($type == 'reels')) {
             $postArray->where('posts.is_highlight', '1');
         }
-        // dd($postArray->toSql());
         //************* applying conditions *****************/
         if (isset($params['username_id']) && !empty($params['username_id'])) {
             $postArray->where('posts.user_id', $params['username_id']);
@@ -653,11 +617,9 @@ class PostService {
 
         if(isset($params['additional_info']) && !empty($params['additional_info'])) {
             $postArray->where(function($q) use($params){
-
-            foreach ($params['additional_info'] as $val) {
-            $q->orWhere('additional_info', 'LIKE',  '%' . $val .'%');
-            }
-
+                foreach ($params['additional_info'] as $val) {
+                    $q->orWhere('additional_info', 'LIKE',  '%' . $val .'%');
+                }
             });
         }
 
@@ -672,12 +634,11 @@ class PostService {
         if (isset($params['country_id']) && !empty($params['country_id'])) {
             $postArray->where('posts.country_id',$params['country_id']);
         }
-        // dd($params);
+
         if (isset($params['break']) && !empty($params['break'])) {
             $postArray->where('local_break_id', $params['break']);
         }elseif (isset($params['beach']) && !empty($params['beach'])) {
             $beachID = $this->getBeachID($params['beach']);
-            // dd($beachID);
             $postArray->whereIn('local_beach_id', $beachID);
         }
 
@@ -716,22 +677,8 @@ class PostService {
 
         if (isset($params['rating']) && $params['rating']>0) {
             $postArray->havingRaw('round(avg(ratings.rating)) = '. $params['rating']);
-            // $postArray->where('avg(ratings.rating)', $params['rating']);
         }
 
-        /*if (isset($params['break']) && !empty($params['break'])) {
-            $beachBreak = BeachBreak::where('id', $params['break'])->get()->toArray();
-            $beachName = $beachBreak[0]['beach_name'];
-            $postArray->where('beach_breaks.beach_name',$beachName);
-        }elseif (isset($params['beach']) && ($params['beach'] > 0)) {
-            $beachBreak = BeachBreak::where('id', $params['beach'])->get()->toArray();
-            $beachName = $beachBreak[0]['beach_name'];
-            $postArray->where('beach_breaks.beach_name',$beachName);
-        }
-
-        if (isset($params['break']) && $params['break']>0) {
-            $postArray->where('beach_breaks.id',$params['break']);
-        } */
         if (isset($params['sort'])) {
             if($params['sort'] == "dateAsc"){
                 $postArray->orderBy('posts.created_at','ASC');
@@ -758,7 +705,6 @@ class PostService {
             $postArray->orderBy('posts.id','DESC');
         }
 
-        // dd($postArray->toSql());
         if(isset($page) && !empty($page)) {
             return $postArray->get();
         } else {
@@ -779,24 +725,9 @@ class PostService {
      * @return dataArray
      */
     public function getFeedFilteredList($data, $page = null) {
-        // $postsList =  $this->posts
-        //     ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
-        //     ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
-        //     ->leftJoin('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
-        //     ->leftJoin('users', 'posts.user_id', '=', 'users.id')
-        //     ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
-        //     ->whereNull('posts.deleted_at')
-        //     ->where('posts.parent_id', '0')
-        //     ->where(function ($query) {
-        //         $query->where('posts.post_type', 'PUBLIC')
-        //         ->orWhere('posts.is_feed', '1');
-        //     })
-        //     ->groupBy('posts.id');
         $postsList =  $this->posts->whereNull('deleted_at')
                                 ->where('post_type', 'PUBLIC')
                                 ->where('is_deleted','0');
-                                //->orderBy('updated_at','DESC')
-                                //->paginate(10);
 
         if (isset($data['sort'])) {
             if($data['sort'] == "dateAsc"){
@@ -847,11 +778,8 @@ class PostService {
                     ->groupBy('posts.id');
 
         $postArray->where('posts.post_type', 'PUBLIC');
-
-
         $postArray->orderBy('posts.id','DESC');
 
-        // dd($postArray->toSql());
         return $postArray->get();
     }
 
@@ -868,7 +796,6 @@ class PostService {
         $destinationPath = public_path('storage/images/');
         $timeDate = strtotime(Carbon::now()->toDateTimeString());
         $ext = $image->getClientOriginalExtension();
-        // $imageNameWithExt = $requestImageName->getClientOriginalName();
         $filename = $timeDate.'.'.$ext;
         $image->move($destinationPath, $filename);
 
@@ -890,27 +817,6 @@ class PostService {
         $extension = $video->getClientOriginalExtension();
         $fileNameToStore = $timeDate.'.'.$extension;
         $video->move($destinationPath, $fileNameToStore);
-
-
-        //**********trimming video********************/
-
-        /*$start = \FFMpeg\Coordinate\TimeCode::fromSeconds(0);
-        $end   = \FFMpeg\Coordinate\TimeCode::fromSeconds(120);
-        $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start,$end);
-
-                FFMpeg::open($path)
-                    ->addFilter($clipFilter)
-                    ->export()
-                    ->toDisk('trim')
-                    ->inFormat(new FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))
-                    ->save($fileNameToStore);
-
-
-        //****removing untrimmed file******/
-        /*$oldFullVideo = storage_path().'/app/public/fullVideos/'.$fileNameToStore;
-        if(File::exists($oldFullVideo)){
-            unlink($oldFullVideo);
-        }*/
 
         return $fileNameToStore;
     }
@@ -1070,12 +976,6 @@ class PostService {
                     } elseif (isset($fileType) && ($fileType == 'video')) {
                         $upload->video = $filename;
                     }
-//                    $handle = fopen($file, "r") or die("Couldn't get handle");
-//                    while (!feof($handle)) {
-//                        $upload->file_body = fgets($handle, 4096);
-//                        // Process buffer here..
-//                    }
-//                    $upload->file_body = file_get_contents($file);
                     $upload->post_id = $posts->id;
                     $upload->save();
                 }
@@ -1085,7 +985,6 @@ class PostService {
             return $message;
         }
         catch (\Exception $e){
-            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message = '"'.$e->getMessage().'"';
             return $message;
         }
@@ -1094,11 +993,6 @@ class PostService {
 
     public function saveAdminAds($input, $fileType = '', $filename = '', &$message=''){
         try{
-//            $lines = [];
-//            $handle = fopen($file, "r");
-//            $content = file($file);
-//            echo '<pre>';            print_r($input);die;
-
             $adminAd = new AdminAd();
             $adminAd->ad_position = (!empty($input['position'])) ? implode(" ",$input['position']) : null;
             $adminAd->user_id = Auth::user()->id;
@@ -1112,7 +1006,6 @@ class PostService {
             return $message;
         }
         catch (\Exception $e){
-            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message = '"'.$e->getMessage().'"';
             return $message;
         }
@@ -1121,10 +1014,6 @@ class PostService {
 
     public function saveAdvertPost($input, $fileType = '', $filename = '', &$message=''){
         try{
-//            $lines = [];
-//            $handle = fopen($file, "r");
-//            $content = file($file);
-//            echo '<pre>';  dump($input);die;
             $posts = new Post();
             $posts->post_type = 'PRIVATE';
             $posts->user_id = Auth::user()->id;
@@ -1149,12 +1038,6 @@ class PostService {
                     } elseif (isset($fileType) && ($fileType == 'video')) {
                         $upload->video = $filename;
                     }
-//                    $handle = fopen($file, "r") or die("Couldn't get handle");
-//                    while (!feof($handle)) {
-//                        $upload->file_body = fgets($handle, 4096);
-//                        // Process buffer here..
-//                    }
-//                    $upload->file_body = file_get_contents($file);
                     $upload->post_id = $posts->id;
                     $upload->save();
 
@@ -1184,9 +1067,6 @@ class PostService {
                 $advertPost->end_date = $input['end_date'];
                 $advertPost->preview_ad = isset($input['preview'])?$input['preview']:0;
                 $advertPost->save();
-
-
-
             }
             $result = array(
                 'post_id' => $posts->id,
@@ -1196,9 +1076,7 @@ class PostService {
             return $result;
         }
         catch (\Exception $e){
-            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message = '"'.$e->getMessage().'"';
-//            echo '<pre>';dump($message);die;
             return $message;
         }
     }
@@ -1206,10 +1084,6 @@ class PostService {
 
     public function updateAdvertPost($input, $fileType = '', $filename = '', &$message=''){
         try{
-//            $lines = [];
-//            $handle = fopen($file, "r");
-//            $content = file($file);
-//            echo '<pre>';  dump($input);die;
             $posts = Post::findOrFail($input['post_id']);
             $posts->post_type = 'PRIVATE';
             $posts->user_id = Auth::user()->id;
@@ -1227,7 +1101,6 @@ class PostService {
             if($posts->save()){
                 if(isset($filename) && !empty($filename)) {
                     $upload = Upload::where('post_id', $posts->id)->first();
-
 
                     if (isset($fileType) && ($fileType == 'image')) {
                         $upload->image = $filename;
@@ -1264,9 +1137,6 @@ class PostService {
                 $advertPost->end_date = $input['end_date'];
                 $advertPost->preview_ad = !empty($input['preview'])?$input['preview']:0;
                 $advertPost->save();
-
-
-
             }
             $result = array(
                 'post_id' => $posts->id,
@@ -1276,9 +1146,7 @@ class PostService {
             return $result;
         }
         catch (\Exception $e){
-            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message = '"'.$e->getMessage().'"';
-//            echo '<pre>';dump($message);die;
             return $message;
         }
     }
@@ -1292,9 +1160,7 @@ class PostService {
      */
     public function updatePostData($input, $filename, $type, &$message = '') {
         $posts = Post::findOrFail($input['id']);
-
         $posts->post_type = $input['post_type'];
-        // $posts->user_id = $input['user_id'];
         $posts->post_text = $input['post_text'];
         $posts->country_id =$input['country_id'];
         $posts->surf_start_date = $input['surf_date'];
@@ -1346,11 +1212,7 @@ class PostService {
             $postIdArr = explode(',', $input['post_id']);
 
             foreach ($postIdArr as $id) {
-
                 $posts = $this->posts->find($id);
-
-//            echo '<pre>';            print_r($posts);die;
-
                 $posts->post_type = $input['post_type'];
                 $posts->user_id = $input['user_id'];
                 $posts->post_text = $input['post_text'];
@@ -1371,7 +1233,6 @@ class PostService {
             $message = 'Post has been updated successfully.!';
             return $message;
         } catch (\Exception $e) {
-            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message = '"' . $e->getMessage() . '"';
             return $message;
         }
@@ -1431,7 +1292,6 @@ class PostService {
             }
         }
         catch (\Exception $e){
-            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message='"'.$e->getMessage().'"';
             return $message;
         }
@@ -1448,9 +1308,8 @@ class PostService {
         $id = $data['id'];
         $value = $data['value'];
         $posts=$this->posts->find($id);
-        // dd($posts->rateOnce($value));
         try{
-            //************* saving user's rating *****************/
+            /************* saving user's rating *****************/
                 if($posts->rateOnce($value)){
                     $responseArray['status']='success';
                     $responseArray['message']='Thanks For Rating!';
@@ -1468,7 +1327,6 @@ class PostService {
 
         }
         catch (\Exception $e){
-            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message='"'.$e->getMessage().'"';
             return $message;
         }
@@ -1493,7 +1351,6 @@ class PostService {
             }
         }
         catch (\Exception $e){
-            // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
             $message='"'.$e->getMessage().'"';
             return $message;
         }
@@ -1586,7 +1443,6 @@ class PostService {
             $this->comment->value = $input['comment'];
             $this->comment->created_at = Carbon::now();
             $this->comment->updated_at = Carbon::now();
-            //dd($this->comments);
             if($this->comment->save()){
                 //for store media into upload table
                 $message = 'Comment has been created successfully.!';
@@ -1626,7 +1482,6 @@ class PostService {
             $this->report->comments = $input['comments'];
             $this->report->created_at = Carbon::now();
             $this->report->updated_at = Carbon::now();
-            //dd($this->comments);
             if($this->report->save()) {
                 $data['from'] = config('customarray.report_email');
                 $data['mail'] = 'report';
@@ -1638,8 +1493,7 @@ class PostService {
                 $data['comment'] = $this->report->comments;
                 $data['post_id'] = $this->report->post_id;
 
-                Mail::to($data['from'])
-                    ->send(new sendReportMail($data));
+                Mail::to($data['from'])->send(new sendReportMail($data));
 
                 //for store media into upload table
                 $message = 'Post has been reported successfully.!';
@@ -1703,7 +1557,6 @@ class PostService {
     public function getPostNotificationsList(){
 
         $postArray =  $this->tag
-                                  //->where('user_id', '!=',Auth::user()->id)
                                   ->where('user_id', Auth::user()->id)
                                   ->where('is_seen','0')
                                   ->orderBy('created_at','ASC')
@@ -1720,12 +1573,10 @@ class PostService {
     public function getFollowedPostList(){
 
         $postArray =  $this->userFollow
-                                  //->where('user_id', '!=',Auth::user()->id)
                                   ->where('follower_user_id', Auth::user()->id)
                                   ->where('followed_user_id','!=', Auth::user()->id)
                                   ->where('follower_request_status','0')
                                   ->where('is_deleted','0')
-                                  //->where('created_at', '>=', Carbon::today())
                                   ->orderBy('id','ASC')
                                   ->get();
         return $postArray;
@@ -1740,11 +1591,9 @@ class PostService {
     public function getCommentOnPost(){
 
         $commentArray =  $this->comment
-                                  //->where('user_id', '!=',Auth::user()->id)
                                   ->where('parent_user_id', Auth::user()->id)
                                   ->where('user_id','!=',Auth::user()->id)
                                   ->where('is_deleted','0')
-                                  //->where('created_at', '>=', Carbon::today())
                                   ->orderBy('created_at','ASC')
                                   ->get();
         return $commentArray;
@@ -1794,7 +1643,6 @@ class PostService {
             $this->notification->notification_type = 'Comment';
             $this->notification->created_at = Carbon::now();
             $this->notification->updated_at = Carbon::now();
-            //dd($this->comments);
             $this->notification->save();
 
         }
@@ -1821,7 +1669,6 @@ class PostService {
               $notification->notification_type = 'Post';
               $notification->created_at = Carbon::now();
               $notification->updated_at = Carbon::now();
-              //dd($this->comments);
               $notification->save();
             }
 
@@ -1936,6 +1783,7 @@ class PostService {
         return $postArray->get();
     }
 
+    // Below code is used in next phase
     // public function updateNotificationStatusAcceptReject($post_id, $sender_id, $receiver_id, $status) {
     //     $notification = New Notification();
 

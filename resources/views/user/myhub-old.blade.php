@@ -47,12 +47,7 @@
                                     <span>{{ $myHub->beach_breaks->beach_name ?? '' }} {{ $myHub->beach_breaks->break_name ?? '' }}, {{\Carbon\Carbon::parse($myHub->surf_start_date)->format('d-m-Y')}}</span><br>
                                     <span>{{ postedDateTime($myHub->created_at) }}</span>
                                 </div>
-                            </div>
-
-                            <!-- <button href="#" class="followBtn" data-id="{{ $myHub->user_id }}" data-post_id="{{ $myHub->id }}">
-                                <img src="/img/user.png" alt=""> FOLLOW
-                            </button> -->
-                            
+                            </div>                            
                         </div>
                         <p class=" description">{{$myHub->post_text}}</p>
                                 <div class="imgRatingWrap">
@@ -237,9 +232,7 @@
                                                       </div>
                                                     </div>
                                                     @endif
-                                                    <!-- <a data-toggle="modal" data-target="#postTag{{$myHub->id}}">TAG -->
                                                     <a href="javascript:void(0)">TAG
-                                                        
                                                         <div class="saveInfo infoHover userinfoModal">
                                                             <div class="pos-rel">
                                                                 <img src="../../../img/tooltipArrowDown.png" alt="">
@@ -418,7 +411,6 @@
                 type: "get", 
                 async: false,
                 success: function(data) {
-                    // console.log(data.html);
                     $("#edit_image_upload_main").html("");
                     $("#edit_image_upload_main").append(data.html);
                     $("#edit_image_upload_main").modal('show');                

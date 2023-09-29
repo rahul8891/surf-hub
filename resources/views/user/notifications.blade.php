@@ -60,12 +60,6 @@
                                                         tagged you on a post
                                                     </a>
                                                 @endif
-                                                <!-- @if($requests['notification_type'] == 'Surfer Request')
-                                                    <a href="{{ route('surfer-request', ['surfer-request', Crypt::encrypt($requests['sender_id'])]) }}" class="mb-0" onclick="updateNotificationCount({{ $requests['notification_id'] }})">
-                                                        <span class="blue-txt">{{ucfirst($requests['first_name'])}} {{ucfirst($requests['last_name'])}}</span>
-                                                        surfer has nominated himself the post.
-                                                    </a>
-                                                @endif -->
                                                 <p class="time mb-0">{{ postedDateTime($requests['created_at']) }}</p>
                                             </div>
                                         </div>

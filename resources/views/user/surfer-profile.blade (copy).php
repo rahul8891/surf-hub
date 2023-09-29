@@ -266,7 +266,6 @@
 
             $('.ajax-load').removeClass('requests');
             $('.ajax-load').hide();
-//            $("#post-data").insertBefore(data.html);
             $(data.html).insertBefore(".ajax-load");
         });
     }

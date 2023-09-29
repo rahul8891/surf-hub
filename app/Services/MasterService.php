@@ -39,7 +39,6 @@ class MasterService {
         // Country model object
         $this->countries = new Country();
 
-
         // State model object
         $this->states = new State();
 
@@ -137,7 +136,6 @@ class MasterService {
         $users = $this->users->where('status',$this->checkUserType['status']['ACTIVE'])
                     ->where('is_deleted','0')
                     ->where('user_type',$this->checkUserType['userType']['USER'])
-                    //->whereNotIn('id',[Auth::user()->id])
                     ->orderBy('id','asc')->get();
 
         return $users;
@@ -146,7 +144,6 @@ class MasterService {
         $arr = [];
         $trackArray['track_uri'] = '';
         $spotifyUser = SpotifyUser::where('user_id', Auth::user()->id)->get()->toArray();
-        // dd($spotifyUser);
         if ($spotifyUser) {
             $client = new \GuzzleHttp\Client;
 
@@ -207,8 +204,5 @@ class MasterService {
                 return $result;
             }
         }
-        // else {
-        //     return $this->beach_break->select('id', 'break_name')->orderBy('break_name','asc')->get();
-        // }
     }
 }

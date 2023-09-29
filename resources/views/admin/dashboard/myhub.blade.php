@@ -279,7 +279,6 @@
 
             $('.ajax-load').removeClass('requests');
             $('.ajax-load').hide();
-//            $("#post-data").insertBefore(data.html);
             $(data.html).insertBefore(".ajax-load");
         });
     }
@@ -292,7 +291,6 @@
                 type: "get",
                 async: false,
                 success: function(data) {
-                    // console.log(data.html);
                     $("#edit_image_upload_main").html("");
                     $("#edit_image_upload_main").append(data.html);
                     $("#edit_image_upload_main").modal('show');

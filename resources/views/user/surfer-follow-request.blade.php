@@ -21,7 +21,6 @@
                     </div>
                 </div>
                 <div class="edit-profile-box">
-                    <!-- <a href="{{ url('user/edit-profile') }}" class="btn edit-btn"><img src="/img/new/edit.png" alt="edit" class="align-middle me-1"> <span class="align-middle">EDIT</span></a> -->
                     <table>
                         <tbody>
                             <tr>
@@ -312,7 +311,6 @@
 
                                                 $('.ajax-load').removeClass('requests');
                                                 $('.ajax-load').hide();
-//            $("#post-data").insertBefore(data.html);
                                                 $(data.html).insertBefore(".ajax-load");
                                                 });
                                         }
@@ -324,7 +322,6 @@
                                                 type: "get",
                                                 async: false,
                                                 success: function(data) {
-                                                // console.log(data.html);
                                                 $("#edit_image_upload_main").html("");
                                                 $("#edit_image_upload_main").append(data.html);
                                                 $("#edit_image_upload_main").modal('show');

@@ -56,7 +56,6 @@ class ReportController extends Controller
         $serachTerm = $request->searchTerm;
 
         $data = $this->users->searchReport($serachTerm);
-//        dd($followers);
         $common = $this->common;
         $view = view('elements/searchReport', compact('data', 'common'))->render();
         return response()->json(['html' => $view]);

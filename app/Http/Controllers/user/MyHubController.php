@@ -176,9 +176,7 @@ class MyHubController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        //
-    }
+    public function store(Request $request) { }
 
     /**
      * Display the specified resource.
@@ -186,9 +184,7 @@ class MyHubController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        //
-    }
+    public function show($id) { }
 
     /**
      * Show the form for editing the specified resource.
@@ -225,7 +221,6 @@ class MyHubController extends Controller {
 
             return response()->json(['html' => $view]);
         }
-        // return view('user.edit', compact('users','countries','postMedia','posts','currentUserCountryId','customArray','language','states'));
     }
 
     public function getPostFullScreen($id, $type, Request $request) {
@@ -314,12 +309,7 @@ class MyHubController extends Controller {
                 'post_text' => ['nullable', 'string', 'max:255'],
                 'surf_date' => ['required', 'string'],
                 'wave_size' => ['required', 'string'],
-//                'state_id' => ['nullable', 'numeric'],
-//                'board_type' => ['required', 'string'],
                 'surfer' => ['required'],
-//                'country_id' => ['required','numeric'],
-//                'local_beach_break_id' => ['nullable', 'string'],
-//                'optional_info'=>['nullable'],
             );
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
@@ -330,15 +320,12 @@ class MyHubController extends Controller {
                 $postArray = (isset($data['files']) && !empty($data['files'])) ? $data['files'] : [];
 
                 $filePath = $type = "";
-                // $timeDate = strtotime(Carbon::now()->toDateTimeString());
                 if (!empty($postArray)) {
                     $fileType = explode('/', $request->file('files')->getMimeType());
                     if ($fileType[0] == 'image') {
                         $fileFolder = 'images/' . $request->user_id;
-                        // $destinationPath = public_path('storage/images/');
                     } elseif ($fileType[0] == 'video') {
                         $fileFolder = 'videos/' . $request->user_id;
-                        // $destinationPath = public_path('storage/fullVideos/');
                     }
                     $file = $request->file('files');
                     $path = Storage::disk('s3')->put($fileFolder, $file);
@@ -353,10 +340,8 @@ class MyHubController extends Controller {
                 }
                 if ($result['status'] === TRUE) {
                     return json_encode(array('status'=>'success', 'message' => $message['message']));
-                    // return Redirect()->route('myhub')->withSuccess($result['message']);
                 } else {
                     return json_encode(array('status'=>'failure', 'message' => $message['message']));
-                    // return Redirect()->route('myhub')->withErrors($result['message']);
                 }
             }
         } catch (\Exception $e) {
@@ -380,7 +365,7 @@ class MyHubController extends Controller {
         } else {
             $data->is_highlight = "1";
         }
-//dd($data);
+
         if($data->save()) {
             $result = ['status' => "success", "statuscode" => 200, "data" => $data];
         } else {

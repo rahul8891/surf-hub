@@ -69,7 +69,6 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $appends = [
-       // 'profile_photo_url',
     ];
 
     /************************************************************************************************************
@@ -95,7 +94,6 @@ class User extends Authenticatable implements MustVerifyEmail
     
     public function user_follows()
     {
-        //return $this->hasMany(UserFollow::class, 'followed_user_id', 'id');
         return $this->hasMany(UserFollow::class, 'follower_user_id', 'id');
     }
 

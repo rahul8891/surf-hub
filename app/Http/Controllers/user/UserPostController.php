@@ -116,15 +116,12 @@ class UserPostController extends Controller {
             if ($validate->fails()) {
                 // If validation falis redirect back to current page.
                 return json_encode(array('status'=>'failure', 'message' => 'The comment field is required.'));
-                // return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors('');
             } else {
                 $result = $this->posts->saveReport($data, $message);
                 if ($result) {
                     return json_encode(array('status'=>'success', 'message' => $message));
-                    //return Redirect::to(redirect()->getUrlGenerator()->previous())->withSuccess($message);
                 } else {
                     return json_encode(array('status'=>'failure', 'message' => $message));
-                    // return Redirect::to(redirect()->getUrlGenerator()->previous())->withErrors($message);
                 }
             }
         } catch (\Exception $e) {
@@ -179,7 +176,6 @@ class UserPostController extends Controller {
                 // If validation falis redirect back to register.
                 return response()->json(['error' => $validate->errors()]);
             } else {
-                // dd($data);
                 if (!empty($postArray["images"]) || !empty($postArray["videos"])) {
                     if (!empty($postArray["images"])) {
                         foreach ($postArray["images"] as $value) {
@@ -195,11 +191,9 @@ class UserPostController extends Controller {
                     $result = $this->posts->savePost($data, '', '', $message);
                 }
                 if ($result) {
-                    // return Redirect()->route('myhub')->withSuccess($message);
                     return json_encode(array('message' => 'Post has been upload successfully'));
                 } else {
                     return json_encode(array('message' => 'Error'));
-//                    return Redirect()->route('myhub')->withErrors($message);
                 }
             }
         } catch (\Exception $e) {
@@ -211,17 +205,8 @@ class UserPostController extends Controller {
         try {
             $data = $request->all();
             $postArray = (isset($data['files']) && !empty($data['files'])) ? $data['files'] : [];
-//            $videoArray$postArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];
-//            $postArray = array_filter(array_merge($imageArray, $videoArray));
-//            echo '<pre>';print_r($data);die;
-            $rules = array(
-//                'post_type' => ['required'],
-//                'user_id' => ['required'],
-//                'surf_date' => ['required'],
-//                'wave_size' => ['required'],
-//                'surfer' => ['required'],
-//                'country_id' => ['required'],
-            );
+
+            $rules = array();
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
@@ -235,10 +220,8 @@ class UserPostController extends Controller {
 
                         if ($fileType[0] == 'image') {
                             $fileFolder = 'images/' . Auth::user()->id;
-                            // $destinationPath = public_path('storage/images/');
                         } elseif ($fileType[0] == 'video') {
                             $fileFolder = 'videos/' . Auth::user()->id;
-                            // $destinationPath = public_path('storage/fullVideos/');
                         }
 
                         $path = Storage::disk('s3')->put($fileFolder, $value);
@@ -394,17 +377,14 @@ class UserPostController extends Controller {
     public function saveToMyHub($id) {
         $message = '';
         try {
-            // $result = $this->posts->saveToMyHub(Crypt::decrypt($id), $message);
             $result = $this->posts->saveToMyHub($id, $message);
             if ($result) {
                 return json_encode(array('status'=>'success', 'message' => $message));
             } else {
                 return json_encode(array('status'=>'error', 'message' => $message));
-                // return redirect()->route('dashboard')->withErrors($message);
             }
         } catch (\Exception $e) {
             return json_encode(array('status'=>'error', 'message' => $e->getMessage()));
-            // return redirect()->route('dashboard', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
         }
     }
 
@@ -418,7 +398,6 @@ class UserPostController extends Controller {
         try {
             $result = $this->posts->surferRequest(Crypt::decrypt($id), $message);
             if ($result) {
-//                echo '<pre>';            print_r($result);die;
                 return true;
             } else {
                 return false;
@@ -440,6 +419,7 @@ class UserPostController extends Controller {
 
             $notification = Notification::where("id", $request_id)->first();
             
+            // Below code is used in next phase
             // $post_id = $notification->post_id;
             // $sender_id = $notification->receiver_id;
             // $receiver_id = $notification->sender_id;
@@ -457,7 +437,7 @@ class UserPostController extends Controller {
 
                 $result = Post::where(['id' => $surferRequest->post_id])
                         ->update(['surfer' => $userName->user_name]);
-                // sender_id, reciver_id, status, post_id
+                // sender_id, reciver_id, status, post_id // Below code is used in next phase
                 // $this->posts->updateNotificationStatusAcceptReject($post_id, $sender_id, $receiver_id, 'Surfer Request Accept');
 
                 $message = 'Surfer request accepted';
@@ -465,7 +445,7 @@ class UserPostController extends Controller {
             if ($type == 'reject') {
                 $result = SurferRequest::where(['id' => $request_id])
                         ->update(['status' => 2]);
-                // sender_id, reciver_id, status, post_id
+                // sender_id, reciver_id, status, post_id // Below code is used in next phase
                 // $this->posts->updateNotificationStatusAcceptReject($post_id, $sender_id, $receiver_id, 'Surfer Request Reject');
                 $message = 'Surfer request rejected';
             }
@@ -529,7 +509,6 @@ class UserPostController extends Controller {
 
     public function surferFollowRequest($id) {
         $request_id = Crypt::decrypt($id);
-        // dd($request_id);
         $userProfile = '';
         
         $customArray = $this->customArray;
@@ -539,12 +518,10 @@ class UserPostController extends Controller {
                 ->where('posts.id', $request_id)
                 ->orderBy('posts.created_at', 'DESC')
                 ->get(['posts.*', 'surfer_requests.id as request_id']);
-        // echo '<pre>';print_r($postsList);die;
 
         foreach($postsList as $post) {
             $userProfile = $this->userService->getUserDetail($post->user_id);
         }
-        // dd($userProfile);
         return view('user.surfer-follow-request', compact('customArray', 'postsList', 'request_id', 'userProfile'));
     }
 
@@ -561,18 +538,7 @@ class UserPostController extends Controller {
         $customArray = $this->customArray;
         $detail = $this->posts->getPostDetails($post_id, $notification_id);
         $this->posts->updateNotificationStatus($notification_id);
-        //dd($detail->post);
         return view('user.posts', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'detail'));
-        /* try{
-          $result = $this->posts->deletePost(Crypt::decrypt($id),$message);
-          if($result){
-          return redirect()->route('myhub')->withSuccess($message);
-          }else{
-          return redirect()->route('myhub')->withErrors($message);
-          }
-          }catch (\Exception $e){
-          return redirect()->route('myhub', ['id' => Crypt::encrypt($id)])->withErrors($e->getMessage());
-          } */
     }
 
     /**
@@ -585,7 +551,6 @@ class UserPostController extends Controller {
         $countries = $this->masterService->getCountries();
         $customArray = $this->customArray;
         $postData = Post::where('id', $post_id)->first();
-        // dd($post_id);
         $currentUserCountryId = UserProfile::where('user_id', $postData->user_id)->pluck('country_id')->first();
 
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
@@ -644,54 +609,18 @@ class UserPostController extends Controller {
             $filename = $timeDate . '.' . $fileExt;
 
             $file[0]->move($destinationPath, $filename);
-            // $path = 'public/fullVideos/' . $filename;
-            // $path = $file>storeAs($destinationPath, $filename);
-            // $fileArray[] = $filename;
-            // dd($path);
-            //**********trimming video********************//
-            /* $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(0);
-              $end   = \FFMpeg\Coordinate\TimeCode::fromSeconds(120);
-              $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start,$end); */
-            //dd($path);
-            /* FFMpeg::open('public/fullVideos/' . $filename)
-              ->addFilter($clipFilter)
-              ->export()
-              ->toDisk('trim')
-              ->inFormat(new FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))
-              ->save($filename); */
-
-            //****removing untrimmed file******//
-            /* $oldFullVideo = $destinationPath . $filename;
-              /if(File::exists($oldFullVideo)){
-              unlink($oldFullVideo);
-              } */
         }
 
         return response()->json(['success' => $filename]);
     }
 
     public function surferRequestList() {
-        // $posts = Post::where("user_id", "=", Auth::user()->id)
-        //         ->where("is_deleted", '0')
-        //         ->where("surfer", 'Unknown')
-        //         ->get()
-        //         ->toArray();
-        // $postIds = array_filter(array_column($posts, 'id'));
-        // dd($postIds);
-        // $surferRequest = SurferRequest::join('posts', 'surfer_requests.post_id', '=', 'posts.id')
-        //         ->join('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
-        //         ->where("surfer_requests.user_id", '=', Auth::user()->id)
-        //         ->where("surfer_requests.status", "=", 0)
-        //         ->orderBy('surfer_requests.id', 'DESC')
-        //         ->get(['surfer_requests.*', 'user_profiles.first_name', 'user_profiles.last_name']);
         $surferRequest = Notification::join('posts', 'notifications.post_id', '=', 'posts.id')
                 ->join('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
                 ->where("notifications.receiver_id", '=', Auth::user()->id)
                 ->where("notifications.status", "=", "0")
-                // ->where("notifications.notification_type", "=", "Surfer Request")
                 ->orderBy('notifications.id', 'DESC')
                 ->get(['notifications.*', 'user_profiles.first_name', 'user_profiles.last_name']);
-        // dd($surferRequest);
         return view('user.surfersRequestList', compact('surferRequest'));
     }
 
@@ -715,26 +644,18 @@ class UserPostController extends Controller {
                 ->paginate(10);
         $requestSurfer = array();
         foreach ($postsList as $val) {
-//            $surferRequest = SurferRequest::select("*")
-//                    ->where("post_id", "=", $val['id'])
-//                    ->where("status", "=", 0)
-//                    ->get();
-
             $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
                     ->where("surfer_requests.post_id", "=", $val['id'])
                     ->where("surfer_requests.status", "=", 0)
                     ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
 
             foreach ($surferRequest as $res) {
-//                echo '<pre>'; print_r($res['id']);die;
                 $requestSurfer[$val['id']]['id'] = $res['id'];
                 $requestSurfer[$val['id']]['name'] = $res['first_name'] . ' ' . $res['last_name'];
             }
         }
-//        echo '<pre>'; print_r($postsList);die;
         $url = url()->current();
         $usersList = $this->masterService->getAllUsers();
-//        dd($presignedUrl);
 
         return view('user.upload', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches'));
     }

@@ -23,8 +23,6 @@
                                     </div>
                                     <span class="align-middle d-inline-block ms-3">Upload Profile Pic</span>
                                 </div>
-                    <!--            <span id="imageError" class="notDisplayed d-done required">{{ __('Please upload files having
-                                                                extensions: jpg, jpeg, png') }}</span>-->
                                 @error('profile_photo_name')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -46,9 +44,6 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-
-
-
                         </div>
                         <div class="row">
                             <div class="col-md-6">

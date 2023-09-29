@@ -42,14 +42,6 @@
                                         <img src="/img/reject.png" class="me-1 align-middle" alt="REJECT">
                                         <span class="align-middle">REJECT</span>
                                     </a>
-                                    <!-- <a class="btn grey-borderBtn me-3 accept" href="{{ route('acceptRejectRequest', [Crypt::encrypt($val->receiver_id),'accept']) }}">
-                                        <img src="/img/accept.png" class="me-1 align-middle" alt="ACCEPT">
-                                        <span class="align-middle">ACCEPT</span>
-                                    </a>
-                                    <a class="btn grey-borderBtn reject" href="{{ route('acceptRejectRequest', [Crypt::encrypt($val->receiver_id),'reject']) }}">
-                                        <img src="/img/reject.png" class="me-1 align-middle" alt="REJECT">
-                                        <span class="align-middle">REJECT</span>
-                                    </a> -->
                                 </div>
                             </div>
                         </div>

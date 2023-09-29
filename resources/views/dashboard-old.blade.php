@@ -44,7 +44,6 @@
                         </div>
                         <p class="description">{{$posts->post_text}}</p>
                         <div class="imgRatingWrap">
-                            <!-- <div id="my-video"></div> -->
                             @if(!empty($posts->upload->image))
                                 <div class="pos-rel editBtnWrap">
                                     <img src="env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" class=" img-fluid" id="myImage{{$posts->id}}">
@@ -173,14 +172,7 @@
                                         @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'])
                                         <span class="divider"></span>
                                         <li class="pos-rel">
-                                            <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}" class="">REQUEST
-<!--                                                <div class="saveInfo">
-                                                    <div class="pos-rel">
-                                                        <img src="img/tooltipArrowDown.png" alt="">
-                                                        Request to post
-                                                    </div>
-                                                </div>-->
-                                            </a>
+                                            <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}" class="">REQUEST</a>
                                         </li>
                                         @endif
                                         @if(Auth::user()->id != $posts->user_id)

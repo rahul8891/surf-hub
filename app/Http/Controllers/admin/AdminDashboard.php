@@ -57,18 +57,12 @@ class AdminDashboard extends Controller
     }
 
     public function feed(Request $request) {
-        // echo "admin"; die;
         $param = $request->all();
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $beaches = $this->masterService->getBeaches();
         $customArray = $this->customArray;
-        /*$postsList = Post::with('followPost')->where('is_deleted', '0')
-                ->where('parent_id', '0')
-                ->where('post_type', 'PUBLIC')
-                ->orderBy('posts.updated_at', 'DESC')
-                ->paginate(10);*/
 
         $postsList = $this->posts->getFeedFilteredList($param);
 
@@ -133,34 +127,6 @@ class AdminDashboard extends Controller
         return view('admin/dashboard.myhub', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches', 'post_type','urlData'));
     }
 
-    /*public function myHub(Request $request) {
-        $beach_name = "";
-        $post_type = 'all';
-        $params = $request->all();
-        $order = $request->input('order');
-        $currentUserCountryId = Auth::user()->user_profiles->country_id;
-        $countries = $this->masterService->getCountries();
-        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
-        $customArray = $this->customArray;
-        $userDetail = Auth::user()->user_profiles;
-
-        $postsList = $myHubs = $this->posts->getFilteredData($params, 'myhub');
-
-        $beaches = $this->masterService->getBeaches();
-
-        if (!empty($request->input('local_beach_break_id'))) {
-            $bb = BeachBreak::where('id', $request->input('local_beach_break_id'))->first();
-            $beach_name = $bb->beach_name . ',' . $bb->break_name . '' . $bb->city_region . ',' . $bb->state . ',' . $bb->country;
-        }
-
-        if ($request->ajax()) {
-            $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches'))->render();
-            return response()->json(['html' => $view]);
-        }
-
-        return view('admin/dashboard.myhub', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches', 'post_type'));
-    } */
-
     /**
      * search the specified resource from storage.
      *
@@ -194,41 +160,14 @@ class AdminDashboard extends Controller
         }
 
         return view('admin/dashboard.search', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name','beaches','urlData'));
-        /*$beach_name="";
-        $params = $request->all();
-//        $from_date = date('Y-m-d H:i:s', strtotime('-'.$params["from_age"].' year'));
-//        print_r($from_date);die;
-//        $order = $request->input('order');
-        $currentUserCountryId = (isset(Auth::user()->user_profiles->country_id) && !empty(Auth::user()->user_profiles->country_id))?Auth::user()->user_profiles->country_id:'';
-        $countries = $this->masterService->getCountries();
-        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
-        $beaches = $this->masterService->getBeaches();
-//        echo '<pre>';        print_r($beaches);die;
-        $customArray = $this->customArray;
-        $userDetail = (isset(Auth::user()->user_profiles) && !empty(Auth::user()->user_profiles))?Auth::user()->user_profiles:'';
-        $postsList = $this->posts->getFilteredData($params, 'search');
-        // echo "<pre>";print_r($postsList);die;
-        if(!empty($request->input('local_beach_break_id'))){
-            $bb = BeachBreak::where('id',$request->input('local_beach_break_id'))->first();
-            $beach_name = $bb->beach_name.','.$bb->break_name.''.$bb->city_region.','.$bb->state.','.$bb->country;
-        }
-       // print_r($postsList);die;
-        if ($request->ajax()) {
-            $view = view('elements/searchdata', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name','beaches'))->render();
-            return response()->json(['html' => $view]);
-        }
-
-        return view('admin/dashboard.search', compact('customArray','countries','states','currentUserCountryId','postsList','userDetail','beach_name','beaches')); */
     }
 
     public function leftSideCounts(Request $request) {
-//        $data = $request->all();
         $userPostsUnknown = $this->posts->getPostUnknownByUserId();
         $postUnIds = array_filter(array_column($userPostsUnknown, 'id'));
         $surferRequests = $this->posts->getSurferRequest($postUnIds, 0);
         $reports = $this->posts->getReportsCount();
         $comments = $this->posts->getCommentsCount();
-//          echo '<pre>';        print_r($notification);die;
         $uploads = $this->posts->getUploads();
         $totalPost = $this->posts->getPostTotal();
         $fCounts = array(

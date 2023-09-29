@@ -333,7 +333,6 @@
 
             $('.ajax-load').removeClass('requests');
             $('.ajax-load').hide();
-    //            $("#post-data").insertBefore(data.html);
             $(data.html).insertBefore(".ajax-load");
         });
     }
@@ -345,15 +344,14 @@
     }
 
     jQuery(document).on("scroll", function () {
-        jQuery("video").each(function () { //console.log('aa');
-            // jQuery("video").get(0).pause();
+        jQuery("video").each(function () {
             // visible?
-            if (isInView(jQuery(this).get(0))) { // console.log('video = '+ jQuery.parseJSON(jQuery(this).get(0).paused));
-                if (jQuery(this).get(0).paused) { //console.log('1111');
+            if (isInView(jQuery(this).get(0))) {
+                if (jQuery(this).get(0).paused) {
                     jQuery(this).get(0).play(true);// play if not playing
                 }
             } else {
-                if (!jQuery(this).get(0).paused) { //console.log('2222');
+                if (!jQuery(this).get(0).paused) {
                     jQuery(this).get(0).pause();// pause if not paused
                 }
            }
@@ -428,8 +426,7 @@
             type: "GET",
             async: false,
             success: function(data) {
-                data = $.parseJSON(data);b
-
+                data = $.parseJSON(data);
                 if(data.status == 'success') {
                     $(".feed"+id).remove();
                     jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');

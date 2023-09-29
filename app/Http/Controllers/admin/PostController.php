@@ -98,18 +98,15 @@ class PostController extends Controller
     {
         try{
             $data = $request->all();
-//    echo "<pre>";print_r($data);die;
             if (!empty($data['other_surfer'])) {
                 $data['surfer'] = $data['other_surfer'];
             } elseif (isset($data['surfer']) && ($data['surfer'] == 'Me')) {
                 $data['surfer'] = Auth::user()->user_name;
             }
 
-//            $postArray = (isset($data['files']) && !empty($data['files'])) ? $data['files'] : [];
             $imageArray["images"] = (isset($data['imagesHid_input'][0]) && !empty($data['imagesHid_input'][0]))?json_decode($data['imagesHid_input'][0]):[];
             $videoArray["videos"] = (isset($data['videosHid_input'][0]) && !empty($data['videosHid_input'][0]))?json_decode($data['videosHid_input'][0]):[];
             $postArray = array_filter(array_merge($imageArray, $videoArray));
-//            echo '<pre>';print_r($postArray);die;
             $rules = array(
                 'post_type' => ['required'],
                 'user_id' => ['required'],
@@ -123,29 +120,6 @@ class PostController extends Controller
                 // If validation falis redirect back to register.
                 return response()->json(['error' => $validate->errors()]);
             } else {
-//                if (!empty($postArray)) {
-//                    $fileData = [];
-//                    foreach ($postArray as $value) {
-//
-//                        $fileType = explode('/', $value->getMimeType());
-//
-//                        if ($fileType[0] == 'image') {
-//                            $fileFolder = 'images/' . $request->user_id;
-//                            // $destinationPath = public_path('storage/images/');
-//                        } elseif ($fileType[0] == 'video') {
-//                            $fileFolder = 'videos/' . $request->user_id;
-//                            // $destinationPath = public_path('storage/fullVideos/');
-//                        }
-//
-//                        $path = Storage::disk('s3')->put($fileFolder, $value);
-//                        $filePath = Storage::disk('s3')->url($path);
-//
-//                        $fileArray = explode("/", $filePath);
-//                        $filename = end($fileArray);
-//
-//                        $result = $this->posts->savePost($data, $fileType[0], $filename, $message);
-//                    }
-//                }
 
                 if (!empty($postArray["images"]) || !empty($postArray["videos"])) {
                     if (!empty($postArray["images"])) {
@@ -163,11 +137,9 @@ class PostController extends Controller
                 }
 
                 if ($result) {
-//                    return Redirect()->route('adminMyHub')->withSuccess($message);
                     return json_encode(array('message' => 'Post has been upload successfully'));
                 } else {
                     return json_encode(array('message' => 'Error while posting'));
-//                    return Redirect()->route('adminMyHub')->withErrors($message);
                 }
             }
         }catch (\Exception $e){
@@ -179,21 +151,9 @@ class PostController extends Controller
     public function storeAdminAds(Request $request) {
         try {
             $data = $request->all();
-//    echo "<pre>";print_r($data);die;
-
 
             $postArray = (isset($data['file']) && !empty($data['file'])) ? $data['file'] : [];
-//            $videoArray$postArray = (isset($data['videos'][0]) && !empty($data['videos'][0]))?$data['videos']:[];
-//            $postArray = array_filter(array_merge($imageArray, $videoArray));
-//            echo '<pre>';print_r($postArray);die;
-            $rules = array(
-//                'post_type' => ['required'],
-//                'user_id' => ['required'],
-//                'surf_date' => ['required'],
-//                'wave_size' => ['required'],
-//                'surfer' => ['required'],
-//                'country_id' => ['required'],
-            );
+            $rules = array();
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
@@ -202,29 +162,20 @@ class PostController extends Controller
 
                 if (!empty($postArray)) {
                     $fileData = [];
-//                    foreach ($postArray as $value) {
-//                    echo "<pre>";print_r($postArray);die;
+                    $fileType = explode('/', $postArray->getMimeType());
 
-                        $fileType = explode('/', $postArray->getMimeType());
+                    if ($fileType[0] == 'image') {
+                        $fileFolder = 'images/' . Auth::user()->id;
+                        // $destinationPath = public_path('storage/images/');
+                    }
 
-                        if ($fileType[0] == 'image') {
-                            $fileFolder = 'images/' . Auth::user()->id;
-                            // $destinationPath = public_path('storage/images/');
-                        }
+                    $path = Storage::disk('s3')->put($fileFolder, $postArray);
+                    $filePath = Storage::disk('s3')->url($path);
 
-//                        elseif ($fileType[0] == 'video') {
-//                            $fileFolder = 'videos/' . $request->user_id;
-//                            // $destinationPath = public_path('storage/fullVideos/');
-//                        }
+                    $fileArray = explode("/", $filePath);
+                    $filename = end($fileArray);
 
-                        $path = Storage::disk('s3')->put($fileFolder, $postArray);
-                        $filePath = Storage::disk('s3')->url($path);
-
-                        $fileArray = explode("/", $filePath);
-                        $filename = end($fileArray);
-
-                        $result = $this->posts->saveAdminAds($data, $fileType[0], $filename, $message);
-//                    }
+                    $result = $this->posts->saveAdminAds($data, $fileType[0], $filename, $message);
                 }
 
                 if ($result) {

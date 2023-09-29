@@ -92,9 +92,6 @@
 
                             </div>
                             <div class="right-options">
-                                <!-- @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'] && empty($requestSurfer[$posts->id]))
-                                <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
-                                @endif -->
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                                     <img src={{asset("/img/location.png")}} alt="Location"></a>
                                 <a onclick="openFullscreenSilder({{$posts->id}}, 'feed');"><img src={{asset("/img/expand.png")}} alt="Expand"></a>
