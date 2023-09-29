@@ -121,7 +121,6 @@
     jQuery( ".jw-video-player" ).each(function( i ) {
         var videoID = $(this).attr('data-id');
         var video = $(this).attr('data-src');
-        // console.log("Data = myVideoTag"+videoID+"  --  "+video);
         var options = {};
 
         videojs('myVideoTag'+videoID).ready(function () {

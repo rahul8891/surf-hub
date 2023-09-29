@@ -9,7 +9,6 @@
     <title>{{ config('customarray.siteTitle.user') }}</title>
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/bootstrap.min.css")}}">
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/style.css")}}">
-    <!-- <link rel="stylesheet" type="text/css" href="{{ asset("/css/loader.css")}}"> -->
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/responsive.css")}}">
 </head>
 
@@ -17,7 +16,6 @@
     <!-- Header -->
     @include('layouts/user/user_header')
     <main class="contactUsWrap">
-        <!-- class="contactUsWrap"-->
         <div id="loader"></div>
         <!-- Page Content -->
         @if ($errors->any())

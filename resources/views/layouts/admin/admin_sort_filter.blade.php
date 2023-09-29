@@ -169,14 +169,6 @@
                                     <input type="text" value="{{ old('other_beach')}}" name="other_beach"class="form-control other_beach" placeholder="Search Beach" id="beach_filtername">
                                     <input type="hidden" value="{{ old('surfer_id')}}" name="beach" id="beach_id" class="form-control beach_id">
                                     <div class="auto-search search2 beachlist" id="filter_beach_data"></div>
-                                    <!-- <select class="form-select" name="beach" id="beach_filter">
-                                        <option value="">-- Beach --</option>
-                                        @foreach($beaches as $val)
-                                        @if(!empty($val['beach_name']))
-                                        <option value="{{$val['id']}}">{{$val['beach_name']}}</option>
-                                        @endif
-                                        @endforeach
-                                    </select> -->
                                 </div>
                             </div>
                         </div>
@@ -371,27 +363,23 @@
      */
     jQuery('#beach_filtername').on('keyup', function() {
         var beachValue = jQuery(this).val();
-        //if ( beachValue.length > 3 ) {
-            jQuery.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                type: "GET",
-                url: '/getBeachName',
-                data: {
-                    beach_name: beachValue,
-                },
-                dataType: "json",
-                success: function (jsonResponse) {
-                    // console.log(jsonResponse);
-
-                    if (jsonResponse.status == 'success') {
-                        var myJsonData = jsonResponse.data;
-                        jQuery('#filter_beach_data').html(myJsonData);
-                    }
+        jQuery.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: "GET",
+            url: '/getBeachName',
+            data: {
+                beach_name: beachValue,
+            },
+            dataType: "json",
+            success: function (jsonResponse) {
+                if (jsonResponse.status == 'success') {
+                    var myJsonData = jsonResponse.data;
+                    jQuery('#filter_beach_data').html(myJsonData);
                 }
-            });
-        //}
+            }
+        });
     });
 
     /**
@@ -442,32 +430,4 @@
         jQuery("#board_type").find('option').attr('selected', false);
         jQuery('input[type=checkbox]').prop('checked', false);
     });
-    /*$("#beach_filter").change(function (e) {
-        $('#break_filter').find('option').remove();
-        $("#break_filter").append('<option value=""> -- Break --</option>');
-        var beachValue = $(this).val();
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            type: "GET",
-            url: '/getBreak',
-            data: {
-                beach_id: beachValue,
-            },
-            dataType: "json",
-            success: function (jsonResponse) {
-                //console.log(jsonResponse);
-                if (jsonResponse.status == 'success') {
-                    var myJsonData = jsonResponse.data;
-
-                    $.each(myJsonData, function (key, value) {
-                        if (value.break_name != '') {
-                            $("#break_filter").append('<option value="' + value.id + '">' + value.break_name + '</option>');
-                        }
-                    });
-                }
-            }
-        });
-    });*/
 </script>

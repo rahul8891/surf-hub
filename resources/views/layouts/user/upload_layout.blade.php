@@ -15,14 +15,6 @@
     }
 
     .dropdown-label {
-/*            display: block;
-            height: 30px;
-            background: #fff;
-            border: 1px solid #ccc;
-            padding: 6px 12px;
-            line-height: 1;
-            cursor: pointer;*/
-
             &:before {
                 content: '▼';
                 float: right;
@@ -31,8 +23,6 @@
     .dropdown-list {
             padding: 12px;
             background: #fff;
-            /*position: absolute;*/
-            /*top: 30px;*/
             left: 2px;
             right: 2px;
             box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
@@ -54,11 +44,6 @@
         position: relative;
         font-size: 14px;
         color: #333;
-
-
-
-
-
         &.on {
             .dropdown-list {
                 transform: scale(1, 1);
@@ -399,11 +384,6 @@
                                                                 <div class="col-md-4">
                                                                     <label class="mb-0">Beach </label>
                                                                 </div>
-                                                                <!--<label class="dropdown-label">Select</label>-->
-<!--
-                                                                <div class="col-md-8">
-
-                                                                </div>-->
                                                                 <div class="dropdown-list col-md-8">
                                                                     <a href="#" data-toggle="check-all" class="dropdown-option">
                                                                         Check All
@@ -425,9 +405,6 @@
                                                                     <a href="#" data-toggle="check-all" class="dropdown-option">
                                                                         Check All
                                                                     </a>
-
-
-
                                                                 </div>
                                                             </div>
                                                             <div class="row mb-3 rating-box">

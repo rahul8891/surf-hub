@@ -46,37 +46,10 @@ $user_type = str_replace( array( '%', '5', 'B' , 'D'), '', $userType);
                             <div class="col-md-3">
                                 <button type="button" id="close" data-dismiss="modal" aria-label="Close"> Clear</button>
                             </div>
-                            <!--<a href="javascript:void(0)" onclick="this.form.reset();">Clear</a>-->
                         </div>
                         <div class="filter-body">
                             @if(Auth::user())
-<!--                            <div class="row align-items-center mb-4 justify-content-between">
-                                <div class="col-md-7">
-                                    <div class="row align-items-center">
-                                        <div class="col-md-4">
-                                            <label for="surfe" class="form-label">Surfer</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="d-inline-block form-check mb-0 me-3">
-                                                <input type="checkbox" class="form-check-input mt-0"
-                                                       id="me-surfe" name="filterUser" value="me">
-                                                <label class="form-check-label" for="me-surfe">Me</label>
-                                            </div>
-                                            <div class="d-inline-block form-check mb-0">
-                                                <input type="checkbox" class="form-check-input mt-0"
-                                                       id="test-other" name="filterUser" value="others">
-                                                <label class="form-check-label"
-                                                       for="test-other">Other</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 d-none" id="othersFilterSurfer">
-                                    <input type="hidden" value="" name="surfer_id" id="surfer_id_filter" class="form-control surfer_id" />
-                                    <input type="text" name="other_surfer" class="form-control ps-2 mb-0 filter_other_surfer">
-                                    <div class="auto-search" id="filter_other_surfer_data"></div>
-                                </div>
-                            </div>-->
+
                             @endif
                             <div class="row">
                                 <div class="col-md-7">

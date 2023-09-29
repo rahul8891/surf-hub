@@ -25,10 +25,7 @@
     @endif
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ config('customarray.siteTitle.user') }}</title>
-    
-    <!-- <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet"> -->    
-    
+    <title>{{ config('customarray.siteTitle.user') }}</title>    
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/bootstrap.min.css")}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/style.css")}}">
@@ -48,7 +45,6 @@
         <div class="loaderWrap">
             <div class="lds-hourglass"></div>
         </div>
-        <!--<div id="loader"></div> -->
         @include('layouts/user/user_header')
         @include('layouts/user/user_banner')
         @if ($errors->any())
@@ -95,16 +91,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
     
     <script>
-
-       
         $(document).ready(function() {
             $("#My-Profile").click(function() {
                 $(".profileChangePswd").toggleClass("show");
             });
-
-            /* $(document).on('click.bs.dropdown.data-api', '.dropdown.keep-inside-clicks-open', function(e) {
-                 e.stopPropagation();
-             });*/
 
             $('.dropdown.keep-inside-clicks-open').on({
                 "shown.bs.dropdown": function() {

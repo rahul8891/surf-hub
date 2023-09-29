@@ -8,9 +8,6 @@
 
     <div class="container">
         <div class="home-row">
-
-             
-
             <div class="middle-content">
             <form class="" id="storeAdvert" method="POST" name="storeAdvert" action="{{ route('storeAdvert') }}" class="upload-form" accept-charset="utf-8" enctype="multipart/form-data">
             @csrf

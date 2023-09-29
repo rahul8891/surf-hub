@@ -7,10 +7,7 @@
     <link rel="shortcut icon" href="{{ asset('images/logo_small.png') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ config('customarray.siteTitle.user') }}</title>
-    
-    <!-- <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet"> -->    
-    
+    <title>{{ config('customarray.siteTitle.user') }}</title>    
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/bootstrap.min.css")}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/style.css")}}">
@@ -32,10 +29,7 @@
         <div id="loader"></div> 
         <div class="loaderWrap">
             <div class="lds-hourglass"></div>
-        </div>
-        <!--<div id="loader"></div> -->
-        <!--@include('layouts/user/user_header')-->
-        
+        </div>        
         @include('layouts/user/user_banner')
         @if ($errors->any())
         <div class="alert alert-danger alert-dismissible" id="msg" role="alert">
@@ -82,16 +76,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
     
     <script>
-
-        
         $(document).ready(function() {
             $("#My-Profile").click(function() {
                 $(".profileChangePswd").toggleClass("show");
             });
-
-            /* $(document).on('click.bs.dropdown.data-api', '.dropdown.keep-inside-clicks-open', function(e) {
-                 e.stopPropagation();
-             });*/
 
             $('.dropdown.keep-inside-clicks-open').on({
                 "shown.bs.dropdown": function() {
@@ -127,24 +115,8 @@
 
         function openFullscreen(id) {
             var elem = document.getElementById("myImage"+id);
-//            alert('here');
             $('.home-row').hide();
             $('.show-vid').html('<video width="100%" preload="auto" data-setup="{}" controls controlsList="nofullscreen nodownload" autoplay playsinline muted class="vid-expand" id="myImage"><source src="'+id+'" /></video>');
-//            if (elem.requestFullScreen) {
-//                elem.requestFullScreen();
-//                elem.webkitEnterFullscreen();
-//                elem.enterFullscreen();
-//            } else if (elem.webkitRequestFullScreen) { /* Safari */
-//                elem.webkitRequestFullScreen();
-//                elem.webkitEnterFullscreen();
-//                elem.enterFullscreen();
-//            } else if (elem.mozRequestFullScreen) {
-//                elem.mozRequestFullScreen();
-//                elem.enterFullscreen();
-//            } else if (elem.msRequestFullScreen) { /* IE11 */
-//                elem.msRequestFullScreen();
-//                elem.enterFullscreen();
-//            }
         }    
     </script>
 </body>

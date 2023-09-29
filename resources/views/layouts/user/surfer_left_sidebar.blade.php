@@ -15,7 +15,6 @@
                 @else
                     <div class="">{{ucwords(substr($userProfile['surfer_name'],0,1))}}</div>
                 @endif
-                <!-- <span class="notification notification-count">0</span> -->
             </div>
             <div class="my-name">
                 <a class="" href="{{ route('surfer-profile', Crypt::encrypt($userProfile['user_id'])) }}">
@@ -76,24 +75,7 @@
                 <label class="d-block">Gender</label>
                 <span class="darkGrey-txt">{{ $userProfile['gender'] }}</span>
             </div>
-
-            <!--  <div class="profile-row">
-                <label class="d-block">DOB</label>
-                <span class="darkGrey-txt">{{ $userProfile['dob'] }}</span>
-            </div> -->
             @endif
-            <!-- <div class="profile-row pt-0">
-                <label class="d-block">Email</label>
-                <span class="darkGrey-txt">{{ $userProfile['email'] }}</span>
-            </div>
-            <div class="profile-row">
-                <label class="d-block">Phone Number</label>
-                <span class="darkGrey-txt">{{ $userProfile['phone'] }} </span>
-            </div>
-            <div class="profile-row pt-0">
-                <label class="d-block">Postal Code</label>
-                <span class="darkGrey-txt">{{ $userProfile['postal_code'] }}</span>
-            </div>  -->
             @if($userType == 'SURFER CAMP' || $userType == 'PHOTOGRAPHER')
             <div class="profile-row pt-0">
                 <label class="d-block">Website</label>
@@ -120,15 +102,6 @@
                 <label class="d-block">Country</label>
                 <span class="darkGrey-txt">{{ $userProfile['country'] }} </span>
             </div>
-<!--            <div class="text-center">
-                <a href="#" class="mx-0 w-150 greyBorder-btn mt-2">CONNECT</a>
-            </div>
-            <div class="text-center">
-                <a href="#" class="mx-0 w-150 greyBorder-btn mt-2">BLOCK</a>
-            </div>
-            <div class="text-center">
-                <a href="#" class="mx-0 w-150 greyBorder-btn mt-2">DELETE</a>
-            </div>-->
         </div>
     </div>
 </div>

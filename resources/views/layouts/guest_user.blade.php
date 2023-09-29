@@ -13,13 +13,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/loader.css")}}">
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/responsive.css")}}">
     <link rel="stylesheet" href="{{ asset("/css/croppie.css") }}" />
-    <!-- <link rel="stylesheet" href="{{ asset("/css/select2.css") }}" /> -->
-    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" /> -->
-
     <link href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
     </link>
-
-
 </head>
 
 <body class="login-body">
@@ -34,9 +29,7 @@
                 <a class="navbar-brand" href="#"><img src="img/logo.png" alt="Logo"></a>
                 <div class="navbar-nav middle-menu">
                     <a class="nav-link" href="/"><img src="{{ asset("/img/home.png")}}" alt="Feed" class="align-middle"> <span class="align-middle">FEED</span></a>
-                    <!--<a class="nav-link" href="#"><img src="{{ asset("/img/hub.png")}}" alt="Hub" class="align-middle"> <span class="align-middle">MY HUB</span></a>-->
                     <a class="nav-link" href="/search"><img src="{{ asset("/img/search.png")}}" alt="Search" class="align-middle"> <span class="align-middle">SEARCH</span></a>
-                    <!--<a class="nav-link" href="#"><img src="{{ asset("/img/upload.png")}}" alt="Upload" class="align-middle"> <span class="align-middle">UPLOAD</span></a>-->
                 </div>
                 <div class="side-navbar">
                     <div class="navbar-nav">
@@ -74,35 +67,10 @@
     <script src="{{ asset("/js/croppie.js")}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="{{ asset("/js/bootstrap.js")}}"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script> -->
     <script src="{{ asset("/js/jquery.validate.min.js")}}"></script>
     <script src="{{ asset("/js/custom.js")}}"></script>
     <script src="{{ asset("/js/bootstrap.bundle.min.js")}}"></script>
     <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.min.js"></script>
-
-    <!-- <script src="{{ asset("/js/select2.js")}}"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> -->
-    <script>
-    // $('#local_beach_break_id').select2({
-    //     placeholder: 'Select a month',
-    //     selectOnClose: true,
-    // });
-    /*$('.local_beach_break_id').select2({
-        closeOnSelect: true,
-    });
-
-    $('.language').select2({
-        closeOnSelect: true,
-    });
-
-    $('.accountType').select2({
-        closeOnSelect: true,
-    });
-
-    $('.local_beach_break').select2({
-        closeOnSelect: true,
-    });*/
-    </script>
 </body>
 
 </html>
