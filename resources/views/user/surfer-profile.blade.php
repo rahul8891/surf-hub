@@ -28,12 +28,12 @@
                                 <td>:</td>
                                 <td>{{ __(ucwords($userProfile['surfer_name'])) }}</td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td>Email</td>
                                 <td>:</td>
-                                <!-- <td>{{ $userProfile['email'] }}</td> -->
+                                <td>{{ $userProfile['email'] }}</td>
                                 <td>******</td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <td>Gender</td>
                                 <td>:</td>
