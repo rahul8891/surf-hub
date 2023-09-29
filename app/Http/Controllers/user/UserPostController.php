@@ -752,7 +752,7 @@ class UserPostController extends Controller {
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete Post via Ajax.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -761,6 +761,27 @@ class UserPostController extends Controller {
         $param = $request->all();
         try {
             $result = $this->posts->deletePost($param['id']);
+            if ($result) {
+                echo json_encode(array('status'=>'success', 'message' => $result));
+            } else {
+                echo json_encode(array('status'=>'error', 'message' => $result));
+            }
+        } catch (\Exception $e) {
+            echo json_encode(array('status'=>'error', 'message' => $e->getMessage()));
+        }
+        die;
+    }
+
+    /**
+     * Surfer Request via Ajax.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function surferRequestAjax(Request $request) {
+        $param = $request->all();
+        try {
+            $result = $this->posts->surferRequest($param['id']);
             if ($result) {
                 echo json_encode(array('status'=>'success', 'message' => $result));
             } else {

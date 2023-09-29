@@ -135,7 +135,7 @@
                                 @endif
 
                                 @if(isset(Auth::user()->id) && ($posts['surfer'] == 'Unknown') && (Auth::user()->id != $posts['user_id']) && empty($requestSurfer[$posts->id]))
-                                    <a href="{{route('surferRequest', Crypt::encrypt($posts->id))}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
+                                    <a href="javascript:void(0);" class="surferRequestAjax" id="surferrequest_{{$posts->id}}" data-id="{{$posts->id}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
                                 @endif
 
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
@@ -449,5 +449,33 @@
 
         return false;
     }
+
+
+    // Surfer Request Sent Ajax
+    jQuery(document).ready(function() {
+        jQuery('.surferRequestAjax').on('click', function() {
+            var surferrequestId = jQuery(this).attr('data-id');
+            // AJAX Request
+            jQuery.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                },
+                url: '/surfer-request-ajax',
+                type: 'POST',
+                data: { id:surferrequestId },
+                success: function(responseData) {
+                    // Removing icon from HTML Table
+                    var result = JSON.parse(responseData);
+                    if(result.status == "success") {
+                        jQuery("#surferrequest_" + surferrequestId).fadeOut("normal");
+                        alert(result.message);
+                    } else{
+                        alert('Request not sent.');
+                    }
+                }
+            });
+        });
+    });
+
 </script>
 @endsection

@@ -60,6 +60,7 @@ Route::get('/getBeachName', [DashboardController::class, 'getBeachName'])->name(
 $router->get('spotify-auth', [SpotifyAuthController::class, 'redirectToProvider'])->name('spotify-auth');
 $router->get('spotify-call-back', [SpotifyAuthController::class, 'handleProviderCallback'])->name('spotify-call-back');
 Route::get('/surfer-request/{id}', [UserPostController::class, 'surferRequest'])->name('surferRequest');
+Route::post('/surfer-request-ajax', [UserPostController::class, 'surferRequestAjax'])->name('surferRequestAjax');
 Route::get('/getPostFullScreen/{id}/{type}', [MyHubController::class, 'getPostFullScreen'])->name('getPostFullScreen');
 Route::get('/get-presigned-url', [UserPostController::class, 'getPresignedUrl'])->name('getPresignedUrl');
 Route::post('/get-presigned-urls', [UserPostController::class, 'getPresignedUrl'])->name('getPresignedUrls');
