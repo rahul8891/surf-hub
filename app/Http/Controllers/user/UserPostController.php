@@ -762,13 +762,14 @@ class UserPostController extends Controller {
         try {
             $result = $this->posts->deletePost($param['id']);
             if ($result) {
-                return json_encode(array('status'=>'success', 'message' => $result));
+                echo json_encode(array('status'=>'success', 'message' => $result));
             } else {
-                return json_encode(array('status'=>'error', 'message' => $result));
+                echo json_encode(array('status'=>'error', 'message' => $result));
             }
         } catch (\Exception $e) {
-            return json_encode(array('status'=>'error', 'message' => $e->getMessage()));
+            echo json_encode(array('status'=>'error', 'message' => $e->getMessage()));
         }
+        die;
     }
 
 }
