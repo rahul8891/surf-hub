@@ -521,12 +521,12 @@ class UserPostController extends Controller {
 
         $postsList = Post::join('notifications', 'notifications.post_id', '=', 'posts.id')
                 // ->join('user_profiles', 'user_profiles.user_id', '=', 'notifications.sender_id')
-                // ->join('users', 'users.id', '=', 'notifications.sender_id')
+                ->join('users', 'users.id', '=', 'notifications.sender_id')
                 ->join('user_profiles', 'user_profiles.user_id', '=', 'posts.user_id')
                 ->where('notifications.status', '0')
                 ->where('notifications.id', $request_id)
                 ->orderBy('posts.created_at', 'DESC')
-                ->get(['posts.*', 'notifications.id as request_id', 'notifications.sender_id as sender_id']);
+                ->get(['posts.*', 'notifications.id as request_id', 'notifications.sender_id as sender_id', 'users.profile_photo_path']);
 
         foreach($postsList as $post) {
             $userProfile = $this->userService->getUserDetail($post->sender_id);
