@@ -617,10 +617,11 @@ class UserPostController extends Controller {
     public function surferRequestList() {
         $surferRequest = Notification::join('posts', 'notifications.post_id', '=', 'posts.id')
                 ->join('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
+                ->join('users', 'posts.user_id', '=', 'users.id')
                 ->where("notifications.receiver_id", '=', Auth::user()->id)
                 ->where("notifications.status", "=", "0")
                 ->orderBy('notifications.id', 'DESC')
-                ->get(['notifications.*', 'user_profiles.first_name', 'user_profiles.last_name']);
+                ->get(['notifications.*', 'user_profiles.first_name', 'user_profiles.last_name', 'users.profile_photo_path']);
         return view('user.surfersRequestList', compact('surferRequest'));
     }
 

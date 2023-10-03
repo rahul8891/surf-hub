@@ -1609,6 +1609,7 @@ class PostService {
 
         $notificationArray =  $this->notification
                                   ->where('receiver_id', Auth::user()->id)
+                                  ->where('notification_type', '!=', 'Surfer Request')
                                   ->where('status', '0')
                                   ->orderBy('created_at','DESC')
                                   ->get();
