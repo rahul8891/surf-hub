@@ -107,7 +107,8 @@
                                 <div onclick="deleteSaveUserPost({{$posts->id}}, 'saveToMyHub')"><img src="/img/new/save.png" alt="Save"></div>
                                 @endif
                                 @if($posts['surfer'] == 'Unknown' && Auth::user()->id != $posts['user_id'] && empty($requestSurfer[$posts->id]))
-                                <a onclick='surferRequestDetail("{{ Crypt::encrypt($posts->id) }}")'><img src="/img/new/small-logo.png" alt="Logo"></a>
+                                <!-- <a onclick='surferRequestDetail("{{ Crypt::encrypt($posts->id) }}")'><img src="/img/new/small-logo.png" alt="Logo"></a> -->
+                                <a href="javascript:void(0);" class="surferRequestAjax" id="surferrequest_{{$posts->id}}" data-id="{{$posts->id}}"><img src="/img/new/small-logo.png" alt="Logo"></a>
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#beachLocationModal" data-lat="{{$posts->beach_breaks->latitude ?? ''}}" data-long="{{$posts->beach_breaks->longitude ?? ''}}" data-id="{{$posts->id}}" class="locationMap">
                                     <img src={{asset("/img/location.png")}} alt="Location"></a>
@@ -438,5 +439,32 @@
 
         return false;
     }
+
+    // Surfer Request Sent Ajax
+    jQuery(document).ready(function() {
+        jQuery('.surferRequestAjax').on('click', function() {
+            var surferrequestId = jQuery(this).attr('data-id');
+            // AJAX Request
+            jQuery.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                },
+                url: '/surfer-request-ajax',
+                type: 'POST',
+                data: { id:surferrequestId },
+                success: function(responseData) {
+                    // Removing icon from HTML Table
+                    var result = JSON.parse(responseData);
+                    if(result.status == "success") {
+                        jQuery("#surferrequest_" + surferrequestId).fadeOut("normal");
+                        jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+result.message+'</div>');
+                    } else{
+                        jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+result.message+'</div>');
+                    }
+                }
+            });
+        });
+        return false;
+    });
 </script>
 @endsection
