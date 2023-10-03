@@ -13,6 +13,7 @@
                     <div class="surfer-body">
                         @if (count($surferRequest) > 0)
                         @foreach ($surferRequest as $key => $val)
+
                         <div class="surfer-request">
                             <div class="row align-items-center gap-2 gap-xl-0">
                                 <div class="col-xl-6">
