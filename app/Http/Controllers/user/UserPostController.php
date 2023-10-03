@@ -521,7 +521,7 @@ class UserPostController extends Controller {
 
         $postsList = Post::join('notifications', 'notifications.post_id', '=', 'posts.id')
                 // ->join('user_profiles', 'user_profiles.user_id', '=', 'notifications.sender_id')
-                ->join('users', 'users.id', '=', 'notifications.sender_id')
+                ->join('users', 'users.id', '=', 'notifications.reciver_id')
                 ->join('user_profiles', 'user_profiles.user_id', '=', 'posts.user_id')
                 ->where('notifications.status', '0')
                 ->where('notifications.id', $request_id)
