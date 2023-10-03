@@ -616,8 +616,8 @@ class UserPostController extends Controller {
 
     public function surferRequestList() {
         $surferRequest = Notification::join('posts', 'notifications.post_id', '=', 'posts.id')
-                ->join('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
-                ->join('users', 'posts.user_id', '=', 'users.id')
+                ->join('user_profiles', 'notifications.sender_id', '=', 'user_profiles.user_id')
+                ->join('users', 'notifications.sender_id', '=', 'users.id')
                 ->where("notifications.receiver_id", '=', Auth::user()->id)
                 ->where("notifications.status", "=", "0")
                 ->orderBy('notifications.id', 'DESC')
