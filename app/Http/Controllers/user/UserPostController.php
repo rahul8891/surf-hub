@@ -510,17 +510,25 @@ class UserPostController extends Controller {
     public function surferFollowRequest($id) {
         $request_id = Crypt::decrypt($id);
         $userProfile = '';
-        
+
         $customArray = $this->customArray;
-        $postsList = Post::join('surfer_requests', 'surfer_requests.post_id', '=', 'posts.id')
-                ->join('user_profiles', 'user_profiles.user_id', '=', 'posts.user_id')
+        // $postsList = Post::join('surfer_requests', 'surfer_requests.post_id', '=', 'posts.id')
+        //         ->join('user_profiles', 'user_profiles.user_id', '=', 'posts.user_id')
+        //         ->where('posts.is_deleted', '0')
+        //         ->where('posts.id', $request_id)
+        //         ->orderBy('posts.created_at', 'DESC')
+        //         ->get(['posts.*', 'surfer_requests.id as request_id']);
+        $postsList = Notification::join('posts', 'notifications.post_id', '=', 'posts.id')
+                ->join('user_profiles', 'user_profiles.user_id', '=', 'notifications.sender_id')
                 ->where('posts.is_deleted', '0')
                 ->where('posts.id', $request_id)
                 ->orderBy('posts.created_at', 'DESC')
-                ->get(['posts.*', 'surfer_requests.id as request_id']);
+                // ->get(['posts.*', 'surfer_requests.id as request_id']);
+                ->get(['posts.*', 'notifications.id as request_id']);
 
         foreach($postsList as $post) {
-            $userProfile = $this->userService->getUserDetail($post->user_id);
+            // $userProfile = $this->userService->getUserDetail($post->user_id);
+            $userProfile = $this->userService->getUserDetail($post->sender_id);
         }
         return view('user.surfer-follow-request', compact('customArray', 'postsList', 'request_id', 'userProfile'));
     }

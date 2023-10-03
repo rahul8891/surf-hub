@@ -30,7 +30,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-6 text-xl-end">
-                                    <a class="btn grey-borderBtn me-3 review" href="{{ route('surferFollowRequest', [Crypt::encrypt($val->post_id)]) }}" >
+                                    <a class="btn grey-borderBtn me-3 review" href="{{ route('surferFollowRequest', [Crypt::encrypt($val->id)]) }}" >
                                         <img src="/img/review.png" class="me-1 align-middle" alt="REVIEW">
                                         <span class="align-middle">REVIEW</span>
                                     </a>
