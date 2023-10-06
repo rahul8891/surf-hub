@@ -1816,8 +1816,10 @@ class PostService {
         $postsList =  $this->posts->whereNull('deleted_at')
                                 ->where('post_type', 'PUBLIC')
                                 ->whereIn('user_id', $getFollowedPostList)
-                                ->where('is_deleted','0')
-                                ->where('is_feed', '1');
+                                ->orWhere('is_feed', '1')
+                                ->where('is_deleted','0');
+
+
         if (isset($data['sort'])) {
             if($data['sort'] == "dateAsc"){
                 $postsList->orderBy('posts.created_at','ASC');
