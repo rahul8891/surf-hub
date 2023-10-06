@@ -2214,3 +2214,20 @@ header .profile-pic{
 header .navbar-nav.admin-middle-menu > div > a span:nth-child(2){
     font-weight: 400;
 }
+
+.ajax-loader {
+    visibility: hidden;
+    background-color: rgba(255,255,255,0.7);
+    position: absolute;
+    z-index: +100 !important;
+    width: 100%;
+    height: 100%;
+}
+
+.ajax-loader img {
+    position: relative;
+    top: 50%;
+    left: 44%;
+    width: 100px;
+    padding-right: 20px;
+}

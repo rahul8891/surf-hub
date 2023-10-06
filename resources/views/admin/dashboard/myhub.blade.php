@@ -125,8 +125,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if(Auth::user() && $posts->user_id == Auth::user()->id)
-                                <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a>
+                                @if(Auth::user() && Auth::user()->user_type == 'ADMIN')
+                                <a href="javascript:void(0);" class="deletePost" onclick="deletePostByAdmin({{$posts->id}});" data-id=""><img src="/img/delete.png" alt="Delete"></a>
                                 @endif
                                 <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
                                 <div class="d-inline-block tag dropdown" title="Tag">

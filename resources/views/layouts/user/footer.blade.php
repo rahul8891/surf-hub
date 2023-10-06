@@ -55,6 +55,9 @@
     function openFullscreenSilder(id, type) {
         // event.preventDefault();
         jQuery.ajax({
+            beforeSend: function(){
+                jQuery('.ajax-loader').css("visibility", "visible");
+            },
             url: '/getPostFullScreen/' + id +'/'+type+'?<?php echo (isset($urlData) && !empty($urlData))?$urlData:'' ?>',
             type: "get",
             async: true,
@@ -62,6 +65,9 @@
                 jQuery("#full_screen_modal").html('');
                 jQuery("#full_screen_modal").append(data.html);
                 jQuery("#full_screen_modal").modal('show');
+            },
+            complete: function(){
+                jQuery('.ajax-loader').css("visibility", "hidden");
             }
         });
     }
@@ -79,7 +85,7 @@
 	          jQuery('#uploads').html(jsonResponse['uploads']);
 	          jQuery('#surferRequest').html(jsonResponse['surferRequest']);
 	          jQuery('#notification-count').html(jsonResponse['notification']);
-              jQuery('.notification-count').html(jsonResponse['notification']);
+              jQuery('.notification.notification-count').html(jsonResponse['totalNotification']);
 	      }
 	  });
 	});

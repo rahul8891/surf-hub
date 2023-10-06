@@ -53,6 +53,7 @@ class WelcomeFeedController extends Controller
             }
         }
         $param = $request->all();
+
         $customArray = $this->customArray;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId(1);

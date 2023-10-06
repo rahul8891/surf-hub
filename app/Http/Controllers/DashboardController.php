@@ -43,7 +43,7 @@ class DashboardController extends Controller {
         $beaches = $this->masterService->getBeaches();
         $customArray = $this->customArray;
 
-        $postsList = $this->postService->getFeedFilteredList($param);
+        $postsList = $this->postService->getFeedFilteredListLoginUser($param);
 
         $requestSurfer = array();
         foreach ($postsList as $val) {

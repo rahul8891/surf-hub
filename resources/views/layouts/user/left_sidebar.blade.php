@@ -11,7 +11,7 @@
                     {{ucwords(substr(Auth::user()->user_profiles->first_name,0,1))}}{{ucwords(substr(Auth::user()->user_profiles->last_name,0,1))}}
                 </div>
                 @endif
-                <span class="notification notification-count">0</span>
+                <span class="notification notification-count"></span>
             </div>
             <div class="my-name">{{ ucwords(Auth::user()->user_profiles->first_name .' '.Auth::user()->user_profiles->last_name) }}</div>
             <div class="my-comp">Surfhub <span class="blue-txt">$0</span> Earn</div>

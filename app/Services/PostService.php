@@ -727,6 +727,7 @@ class PostService {
     public function getFeedFilteredList($data, $page = null) {
         $postsList =  $this->posts->whereNull('deleted_at')
                                 ->where('post_type', 'PUBLIC')
+                                ->where('is_feed', '1')
                                 ->where('is_deleted','0');
 
         if (isset($data['sort'])) {
@@ -1796,4 +1797,56 @@ class PostService {
 
     //     $notification->save();
     // }
+
+    /**
+     * [getFeedFilteredListLoginUser] we are getiing all login user post with filter
+     * @param
+     * @param
+     * @return dataArray
+     */
+    public function getFeedFilteredListLoginUser($data, $page = null) {
+        $getFollowedPostList = $this->userFollow
+                                ->where('follower_user_id', Auth::user()->id)
+                                ->where('followed_user_id','!=', Auth::user()->id)
+                                ->where('follower_request_status','0')
+                                ->where('is_deleted','0')
+                                ->orderBy('id','ASC')
+                                ->pluck('followed_user_id');
+
+        $postsList =  $this->posts->whereNull('deleted_at')
+                                ->where('post_type', 'PUBLIC')
+                                ->whereIn('user_id', $getFollowedPostList)
+                                ->where('is_deleted','0');
+        if (isset($data['sort'])) {
+            if($data['sort'] == "dateAsc"){
+                $postsList->orderBy('posts.created_at','ASC');
+            }
+            else if($data['sort'] == "dateDesc"){
+                $postsList->orderBy('posts.created_at','DESC');
+            }
+            else if($data['sort'] == "surfDateAsc"){
+                $postsList->orderBy('posts.surf_start_date','ASC');
+            }
+            else if($data['sort'] == "surfDateDesc"){
+                $postsList->orderBy('posts.surf_start_date','DESC');
+            }
+            else if($data['sort'] == "beach"){
+                $postsList->orderBy('beach_breaks.beach_name','ASC');
+            }
+            else if($data['sort'] == "star"){
+                $postsList->orderBy('average','DESC');
+            }
+            else{
+                $postsList->orderBy('posts.created_at','DESC');
+            }
+        } else {
+            $postsList->orderBy('posts.updated_at','DESC');
+        }
+
+        if(isset($page) && !empty($page)) {
+            return $postsList->get();
+        } else {
+            return $postsList->paginate(10);
+        }
+    }
 }

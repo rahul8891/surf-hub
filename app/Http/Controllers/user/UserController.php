@@ -492,6 +492,8 @@ class UserController extends Controller {
             $userPosts = $this->post->getPostByUserId(Auth::user()->id);
             $surferRequests = Notification::where("receiver_id", "=", Auth::user()->id)->where("status", "=", '0')->get();
 
+            $totalNotification = count($surferRequests) + $followRequestCount + $notification;
+
             $uploads = $this->post->getUploads(Auth::user()->id);
             $fCounts = array(
                 'follwers' => $followersCount,
@@ -500,7 +502,8 @@ class UserController extends Controller {
                 'posts' => count($userPosts),
                 'surferRequest' => count($surferRequests),
                 'uploads' => count($uploads),
-                'notification' => $notification
+                'notification' => $notification,
+                'totalNotification' => $totalNotification
             );
 
             echo json_encode($fCounts);

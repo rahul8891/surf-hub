@@ -19,7 +19,7 @@
         <div class="profile-menu">
             <div class="profile-row {{ ((userActiveMenu('myhubs') == 'active') && ($post_type == 'posts'))?'active':'' }}">
                 <img src="/img/posts.png" alt="posts">
-                 <a class="" href="{{ route('myhubs', 'posts') }}">Posts - <span class="blue-txt num" id="posts"> </span></a>
+                 <a class="" href="{{ route('adminMyHub', 'posts') }}">Posts - <span class="blue-txt num" id="posts"> </span></a>
             </div>
             <div class="profile-row {{ userActiveMenu('upload') }}">
                 <img src="/img/upload.png" alt="Uploads">

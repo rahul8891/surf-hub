@@ -615,3 +615,31 @@ jQuery(document).on('click', function(){
        jQuery("div.alert").fadeOut();
     }, 2000 ); // 2 secs
 });
+
+function deletePostByAdmin(deleteid) {
+    deleteid = '';
+    if ( deleteid == '' ) {
+        return false;
+    }
+    if (confirm('Do you really want to delete this footage?')) {
+        // AJAX Request
+        jQuery.ajax({
+            headers: {
+                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+            },
+            url: '/deletepost',
+            type: 'POST',
+            data: { id:deleteid },
+            success: function(responseData) {
+                // Removing row from HTML Table
+                var result = JSON.parse(responseData);
+                if(result.status == "success") {
+                    jQuery("#" + deleteid).fadeOut("normal");
+                    jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+result.message+'</div>');
+                } else{
+                    jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+result.message+'</div>');
+                }
+            }
+        });
+    }
+}

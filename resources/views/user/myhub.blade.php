@@ -149,7 +149,7 @@
                                     </div>
                                 </div>
                                 @if(Auth::user() && $posts->user_id == Auth::user()->id)
-                                <a href="javascript:void(0);" class="deletePost" data-id="{{$posts->id}}"><img src="/img/delete.png" alt="Delete"></a>
+                                <a href="javascript:void(0);" class="deletePost" onclick="deletePostByAdmin({{$posts->id}});" data-id=""><img src="/img/delete.png" alt="Delete"></a>
                                 @endif
                                 @if (isset($posts->parent_id) && ($posts->parent_id == 0))
                                     <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
@@ -359,36 +359,5 @@
         });
     });
     //End auto play
-
-
-    jQuery(document).ready(function() {
-        // Delete 
-        jQuery('.deletePost').on('click', function() {
-            // Delete id
-            var deleteid = jQuery(this).attr('data-id');
-            if (confirm('Do you really want to delete this footage?')) {
-                // AJAX Request
-                jQuery.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                    },
-                    url: '/deletepost',
-                    type: 'POST',
-                    data: { id:deleteid },
-                    success: function(responseData) {
-                        // console.log(responseData);
-                        // Removing row from HTML Table
-                        var result = JSON.parse(responseData);
-                        if(result.status == "success") {
-                            jQuery("#" + deleteid).fadeOut("normal");
-                            jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+result.message+'</div>');
-                        } else{
-                            jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+result.message+'</div>');
-                        }
-                    }
-                });
-            }
-        });
-    });
 </script>
 @endsection

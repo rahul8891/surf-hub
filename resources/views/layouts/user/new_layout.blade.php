@@ -26,7 +26,10 @@
     </head>
     
     <body class="login-body">
-        <header>
+        <div class="ajax-loader">
+            <img src="{{asset('/img/loder.gif')}}" class="img-responsive" />
+        </div>
+        <header class>
             @include('layouts/header')
         </header>
 
