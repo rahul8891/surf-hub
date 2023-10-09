@@ -300,10 +300,10 @@
         });
     });
 
-    /* jQuery('.rating').rating({
+     jQuery('.rating').rating({
         showClear:false,
         showCaption:false
-    }); */
+    }); 
 
     jQuery('.pos-rel a').each(function(){
         jQuery(this).on('hover, mouseover, click', function() {

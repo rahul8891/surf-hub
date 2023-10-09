@@ -172,7 +172,7 @@ class MyHubController extends Controller {
 
     /**
      * Store a newly created resource in storage.
-     *
+     * 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -211,7 +211,7 @@ class MyHubController extends Controller {
 
                 $breaks = $this->masterService->getBreakByBeachName($bb->beach_name);
                 $breakId = $myHubs->local_break_id;
-            }
+            } 
         } catch (\Exception $e) {
             throw ValidationException::withMessages([$e->getMessage()]);
         }
