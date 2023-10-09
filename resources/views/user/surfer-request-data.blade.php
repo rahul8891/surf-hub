@@ -77,6 +77,7 @@
                                     @endif
                                     <div>
                                         <p class="name"><span>{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span> </p>
+                                        <p class="discription">{{ $posts->post_text }}</p>
                                         <p class="address">
                                             {{ $posts->breakName->beach_name ?? ($posts->beach_breaks->beach_name ?? '') }}
                                             {{ $posts->breakName->break_name ?? ($posts->beach_breaks->beach_name ?? '') }},
