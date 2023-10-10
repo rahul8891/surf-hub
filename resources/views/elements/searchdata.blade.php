@@ -15,7 +15,6 @@
                                 @endif
                                 <div>
                                     <p class="name"><span>{{ ucfirst($posts->parentPost->user_profiles->first_name) }} {{ ucfirst($posts->parentPost->user_profiles->last_name) }} ( {{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} )</span> </p>
-                                    <p class="discription">{{ $posts->post_text }}</p>
                                     <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                                     <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                                 </div>
@@ -27,7 +26,6 @@
                                 @endif
                                 <div>
                                     <p class="name"><span>{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span> </p>
-                                    <p class="discription">{{ $posts->post_text }}</p>
                                     <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                                     <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                                 </div>
@@ -225,10 +223,10 @@
     @if(Auth::user())
     <div class="comments-div">
         <a class="" data-bs-toggle="collapse" href="#collapseExample{{$posts->id}}" role="button"
-           aria-expanded="false" aria-controls="collapseExample{{$posts->id}}">
+           aria-expanded="{{ !empty($posts->comments) ? 'true' : 'false' }}" aria-controls="collapseExample{{$posts->id}}">
             Say Something <img src="/img/dropdwon.png" alt="dropdown" class="ms-1">
         </a>
-        <div class="collapse" id="collapseExample{{$posts->id}}">
+        <div class="{{ !empty($posts->comments) ? 'collapse show' : '' }}" id="collapseExample{{$posts->id}}">
             <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
                 @csrf
                 <div class="comment-box">
