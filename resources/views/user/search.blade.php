@@ -26,7 +26,7 @@
                 @php ($c = 0)
                 @php ($i = 0)
                 @foreach ($postsList as $key => $posts)
-                <div class="news-feed">
+                <div class="news-feed" id="{{$posts->id}}">
                     <div class="inner-news-feed">
                         <div class="user-details">
                             @if (isset($posts->parent_id) && ($posts->parent_id > 0))
