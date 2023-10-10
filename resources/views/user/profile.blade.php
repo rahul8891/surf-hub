@@ -25,32 +25,32 @@
                     <table>
                         <tbody>
                             <tr>
-                                <td>User Name</td>
+                                <td class="font_bold">User Name</td>
                                 <td>:</td>
                                 <td>{{ __(ucwords($user->user_name)) }}</td>
                             </tr>
                             <tr>
-                                <td>First Name</td>
+                                <td class="font_bold">First Name</td>
                                 <td>:</td>
                                 <td>{{ __(ucwords($user->user_profiles->first_name)) }}</td>
                             </tr>
                             <tr>
-                                <td>Last Name</td>
+                                <td class="font_bold">Last Name</td>
                                 <td>:</td>
                                 <td>{{ __(ucwords($user->user_profiles->last_name)) }}</td>
                             </tr>
                             <tr>
-                                <td>Country</td>
+                                <td class="font_bold">Country</td>
                                 <td>:</td>
                                 <td>{{ $countries[$user->user_profiles->country_id]->name }}</td>
                             </tr>
                             <tr>
-                                <td>Phone</td>
+                                <td class="font_bold">Phone</td>
                                 <td>:</td>
                                 <td>{{ $user->user_profiles->icc }} {{ $user->user_profiles->phone }}</td>
                             </tr>
                             <tr>
-                                <td>Preferred Language</td>
+                                <td class="font_bold">Preferred Language</td>
                                 <td>:</td>
                                 <td>
                                     @if($user->user_profiles->language)
@@ -61,12 +61,12 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Account Type</td>
+                                <td class="font_bold">Account Type</td>
                                 <td>:</td>
                                 <td>{{ $accountType[$user->account_type] }}</td>
                             </tr>
                             <tr>
-                                <td>Paypal </td>
+                                <td class="font_bold">Paypal </td>
                                 <td>:</td>
                                 <td>abc@gmail.com</td>
                             </tr>

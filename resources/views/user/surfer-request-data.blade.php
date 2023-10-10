@@ -23,22 +23,22 @@
                     <table>
                         <tbody>
                             <tr>
-                                <td>User Name</td>
+                                <td class="font_bold">User Name</td>
                                 <td>:</td>
                                 <td>{{ __(ucwords($userProfile['surfer_name'])) }}</td>
                             </tr>
                             <tr>
-                                <td>Gender</td>
+                                <td class="font_bold">Gender</td>
                                 <td>:</td>
                                 <td>{{ $userProfile['gender'] }}</td>
                             </tr>
                             <tr>
-                                <td>Country</td>
+                                <td class="font_bold">Country</td>
                                 <td>:</td>
                                 <td>{{ $userProfile['country'] }}</td>
                             </tr>
                             <tr>
-                                <td>Preferred Board</td>
+                                <td class="font_bold">Preferred Board</td>
                                 <td>:</td>
                                 <td>
                                     @if($userProfile['preferred_board'])
@@ -49,7 +49,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Local Beach</td>
+                                <td class="font_bold">Local Beach</td>
                                 <td>:</td>
                                 <td>
                                     @if($userProfile['beach_break'])

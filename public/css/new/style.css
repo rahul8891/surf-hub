@@ -2231,3 +2231,6 @@ header .navbar-nav.admin-middle-menu > div > a span:nth-child(2){
     width: 100px;
     padding-right: 20px;
 }
+.font_bold {
+    font-weight: 600;
+}

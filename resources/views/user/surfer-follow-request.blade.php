@@ -24,24 +24,24 @@
                     <table>
                         <tbody>
                             <tr>
-                                <td>Surfer Name</td>
+                                <td class="font_bold">Surfer Name</td>
                                 <td>:</td>
                                 @if(!empty($userProfile['surfer_name']))
                                 <td>{{ $userProfile['surfer_name'] }}</td>
                                 @endif
                             </tr>
                             <tr>
-                                <td>Gender</td>
+                                <td class="font_bold">Gender</td>
                                 <td>:</td>
                                 @if(!empty($userProfile['gender']))<td>{{ $userProfile['gender'] }}</td>@endif
                             </tr>
                             <tr>
-                                <td>Country</td>
+                                <td class="font_bold">Country</td>
                                 <td>:</td>
-                                @if(!empty($userProfile['gender']))<td>{{ $userProfile['gender'] }}</td>@endif
+                                @if(!empty($userProfile['country']))<td>{{ $userProfile['country'] }}</td>@endif
                             </tr>
                             <tr>
-                                <td>Preferred Board</td>
+                                <td class="font_bold">Preferred Board</td>
                                 <td>:</td>
                                 <td>
                                     @if(!empty($userProfile['preferred_board']))
@@ -52,7 +52,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Local Beach</td>
+                                <td class="font_bold">Local Beach</td>
                                 <td>:</td>
                                 <td>
                                     @if(!empty($userProfile['beach_break']))
