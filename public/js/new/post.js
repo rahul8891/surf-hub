@@ -617,7 +617,6 @@ jQuery(document).on('click', function(){
 });
 
 function deletePostByAdmin(deleteid) {
-    deleteid = '';
     if ( deleteid == '' ) {
         return false;
     }

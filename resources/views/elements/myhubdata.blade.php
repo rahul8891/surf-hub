@@ -129,6 +129,8 @@
                                 @if (isset($posts->parent_id) && ($posts->parent_id == 0))
                                     <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
                                 @endif
+                            @elseif(Auth::user() && Auth::user()->id == 1)
+                                <a href="javascript:void(0);" class="deletePost" onclick="deletePostByAdmin({{$posts->id}});" data-id=""><img src="/img/delete.png" alt="Delete"></a>
                             @endif
                             <div class="d-inline-block tag dropdown" title="Tag">
                                 <button class="btn p-0 dropdown-toggle" data-bs-toggle="dropdown"
