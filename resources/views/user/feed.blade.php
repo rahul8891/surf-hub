@@ -228,11 +228,11 @@
                     </div>
                     <div class="comments-div">
                         <a class="" data-bs-toggle="collapse" href="#collapseExample{{$posts->id}}" role="button"
-                           aria-expanded="{{ !empty($posts->comments) ? 'true' : 'false' }}" aria-controls="collapseExample{{$posts->id}}">
+                           aria-expanded="{{ !empty($posts->comments[0]) ? 'true' : 'false' }}" aria-controls="collapseExample{{$posts->id}}">
                             Say Something <img src="/img/dropdwon.png" alt="dropdown" class="ms-1">
                         </a>
 
-                        <div class="{{ !empty($posts->comments) ? 'collapse show' : '' }}" id="collapseExample{{$posts->id}}">
+                        <div class="{{ !empty($posts->comments[0]) ? 'collapse show' : 'collapse' }}" id="collapseExample{{$posts->id}}">
                             <form role="form" method="POST" name="comment{{$posts->id}}" action="{{ route('comment') }}">
                                 @csrf
                                 <div class="comment-box">
@@ -244,6 +244,7 @@
                                     <button type="submit" id="submitPost{{$posts->id}}" class="send-btn btn"><img src="/img/send.png"></button>
                                 </div>
                             </form>
+                            
                             @foreach ($posts->comments as $comments)
                             <div class="comment-row">
                                 <span class="comment-name">{{ucfirst($comments->user->user_profiles->first_name)}} {{ucfirst($comments->user->user_profiles->last_name)}} :
