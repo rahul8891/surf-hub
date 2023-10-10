@@ -113,7 +113,7 @@ $user_type = str_replace( array( '%', '5', 'B' , 'D'), '', $userType);
                                         </div>
                                         <div class="col-md-8">
                                             <input type="hidden" value="" name="surfer_id" id="surfer_id_filter" class="form-control surfer_id" />
-                                            <input type="text" name="other_surfer" class="form-control ps-2 mb-0 filter_other_surfer" placeholder="Search">
+                                            <input type="text" name="other_surfer" class="form-control ps-2 mb-0 filter_other_surfer" placeholder="Surfer’s Name">
                                             <div class="auto-search" id="filter_other_surfer_data"></div>
                                         </div>
                                     </div>
