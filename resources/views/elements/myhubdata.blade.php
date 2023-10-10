@@ -3,7 +3,7 @@
     @php ($f = $page + ( $page - 1) )
     @foreach ($postsList as $key => $posts)
         @if($posts->parent_id == 0)
-            <div class="news-feed">
+            <div class="news-feed" id="{{$posts->id}}">
                 <div class="inner-news-feed">
                     <div class="user-details">
                         <div class="user-left">
