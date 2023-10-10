@@ -94,8 +94,25 @@ class PostService {
 
         $postArray =  $this->posts->whereNull('deleted_at')
                                   ->where('is_deleted','0')
+                                  ->where('post_type', 'PUBLIC')
                                   ->orderBy('created_at','ASC')
                                   ->count();
+        return $postArray;
+    }
+
+    /**
+     * [getPostTotal] we are getting number of total posts
+     * @param
+     * @param
+     * @return dataCount
+     */
+    public function getUploadsAdmin(){
+
+        $postArray =  $this->posts->whereNull('deleted_at')
+                                  ->where('is_deleted','0')
+                                  ->where('post_type', 'PRIVATE')
+                                  ->orderBy('created_at','ASC')
+                                  ->get();
         return $postArray;
     }
     /**

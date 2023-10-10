@@ -47,7 +47,8 @@ class AdminDashboard extends Controller
     {
         $totalUser = $this->users->getUserTotal();
         $totalPost = $this->posts->getPostTotal();
-        $uploads = $this->posts->getUploads();
+        // $uploads = $this->posts->getUploads();
+        $uploads = $this->posts->getUploadsAdmin();
         $resort = $this->user->getActiveUserType('SURFER CAMP');
         $photographer = $this->user->getActiveUserType('PHOTOGRAPHER');
         $advertiser = $this->user->getActiveUserType('ADVERTISEMENT');
@@ -168,7 +169,8 @@ class AdminDashboard extends Controller
         $surferRequests = $this->posts->getSurferRequest($postUnIds, 0);
         $reports = $this->posts->getReportsCount();
         $comments = $this->posts->getCommentsCount();
-        $uploads = $this->posts->getUploads();
+        // $uploads = $this->posts->getUploads();
+        $uploads = $this->posts->getUploadsAdmin();
         $totalPost = $this->posts->getPostTotal();
         $fCounts = array(
             'posts' => $totalPost,
