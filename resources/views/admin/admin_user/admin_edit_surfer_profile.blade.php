@@ -39,10 +39,11 @@
                             <div class="col-md-6">
                                 <div class="white-bg user-type-icon">
                                     <select class="form-select">
-                                        <option selected>Select User Type</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        <option value="">Select User Type</option>
+                                        <option value="USER" {{ ($user->user_type == 'USER' ) ? 'selected' : '' }} >Surfer</option>
+                                        <option value="PHOTOGRAPHER" {{ ($user->user_type == 'PHOTOGRAPHER' ) ? 'selected' : '' }}>Photographer</option>
+                                        <option value="SURFER CAMP" {{ ($user->user_type == 'SURFER CAMP' ) ? 'selected' : '' }}>Surf Camp</option>
+                                        <option value="ADVERTISEMENT" {{ ($user->user_type == 'ADVERTISEMENT' ) ? 'selected' : '' }}>Advertiser</option>
                                     </select>
                                 </div>
                             </div>

@@ -272,6 +272,15 @@ class AdminUserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $user = $this->users->getUserDetailByID(Crypt::decrypt($id));
+            if ( $user->delete() ) {
+                return redirect()->route('adminUserListIndex')->withSuccess("User deleted successfully!"); 
+            } else {
+                return redirect()->route('adminUserListIndex')->withErrors("Please try again."); 
+            }
+        } catch (\Exception $e){
+            return redirect()->route('adminUserListIndex')->withErrors($e->getMessage()); 
+        }
     }
 }

@@ -236,6 +236,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::post('/users/store', [AdminUserController::class, 'store'])->name('adminUserStore');
     Route::get('/users/show/{id}', [AdminUserController::class, 'show'])->name('adminUserDetails');
     Route::get('/users/edit/{id}',  [AdminUserController::class, 'edit'])->name('adminUserEdit');
+    Route::get('/users/delete/{id}',  [AdminUserController::class, 'destroy'])->name('adminUserDelete');
     Route::post('/users/update/{id}', [AdminUserController::class, 'update'])->name('adminUserUpdate');
     Route::post('/users/updateUserStatus', [AdminUserController::class, 'updateUserStatus'])->name('updateUserStatus');
     Route::post('/users/updateActivateStatus', ['as' => 'users.updateActivateStatus', 'uses' => 'UserController@updateActivateStatus', 'middleware' => ['permission:user_activate']]);

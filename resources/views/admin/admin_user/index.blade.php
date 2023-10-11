@@ -167,7 +167,8 @@
                                         <a href="{{route('surfer-profile', Crypt::encrypt($value->user_id))}}" class="blue-txt">View</a>
                                         @endif
                                         |
-                                        <a href="{{route('adminUserEdit', Crypt::encrypt($value->user_id))}}" class="blue-txt">Edit</a>
+                                        <a href="{{route('adminUserEdit', Crypt::encrypt($value->user_id))}}" class="blue-txt">Edit</a> |
+                                        <a href="{{route('adminUserDelete', Crypt::encrypt($value->user_id))}}" class="blue-txt">Delete</a>
                                     </td>
                                 </tr>
                                 @endforeach
