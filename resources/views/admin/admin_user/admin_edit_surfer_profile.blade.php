@@ -17,7 +17,7 @@
                             <div class="col-md-6">
                                 <div class="upload-photo">
                                     <div>
-                                        <img src="" id="category-img-tag" alt="">
+                                        <img src="{{ asset('storage/'.$user->profile_photo_path) }}" id="category-img-tag" alt="">
                                         <input type="file" accept=".png, .jpg, .jpeg" id="exampleInputFile" name="profile_photo_name">
                                         <input type="hidden" accept=".png, .jpg, .jpeg" id="imagebase64" name="profile_photo_blob" />
                                     </div>
@@ -78,6 +78,12 @@
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control email-icon" placeholder="Email" name="email" value="{{ $user->email }}" required>
+                                @error('email')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="row">

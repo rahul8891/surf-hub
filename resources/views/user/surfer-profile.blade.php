@@ -27,6 +27,13 @@
                                 <td>:</td>
                                 <td>{{ __(ucwords($userProfile['surfer_name'])) }}</td>
                             </tr>
+                            @if ( Auth::user() && Auth::user()->user_type == 'ADMIN' )
+                            <tr>
+                                <td class="font_bold">Email</td>
+                                <td>:</td>
+                                <td>{{ $userProfile['email'] }}</td>
+                            </tr>
+                            @endif
                             <tr>
                                 <td class="font_bold">Gender</td>
                                 <td>:</td>
@@ -37,6 +44,13 @@
                                 <td>:</td>
                                 <td>{{ $userProfile['country'] }}</td>
                             </tr>
+                            @if ( Auth::user() && Auth::user()->user_type == 'ADMIN' )
+                            <tr>
+                                <td class="font_bold">Phone Number</td>
+                                <td>:</td>
+                                <td>{{ $userProfile['phone'] }}</td>
+                            </tr>
+                            @endif
                             <tr>
                                 <td class="font_bold">Preferred Board</td>
                                 <td>:</td>
