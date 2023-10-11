@@ -92,11 +92,15 @@ class PostService {
      */
     public function getPostTotal(){
 
-        $postArray =  $this->posts->whereNull('deleted_at')
-                                  ->where('is_deleted','0')
-                                  ->where('post_type', 'PUBLIC')
-                                  ->orderBy('created_at','ASC')
-                                  ->count();
+        $postArray =  $this->posts->with(['user'])
+                                ->whereHas('user', function($q){
+                                    $q->where('id', '!=', null);
+                                })
+                                ->whereNull('deleted_at')
+                                ->where('is_deleted','0')
+                                ->where('post_type', 'PUBLIC')
+                                ->orderBy('created_at','ASC')
+                                ->count();
         return $postArray;
     }
 
@@ -107,12 +111,15 @@ class PostService {
      * @return dataCount
      */
     public function getUploadsAdmin(){
-
-        $postArray =  $this->posts->whereNull('deleted_at')
-                                  ->where('is_deleted','0')
-                                  ->where('post_type', 'PRIVATE')
-                                  ->orderBy('created_at','ASC')
-                                  ->get();
+        $postArray =  $this->posts->with(['user'])
+                                ->whereHas('user', function($q){
+                                    $q->where('id', '!=', null);
+                                })
+                                ->whereNull('deleted_at')
+                                ->where('is_deleted','0')
+                                ->where('post_type', 'PRIVATE')
+                                ->orderBy('created_at','ASC')
+                                ->get();
         return $postArray;
     }
     /**
