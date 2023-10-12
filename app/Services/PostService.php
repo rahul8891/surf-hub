@@ -1392,7 +1392,7 @@ class PostService {
             $message = 'Post already saved.';
         } else {
             $postSave=$this->posts->find($id);
-            $postMedia = Upload::select('*')->where('post_id',$id)->get();
+            $postMedia = Upload::where('post_id',$id)->get();
 
             try{
                 $this->posts['post_type'] = 'PRIVATE';

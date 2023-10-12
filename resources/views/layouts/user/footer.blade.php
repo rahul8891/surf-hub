@@ -189,11 +189,13 @@
 		    async: false,
 		    success: function(result) {
 		        if(result.data.is_highlight == "1") {
-		            that.addClass('blue');
+		            // that.addClass('blue');
+                    jQuery('#'+postID+' .highlight.highlightPost ').addClass('blue');
                     jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Post has been added to your Highlights Reel.</div>');
 		        } else {
-		            that.removeClass('blue');
-                    jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Something went wrong.Please try again later.</div>');
+		            // that.removeClass('blue');
+                    jQuery('#'+postID+' .highlight.highlightPost ').removeClass('blue');
+                    jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Post has been removed to your Highlights Reel.</div>');
 		        }
 		    }
 		});
