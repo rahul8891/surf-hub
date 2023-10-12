@@ -354,9 +354,9 @@ class PostService {
         if ($for=='search'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
-                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
-                        ->leftJoin('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
-                        ->leftJoin('users', 'posts.user_id', '=', 'users.id')
+                        ->join('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->join('user_profiles', 'posts.user_id', '=', 'user_profiles.user_id')
+                        ->join('users', 'posts.user_id', '=', 'users.id')
                         ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
                         ->whereNull('posts.deleted_at')
                         ->groupBy('posts.id');
@@ -365,7 +365,7 @@ class PostService {
         if ($for=='myhub'){
             $postArray =  $this->posts
                         ->join('beach_breaks', 'beach_breaks.id', '=', 'posts.local_beach_id')
-                        ->leftJoin('ratings', 'posts.id', '=', 'ratings.rateable_id')
+                        ->join('ratings', 'posts.id', '=', 'ratings.rateable_id')
                         ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
                         ->whereNull('posts.deleted_at')
                         ->where('posts.user_id', Auth::user()->id)

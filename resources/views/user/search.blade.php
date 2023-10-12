@@ -184,7 +184,7 @@
                                     </div>
                                 </div>
                                 @if(Auth::user() && $posts->user_id == Auth::user()->id)
-                                <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="return confirm('Do you really want to delete this footage?')"><img src="/img/delete.png" alt="Delete"></a>
+                                <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="deletePostByAdmin({{$posts->id}});"><img src="/img/delete.png" alt="Delete"></a>
                                 <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
 
                                 @endif
@@ -243,8 +243,7 @@
                                             </div>
                                             <div class="mb-3 form-check">
                                                 <input type="checkbox" class="form-check-input" name="tolls" value="1" id="reportTrolls{{$posts->id}}">
-                                                <label class="form-check-label" for="reportTrolls{{$posts->id}}">Report
-                                                    tolls</label>
+                                                <label class="form-check-label" for="reportTrolls{{$posts->id}}">Report trolls</label>
                                             </div>
                                             <div>
                                                 <textarea class="form-control ps-2" name="comments" id="comments{{$posts->id}}"

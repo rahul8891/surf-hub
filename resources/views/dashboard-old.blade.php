@@ -211,7 +211,7 @@
                                                         </div>
                                                         <div class="cstm-check pos-rel">
                                                             <input type="checkbox" id="Report3_{{$posts->id}}" name="tolls" value="1">
-                                                            <label for="Report3_{{$posts->id}}">Report tolls</label>
+                                                            <label for="Report3_{{$posts->id}}">Report trolls</label>
                                                         </div>
                                                         <div>
                                                             Additional Comments:

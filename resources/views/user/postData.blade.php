@@ -209,8 +209,7 @@
                                             </div>
                                             <div class="mb-3 form-check">
                                                 <input type="checkbox" class="form-check-input" name="tolls" value="1" id="reportTrolls{{$postData->id}}">
-                                                <label class="form-check-label" for="reportTrolls{{$postData->id}}">Report
-                                                    tolls</label>
+                                                <label class="form-check-label" for="reportTrolls{{$postData->id}}">Report trolls</label>
                                             </div>
                                             <div>
                                                 <textarea class="form-control ps-2" name="comments" id="{{$postData->id}}"
