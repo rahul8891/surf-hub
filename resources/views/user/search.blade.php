@@ -184,7 +184,7 @@
                                     </div>
                                 </div>
                                 @if(Auth::user() && $posts->user_id == Auth::user()->id)
-                                <a href="{{route('deleteUserPost', Crypt::encrypt($posts->id))}}"  onclick="deletePostByAdmin({{$posts->id}});"><img src="/img/delete.png" alt="Delete"></a>
+                                <a href="javascript:void(0);"  onclick="deletePostByAdmin({{$posts->id}});"><img src="/img/delete.png" alt="Delete"></a>
                                 <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
 
                                 @endif
