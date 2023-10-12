@@ -3,7 +3,7 @@
     <div class="inner-my-details">
         <div class="my-profile text-center">
             <div class="profile-pic">
-                @if(Auth::user()->profile_photo_path)
+                @if(!empty(Auth::user()->profile_photo_path) && isset(Auth::user()->profile_photo_path))
                 <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}"
                     alt="" class="rounded-circle">
                 @else
