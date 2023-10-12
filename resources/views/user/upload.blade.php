@@ -161,7 +161,7 @@
                                         <label class="col-md-4 d-md-block d-none"></label>
                                         <div class="col-md-8">
                                             <input type="text" value="{{ old('other_surfer')}}" name="other_surfer"
-                                                   class="form-control ps-2 mb-0 other_surfer" placeholder="Search another user" required>
+                                                   class="form-control ps-2 mb-0 other_surfer" placeholder="Surfer’s Name" required>
                                             <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id"
                                                    id="surfer_id" class="form-control surfer_id">
                                             <div class="auto-search search2" id="other_surfer_list"></div>
