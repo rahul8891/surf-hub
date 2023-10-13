@@ -286,7 +286,7 @@ class AdminUserController extends Controller
                 Upload::whereIn("post_id", $posts)->delete();
                 Comment::whereIn("post_id", $posts)->delete();
                 Notification::where("sender_id", $user_id)->whereOr("receiver_id", $user_id)->delete();
-                Rating::whereIn("user_id", $user_id)->get();
+                Rating::where("user_id", $user_id)->get();
                 Report::where("user_id", $user_id)->delete();
                 SurferRequest::where("user_id", $user_id)->delete();
                 $posts->delete();
