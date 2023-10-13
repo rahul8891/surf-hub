@@ -283,20 +283,25 @@ class AdminUserController extends Controller
             $user = $this->users->getUserDetailByID($user_id);
             if ( !empty($user) ) {
                 $posts = Post::where("user_id", "=", $user_id)->pluck('id');
-                $uploads = Upload::whereIn("post_id", $posts)->get();
-                $uploads->delete();
-                $comments = Comment::whereIn("post_id", $posts)->get();
-                $comments->delete();
-                $notifications = Notification::where("sender_id", $user_id)->whereOr("receiver_id", $user_id)->get();
-                $notifications->delete();
-                $rattings = Rating::whereIn("user_id", $user_id)->get();
-                $rattings->delete();
-                $report = Report::where("user_id", $user_id)->get();
-                $report->delete();
-                $surferRequest = SurferRequest::where("user_id", $user_id)->get();
-                $surferRequest->delete();
+                $uploads = Upload::whereIn("post_id", $posts)->pluck('id');
+                Upload::whereIn("id", $uploads)->delete();
 
-                $posts->delete();
+                $comments = Comment::whereIn("post_id", $posts)->pluck('id');
+                Comment::whereIn("id", $comments)->delete();
+                
+                $notifications = Notification::where("sender_id", $user_id)->whereOr("receiver_id", $user_id)->pluck('id');
+                Notification::whereIn("id", $notifications)->delete();
+
+                $rattings = Rating::where("user_id", $user_id)->pluck('id');
+                Rating::whereIn("id", $rattings)->delete();
+                
+                $report = Report::where("user_id", $user_id)->pluck('id');
+                Report::whereIn("id", $report)->delete();
+                
+                $surferRequest = SurferRequest::where("user_id", $user_id)->pluck('id');
+                SurferRequest::whereIn("id", $surferRequest)->delete();
+                
+                Post::whereIn("id", $posts)->delete();
                 $user->delete();
 
 
