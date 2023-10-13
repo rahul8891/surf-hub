@@ -168,7 +168,7 @@
                                         @endif
                                         |
                                         <a href="{{route('adminUserEdit', Crypt::encrypt($value->user_id))}}" class="blue-txt">Edit</a> |
-                                        <a href="{{route('adminUserDelete', Crypt::encrypt($value->user_id))}}" class="blue-txt">Delete</a>
+                                        <a onclick="return confirm('Do you really want to delete this user?')" href="{{route('adminUserDelete', Crypt::encrypt($value->user_id))}}" class="blue-txt">Delete</a>
                                     </td>
                                 </tr>
                                 @endforeach

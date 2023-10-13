@@ -15,8 +15,15 @@ use App\Services\MasterService;
 use App\Services\PostService;
 use App\Traits\PasswordTrait;
 use App\Models\User;
+use App\Models\Upload;
+use App\Models\Post;
+use App\Models\Comment;
+use App\Models\Notification;
 use App\Models\State;
+use App\Models\Rating;
+use App\Models\Report;
 use App\Models\BeachBreak;
+use App\Models\SurferRequest;
 use Carbon\Carbon;
 use Closure;
 use Redirect;
@@ -270,11 +277,20 @@ class AdminUserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
+        $user_id = Crypt::decrypt($id);
         try {
-            $user = $this->users->getUserDetailByID(Crypt::decrypt($id));
-            if ( $user->delete() ) {
+            $user = $this->users->getUserDetailByID($user_id);
+            if ( !empty($user) ) {
+                $posts = Post::where("user_id", "=", $user_id)->pluck('id');
+                Upload::whereIn("post_id", $posts->id)->delete();
+                Comment::whereIn("post_id", $posts->id)->delete();
+                Notification::where("sender_id", $user_id)->whereOr("receiver_id", $user_id)->delete();
+                Rating::whereIn("user_id", $user_id)->get();
+                Report::where("user_id", $user_id)->delete();
+                SurferRequest::where("user_id", $user_id)->delete();
+                $posts->delete();
+                $user->delete();
                 return redirect()->route('adminUserListIndex')->withSuccess("User deleted successfully!"); 
             } else {
                 return redirect()->route('adminUserListIndex')->withErrors("Please try again."); 
