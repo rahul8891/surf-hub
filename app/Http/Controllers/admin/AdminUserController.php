@@ -18,7 +18,7 @@ use App\Models\User;
 use App\Models\Upload;
 use App\Models\Post;
 use App\Models\Comment;
-use App\Models\Notification
+use App\Models\Notification;
 use App\Models\State;
 use App\Models\Rating;
 use App\Models\Report;
