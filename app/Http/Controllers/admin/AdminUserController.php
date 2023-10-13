@@ -283,8 +283,8 @@ class AdminUserController extends Controller
             $user = $this->users->getUserDetailByID($user_id);
             if ( !empty($user) ) {
                 $posts = Post::where("user_id", "=", $user_id)->pluck('id');
-                Upload::whereIn("post_id", $posts->id)->delete();
-                Comment::whereIn("post_id", $posts->id)->delete();
+                Upload::whereIn("post_id", $posts)->delete();
+                Comment::whereIn("post_id", $posts)->delete();
                 Notification::where("sender_id", $user_id)->whereOr("receiver_id", $user_id)->delete();
                 Rating::whereIn("user_id", $user_id)->get();
                 Report::where("user_id", $user_id)->delete();
