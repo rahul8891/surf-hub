@@ -530,9 +530,20 @@ class UserPostController extends Controller {
 
         foreach($postsList as $post) {
             $userProfile = $this->userService->getUserDetail($post->sender_id);
+
+            $postsList = Post::with('followPost')->where('is_deleted', '0')
+                ->where('parent_id', '0')
+                ->where('user_id', $post->sender_id)
+                ->where('is_highlight', '1')
+                ->where(function ($query) {
+                    $query->where('post_type', 'PUBLIC')
+                    ->orWhere('is_feed', '1');
+                })
+                ->orderBy('posts.created_at', 'DESC')
+                ->get();
         }
 
-        return view('user.surfer-follow-request', compact('customArray', 'postsList', 'request_id', 'userProfile'));
+        return view('user.surfer-follow-request', compact('customArray', 'postsList', 'request_id', 'userProfile', 'postsList'));
     }
 
     /**
