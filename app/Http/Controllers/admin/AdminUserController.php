@@ -18,7 +18,7 @@ use App\Models\User;
 use App\Models\Upload;
 use App\Models\Post;
 use App\Models\Comment;
-use App\Models\Notification;
+use App\Models\Notification
 use App\Models\State;
 use App\Models\Rating;
 use App\Models\Report;
@@ -283,14 +283,23 @@ class AdminUserController extends Controller
             $user = $this->users->getUserDetailByID($user_id);
             if ( !empty($user) ) {
                 $posts = Post::where("user_id", "=", $user_id)->pluck('id');
-                Upload::whereIn("post_id", $posts)->get()->delete();
-                Comment::whereIn("post_id", $posts)->get()->delete();
-                Notification::where("sender_id", $user_id)->whereOr("receiver_id", $user_id)->get()->delete();
-                Rating::where("user_id", $user_id)->get()->delete();
-                Report::where("user_id", $user_id)->get()->delete();
-                SurferRequest::where("user_id", $user_id)->get()->delete();
+                $uploads = Upload::whereIn("post_id", $posts->id)->get();
+                $uploads->delete();
+                $comments = Comment::whereIn("post_id", $posts->id)->get();
+                $comments->delete();
+                $notifications = Notification::where("sender_id", $user_id)->whereOr("receiver_id", $user_id)->get();
+                $notifications->delete();
+                $rattings = Rating::whereIn("user_id", $user_id)->get();
+                $rattings->delete();
+                $report = Report::where("user_id", $user_id)->get();
+                $report->delete();
+                $surferRequest = SurferRequest::where("user_id", $user_id)->get();
+                $surferRequest->delete();
+
                 $posts->delete();
                 $user->delete();
+
+
                 return redirect()->route('adminUserListIndex')->withSuccess("User deleted successfully!"); 
             } else {
                 return redirect()->route('adminUserListIndex')->withErrors("Please try again."); 
