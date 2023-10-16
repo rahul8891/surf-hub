@@ -217,6 +217,30 @@
 		document.body.scrollTop = 0; // For Safari
 		document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 	}
+
+    // jQuery(document).on('click', '.slick-next.slick-arrow', function() {
+    //     var dataId = jQuery('.slick-current').attr("data-slick-index");
+    //     // var postId = jQuery('.slick-current .newsFeedImgVideoSlider').attr("data-id");
+    //     var showNewFeed = jQuery('.showNewFeed').attr("data-id");
+    //     var popupPagination = jQuery('.popupPagination').attr("data-id");
+
+
+    //     var newClick = 20 * popupPagination - 5;
+
+    //     if ( dataId % newClick === 0 ) {
+    //         jQuery.ajax({
+    //             headers: {
+    //                 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+    //             },
+    //             url: '/deletepost',
+    //             type: 'POST',
+    //             data: { showNewFeed:showNewFeed, popupPagination:popupPagination  },
+    //             success: function(result) {
+    //                 // if(result.data.is_highlight == "1") {
+    //             }
+    //         });
+    //     }
+    // });
 </script>
 <script src="{{ asset('js/new/jquery.multi-select.js') }}"></script>
 @include('elements/location_popup_model')

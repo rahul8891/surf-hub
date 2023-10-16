@@ -231,6 +231,7 @@ class MyHubController extends Controller {
                 $postsList = $this->postService->getFilteredData($param, $type, '', 20);
             } elseif($type == 'feed') {
                 $postsList = $this->postService->getFeedFilteredList($param, 20);
+                // $postsList = $this->postService->getFeedFilteredListLoginUser($param);
             } elseif(str_contains($type, 'myhub')) {
                 $post_type = explode('-', $type);
                 $postsList = $this->postService->getFilteredData($param, $post_type[0], $post_type[1], 20);
@@ -374,5 +375,69 @@ class MyHubController extends Controller {
 
         return response()->json($result);
     }
+
+
+    // public function getNewPostFullScreen($type, $page) {
+    //     $param = $request->all();
+
+    //     try {
+    //         if($type == 'search') {
+    //             $postsList = $this->postService->getFilteredData($param, $type, '', 20);
+    //         } elseif($type == 'feed') {
+    //             $postsList = $this->postService->getFeedFilteredList($param, 20);
+    //         } elseif(str_contains($type, 'myhub')) {
+    //             $post_type = explode('-', $type);
+    //             $postsList = $this->postService->getFilteredData($param, $post_type[0], $post_type[1], 20);
+    //         } elseif($type == 'surfer-profile') {
+    //             $postsList = Post::select('posts.*')
+    //                     ->join('uploads', 'uploads.post_id', '=', 'posts.id')
+    //                     ->where('posts.is_deleted', '0')
+    //                     ->where('posts.id', '<=', $id)
+    //                     ->where('parent_id', '0')
+    //                     ->where(function ($query) {
+    //                         $query->where('uploads.image', '<>', '')
+    //                         ->orWhere('uploads.video', '<>', '');
+    //                     })
+    //                     ->orderBy('posts.created_at', 'DESC')
+    //                     ->get();
+    //         } elseif($type == 'surfer-upload') {
+    //             $postsList = Post::select('posts.*')
+    //                     ->join('uploads', 'uploads.post_id', '=', 'posts.id')
+    //                     ->where('posts.is_deleted', '0')
+    //                     ->where('posts.id', '<=', $id)
+    //                     ->where('parent_id', '0')
+    //                     ->where(function ($query) {
+    //                         $query->where('uploads.image', '<>', '')
+    //                         ->orWhere('uploads.video', '<>', '');
+    //                     })
+    //                     ->orderBy('posts.created_at', 'DESC')
+    //                     ->get();
+    //         } elseif($type == 'home') {
+    //             $postsList =  $this->posts->whereNull('deleted_at')
+    //                             ->where('is_feed', '1')
+    //                             ->where('is_deleted','0')
+    //                             ->orderBy('id','DESC')
+    //                             ->get();
+    //         }
+
+    //         $trackArray = array();
+    //         $token = '';
+    //         $trackArray['track_uri'] = '';
+    //         if (Auth::user()) {
+    //             $data = $this->masterService->getSpotifyTrack();
+    //             if(!empty($data['token'])) {
+    //                 $trackArray['track_uri'] = $data['track_uri'];
+    //                 $token = $data['token'];
+    //             }
+    //         }
+    //     } catch (\Exception $e) {
+    //         throw ValidationException::withMessages([$e->getMessage()]);
+    //     }
+
+    //     if ($request->ajax()) {
+    //         $view = view('elements/full_screen_slider', compact('postsList', 'id', 'trackArray', 'token'))->render();
+    //         return response()->json(['html' => $view]);
+    //     }
+    // }
 
 }

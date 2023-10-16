@@ -296,6 +296,8 @@
         </div>
     </div>
 </section>
+<!-- <input type="hidden" class="showNewFeed" data-id="feed">
+<input type="hidden" class="popupPagination" data-id="1"> -->
 @include('elements/location_popup_model')
 @include('layouts/models/edit_image_upload')
 @include('layouts/models/full_screen_modal')
