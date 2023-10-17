@@ -748,24 +748,33 @@ class PostService {
      * @param
      * @return dataArray
      */
-    public function getFeedFilteredList($data, $page) {
+    public function getFeedFilteredList($data, $page = null) {
         // $postsList =  $this->posts->whereNull('deleted_at')
         //                         ->where('post_type', 'PUBLIC')
         //                         ->where('is_feed', '1')
         //                         ->where('is_deleted','0');
-        $getFollowedPostList = $this->userFollow
+        // $getFollowedPostList = array();
+        if ( Auth::user() ) {
+            $getFollowedPostList = $this->userFollow
                                 ->where('follower_user_id', Auth::user()->id)
                                 ->where('followed_user_id','!=', Auth::user()->id)
                                 ->where('follower_request_status','0')
                                 ->where('is_deleted','0')
                                 ->orderBy('id','ASC')
                                 ->pluck('followed_user_id');
-
-        $postsList =  $this->posts->whereNull('deleted_at')
+            $postsList =  $this->posts->whereNull('deleted_at')
                                 ->where('post_type', 'PUBLIC')
                                 ->whereIn('user_id', $getFollowedPostList)
                                 ->orWhere('is_feed', '1')
                                 ->where('is_deleted','0');
+        } else {
+            $postsList =  $this->posts->whereNull('deleted_at')
+                                ->where('post_type', 'PUBLIC')
+                                ->orWhere('is_feed', '1')
+                                ->where('is_deleted','0');
+        }
+
+        
 
         if (isset($data['sort'])) {
             if($data['sort'] == "dateAsc"){
