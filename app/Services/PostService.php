@@ -1899,4 +1899,43 @@ class PostService {
             return $postsList->paginate(10);
         }
     }
+
+    public function getFeedFilteredListGuest($data, $page = null) {
+            $postsList =  $this->posts->whereNull('deleted_at')
+                                // ->where('post_type', 'PUBLIC')
+                                ->Where('is_feed', '1')
+                                ->where('is_deleted','0');
+
+        if (isset($data['sort'])) {
+            if($data['sort'] == "dateAsc"){
+                $postsList->orderBy('posts.created_at','ASC');
+            }
+            else if($data['sort'] == "dateDesc"){
+                $postsList->orderBy('posts.created_at','DESC');
+            }
+            else if($data['sort'] == "surfDateAsc"){
+                $postsList->orderBy('posts.surf_start_date','ASC');
+            }
+            else if($data['sort'] == "surfDateDesc"){
+                $postsList->orderBy('posts.surf_start_date','DESC');
+            }
+            else if($data['sort'] == "beach"){
+                $postsList->orderBy('beach_breaks.beach_name','ASC');
+            }
+            else if($data['sort'] == "star"){
+                $postsList->orderBy('average','DESC');
+            }
+            else{
+                $postsList->orderBy('posts.created_at','DESC');
+            }
+        } else {
+            $postsList->orderBy('posts.updated_at','DESC');
+        }
+
+        if(isset($page) && !empty($page)) {
+            return $postsList->get();
+        } else {
+            return $postsList->paginate(10);
+        }
+    }
 }
