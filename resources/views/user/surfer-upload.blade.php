@@ -55,6 +55,9 @@
                             </div>
                             @endif
                         </div>
+                        <div class="post_description">
+                            <p class="description">{{$posts->post_text}}</p>
+                        </div>
                             @if (isset($posts->parent_id) && ($posts->parent_id > 0))
                                 @if(!empty($posts->upload->image))
                                     <div class="newsFeedImgVideo">

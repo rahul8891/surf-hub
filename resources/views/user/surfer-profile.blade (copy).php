@@ -43,6 +43,9 @@
                             </div>
                             @endif
                         </div>
+                        <div class="post_description">
+                            <p class="description">{{$posts->post_text}}</p>
+                        </div>
                         @if(!empty($posts->upload->image))
                         <div class="newsFeedImgVideo">
                             <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
