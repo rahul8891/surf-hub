@@ -2237,3 +2237,34 @@ header .navbar-nav.admin-middle-menu > div > a span:nth-child(2){
 .post_description {
     padding: 0 15px;
 }
+.overlayDetails {
+    position: absolute;
+    text-align: center;
+    padding: 15px;
+    background: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    width: auto;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 20px;
+    font-size: 18px;
+    font-weight: 600;
+}
+.overlayDetails .spacing {
+    margin-right: 60px;
+}
+
+@media (max-width: 767px) {
+    .overlayDetails {
+        flex-wrap: wrap;
+        left: 30%;
+        transform: translateX(-30%);
+    }
+    .overlayDetails .spacing {
+        margin-right: 0;
+        line-height: 40px;
+    }
+}
