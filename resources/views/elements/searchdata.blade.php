@@ -87,7 +87,7 @@
                     <span class="avg-rating">{{ round(floatval($posts->averageRating)) }}/<span id="users-rated{{$posts->id}}">{{ $posts->usersRated() }}</span></span>
                 </div>
 
-                @if(($posts->is_feed == 0) && ($posts->post_type != 'PUBLIC') && (isset(Auth::user()->id)) && (Auth::user()->id == 1))
+                @if(($posts->is_feed == 0) && (isset(Auth::user()->id)) && (Auth::user()->id == 1))
                     <div class="highlight addFeed{{ $posts->id }}">
                         <a class="add-to-feed" data-id="{{ $posts->id }}">Add to Feed</a>
                     </div>

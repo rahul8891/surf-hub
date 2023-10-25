@@ -2260,11 +2260,13 @@ header .navbar-nav.admin-middle-menu > div > a span:nth-child(2){
 @media (max-width: 767px) {
     .overlayDetails {
         flex-wrap: wrap;
-        left: 30%;
-        transform: translateX(-30%);
+        left: 0;
+        transform: translateX(0);
     }
     .overlayDetails .spacing {
         margin-right: 0;
         line-height: 40px;
+        display: block;
+        width: 100%;
     }
 }

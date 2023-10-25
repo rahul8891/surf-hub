@@ -39,7 +39,7 @@
                         $firstSlide = $key;
                     }
                 @endphp
-                <div class="newsFeedImgVideoSlider nitish" data-id="{{$posts->id}}">
+                <div class="newsFeedImgVideoSlider" data-id="{{$posts->id}}">
                     @if(Auth::user())
                         @if(!empty($token))
                             <!-- <button  class="btn spotify-btn" id='togglePlay'><img src="/img/listen-on-spotify-button.png" alt=""></button> -->
@@ -74,6 +74,7 @@
                     @endif
                     <div class="overlayDetails">
                         <span class="spacing">{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }}</span>
+                        <span class="spacing">{{ (isset($posts->surfer) && !empty($posts->surfer))?ucfirst($posts->surfer):"SurfHub" }}</span>
                         <span class="spacing">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}</span>
                         <span>{{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</span>
                     </div>

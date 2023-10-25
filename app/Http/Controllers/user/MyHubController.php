@@ -377,18 +377,19 @@ class MyHubController extends Controller {
     }
 
 
-    // public function getNewPostFullScreen($type, $page) {
+    // public function getNewPostFullScreen(Request $request) {
     //     $param = $request->all();
-
+    //     $id = $param['postId'];
+    //     $lastIndex = $param['lastIndex'];
     //     try {
-    //         if($type == 'search') {
+    //         if($param['showNewFeed'] == 'search') {
     //             $postsList = $this->postService->getFilteredData($param, $type, '', 20);
-    //         } elseif($type == 'feed') {
-    //             $postsList = $this->postService->getFeedFilteredList($param, 20);
-    //         } elseif(str_contains($type, 'myhub')) {
+    //         } elseif($param['showNewFeed'] == 'feed') {
+    //             $postsList = $this->postService->getNewPostFullScreen($param, 10);
+    //         } elseif(str_contains($param['showNewFeed'], 'myhub')) {
     //             $post_type = explode('-', $type);
     //             $postsList = $this->postService->getFilteredData($param, $post_type[0], $post_type[1], 20);
-    //         } elseif($type == 'surfer-profile') {
+    //         } elseif($param['showNewFeed'] == 'surfer-profile') {
     //             $postsList = Post::select('posts.*')
     //                     ->join('uploads', 'uploads.post_id', '=', 'posts.id')
     //                     ->where('posts.is_deleted', '0')
@@ -400,7 +401,7 @@ class MyHubController extends Controller {
     //                     })
     //                     ->orderBy('posts.created_at', 'DESC')
     //                     ->get();
-    //         } elseif($type == 'surfer-upload') {
+    //         } elseif($param['showNewFeed'] == 'surfer-upload') {
     //             $postsList = Post::select('posts.*')
     //                     ->join('uploads', 'uploads.post_id', '=', 'posts.id')
     //                     ->where('posts.is_deleted', '0')
@@ -412,14 +413,13 @@ class MyHubController extends Controller {
     //                     })
     //                     ->orderBy('posts.created_at', 'DESC')
     //                     ->get();
-    //         } elseif($type == 'home') {
+    //         } elseif($param['showNewFeed'] == 'home') {
     //             $postsList =  $this->posts->whereNull('deleted_at')
     //                             ->where('is_feed', '1')
     //                             ->where('is_deleted','0')
     //                             ->orderBy('id','DESC')
     //                             ->get();
     //         }
-
     //         $trackArray = array();
     //         $token = '';
     //         $trackArray['track_uri'] = '';
@@ -430,12 +430,14 @@ class MyHubController extends Controller {
     //                 $token = $data['token'];
     //             }
     //         }
+            
     //     } catch (\Exception $e) {
     //         throw ValidationException::withMessages([$e->getMessage()]);
     //     }
 
     //     if ($request->ajax()) {
-    //         $view = view('elements/full_screen_slider', compact('postsList', 'id', 'trackArray', 'token'))->render();
+    //         $view = view('elements/add_new_full_screen_slider', compact('postsList', 'id', 'trackArray', 'token', 'lastIndex'))->render();
+    //         // $view = view('elements/full_screen_slider', compact('postsList', 'id'))->render();
     //         return response()->json(['html' => $view]);
     //     }
     // }

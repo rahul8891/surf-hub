@@ -359,6 +359,7 @@ class PostService {
                         ->join('users', 'posts.user_id', '=', 'users.id')
                         ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
                         ->whereNull('posts.deleted_at')
+                        // ->where('posts.id', '=', 654) // testing nominated surfer name on full screen slide when user click on zoom icon
                         ->groupBy('posts.id');
         }
 
@@ -807,6 +808,7 @@ class PostService {
         } else {
             return $postsList->paginate(10);
         }
+        // return $postsList->paginate(10);
     }
 
     /**
@@ -1938,4 +1940,61 @@ class PostService {
             return $postsList->paginate(10);
         }
     }
+
+
+    // public function getNewPostFullScreen($data, $page = null) {
+    //     if ( Auth::user() ) {
+    //         $getFollowedPostList = $this->userFollow
+    //                             ->where('follower_user_id', Auth::user()->id)
+    //                             ->where('followed_user_id','!=', Auth::user()->id)
+    //                             ->where('follower_request_status','0')
+    //                             ->where('is_deleted','0')
+    //                             ->orderBy('id','ASC')
+    //                             ->pluck('followed_user_id');
+    //         $postsList =  $this->posts->whereNull('deleted_at')
+    //                             ->where('post_type', 'PUBLIC')
+    //                             ->whereIn('user_id', $getFollowedPostList)
+    //                             ->orWhere('is_feed', '1')
+    //                             ->where('is_deleted','0');
+    //     } else {
+    //         $postsList =  $this->posts->whereNull('deleted_at')
+    //                             ->where('post_type', 'PUBLIC')
+    //                             ->orWhere('is_feed', '1')
+    //                             ->where('is_deleted','0');
+    //     }
+
+
+    //     if (isset($data['sort'])) {
+    //         if($data['sort'] == "dateAsc"){
+    //             $postsList->orderBy('posts.created_at','ASC');
+    //         }
+    //         else if($data['sort'] == "dateDesc"){
+    //             $postsList->orderBy('posts.created_at','DESC');
+    //         }
+    //         else if($data['sort'] == "surfDateAsc"){
+    //             $postsList->orderBy('posts.surf_start_date','ASC');
+    //         }
+    //         else if($data['sort'] == "surfDateDesc"){
+    //             $postsList->orderBy('posts.surf_start_date','DESC');
+    //         }
+    //         else if($data['sort'] == "beach"){
+    //             $postsList->orderBy('beach_breaks.beach_name','ASC');
+    //         }
+    //         else if($data['sort'] == "star"){
+    //             $postsList->orderBy('average','DESC');
+    //         }
+    //         else{
+    //             $postsList->orderBy('posts.created_at','DESC');
+    //         }
+    //     } else {
+    //         $postsList->orderBy('posts.updated_at','DESC');
+    //     }
+
+    //     // if(isset($page) && !empty($page)) {
+    //     //     return $postsList->get();
+    //     // } else {
+    //     //     return $postsList->paginate(10);
+    //     // }
+    //     return $postsList->paginate(10);
+    // }
 }

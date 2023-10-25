@@ -63,7 +63,7 @@ Route::get('/surfer-request/{id}', [UserPostController::class, 'surferRequest'])
 Route::post('/surfer-request-ajax', [UserPostController::class, 'surferRequestAjax'])->name('surferRequestAjax');
 Route::get('/getPostFullScreen/{id}/{type}', [MyHubController::class, 'getPostFullScreen'])->name('getPostFullScreen');
 
-// Route::get('/getNewPostFullScreen', [MyHubController::class, 'getNewPostFullScreen'])->name('getNewPostFullScreen');
+Route::post('/getNewPostFullScreen', [MyHubController::class, 'getNewPostFullScreen'])->name('getNewPostFullScreen');
 
 Route::get('/get-presigned-url', [UserPostController::class, 'getPresignedUrl'])->name('getPresignedUrl');
 Route::post('/get-presigned-urls', [UserPostController::class, 'getPresignedUrl'])->name('getPresignedUrls');
