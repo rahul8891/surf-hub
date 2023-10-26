@@ -103,7 +103,7 @@
     $(document).ready(function () {
         getform(2);
 
-        jQuery('#phonesurfer').on('change', function() {
+        jQuery('#phonesurfer, #phoneresort, #phonephoto, #phoneadvertiser').on('change', function() {
             var country_code = jQuery(this).siblings('.iti__flag-container').children('.iti__selected-flag').attr('title');
             jQuery('.country_code').val(country_code);
         });
