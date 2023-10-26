@@ -113,8 +113,7 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <input type="number" class="form-control phone-icon" placeholder="Phone" name="phone" value="{{ old('phone') }}" minlength="8"
-                   maxlength="15" autocomplete="phone" required>
+            <input type="tel" id="phonesurfer" class="form-control" placeholder="Phone" name="phone" value="{{ old('phone') }}" minlength="8" maxlength="15" autocomplete="phone" required>
             @error('phone')
             <div class="text-danger">{{ $message }}</div>
             @enderror
@@ -206,5 +205,6 @@
         </div>
     </div>
     <div class="sign-in-anchor">Already have an account? <a href="/login" class="blue-txt">Sign In</a></div>
+    <input type="hidden" name="country_code" class="country_code" value="">
 </form>
 

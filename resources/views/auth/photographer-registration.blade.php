@@ -93,8 +93,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <input type="number" class="form-control phone-icon" placeholder="Phone" name="phone" value="{{ old('phone') }}" minlength="8"
-                   maxlength="15" autocomplete="phone" required>
+            <input type="tel" id="phonephoto" class="form-control" placeholder="Phone" name="phone" value="{{ old('phone') }}" minlength="8" maxlength="15" autocomplete="phone" required>
             @error('phone')
             <div class="text-danger">{{ $message }}</div>
             @enderror
@@ -116,7 +115,7 @@
             @enderror
         </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-6">
             <div class="white-bg global-icon">
                 <select class="form-select" name="language" required>
@@ -132,14 +131,14 @@
                 @enderror
             </div>
         </div>
-        <!-- <div class="col-md-6">
+        <div class="col-md-6">
             <input type="text" class="form-control paypal-icon" placeholder="Paypal" name="paypal"
                    autocomplete="paypal">
             @error('paypal')
             <div class="text-danger">{{ $message }}</div>
             @enderror
-        </div> -->
-    </div>
+        </div>
+    </div> -->
     <div class="row">
         <div class="col-md-6">
             <input type="password" class="form-control password-icon" placeholder="Password" id="password" name="password" autocomplete="new-password"
@@ -200,4 +199,5 @@
         </div>
     </div>
     <div class="sign-in-anchor">Already have an account? <a href="/login" class="blue-txt">Sign In</a></div>
+    <input type="hidden" name="country_code" class="country_code" value="">
 </form>

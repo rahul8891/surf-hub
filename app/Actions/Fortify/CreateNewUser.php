@@ -40,6 +40,13 @@ class CreateNewUser implements CreatesNewUsers {
         ])->validate();
 
         try {
+            if ( str_contains(': ', $input['country_code']) )
+                $expolde = explode(': ', $input['country_code']);
+                $country_code = $expolde[1];
+            } else {
+                $country_code = $input['country_code'];
+            }
+
             $getImageArray = $this->uploadImage($input);
             $user->user_name = !empty($input['user_name']) ? $input['user_name'] : '';
             $user->email = $input['email'];
@@ -64,7 +71,8 @@ class CreateNewUser implements CreatesNewUsers {
                 $userProfile->language = !empty($input['language']) ? $input['language'] : '';
                 $userProfile->country_id = $input['country_id'];
                 $userProfile->local_beach_break_id = !empty($input['local_beach_break_id']) ? $input['local_beach_break_id'] : '';
-                $userProfile->icc = !empty($input['telephone_prefix']) ? $input['telephone_prefix'] : '';
+                // $userProfile->icc = !empty($input['telephone_prefix']) ? $input['telephone_prefix'] : '';
+                $userProfile->icc = $country_code;
                 $userProfile->phone = $input['phone'];
                 $userProfile->website = !empty($input['website']) ? $input['website'] : '';
 //                if($input['gender']) {

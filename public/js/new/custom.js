@@ -391,7 +391,7 @@ jQuery(document).ready(function () {
                 maxlength: 15,
                 spaceNotAllow: true,
                 numericOnly: true,
-                countrycode: true
+                //countrycode: true
             },
 
             country_id: {
@@ -578,7 +578,7 @@ jQuery(document).ready(function () {
                 maxlength: 15,
                 spaceNotAllow: true,
                 numericOnly: true,
-                countrycode: true
+                //countrycode: true
             },
 
             country_id: {
@@ -739,7 +739,7 @@ jQuery(document).ready(function () {
                 maxlength: 15,
                 spaceNotAllow: true,
                 numericOnly: true,
-                countrycode: true
+                //countrycode: true
             },
 
             country_id: {
@@ -885,7 +885,7 @@ jQuery(document).ready(function () {
                 maxlength: 15,
                 spaceNotAllow: true,
                 numericOnly: true,
-                countrycode: true
+                //countrycode: true
             },
 
             country_id: {

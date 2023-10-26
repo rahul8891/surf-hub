@@ -2270,3 +2270,7 @@ header .navbar-nav.admin-middle-menu > div > a span:nth-child(2){
         width: 100%;
     }
 }
+
+#phonesurfer-error, #phonephoto-error, #phoneresort-error, #phoneadvertiser-error {
+    top: 0px;
+}
