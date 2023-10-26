@@ -86,11 +86,12 @@ class FortifyServiceProvider extends ServiceProvider
             $countries = DB::table('countries')->select('id', 'name','phone_code')->orderBy('name','asc')->get();           
             $beachBreaks = DB::table('beach_breaks')->orderBy('beach_name','asc')->get();
             $language = config('customarray.language'); 
+            $camera_brands = config('customarray.camera_brands'); 
             $accountType = config('customarray.accountType');  
             $board_type = config('customarray.board_type');
             $gender_type = config('customarray.gender_type');
             $states = State::select('id', 'name')->where('country_id',1)->orderBy('name','asc')->get();
-            return view('auth.register', compact('countries','language','accountType','terms','beachBreaks','board_type','states','gender_type'));
+            return view('auth.register', compact('countries','language','accountType','terms','beachBreaks','board_type','states','gender_type', 'camera_brands'));
         });
     }
     

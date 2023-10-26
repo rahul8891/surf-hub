@@ -132,13 +132,13 @@
                 @enderror
             </div>
         </div>
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
             <input type="text" class="form-control paypal-icon" placeholder="Paypal" name="paypal"
                    autocomplete="paypal">
             @error('paypal')
             <div class="text-danger">{{ $message }}</div>
             @enderror
-        </div>
+        </div> -->
     </div>
     <div class="row">
         <div class="col-md-6">
@@ -172,9 +172,11 @@
             <div class="white-bg camera-icon">
                 <select class="form-select" name="camera_brand">
                     <option selected>Preferred Camera Brand</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    @foreach($camera_brands as $key => $camera_brand)
+                    <option value="{{ $key }}"
+                            {{ old('camera_brand') == $key ? "selected" : "" }}>{{ $camera_brand }}
+                    </option>
+                    @endforeach                    
                 </select>
                 @error('camera_brand')
                 <div class="text-danger">{{ $message }}</div>

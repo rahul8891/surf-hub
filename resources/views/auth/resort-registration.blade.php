@@ -102,7 +102,7 @@
             @enderror
         </div>
         <div class="col-md-6">
-            <input type="url" class="form-control url-icon" placeholder="Website" name="website" value="{{ old('website') }}"
+            <input type="text" class="form-control url-icon" placeholder="Website" name="website" value="{{ old('website') }}"
                    autocomplete="website">
             @error('website')
             <div class="text-danger">{{ $message }}</div>
@@ -140,7 +140,7 @@
             @enderror
         </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-6">
             <input type="text" class="form-control paypal-icon" placeholder="Paypal" name="paypal"
                    autocomplete="paypal">
@@ -148,7 +148,7 @@
             <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
-    </div>
+    </div> -->
     <div class="row">
         <div class="col-md-6">
             <input type="password" class="form-control password-icon" placeholder="Password" id="password1" name="password" autocomplete="new-password"

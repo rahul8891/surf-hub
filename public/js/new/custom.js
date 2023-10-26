@@ -502,6 +502,26 @@ jQuery(document).ready(function () {
         }
     });
 
+    jQuery.validator.addMethod("domain",function(value,element) {
+      return this.optional(element) 
+         || /([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(value); 
+        // return false;
+    },"Please enter valid URL.");
+
+    jQuery.validator.addMethod(
+            "countrycode",
+            function (value) {
+                // console.log(value);
+                // var regmm ='^([0|+[0-9]{1,5})?([7-9][0-9]{9})$';
+                var regmm = '^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$';
+                var regex = new RegExp(regmm);
+                if (regex.test(value) == true) {
+                    return true;
+                }
+            },
+            "Please enter your phone number with country code."
+            );
+
     jQuery("form[name='register-resort']").validate({
         rules: {
             resort_name: {
@@ -552,7 +572,8 @@ jQuery(document).ready(function () {
                 minlength: 8,
                 maxlength: 15,
                 spaceNotAllow: true,
-                numericOnly: true
+                numericOnly: true,
+                countrycode: true
             },
 
             country_id: {
@@ -587,6 +608,10 @@ jQuery(document).ready(function () {
 
             terms: {
                 required: true
+            },
+            website: {
+                // required: true,
+                domain: true
             }
         },
         errorPlacement: function (error, element) {
@@ -626,7 +651,8 @@ jQuery(document).ready(function () {
             },
 
             phone: {
-                required: "Please enter your phone number",
+                // required: "Please enter your phone number",
+                required: "Please enter your phone number with country code.",
                 minlength: "Your phone must be minimun 8 number long.",
                 maxlength: "Your phone must be maximum 15 number long."
             },

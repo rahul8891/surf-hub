@@ -759,6 +759,7 @@ class UserService {
         foreach ($userData as $val) {
             $resortName = $val->resort_name;
         }
+        $ImagesArray = array();
         $dir = public_path('storage/') . $resortName;
         if ($handle = opendir($dir)) {
             $file_display = ['jpg', 'jpeg', 'png', 'gif'];
