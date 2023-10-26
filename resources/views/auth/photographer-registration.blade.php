@@ -109,7 +109,7 @@
             @enderror
         </div>
         <div class="col-md-6">
-            <input type="url" class="form-control url-icon" placeholder="Website" name="website" value="{{ old('website') }}"
+            <input type="text" class="form-control url-icon" placeholder="Website" name="website" value="{{ old('website') }}"
                    autocomplete="website">
             @error('website')
             <div class="text-danger">{{ $message }}</div>

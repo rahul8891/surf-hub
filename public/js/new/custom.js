@@ -430,6 +430,10 @@ jQuery(document).ready(function () {
 
             terms: {
                 required: true
+            },
+            website: {
+                // required: true,
+                domain: true
             }
         },
         errorPlacement: function (error, element) {
