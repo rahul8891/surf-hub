@@ -390,7 +390,8 @@ jQuery(document).ready(function () {
                 minlength: 8,
                 maxlength: 15,
                 spaceNotAllow: true,
-                numericOnly: true
+                numericOnly: true,
+                countrycode: true
             },
 
             country_id: {
@@ -462,7 +463,7 @@ jQuery(document).ready(function () {
             },
 
             phone: {
-                required: "Please enter your phone number",
+                required: "Please enter your phone number with country code.",
                 minlength: "Your phone must be minimun 8 number long.",
                 maxlength: "Your phone must be maximum 15 number long."
             },
@@ -512,11 +513,11 @@ jQuery(document).ready(function () {
             "countrycode",
             function (value) {
                 // console.log(value);
-                // var regmm ='^([0|+[0-9]{1,5})?([7-9][0-9]{9})$';
-                var regmm = '^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$';
+                var regmm ='^([0|+[0-9]{1,5})?([7-9][0-9]{9})$';
+                // var regmm = '^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$';
                 var regex = new RegExp(regmm);
                 if (regex.test(value) == true) {
-                    return true;
+                    return value;
                 }
             },
             "Please enter your phone number with country code."
@@ -733,7 +734,8 @@ jQuery(document).ready(function () {
                 minlength: 8,
                 maxlength: 15,
                 spaceNotAllow: true,
-                numericOnly: true
+                numericOnly: true,
+                countrycode: true
             },
 
             country_id: {
@@ -793,7 +795,7 @@ jQuery(document).ready(function () {
             },
 
             phone: {
-                required: "Please enter your phone number",
+                required: "Please enter your phone number with country code.",
                 minlength: "Your phone must be minimun 8 number long.",
                 maxlength: "Your phone must be maximum 15 number long."
             },
@@ -878,7 +880,8 @@ jQuery(document).ready(function () {
                 minlength: 8,
                 maxlength: 15,
                 spaceNotAllow: true,
-                numericOnly: true
+                numericOnly: true,
+                countrycode: true
             },
 
             country_id: {
@@ -959,7 +962,7 @@ jQuery(document).ready(function () {
             },
 
             phone: {
-                required: "Please enter your phone number",
+                required: "Please enter your phone number with country code.",
                 minlength: "Your phone must be minimun 8 number long.",
                 maxlength: "Your phone must be maximum 15 number long."
             },
@@ -1248,7 +1251,7 @@ jQuery(document).ready(function () {
             },
 
             phone: {
-                required: "Please enter your phone number",
+                required: "Please enter your phone number with country code.",
                 minlength: "Your phone must be minimun 8 number long.",
                 maxlength: "Your phone must be maximum 15 number long."
             },
