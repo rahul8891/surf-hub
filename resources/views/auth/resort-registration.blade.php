@@ -110,7 +110,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
             <div class="white-bg global-icon">
                 <select class="form-select" name="language" required>
                     <option selected>Language</option>
@@ -124,8 +124,8 @@
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
-        </div>
-        <div class="col-md-6">
+        </div> -->
+        <div class="col-md-12">
             <input type="text" value="{{ old('local_beach_break')}}"
                    name="local_beach_break" data-beachID=""
                    placeholder="Local Beach"
