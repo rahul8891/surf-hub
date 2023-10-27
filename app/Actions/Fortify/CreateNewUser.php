@@ -47,10 +47,22 @@ class CreateNewUser implements CreatesNewUsers {
                 $country_code = $input['country_code'];
             }
 
+            if ( $input['user_type_id'] == 2 ) {
+                $user_type = 'USER';
+            } elseif ( $input['user_type_id'] == 3 ) {
+                $user_type = 'ADVERTISEMENT';
+            } elseif ( $input['user_type_id'] == 5 ) {
+                $user_type = 'PHOTOGRAPHER';
+            } elseif ( $input['user_type_id'] == 6 ) {
+                $user_type = 'SURFER CAMP';
+            } else {
+                $user_type = 'USER';
+            }
+
             $getImageArray = $this->uploadImage($input);
             $user->user_name = !empty($input['user_name']) ? $input['user_name'] : '';
             $user->email = $input['email'];
-            $user->user_type = $input['user_type_id'];
+            $user->user_type = $user_type;
             $user->password = Hash::make($input['password']);
             $user->account_type = !empty($input['account_type']) ? $input['account_type'] : 1;
             $user->profile_photo_name = !empty($getImageArray['status']) ? $getImageArray['profile_photo_name'] : '';

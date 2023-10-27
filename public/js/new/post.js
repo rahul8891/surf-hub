@@ -51,7 +51,7 @@ jQuery(document).ready(function () {
         readVideoURL(this);
     });
 
-    jQuery("#input_multifile").change(function () {
+    jQuery("#input_multifile, #formFile").change(function () {
         previewFile(this);
     });
 

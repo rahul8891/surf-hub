@@ -171,7 +171,8 @@
                 </div>
                 <span class="align-middle d-inline-block ms-3">Upload Resort Pics (Max 5)</span>
             </div>
-                <span class="resort_pics_error text-danger"></span>
+            <div class="upload-file-name" id="filesInfo"></div>
+            <span class="resort_pics_error text-danger d-block mb-3"></span>
         </div>
     </div>
     <div class="form-check mb-4">
