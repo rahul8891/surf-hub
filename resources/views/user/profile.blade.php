@@ -42,14 +42,14 @@
                             <tr>
                                 <td class="font_bold">Country</td>
                                 <td>:</td>
-                                <td>{{ $countries[$user->user_profiles->country_id]->name }}</td>
+                                <td>{{$country_name}}</td>
                             </tr>
                             <tr>
                                 <td class="font_bold">Phone</td>
                                 <td>:</td>
                                 <td>{{ $user->user_profiles->icc }} {{ $user->user_profiles->phone }}</td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td class="font_bold">Preferred Language</td>
                                 <td>:</td>
                                 <td>
@@ -59,7 +59,7 @@
                                     -
                                     @endif
                                 </td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <td class="font_bold">Account Type</td>
                                 <td>:</td>

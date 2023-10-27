@@ -40,7 +40,7 @@ class CreateNewUser implements CreatesNewUsers {
         ])->validate();
 
         try {
-            if ( str_contains(': ', $input['country_code']) ) {
+            if ( str_contains($input['country_code'], ': ') ) {
                 $expolde = explode(': ', $input['country_code']);
                 $country_code = $expolde[1];
             } else {

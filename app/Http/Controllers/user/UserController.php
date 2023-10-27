@@ -115,12 +115,13 @@ class UserController extends Controller {
     public function showProfile() {
         $customArray = $this->customArray;
         $beaches = $states = $postsList = [];
-        $countries = DB::table('countries')->select('id', 'name', 'phone_code')->orderBy('name', 'asc')->get();
+        // $countries = DB::table('countries')->select('id', 'name', 'phone_code')->orderBy('name', 'asc')->get();
         $beachBreaks = DB::table('beach_breaks')->orderBy('beach_name', 'asc')->get();
         $language = config('customarray.language');
         $accountType = config('customarray.accountType');
         $user = $this->users->getUserDetailByID(Auth::user()->id);
-        return view('user.profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray'));
+        $country_name = Auth::user()->user_profiles->countries->name;
+        return view('user.profile', compact('user', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'country_name'));
     }
 
     /**
