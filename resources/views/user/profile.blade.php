@@ -14,6 +14,10 @@
                         <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}"
                              alt="" class="rounded-circle">
                         @endif
+
+                        @if(Auth::user()->id == 1)
+                        <img src="/img/imgpsh_fullsize_anim.png" alt="" class="rounded-circle">
+                        @endif
                     </div>
                     <div class="name">
                         <p>{{__(ucwords($user->user_profiles->first_name .' '. $user->user_profiles->last_name))}}</p>

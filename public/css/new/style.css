@@ -2278,3 +2278,38 @@ header .navbar-nav.admin-middle-menu > div > a span:nth-child(2){
     display: block;
     margin-bottom: 20px;
 }
+.user-details .user-left a > img.profileIcon, .user-details .user-left img.profileIcon , .overlayDetails img.profileIcon {
+    width: 25px;
+    height: 25px;
+    z-index: 11;
+    visibility: visible;
+    background: beige;
+    border-radius: 50%;
+}
+.overlayDetails .iconSpan {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.overlayDetails .iconSpan > .spacing {
+    margin-left: 5px;
+}
+@media (orientation: landscape) and ( max-width: 767px ) {
+    .overlayDetails {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+        padding: 0px;
+        bottom: 0px;
+        font-size: 14px;
+        border-radius: 0;
+    }
+    .overlayDetails .spacing {
+        line-height: 25px;
+    }
+    .overlayDetails .iconSpan > .spacing {
+        width: auto;
+        display: inline-block;
+        margin-left: 5px;
+    }
+}

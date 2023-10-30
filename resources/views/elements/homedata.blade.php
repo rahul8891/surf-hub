@@ -2,6 +2,17 @@
     @php ($a = 0)
     @php ($f = $page + ( $page - 1) )
     @foreach ($postsList as $key => $posts)
+        <?php $icon = '';
+        $getUserType = getUserType($posts->surfer);
+        if ( isset($getUserType) && !empty($getUserType) ) {
+            if( $getUserType['user_type'] == 'USER' ) {
+                $icon = '<img class="profileIcon" src="/img/surfboard.jpeg">';
+            }
+            // elseif( $getUserType['user_type'] == 'PHOTOGRAPHER' ) {
+            //     $icon = '<img class="profileIcon" src="/img/cameraicon.png">';
+            // }
+        }
+        ?>
         @if($posts->parent_id == 0)
             <div class="news-feed myPostData{{$posts->id}}">
                 <div class="inner-news-feed">
@@ -31,12 +42,12 @@
                             <div>
                                 @if($posts->user_id != Auth::user()->id)
                                     @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
-                                        <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
+                                        <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo $icon;?> {{ucfirst($posts->surfer) }} )</a></span> </p>
                                     @elseif($posts->user->user_type == 'SURFER CAMP')
-                                        <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}">{{ ucfirst($posts->user->user_profiles->first_name) }} {{ ucfirst($posts->user->user_profiles->last_name) }} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</a></span> </p>
+                                        <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}">{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo $icon;?> {{ucfirst($posts->surfer) }} )</a></span> </p>
                                     @endif
                                 @else
-                                    <p class="name"><span>{{ucfirst($posts->user->user_profiles->first_name)}} {{ucfirst($posts->user->user_profiles->last_name)}} ( {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} )</span></p>
+                                    <p class="name"><span>{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo $icon;?> {{ucfirst($posts->surfer) }} )</span></p>
                                 @endif
                                 <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                                 <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>

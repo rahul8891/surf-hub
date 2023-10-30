@@ -1,5 +1,6 @@
 <?php
 use Carbon\Carbon;
+use App\Services\UserService;
 
 /**
  *  active child menu
@@ -72,4 +73,19 @@ function getName($file = '') {
     }
 
     return $nameFile;
+}
+
+/**
+ *  Extract user_type from post surfer name
+ */
+function getUserType($name = '') {
+    $user_type = '';
+    if(isset($name) && !empty($name)) {
+        $icon = '';
+        $user = new UserService();
+        $user_type = $user->getUserTypes($name);
+
+    }
+
+    return $user_type;
 }

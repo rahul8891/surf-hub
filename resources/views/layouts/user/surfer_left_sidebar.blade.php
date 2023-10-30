@@ -77,9 +77,18 @@
             </div>
             @endif
             @if($userType == 'SURFER CAMP' || $userType == 'PHOTOGRAPHER')
+            <?php
+            $strUrl       = $userProfile['website'];
+            $arrParsedUrl = parse_url($strUrl);
+            if (!empty($arrParsedUrl['scheme'])) {
+                $website = ( $arrParsedUrl['scheme'] === 'https' ) ? $userProfile['website'] : 'https://'.$userProfile['website'];
+            } else {
+                $website = 'https://'.$userProfile['website'];
+            }
+            ?>
             <div class="profile-row pt-0">
                 <label class="d-block">Website</label>
-                <span class="darkGrey-txt"><a class="blue-txt num" href="{{ $userProfile['website'] }}" target="_blank" >{{ $userProfile['website'] }}</a></span>
+                <span class="darkGrey-txt"><a class="blue-txt num" href="{{$website}}" target="_blank" >{{$website}}</a></span>
             </div>
             @endif
             @if($userType == 'PHOTOGRAPHER')

@@ -775,4 +775,13 @@ class UserService {
         return $ImagesArray;
     }
 
+    /**
+     *  Extract user_type from post surfer name
+     */
+    public function getUserTypes($name) {
+        $user_type = User::where('user_name', $name)->first();
+        
+        return $user_type;
+    }
+
 }

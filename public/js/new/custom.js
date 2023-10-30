@@ -690,7 +690,7 @@ jQuery(document).ready(function () {
         },
         submitHandler: function (form) {
             var input = document.getElementById('formFile');
-            if (input.files.length > 4) {
+            if (input.files.length > 5) {
                 jQuery('.resort_pics_error').text('Please select only 5 pics');
                 return false;
             } else {

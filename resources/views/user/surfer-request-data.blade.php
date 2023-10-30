@@ -66,6 +66,17 @@
                 <div id="post-data">
                     @if (!empty($postsList))
                     @foreach ($postsList as $key => $posts)
+                    <?php $icon = '';
+                    $getUserType = getUserType($posts->surfer);
+                    if ( isset($getUserType) && !empty($getUserType) ) {
+                        if( $getUserType['user_type'] == 'USER' ) {
+                            $icon = '<img class="profileIcon" src="/img/surfboard.jpeg">';
+                        }
+                        // elseif( $getUserType['user_type'] == 'PHOTOGRAPHER' ) {
+                        //     $icon = '<img class="profileIcon" src="/img/cameraicon.png">';
+                        // }
+                    }
+                    ?>
                     <div class="news-feed">
                         <div class="inner-news-feed">
                             <div class="user-details">

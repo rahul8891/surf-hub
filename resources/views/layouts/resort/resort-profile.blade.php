@@ -54,7 +54,7 @@
                             </div>
                             @endif
                         </div>
-                        @if(!empty($posts->upload->image))
+                        <!-- @if(!empty($posts->upload->image))
                         <div class="newsFeedImgVideo">
                             <img src="{{ env('FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
                         </div>
@@ -72,6 +72,15 @@
                         </video>
                         </div>
                         @endif
+                        @endif -->
+                        @if(!empty($posts->upload->image))
+                            <div class="newsFeedImgVideo">
+                                <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/'.$posts->user->id.'/'.$posts->upload->image }}" alt="" id="myImage{{$posts->id}}" class="postImg">
+                            </div>
+                        @elseif(!empty($posts->upload->video))
+                            <div class="newsFeedImgVideo jw-video-player" id="myVid{{$posts->id}}" data-id="{{$posts->id}}" data-src="{{ env('FILE_CLOUD_PATH').'videos/'.$posts->user->id.'/'.getName($posts->upload->video).'/'.getName($posts->upload->video).'.m3u8' }}">
+                                <video width="100%" preload="auto" data-setup="{}" controls autoplay playsinline muted class="video-js" id="myVideoTag{{$posts->id}}"></video>
+                            </div>
                         @endif
                         <div class="user-bottom-options">
                             <div class="rating-flex">
