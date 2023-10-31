@@ -7,9 +7,7 @@
                 <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}"
                     alt="" class="rounded-circle">
                 @else
-                <!-- <div class="">
-                    {{ucwords(substr(Auth::user()->user_profiles->first_name,0,1))}}{{ucwords(substr(Auth::user()->user_profiles->last_name,0,1))}}
-                </div> -->
+                
                 @endif
                 @if(Auth::user()->id == 1)
                 <img src="/img/imgpsh_fullsize_anim.png" alt="" class="rounded-circle">

@@ -645,7 +645,20 @@ function myTimerUserMessage() {
     document.getElementById("error").className = "";
 }
 
+function updateAllReports() {
+    $.ajax({
+        type: "GET",
+        url: "/admin/updateAllReports",
+        data: {
+            "_token": "{{ csrf_token() }}"
+        },
+        dataType: "json",
+        success: function (jsonResponse) {
+            if (jsonResponse.status == "success") {
+                $('.followCountHead').hide();
+            }
+        }
+    });
 
-
-
-
+    location.reload(true);
+}

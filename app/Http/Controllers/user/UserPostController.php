@@ -736,4 +736,26 @@ class UserPostController extends Controller {
         die;
     }
 
+    /**
+     * show the specified post.
+     *
+     * @param  int  $post_id
+     * @return \Illuminate\Http\Response
+     */
+    public function getPostDataReport($post_id) {
+        $countries = $this->masterService->getCountries();
+        $customArray = $this->customArray;
+        $postData = Post::where('id', $post_id)->first();
+        DB::table('reports')
+        ->where('post_id', '=', $post_id)
+        ->update([
+            'is_read' => '1',
+            'updated_at' => Carbon::now()
+        ]);
+        $currentUserCountryId = UserProfile::where('user_id', $postData->user_id)->pluck('country_id')->first();
+
+        $states = $this->masterService->getStateByCountryId($currentUserCountryId);
+        return view('user.postData', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postData'));
+    }
+
 }

@@ -16,6 +16,9 @@
                                 <input type="text" id="searchReports" class="form-control ps-2 pe-5 mb-0"
                                        placeholder="Search Reports">
                             </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn-default btnClearNotification" onclick="updateAllReports()">Clear All</button>
+                            </div>
                         </div>
                     </div>
                     <div class="list-followers">

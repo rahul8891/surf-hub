@@ -511,11 +511,13 @@ class AdminUserService {
             $report = $this->report
                     ->join('users', 'users.id', '=', 'reports.user_id')
                     ->join('user_profiles', 'user_profiles.user_id', '=', 'users.id')
+                    ->where('reports.is_read', '=', '0')
                     ->whereRaw("concat(first_name, ' ', last_name) like '%" . $string . "%' ")
                     ->get();
         } else {
             $report = $this->report
                             ->join('users', 'users.id', '=', 'reports.user_id')
+                            ->where('reports.is_read', '=', '0')
                             ->join('user_profiles', 'user_profiles.user_id', '=', 'users.id')
                             ->get();
         }

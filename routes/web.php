@@ -208,6 +208,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
 
 
 Route::get('/postData/{post_id}', [UserPostController::class, 'getPostData'])->name('getPostData');
+Route::get('/postDataReport/{post_id}', [UserPostController::class, 'getPostDataReport'])->name('getPostDataReport');
 /**
  * Common Route
  */
@@ -277,6 +278,10 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'adminAuth']], func
     Route::post('/breachbreak/import-excel', [BeachBreakController::class, 'importBeachBreak'])->name('importBeachBreak');
     Route::get('/deleteBeachBreak/{id}', [BeachBreakController::class, 'destroy'])->name('deleteBeachBreak');
     Route::get('/get-beach-break-detail/{id}', [BeachBreakController::class, 'getBeachBreakDetail'])->name('getBeachBreakDetail');
+
+
+
+    Route::get('/updateAllReports', [ReportController::class, 'updateAllReports'])->name('updateAllReports');
 });
 
 /***************** S3 Bucket *************/

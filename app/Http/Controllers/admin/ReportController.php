@@ -22,6 +22,7 @@ use App\Models\Upload;
 use Closure;
 use Redirect;
 use Session;
+use DB;
 
 class ReportController extends Controller
 {
@@ -45,11 +46,11 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $data = Report::with(['user', 'post' => function($q) {
+        $data = Report::where('is_read', '0')->with(['user', 'post' => function($q) {
                     $q->with('user')->get();
                 }])->get();
-        
-        return view('admin/report/index', compact('data'));     
+        $common = $this->common;
+        return view('admin/report/index', compact('data', 'common'));     
     }
     public function searchReport(Request $request) {
 
@@ -59,6 +60,21 @@ class ReportController extends Controller
         $common = $this->common;
         $view = view('elements/searchReport', compact('data', 'common'))->render();
         return response()->json(['html' => $view]);
+    }
+
+    public function updateAllReports() {
+
+        $result = DB::table('reports')
+        ->where('is_read', '=', '0')
+        ->update([
+            'is_read' => '1',
+            'updated_at' => Carbon::now()
+        ]);
+        if ($result) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'fails'));
+        }
     }
     
 }

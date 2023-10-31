@@ -1806,6 +1806,7 @@ class PostService {
     }
     public function getReportsCount() {
         $reports = $this->report
+                ->where('is_read', '0')
                 ->orderBy('id', 'ASC')
                 ->get()
                 ->count();
