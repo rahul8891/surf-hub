@@ -23,7 +23,7 @@ class AdminMiddleware
             $user = Auth::user();
             $checkUserType = config('customarray.userType');
             if (in_array($user->user_type, $checkUserType)) {
-                if($user->user_type == $checkUserType['ADMIN'] || $user->user_type == $checkUserType['USER'] || $user->user_type == $checkUserType['ADVERTISEMENT'] || $user->user_type == $checkUserType['PHOTOGRAPHER'] || $user->user_type == $checkUserType['SURFER CAMP'] ){
+                if($user->user_type == $checkUserType['ADMIN'] ){
                     // return true and allow route to Admin Only
                     return $next($request);
                 }else{
