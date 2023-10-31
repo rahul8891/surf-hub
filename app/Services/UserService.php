@@ -67,7 +67,7 @@ class UserService {
      * @return [object]              [description]
      */
     public function updateUserProfile($dataRequest, &$message = '',$user_id) {
-        //dd($dataRequest);
+        // dd($dataRequest);
         $users = $this->users->find($user_id);
         $userProfiles = new UserProfile();
         try {

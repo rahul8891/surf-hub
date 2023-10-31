@@ -17,7 +17,7 @@
                             <div class="col-md-6">
                                 <div class="upload-photo">
                                     <div>
-                                        <img src="" id="category-img-tag" alt="">
+                                        <img src="{{ asset('storage/'.Auth::user()->profile_photo_path) }}" id="category-img-tag" alt="">
                                         <input type="file" accept=".png, .jpg, .jpeg" id="exampleInputFile" name="profile_photo_name">
                                         <input type="hidden" accept=".png, .jpg, .jpeg" id="imagebase64" name="profile_photo_blob" />
                                     </div>
@@ -162,9 +162,10 @@
                                 <div class="white-bg camera-icon">
                                     <select class="form-select" name="camera_brand">
                                         <option  value="">Preferred Camera Brand</option>
-                                        <option value="1" {{ $user->user_profiles->preferred_camera == 1 ? "selected" : "" }}>One</option>
-                                        <option value="2" {{ $user->user_profiles->preferred_camera == 2 ? "selected" : "" }}>Two</option>
-                                        <option value="3" {{ $user->user_profiles->preferred_camera == 3 ? "selected" : "" }}>Three</option>
+                                        @foreach($camera_brands as $key => $camera_brand)
+                                        <option value="{{ $key }}" {{ $user->user_profiles->preferred_camera == $key ? "selected" : "" }}>{{ $camera_brand }}
+                                        </option>
+                                        @endforeach
                                     </select>
                                     @error('camera_brand')
                                     <div class="text-danger">{{ $message }}</div>

@@ -89,3 +89,16 @@ function getUserType($name = '') {
 
     return $user_type;
 }
+
+
+function postOwnericon() {
+    $postOwnericon = '<img class="profileIcon" src="/img/cameraicon.png">';
+    return $postOwnericon;
+}
+
+function postSurferIcon() {
+    $postSurferIcon = '<img class="profileIcon" src="/img/surfboard.jpeg">';
+    return $postSurferIcon;
+
+}
+

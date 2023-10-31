@@ -175,7 +175,7 @@
                     <option value="{{ $key }}"
                             {{ old('camera_brand') == $key ? "selected" : "" }}>{{ $camera_brand }}
                     </option>
-                    @endforeach                    
+                    @endforeach
                 </select>
                 @error('camera_brand')
                 <div class="text-danger">{{ $message }}</div>

@@ -2,17 +2,6 @@
 @php ($a = 0)
 @php ($f = $page + ( $page - 1) )
 @foreach ($postsList as $key => $posts)
-<?php $icon = '';
-$getUserType = getUserType($posts->surfer);
-if ( isset($getUserType) && !empty($getUserType) ) {
-    if( $getUserType['user_type'] == 'USER' ) {
-        $icon = '<img class="profileIcon" src="/img/surfboard.jpeg">';
-    }
-    // elseif( $getUserType['user_type'] == 'PHOTOGRAPHER' ) {
-    //     $icon = '<img class="profileIcon" src="/img/cameraicon.png">';
-    // }
-}
-?>
 @if($posts->parent_id == 0)
 <div class="news-feed myPostData{{ $posts->id }}" id="{{$posts->id}}">
     <div class="inner-news-feed">
@@ -25,7 +14,7 @@ if ( isset($getUserType) && !empty($getUserType) ) {
                         <img src="/img/logo_small.png" class="profileImg" alt="">
                     @endif
                     <div>
-                        <p class="name"><span>{{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} ( <?php echo $icon;?> {{ucfirst($posts->surfer) }} )</span> </p>
+                        <p class="name"><span><?php echo postOwnericon();?> {{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</span> </p>
                         <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                         <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                     </div>
@@ -36,7 +25,7 @@ if ( isset($getUserType) && !empty($getUserType) ) {
                     <img src="/img/logo_small.png" class="profileImg" alt="">
                     @endif
                     <div>
-                        <p class="name"><span>{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo $icon;?> {{ucfirst($posts->surfer) }} )</span> </p>
+                        <p class="name"><span><?php echo postOwnericon();?> {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</span> </p>
                         <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                         <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                     </div>

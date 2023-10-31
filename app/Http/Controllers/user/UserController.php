@@ -136,6 +136,7 @@ class UserController extends Controller {
         $language = config('customarray.language');
         $board_type = config('customarray.board_type');
         $accountType = config('customarray.accountType');
+        $camera_brands = config('customarray.camera_brands');
         $user = $this->users->getUserDetailByID(Auth::user()->id);
         $states = State::select('id', 'name')->where('country_id',$user->user_profiles->country_id)->orderBy('name','asc')->get();
         $beach = '';
@@ -148,7 +149,7 @@ class UserController extends Controller {
         return view('user.edit_surfer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','board_type','beach'));
 
         } elseif ($user->user_type == 'PHOTOGRAPHER') {
-        return view('user.edit_photographer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','beach'));
+        return view('user.edit_photographer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','beach', 'camera_brands'));
 
         } elseif ($user->user_type == 'SURFER CAMP') {
         return view('user.edit_resort_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','beach'));
