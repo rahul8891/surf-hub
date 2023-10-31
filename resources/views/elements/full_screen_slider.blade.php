@@ -34,13 +34,27 @@
                 $firstSlide = 0;
                 @endphp
             @foreach ($postsList as $key => $posts)
-                <?php $icon = '';
-                $getUserType = getUserType($posts->surfer);
-                if ( isset($getUserType) && !empty($getUserType) ) {
-                    if( $getUserType['user_type'] == 'USER' ) {
-                        $icon = '<img class="profileIcon" src="/img/surfboard.jpeg">';
-                    } elseif( $getUserType['user_type'] == 'PHOTOGRAPHER' ) {
-                        $icon = '<img class="profileIcon" src="/img/cameraicon.png">';
+                <?php
+                $iconSurfer = '';
+                $iconPostOwner = '';
+                $getUserTypeSurfer = getUserType($posts->surfer);
+                if ( isset($getUserTypeSurfer) && !empty($getUserTypeSurfer) ) {
+                    if( $getUserTypeSurfer['user_type'] == 'USER' ) {
+                        $iconSurfer = '<img class="profileIcon" src="/img/surfboard.jpeg">';
+                    } elseif( $getUserTypeSurfer['user_type'] == 'PHOTOGRAPHER' ) {
+                        $iconSurfer = '<img class="profileIcon" src="/img/cameraicon.png">';
+                    }
+                }
+                if( $posts->surfer == 'Unknown' ) {
+                    $iconSurfer = '<img class="profileIcon" src="/img/surfboard.jpeg">';
+                }
+
+                $getUserTypePostOwner = getUserType($posts->user->user_name);
+                if ( isset($getUserTypePostOwner) && !empty($getUserTypePostOwner) ) {
+                    if( $getUserTypePostOwner['user_type'] == 'USER' ) {
+                        $iconPostOwner = '<img class="profileIcon" src="/img/surfboard.jpeg">';
+                    } elseif( $getUserTypePostOwner['user_type'] == 'PHOTOGRAPHER' ) {
+                        $iconPostOwner = '<img class="profileIcon" src="/img/cameraicon.png">';
                     }
                 }
                 ?>
@@ -83,10 +97,12 @@
                         @endif
                     @endif
                     <div class="overlayDetails">
-                        <span class="iconSpan"><?php echo $icon;?>
+                        <span class="iconSpan"><?php echo $iconPostOwner;?>
                             <span class="spacing">{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }}</span>
                         </span>
-                        <span class="spacing">{{ (isset($posts->surfer) && !empty($posts->surfer))?ucfirst($posts->surfer):"SurfHub" }}</span>
+                        <span class="iconSpan"><?php echo $iconSurfer;?>
+                            <span class="spacing">{{ (isset($posts->surfer) && !empty($posts->surfer))?ucfirst($posts->surfer):"SurfHub" }}</span>
+                        </span>
                         <span class="spacing">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}</span>
                         <span>{{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</span>
                     </div>
