@@ -68,7 +68,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <input type="text" class="form-control user-icon" placeholder="User Name" name="user_name" value="{{ $user->user_name }}" minlength="5"
                                        maxlength="25" required autocomplete="user_name">
                                 @error('user_name')
@@ -117,7 +117,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-6">
                                 <div class="white-bg global-icon">
                                     <select class="form-select" name="language" required>
@@ -140,7 +140,7 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
+                        </div> -->
 
 
                         <div class="row">
