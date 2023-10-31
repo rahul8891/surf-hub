@@ -23,12 +23,13 @@ class AdminMiddleware
             $user = Auth::user();
             $checkUserType = config('customarray.userType');
             if (in_array($user->user_type, $checkUserType)) {
-                if($user->user_type == $checkUserType['ADMIN']){
+                if($user->user_type == $checkUserType['ADMIN'] || $user->user_type == $checkUserType['USER'] || $user->user_type == $checkUserType['ADVERTISEMENT'] || $user->user_type == $checkUserType['PHOTOGRAPHER'] || $user->user_type == $checkUserType['SURFER CAMP'] ){
                     // return true and allow route to Admin Only
                     return $next($request);
                 }else{
                     return Redirect::to('/dashboard')->withErrors('Sorry, You Are Not Authorized to Access Administrator Route');                   
                 }
+
             }
         }catch (\Exception $e){           
             throw ValidationException::withMessages([trans('customErrorMessage.unauthorized')]);
