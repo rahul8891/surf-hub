@@ -39,11 +39,14 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="white-bg photographer-icon">
-                                    <select class="form-select " name="photographer_type" required>
-                                        <option value="">Photographer Type</option>
-                                        <option value="1" {{ $user->user_profiles->business_type == 1 ? "selected" : "" }}>One</option>
-                                        <option value="2" {{ $user->user_profiles->business_type == 2 ? "selected" : "" }}>Two</option>
-                                        <option value="3" {{ $user->user_profiles->business_type == 3 ? "selected" : "" }}>Three</option>
+                                    @php
+                                    $explode = explode(',', $user->user_profiles->business_type);
+                                    @endphp
+                                    <select class="form-control select2 select2-hidden-accessible country local_beach_break_id"
+                                        name="photographer_type[]" id="filter_user_type" multiple="multiple">
+                                        <option value="Stills" {{ in_array('Stills', $explode ) ? "selected" : "" }}>Stills</option>
+                                        <option value="Videos" {{ in_array("Videos", $explode ) ? "selected" : "" }}>Videos</option>
+                                        <option value="Drone" {{ in_array("Drone", $explode ) ? "selected" : "" }}>Drone</option>
                                     </select>
                                     @error('photographer_type')
                                     <div class="text-danger">{{ $message }}</div>
@@ -110,7 +113,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <input type="url" class="form-control url-icon" placeholder="Website" name="website" value="{{ $user->user_profiles->website }}"
+                                <input type="text" class="form-control url-icon" placeholder="Website" name="website" value="{{ $user->user_profiles->website }}"
                                        autocomplete="website">
                                 @error('website')
                                 <div class="text-danger">{{ $message }}</div>

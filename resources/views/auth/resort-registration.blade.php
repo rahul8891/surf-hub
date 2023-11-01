@@ -162,8 +162,10 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-            <div class="upload-resort-photo">
+        <div class="col-md-12">
+            <div class="upload-resort-photo upload-body">
+                <input type="hidden" name="imagesHid_input[]" id="imagesHid_input" >
+                <input type="hidden" name="videosHid_input[]" id="videosHid_input" >
                 <div>
                     <!--<input type="file" id="formFile">-->
                     <input type="file" id="formFile" name="resort_pics[]" accept=".png, .jpg, .jpeg, .gif" multiple />

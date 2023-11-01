@@ -1,5 +1,7 @@
 @extends('layouts.user.new_layout')
 @section('content')
+
+
 <section class="home-section">
     <div class="container">
         <div class="home-row">
@@ -55,6 +57,13 @@
                                 <td>:</td>
                                 <td>{{ $user->user_profiles->icc }} {{ $user->user_profiles->phone }}</td>
                             </tr>
+                            @if(Auth::user()->user_type == 'PHOTOGRAPHER' )
+                            <tr>
+                                <td class="font_bold">Photographer Type</td>
+                                <td>:</td>
+                                <td>{{ $user->user_profiles->business_type }}</td>
+                            </tr>
+                            @endif
                             <!-- <tr>
                                 <td class="font_bold">Preferred Language</td>
                                 <td>:</td>
@@ -71,11 +80,20 @@
                                 <td>:</td>
                                 <td>{{ $accountType[$user->account_type] }}</td>
                             </tr>
+                            @if(Auth::user()->user_type != 'PHOTOGRAPHER' )
                             <tr>
                                 <td class="font_bold">Paypal </td>
                                 <td>:</td>
                                 <td>abc@gmail.com</td>
                             </tr>
+                            @endif
+                            @if(Auth::user()->user_type == 'PHOTOGRAPHER' )
+                            <tr>
+                                <td class="font_bold">Preferred Camera Brand</td>
+                                <td>:</td>
+                                <td>{{ $user->user_profiles->preferred_camera }}</td>
+                            </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>

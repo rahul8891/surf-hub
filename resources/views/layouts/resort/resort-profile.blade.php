@@ -11,9 +11,7 @@
                 @if (!empty($resortImages))
                 <div class="resort-profile">
                     @foreach ($resortImages as $rkey => $resortImg)
-                    @foreach ($resortImg as $img)
-                    <img src="{{ asset('storage/'.$rkey.'/'.$img) }}" alt="resort-profile">
-                    @endforeach
+                    <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/undefined/'.$resortImg }}" width="{{ ($rkey == 0 || $rkey == 1) ? '49%' : '33%' }}">
                     @endforeach
                 </div>
                 @endif

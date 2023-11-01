@@ -27,7 +27,8 @@ class AdminMiddleware
                     // return true and allow route to Admin Only
                     return $next($request);
                 }else{
-                    return Redirect::to('/dashboard')->withErrors('Sorry, You Are Not Authorized to Access Administrator Route');                   
+                    // return Redirect::to('/dashboard')->withErrors('Sorry, You Are Not Authorized to Access Administrator Route');
+                    return Redirect::to('/dashboard');
                 }
 
             }

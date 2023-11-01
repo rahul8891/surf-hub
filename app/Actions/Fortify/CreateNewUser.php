@@ -4,6 +4,7 @@ namespace App\Actions\Fortify;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Models\UserResortImage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -72,7 +73,19 @@ class CreateNewUser implements CreatesNewUsers {
             if ($user->save()) {
 
                 if ($input['user_type_id'] == 6 && !empty($input['resort_pics'])) {
-                    $getResortImageArray = $this->uploadResortImages($input);
+                    // $getResortImageArray = $this->uploadResortImages($input);
+                    $imageArray["images"] = (isset($input['imagesHid_input'][0]) && !empty($input['imagesHid_input'][0]))?json_decode($input['imagesHid_input'][0]):[];
+                    $postArray = array_filter($imageArray);
+
+                    foreach ($postArray["images"] as $key => $value) {
+                        $UserResortImage = new UserResortImage(); // user Resort Image table object
+
+                        $UserResortImage->user_id = $user->id;
+                        $UserResortImage->image = $value;
+                        $UserResortImage->created_at = Carbon::now();
+                        $UserResortImage->updated_at = Carbon::now();
+                        $UserResortImage->save();
+                    }
                 }
 
                 $userProfile->user_id = $user->id;

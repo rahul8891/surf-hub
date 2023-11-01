@@ -12,6 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 use App\Models\UserProfile;
 use App\Models\UserFollow;
+use App\Models\UserResortImage;
 use App\Models\Tag;
 
 class User extends Authenticatable implements MustVerifyEmail 
@@ -95,6 +96,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function user_follows()
     {
         return $this->hasMany(UserFollow::class, 'follower_user_id', 'id');
+    }
+
+    public function user_resort_image() {
+        return $this->hasMany(UserResortImage::class, 'user_id', 'id');
     }
 
     /**

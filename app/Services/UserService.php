@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Models\UserResortImage;
 use App\Models\Tag;
 use App\Models\UserFollow;
 use App\Models\Notification;
@@ -67,7 +68,7 @@ class UserService {
      * @return [object]              [description]
      */
     public function updateUserProfile($dataRequest, &$message = '',$user_id) {
-        // dd($dataRequest);
+        // dd(json_encode($dataRequest['photographer_type']));
         $users = $this->users->find($user_id);
         $userProfiles = new UserProfile();
         try {
@@ -113,9 +114,10 @@ class UserService {
                     $user_profiles->gender = (isset($dataRequest['gender']) && !empty($dataRequest['gender']))?$dataRequest['gender']:$user_profiles->gender;
                 } elseif ($userType == 'PHOTOGRAPHER') {
                     $user_profiles->business_name = $dataRequest['business_name'];
-                    $user_profiles->business_type = $dataRequest['photographer_type'];
+                    $implode = implode(',', $dataRequest['photographer_type']);
+                    $user_profiles->business_type = $implode;
                     $user_profiles->preferred_camera = $dataRequest['camera_brand'];
-                    $user_profiles->language = $dataRequest['language'];
+                    $user_profiles->language = ( isset($dataRequest['language']) && !empty($dataRequest['language']) ? $dataRequest['language'] : '' );
                     $user_profiles->website = $dataRequest['website'];
                 } elseif ($userType == 'SURFER CAMP') {
                     $user_profiles->resort_name = $dataRequest['resort_name'];
@@ -760,18 +762,7 @@ class UserService {
             $resortName = $val->resort_name;
         }
         $ImagesArray = array();
-        $dir = public_path('storage/') . $resortName;
-        if ($handle = opendir($dir)) {
-            $file_display = ['jpg', 'jpeg', 'png', 'gif'];
-            while (false !== ($file = readdir($handle))) {
-                $file_type = pathinfo($file, PATHINFO_EXTENSION);
-                if (in_array($file_type, $file_display) == true) {
-                    $ImagesArray[$resortName][] = $file;
-                }
-            }
-
-            closedir($handle);
-        }
+        $ImagesArray = UserResortImage::where('user_id', $resort_id)->pluck('image');
         return $ImagesArray;
     }
 

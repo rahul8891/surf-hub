@@ -40,12 +40,12 @@
                                     <div>
                                         @if(Auth::user() && $posts->parent_id != Auth::user()->id)
                                             @if($posts->parentPost->user_type == 'USER' || $posts->parentPost->user_type !== 'SURFER CAMP')
-                                                <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->parent_id))}}"><?php echo postOwnericon();?> {{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
+                                                <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->parent_id))}}">{{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
                                             @elseif($posts->parentPost->user_type == 'SURFER CAMP')
-                                                <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><?php echo postOwnericon();?> {{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
+                                                <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}">{{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
                                             @endif
                                         @else
-                                            <p class="name"><span><?php echo postOwnericon();?> {{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</span></p>
+                                            <p class="name"><span>{{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</span></p>
                                         @endif
                                         <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                                         <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
@@ -69,12 +69,12 @@
                                     <div>
                                         @if(Auth::user() && $posts->user_id != Auth::user()->id)
                                             @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
-                                                <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><?php echo postOwnericon();?> {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
+                                                <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
                                             @elseif($posts->user->user_type == 'SURFER CAMP')
-                                                <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><?php echo postOwnericon();?> {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
+                                                <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}">{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
                                             @endif
                                         @else
-                                            <p class="name"><span><?php echo postOwnericon();?> {{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</span></p>
+                                            <p class="name"><span>{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</span></p>
                                         @endif
                                         <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                                         <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
