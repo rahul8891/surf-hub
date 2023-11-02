@@ -80,7 +80,7 @@
                                 <td>:</td>
                                 <td>{{ $accountType[$user->account_type] }}</td>
                             </tr>
-                            @if(Auth::user()->user_type != 'PHOTOGRAPHER' )
+                            @if(Auth::user()->user_type != 'PHOTOGRAPHER' && Auth::user()->user_type != 'SURFER CAMP' )
                             <tr>
                                 <td class="font_bold">Paypal </td>
                                 <td>:</td>
@@ -92,6 +92,18 @@
                                 <td class="font_bold">Preferred Camera Brand</td>
                                 <td>:</td>
                                 <td>{{ $user->user_profiles->preferred_camera }}</td>
+                            </tr>
+                            @endif
+                            @if(Auth::user()->user_type == 'SURFER CAMP' )
+                            <tr>
+                                <td class="font_bold">WebSite </td>
+                                <td>:</td>
+                                <td>{{ $user->user_profiles->website }}</td>
+                            </tr>
+                            <tr>
+                                <td class="font_bold">Resort Type </td>
+                                <td>:</td>
+                                <td>{{ $user->user_profiles->resort_type }}</td>
                             </tr>
                             @endif
                         </tbody>

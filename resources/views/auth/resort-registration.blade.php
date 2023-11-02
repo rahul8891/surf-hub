@@ -24,17 +24,18 @@
             <input type="text" class="form-control company-icon" placeholder="Resort Name" name="resort_name" value="" minlength="3">
         </div>
         <div class="col-md-6">
-            <!-- <div class="white-bg company-icon">
+            <div class="white-bg company-icon">
                 <select class="form-select" name="resort_type" required>
                     <option selected>Resort Type</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option value="Surf Resort">Surf Resort</option>
+                    <option value="Boat Charter">Boat Charter</option>
+                    <option value="Surf School">Surf School</option>
+                    <option value="Surf Park">Surf Park</option>
                 </select>
                 @error('resort_type')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
-            </div> -->
+            </div>
         </div>
     </div>
     <div class="row">

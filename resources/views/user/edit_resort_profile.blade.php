@@ -9,7 +9,7 @@
             <div class="middle-content" id="post-data">
 
                 <div class="container mt-5">
-                    <h2 class="text-center mb-4">Edit Profile</h2>
+                    <h2 class="text-center mb-4">Edit Profile {{Auth::user()->user_type}}</h2>
                     <form method="POST" id="edit-resort" name="edit-resort" action="{{ route('storeProfile') }}"
                           enctype="multipart/form-data">
                         @csrf
@@ -41,9 +41,10 @@
                                 <div class="white-bg photographer-icon">
                                     <select class="form-select " name="resort_type" required>
                                         <option value="">Resort Type</option>
-                                        <option value="1" {{ $user->user_profiles->resort_type == 1 ? "selected" : "" }}>One</option>
-                                        <option value="2" {{ $user->user_profiles->resort_type == 2 ? "selected" : "" }}>Two</option>
-                                        <option value="3" {{ $user->user_profiles->resort_type == 3 ? "selected" : "" }}>Three</option>
+                                        <option value="Surf Resort" {{ $user->user_profiles->resort_type == "Surf Resort" ? "selected" : "" }}>Surf Resort</option>
+                                        <option value="Boat Charter" {{ $user->user_profiles->resort_type == "Boat Charter" ? "selected" : "" }}>Boat Charter</option>
+                                        <option value="Surf School" {{ $user->user_profiles->resort_type == "Surf School" ? "selected" : "" }}>Surf School</option>
+                                        <option value="Surf Park" {{ $user->user_profiles->resort_type == "Surf Park" ? "selected" : "" }}>Surf Park</option>
                                     </select>
                                     @error('resort_type')
                                     <div class="text-danger">{{ $message }}</div>
@@ -72,6 +73,20 @@
                                 <input type="text" class="form-control user-icon" placeholder="User Name" name="user_name" value="{{ $user->user_name }}" minlength="5"
                                        maxlength="25" required autocomplete="user_name">
                                 @error('user_name')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" value="{{ $beach }}"
+                                       name="local_beach_break" data-beachID=""
+                                       placeholder="Local Beach"
+                                       class="form-control location-icon  @error('local_beach_break') is-invalid @enderror search-box3">
+
+                                <input type="hidden" name="local_beach_break_id"
+                                       id="local_beach_break_id_surfer" class="form-control" value="{{ $user->user_profiles->local_beach_break_id}}">
+
+                                <div class="auto-search search3" id="country_list3"></div>
+                                @error('local_beach_break')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -117,7 +132,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-6">
                                 <div class="white-bg global-icon">
                                     <select class="form-select" name="language" required>
@@ -140,25 +155,8 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
+                        </div> -->
 
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <input type="text" value="{{ $beach }}"
-                                       name="local_beach_break" data-beachID=""
-                                       placeholder="Local Beach"
-                                       class="form-control location-icon  @error('local_beach_break') is-invalid @enderror search-box3">
-
-                                <input type="hidden" name="local_beach_break_id"
-                                       id="local_beach_break_id_surfer" class="form-control" value="{{ $user->user_profiles->local_beach_break_id}}">
-
-                                <div class="auto-search search3" id="country_list3"></div>
-                                @error('local_beach_break')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="upload-resort-photo">

@@ -2313,3 +2313,28 @@ header .navbar-nav.admin-middle-menu > div > a span:nth-child(2){
         margin-left: 5px;
     }
 }
+.resendVerification {
+    min-height: 75vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.resendVerification .site_logo {
+    margin: 20px;
+}
+.resendVerification .form p {
+    font-weight: 600;
+    font-size: 16px;
+}
+.resendVerification .formButtons {
+    display: flex;
+    justify-content: center;
+}
+.resendVerification .formButtons form {
+    margin-right: 20px;
+}
+.resendVerification .formButtons form .loginBtn {
+    padding: 5px 10px;
+    font-weight: 600;
+}

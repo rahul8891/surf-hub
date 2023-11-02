@@ -2,8 +2,8 @@
 @section('content')
 <section class="loginWrap">
     <div class="innerWrap">
-        <div class="container">
-            <div class="text-center">
+        <div class="container resendVerification">
+            <div class="text-center site_logo">
                 <a href="{{ url('/') }}"><img src="{{ asset("/img/logo.png") }}" alt="" class="img-fluid logo"></a>
             </div>
             <div class="formWrap">
@@ -21,21 +21,23 @@
                                 {{ __('A new verification link has been sent to the email address you provided during registration.') }}
                             </div>
                             @endif
-                            <form method="POST" action="{{ route('verification.send') }}">
-                                @csrf
-                                <div>
-                                    <div class="form-group">
-                                        <input type="submit" id="next" value=" {{ __('Resend Verification Email') }}"
-                                            class="loginBtn">
+                            <div class="formButtons">
+                                <form method="POST" action="{{ route('verification.send') }}">
+                                    @csrf
+                                    <div>
+                                        <div class="form-group">
+                                            <input type="submit" id="next" value=" {{ __('Resend Verification Email') }}"
+                                                class="loginBtn">
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <div class="form-group">
-                                    <input type="submit" value=" {{ __('Logout') }}" class="loginBtn">
-                                </div>
-                            </form>
+                                </form>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <div class="form-group">
+                                        <input type="submit" value=" {{ __('Logout') }}" class="loginBtn">
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
