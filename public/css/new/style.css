@@ -2338,3 +2338,29 @@ header .navbar-nav.admin-middle-menu > div > a span:nth-child(2){
     padding: 5px 10px;
     font-weight: 600;
 }
+.resort_images {
+    margin-bottom: 20px;
+}
+.resort_images .uploaded_images {
+    width: 18%;
+    display: inline-block;
+    margin-right: 10px;
+    position: relative;
+}
+.resort_images .uploaded_images span{
+    position: absolute;
+    top: -10px;
+    right: -5px;
+    background: red;
+    width: 25px;
+    font-size: 16px;
+    text-align: center;
+    z-index: 5;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+#updateresortProfile {
+    margin-top: 20px;
+}

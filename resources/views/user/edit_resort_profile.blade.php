@@ -9,7 +9,7 @@
             <div class="middle-content" id="post-data">
 
                 <div class="container mt-5">
-                    <h2 class="text-center mb-4">Edit Profile {{Auth::user()->user_type}}</h2>
+                    <h2 class="text-center mb-4">Edit Profile</h2>
                     <form method="POST" id="edit-resort" name="edit-resort" action="{{ route('storeProfile') }}"
                           enctype="multipart/form-data">
                         @csrf
@@ -156,17 +156,27 @@
                                 @enderror
                             </div>
                         </div> -->
-
+                        <div class="resort_images">
+                            @foreach($resort_images as $resort_image)
+                            <div class="uploaded_images" id="resort_{{$resort_image->id}}">
+                                <img src="{{ env('IMAGE_FILE_CLOUD_PATH').'images/undefined/'.$resort_image->image }}" >
+                                <span onclick="removeresortImage({{$resort_image->id}});" data-id="{{$resort_image->id}}">X</span>
+                            </div>
+                            @endforeach
+                        </div>
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="upload-resort-photo">
+                            <div class="col-md-12">
+                                <div class="upload-resort-photo upload-body">
+                                    <input type="hidden" name="imagesHid_input[]" id="imagesHid_input" >
+                                    <input type="hidden" name="videosHid_input[]" id="videosHid_input" >
                                     <div>
                                         <!--<input type="file" id="formFile">-->
-                                        <input type="file" id="formFile" name="resort_pics[]" accept=".png, .jpg, .jpeg, .gif" multiple />
+                                        <input type="file" id="formFileEdit" name="resort_pics[]" accept=".png, .jpg, .jpeg, .gif" multiple />
                                         <span>UPLOAD</span>
                                     </div>
                                     <span class="align-middle d-inline-block ms-3">Upload Resort Pics (Max 5)</span>
                                 </div>
+                                <div class="upload-file-name" id="filesInfo"></div>
                                 <span class="resort_pics_error text-danger"></span>
                             </div>
                         </div>
@@ -174,7 +184,7 @@
                             <div class="col-md-3"></div>
                             <div class="col-md-4">
                                 <input type="hidden" name="user_type_id" id="user_type_id">
-                                <input type="submit" class="btn blue-btn w-100" value="UPDATE">
+                                <input type="submit" id="updateresortProfile" class="btn blue-btn w-100" value="UPDATE">
                             </div>
                         </div>
 
@@ -225,5 +235,9 @@ $('.pos-rel a').each(function () {
         $(this).children('.userinfoModal').find('input[type="text"]').focus();
     });
 });
+// var upload_resort_images = jQuery('.resort_images .uploaded_images').length;
+// if ( upload_resort_images == 5 ) {
+//     jQuery('.upload-resort-photo #formFile').attr('disabled',true);
+// }
 </script>
 @endsection

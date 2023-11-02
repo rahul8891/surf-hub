@@ -27,6 +27,7 @@ use App\Models\BoardTypeAdditionalInfo;
 use App\Models\UserProfile;
 use App\Models\BeachBreak;
 use App\Models\State;
+use App\Models\UserResortImage;
 use Illuminate\Support\Facades\Crypt;
 
 class UserController extends Controller {
@@ -146,15 +147,18 @@ class UserController extends Controller {
         }
 
         if($user->user_type == 'USER') {
-        return view('user.edit_surfer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','board_type','beach'));
+            return view('user.edit_surfer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','board_type','beach'));
 
         } elseif ($user->user_type == 'PHOTOGRAPHER') {
-        return view('user.edit_photographer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','beach', 'camera_brands'));
+            return view('user.edit_photographer_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','beach', 'camera_brands'));
 
         } elseif ($user->user_type == 'SURFER CAMP') {
-        return view('user.edit_resort_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','beach'));
+
+            $resort_images = UserResortImage::where('user_id', Auth::user()->id)->get();
+
+            return view('user.edit_resort_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray', 'gender_type','beach', 'resort_images'));
         } elseif ($user->user_type == 'ADVERTISEMENT') {
-        return view('user.edit_advertiser_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray','states'));
+            return view('user.edit_advertiser_profile', compact('user', 'countries', 'beachBreaks', 'language', 'accountType', 'postsList', 'states', 'beaches', 'customArray','states'));
         }
     }
 
@@ -895,4 +899,25 @@ class UserController extends Controller {
         return view('user.surfer-upload', compact('following', 'userProfile', 'fCounts','userType', 'uploads', 'customArray', 'postsList'));
     }
 
+
+    /**
+     * Delete Post via Ajax.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteResortImage(Request $request) {
+        $param = $request->all();
+        try {
+            $result = UserResortImage::where('id', $param['id'])->delete();
+            if ($result) {
+                echo json_encode(array('status'=>'success', 'message' => $result));
+            } else {
+                echo json_encode(array('status'=>'error', 'message' => $result));
+            }
+        } catch (\Exception $e) {
+            echo json_encode(array('status'=>'error', 'message' => $e->getMessage()));
+        }
+        die;
+    }
 }

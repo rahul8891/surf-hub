@@ -162,6 +162,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', 'userAuth']], functio
     Route::get('/delete-advert-post/{id}', [UserPostController::class, 'deleteAdvert'])->name('deleteAdvert');
     Route::get('payment-index/{id}', [PayPalController::class, 'paymentIndex'])->name('payment');
 
+    Route::post('/deleteResortImage', [UserController::class, 'deleteResortImage'])->name('deleteResortImage');
+
 });
 
 /*********************************************************************************************

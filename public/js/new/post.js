@@ -50,10 +50,77 @@ jQuery(document).ready(function () {
     jQuery("#input_multifileSelect2").change(function () {
         readVideoURL(this);
     });
-
+    
+    
     jQuery("#input_multifile, #formFile").change(function () {
+        alert(upload_resort_images);
         previewFile(this);
     });
+
+    // Edit Profile Preview
+    jQuery("#formFileEdit").change(function () {
+        previewFileEdit(this);
+    });
+    // Edit Profile Preview
+    function previewFileEdit(input) {
+        var newFileList = Array.from(input.files);
+        var upload_resort_images = jQuery('.resort_images .uploaded_images').length;
+        var left_image_upload = 5 - upload_resort_images;
+        if ( newFileList.length <= left_image_upload ) {
+            // alert('left_image_upload ==='+left_image_upload);
+            var fLen = 0;
+            jQuery.each(newFileList, function (index, mediaFile) {
+                var ext = mediaFile.name.substring(mediaFile.name.lastIndexOf(".") + 1).toLowerCase();
+                if (mediaFile && (ext == "mov" || ext == "mp4" || ext == "wmv" || ext == "mkv" || ext == "gif" || ext == "mpeg4")) {
+                    jQuery("#videoError").hide();
+                    var f = newFileList[index]
+                    dataVideo.push(input.files[index]);
+                    fLen = (dataVideo.length) - 1;
+                    var _size = f.size;
+                    var fSExt = new Array('Bytes', 'KB', 'MB', 'GB'),
+                            i = 0;
+                    while (_size > 900) {
+                        _size /= 1024;
+                        i++;
+                    }
+                    var exactSize = (Math.round(_size * 100) / 100) + ' ' + fSExt[i];
+
+                    jQuery("#filesInfo").prepend('<div class="name-row pip justify-content-between"><div class=" target' + fLen + '" ><img src="/img/video-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span><a class="remove-photo " data-index=' + index + '> &#x2715;</a></div></div>');
+                    jQuery(".remove-photo").click(function () {
+                        var indexRemoved = jQuery(this).data('index');
+                        dataImage.splice(indexRemoved, 1);
+                        jQuery(this).parent(".pip").remove();
+                    });
+                }
+                if (mediaFile && (ext == "png" || ext == "jpeg" || ext == "jpg")) {
+                    var f = newFileList[index]
+                    dataVideo.push(input.files[index]);
+                    fLen = (dataVideo.length) - 1;
+                    var _size = f.size;
+                    var fSExt = new Array('Bytes', 'KB', 'MB', 'GB'),
+                            i = 0;
+                    while (_size > 900) {
+                        _size /= 1024;
+                        i++;
+                    }
+                    var exactSize = (Math.round(_size * 100) / 100) + ' ' + fSExt[i];
+
+                    jQuery("#filesInfo").prepend('<div class="name-row pip justify-content-between"><div class=" target' + fLen + '" ><img src="/img/img-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div></div>');
+                    jQuery(".remove-photo").click(function () {
+                        var indexRemoved = jQuery(this).data('index');
+                        dataImage.splice(indexRemoved, 1);
+                        jQuery(this).parent(".pip").remove();
+                    });
+                }
+                if (newFileList.length == 0) {
+                    jQuery("#videoError").show();
+                }
+            });
+        } else {
+            // jQuery('#updateresortProfile').attr('disabled', false);
+            alert('You can upload only '+ left_image_upload + ' image.');
+        }
+    }
 
     function previewFile(input) {
         var newFileList = Array.from(input.files);
@@ -551,16 +618,10 @@ jQuery(document).ready(function () {
         
     });
 
-
-
     jQuery(document).on('change', '#formFile', function (e) {
         e.preventDefault();
-
         var files = document.getElementById('formFile').files;
         var len = files.length;
-        
-        // jQuery('#formSubmit').attr('disabled',true);
-        
         for (var i = 0; i < len; i++) {
             
             var ext = files[i].name.substring(files[i].name.lastIndexOf(".") + 1).toLowerCase();
@@ -588,12 +649,44 @@ jQuery(document).ready(function () {
         
     });
 
+    // Edit Profile Resort
+    jQuery(document).on('change', '#formFileEdit', function (e) {
+        e.preventDefault();
+        var upload_resort_images = jQuery('.resort_images .uploaded_images').length;
+        var left_image_upload = 5 - upload_resort_images;
+        var files = document.getElementById('formFileEdit').files;
+        var len = files.length;
+        if ( len <= left_image_upload ) {
+            // jQuery('#updateresortProfile').attr('disabled', true);
+            for (var i = 0; i < len; i++) {
+                
+                var ext = files[i].name.substring(files[i].name.lastIndexOf(".") + 1).toLowerCase();
+                let fileType = files[i].type;
+                let file = files[i];
 
+                var random = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+                var user_id = jQuery('#user_id').val();
+                let timeStamp = Date.now() + "" + random;
+                var fileName = timeStamp + '.' + ext;
+                if (ext == "png" || ext == "jpeg" || ext == "jpg") {
+                    var uploadFileType = 'image';
+                    imgElems.push(fileName);
+                    jQuery("<div><div id='progress" + timeStamp + "' class='px-5 mx-5 fs-5 font-weight-bold text-success'></div></div>").insertAfter(".target" + i);
+                    var filePath = 'images/' + user_id + '/' + fileName;
+                } else {
+                    var uploadFileType = 'video';
+                    var filePath = 'videos/' + user_id + '/' + fileName;
+                    vidElems.push(fileName);
+                    jQuery("<div><div id='progress" + timeStamp + "' class='px-5 mx-5 fs-5 font-weight-bold text-success'></div></div>").insertAfter(".target" + i);
+                }
 
-
-
-
-
+                preSignedUrl(filePath, file, fileType, uploadFileType, timeStamp ,i , len);
+            }
+        } else {
+            // jQuery('#updateresortProfile').attr('disabled', false);
+            alert('You can upload only '+ left_image_upload + ' image.');
+        }
+    });
     
     function preSignedUrl(filePath, file, fileType, uploadFileType, timeStamp ,i , len) {
       var post_url;
@@ -690,4 +783,29 @@ function deletePostByAdmin(deleteid) {
             }
         });
     }
+}
+
+function removeresortImage(imageID) {
+    if ( imageID == '' ) {
+        return false;
+    }
+
+    jQuery.ajax({
+            headers: {
+                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+            },
+            url: '/deleteResortImage',
+            type: 'POST',
+            data: { id:imageID },
+            success: function(responseData) {
+                // Removing row from HTML Table
+                var result = JSON.parse(responseData);
+                if(result.status == "success") {
+                    jQuery("#resort_" + imageID).fadeOut("normal");
+                    jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+result.message+'</div>');
+                } else{
+                    jQuery("main").prepend('<div class="alert alert-danger alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+result.message+'</div>');
+                }
+            }
+        });
 }
