@@ -34,11 +34,13 @@
                                 <td>{{ $userProfile['email'] }}</td>
                             </tr>
                             @endif
+                            @if ( $userProfile['user_type'] == 'USER' )
                             <tr>
                                 <td class="font_bold">Gender</td>
                                 <td>:</td>
                                 <td>{{ $userProfile['gender'] }}</td>
                             </tr>
+                            @endif
                             <tr>
                                 <td class="font_bold">Country</td>
                                 <td>:</td>
@@ -51,6 +53,7 @@
                                 <td>{{ $userProfile['phone'] }}</td>
                             </tr>
                             @endif
+                            @if ( $userProfile['user_type'] == 'SURFER CAMP' )
                             <tr>
                                 <td class="font_bold">Preferred Board</td>
                                 <td>:</td>
@@ -73,6 +76,19 @@
                                     @endif
                                 </td>
                             </tr>
+                            @endif
+                            @if ( $userProfile['user_type'] == 'PHOTOGRAPHER' )
+                            <tr>
+                                <td class="font_bold">Photographer Type</td>
+                                <td>:</td>
+                                <td>{{ $userProfile['business_type'] }}</td>
+                            </tr>
+                            <tr>
+                                <td class="font_bold">Preferred Camera Brand</td>
+                                <td>:</td>
+                                <td>{{ $userProfile['preferred_camera'] }}</td>
+                            </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -287,7 +303,7 @@
 @include('layouts/models/full_screen_modal')
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-	var page = 1;
+    var page = 1;
 
     $(window).scroll(function() {
         if($(window).scrollTop() + $(window).height() >= $(document).height()) {

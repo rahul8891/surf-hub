@@ -664,6 +664,10 @@ class UserService {
             $userProfile['phone'] = isset($val->phone) ? $val->phone : '-';
             $userProfile['user_type'] = $val->user->user_type;
             $userProfile['account_type'] = $val->user->account_type;
+
+            $userProfile['business_type'] = (isset($val->business_type) && !empty($val->business_type)) ? $val->business_type : '';
+            $userProfile['preferred_camera'] = (isset($val->preferred_camera) && !empty($val->preferred_camera)) ? $val->preferred_camera : '';
+            
         }
         return $userProfile;
     }
