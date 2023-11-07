@@ -27,31 +27,37 @@
                             <div class="user-left">
                                 @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
                                 @if(Auth::user() && $posts->user_id != Auth::user()->id)
-                                @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
+                                @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
                                 <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
                                 @elseif($posts->user->user_type == 'SURFER CAMP')
                                 <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                @elseif($posts->user->user_type == 'PHOTOGRAPHER')
+                                <a href="{{route('photographer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
                                 @endif
                                 @else
                                 <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
                                 @endif
                                 @else
                                 @if(Auth::user() && $posts->user_id != Auth::user()->id)
-                                @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
+                                @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
                                 <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
                                 @elseif($posts->user->user_type == 'SURFER CAMP')
                                 <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                @elseif($posts->user->user_type == 'PHOTOGRAPHER')
+                                <a href="{{route('photographer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
                                 @endif
                                 @else
                                 <img src="/img/logo_small.png" class="profileImg" alt="">
                                 @endif
                                 @endif
                                 <div>
-                                    @if(Auth::user() && $posts->user_id != Auth::user()->id)
-                                    @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
+                                @if(Auth::user() && $posts->user_id != Auth::user()->id)
+                                @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
                                 <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
                                 @elseif($posts->user->user_type == 'SURFER CAMP')
                                 <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}">{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
+                                @elseif($posts->user->user_type == 'PHOTOGRAPHER')
+                                <p class="name"><span><a href="{{route('photographer-profile', Crypt::encrypt($posts->user_id))}}">{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
                                 @endif
 
 

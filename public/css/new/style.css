@@ -2364,3 +2364,13 @@ header .navbar-nav.admin-middle-menu > div > a span:nth-child(2){
 #updateresortProfile {
     margin-top: 20px;
 }
+.resort-profile {
+    border: 1px solid #ccc;
+    padding: 3px;
+}
+.resort-profile img:nth-child(1), .resort-profile img:nth-child(2) {
+    padding-bottom: 2px;
+}
+.iti.iti--allow-dropdown.iti--show-flags {
+    width: 100%;
+}

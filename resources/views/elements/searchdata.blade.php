@@ -9,12 +9,33 @@
             <div class="user-left">
                 @if (isset($posts->parent_id) && ($posts->parent_id > 0))
                     @if(file_exists(storage_path('app/public/'.$posts->parentPost->profile_photo_path)))
+                        @if($posts->user->user_type == 'USER' || $posts->user->user_type !== 'SURFER CAMP')
+                            <a href="{{route('surfer-profile', Crypt::encrypt($posts->parent_id))}}"><img src="{{ asset('storage/'.$posts->parentPost->profile_photo_path) }}" class="profileImg" alt=""></a>
+                        @elseif($posts->user->user_type == 'SURFER CAMP')
+                            <a href="{{route('resort-profile', Crypt::encrypt($posts->parent_id))}}"><img src="{{ asset('storage/'.$posts->parentPost->profile_photo_path) }}" class="profileImg" alt=""></a>
+                        @elseif($posts->user->user_type == 'PHOTOGRAPHER')
+                            <a href="{{route('photographer-profile', Crypt::encrypt($posts->parent_id))}}"><img src="{{ asset('storage/'.$posts->parentPost->profile_photo_path) }}" class="profileImg" alt=""></a>
+                        @endif
+                        <a href="{{route('surfer-profile', Crypt::encrypt($posts->parent_id))}}"><img src="{{ asset('storage/'.$posts->parentPost->profile_photo_path) }}" class="profileImg" alt=""></a>
+                        @else
+
                         <img src="{{ asset('storage/'.$posts->parentPost->profile_photo_path) }}" class="profileImg" alt="">
                     @else
                         <img src="/img/logo_small.png" class="profileImg" alt="">
                     @endif
                     <div>
-                        <p class="name"><span>{{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</span> </p>
+                        <!-- <p class="name"><span>{{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} ( <?php // echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</span> </p> -->
+                        @if(Auth::user() && $posts->parent_id != Auth::user()->id)
+                            @if($posts->parentPost->user_type == 'USER')
+                                <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->parent_id))}}">{{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
+                            @elseif($posts->parentPost->user_type == 'SURFER CAMP')
+                                <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}">{{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
+                            @elseif($posts->parentPost->user_type == 'PHOTOGRAPHER')
+                                <p class="name"><span><a href="{{route('photographer-profile', Crypt::encrypt($posts->user_id))}}">{{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
+                            @endif
+                        @else
+                            <p class="name"><span>{{ (isset($posts->parentPost->user_name) && !empty($posts->parentPost->user_name))?ucfirst($posts->parentPost->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</span></p>
+                        @endif
                         <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                         <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                     </div>
