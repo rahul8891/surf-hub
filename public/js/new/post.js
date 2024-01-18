@@ -53,7 +53,7 @@ jQuery(document).ready(function () {
     
     
     jQuery("#input_multifile, #formFile").change(function () {
-        alert(upload_resort_images);
+        // alert(upload_resort_images);
         previewFile(this);
     });
 
