@@ -420,9 +420,9 @@ class UserPostController extends Controller {
             $notification = Notification::where("id", $request_id)->first();
             
             // Below code is used in next phase
-            // $post_id = $notification->post_id;
-            // $sender_id = $notification->receiver_id;
-            // $receiver_id = $notification->sender_id;
+            $post_id = $notification->post_id;
+            $sender_id = $notification->receiver_id;
+            $receiver_id = $notification->sender_id;
 
             $this->posts->updateNotificationStatus($request_id);
 
@@ -434,6 +434,8 @@ class UserPostController extends Controller {
             if ($type == 'accept') {
                 SurferRequest::where(['id' => $request_id])
                         ->update(['status' => 1]);
+
+                $this->posts->createNewPostAfterAccept($notification->sender_id, $post_id);
 
                 $result = Post::where(['id' => $surferRequest->post_id])
                         ->update(['surfer' => $userName->user_name]);

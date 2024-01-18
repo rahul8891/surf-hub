@@ -1905,7 +1905,7 @@ jQuery(document).ready(function () {
                 } else {
                     alert(jsonResponse.message);
                 }
-                jQuery('#tag_user_list' + post_id).html(jsonResponse);
+                jQuery('#tag_user_list' + postId).html(jsonResponse);
             }
         })
     });

@@ -1943,6 +1943,49 @@ class PostService {
     }
 
 
+    public function createNewPostAfterAccept($user_id, $post_id) {
+        if ( isset($user_id) && !empty($user_id) && isset($post_id) && !empty($post_id) ) {
+            $posts = new Post();
+            $postsData =  $this->posts->whereNull('deleted_at')
+                                    ->where('id', $post_id)
+                                    ->where('is_deleted','0')
+                                    ->first();
+
+            if ( isset($postsData) && !empty($postsData) ) {
+                if ( $postsData->parent_id == 0 ) {
+                    $posts->parent_id = $postsData->user_id;
+                } else {
+                    $posts->parent_id = $postsData->parent_id;
+                }
+                $posts->user_id = $user_id;
+                $posts->post_text = $postsData->post_text;
+                $posts->country_id = $postsData->country_id;
+                $posts->surf_start_date = $postsData->surf_start_date;
+                $posts->wave_size = $postsData->wave_size;
+                $posts->board_type = $postsData->board_type;
+                $posts->state_id = $postsData->state_id;
+                $posts->local_beach_id = $postsData->local_beach_id;
+                $posts->surfer = $postsData->surfer;
+                $posts->optional_info = (!empty($postsData->optional_info)) ? $postsData->optional_info : null;
+
+                if ( $posts->save() ) {
+                    $uploads = new Upload();
+
+                    $uploadData =  $this->upload->where('post_id', $post_id)
+                                    ->where('is_deleted','0')
+                                    ->first();
+                    $uploads->post_id = $posts->id;
+                    $uploads->image = $uploadData->image;
+                    $uploads->video = $uploadData->video;
+
+                    $uploads->save();
+
+                }
+            }
+        }
+    }
+
+
     // public function getNewPostFullScreen($data, $page = null) {
     //     if ( Auth::user() ) {
     //         $getFollowedPostList = $this->userFollow
