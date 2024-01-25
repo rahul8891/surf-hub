@@ -141,7 +141,7 @@ jQuery(document).ready(function () {
                 }
                 var exactSize = (Math.round(_size * 100) / 100) + ' ' + fSExt[i];
 
-                jQuery("#filesInfo").prepend('<div class="name-row pip justify-content-between"><div class=" target' + fLen + '" ><img src="/img/video-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span><a class="remove-photo " data-index=' + index + '> &#x2715;</a></div></div>');
+                jQuery("#filesInfo").prepend('<div class="name-row pip justify-content-between"><div class=" target' + fLen + '" ><img src="/img/video-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span></div><span class="retryupload" data-index="'+index+'" data-id="" data-type="video">Delete</span></div>');
                 jQuery(".remove-photo").click(function () {
                     var indexRemoved = jQuery(this).data('index');
                     dataImage.splice(indexRemoved, 1);
@@ -161,7 +161,7 @@ jQuery(document).ready(function () {
                 }
                 var exactSize = (Math.round(_size * 100) / 100) + ' ' + fSExt[i];
 
-                jQuery("#filesInfo").prepend('<div class="name-row pip justify-content-between"><div class=" target' + fLen + '" ><img src="/img/img-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span><a class="remove-photo" data-index=' + index + '> &#x2715;</a></div></div>');
+                jQuery("#filesInfo").prepend('<div class="name-row pip justify-content-between"><div class=" target' + fLen + '" ><img src="/img/img-upload.png"><span>' + mediaFile.name + ' ' + exactSize + '</span></div><span class="retryupload" data-index="'+index+'" data-id="" data-type="image">Delete</span></div>');
                 jQuery(".remove-photo").click(function () {
                     var indexRemoved = jQuery(this).data('index');
                     dataImage.splice(indexRemoved, 1);
@@ -173,6 +173,20 @@ jQuery(document).ready(function () {
             }
         });
     }
+    jQuery(document).on('click','.retryupload', function() {
+        var deleteType = jQuery(this).attr('data-type');
+        jQuery(this).parent('.name-row.pip.justify-content-between').remove();
+        var arr = jQuery('#imagesHid_input').val();
+        var value = jQuery(this).attr('data-id');
+        if ( deleteType == 'image' ) {
+            var arr = arr.replace('"'+value+'"', '' );
+            jQuery('#imagesHid_input').val(arr);
+        } else {
+            var videoArray = jQuery('#videosHid_input').val();
+            var videoArray = videoArray.replace('"'+value+'"', '' );
+            jQuery('#videosHid_input').val(videoArray);
+        }
+    });
     function readVideoURL(input) {
         var newFileList = Array.from(input.files);
         jQuery.each(newFileList, function (index, videoFile) {
@@ -606,6 +620,8 @@ jQuery(document).ready(function () {
                 imgElems.push(fileName);
                 jQuery("<div><div id='progress" + timeStamp + "' class='px-5 mx-5 fs-5 font-weight-bold text-success'></div></div>").insertAfter(".target" + i);
                 var filePath = 'images/' + user_id + '/' + fileName;
+                jQuery(".target" + i).siblings('span.retryupload').attr('data-id', fileName);
+
             } else {
                 var uploadFileType = 'video';
                 var filePath = 'videos/' + user_id + '/' + fileName;
