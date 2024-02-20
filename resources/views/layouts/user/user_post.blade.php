@@ -128,7 +128,7 @@
             });
         });
 
-        function openFullscreen(id) {
+        /*function openFullscreen(id) {
             var elem = document.getElementById("myImage"+id);
             if (elem.requestFullScreen) {
               elem.requestFullScreen();
@@ -139,7 +139,36 @@
             } else if (elem.msRequestFullScreen) { /* IE11 */
               elem.msRequestFullScreen();
             }
-        }    
+        } */    
+        function openFullscreen(id){
+            var elem = (document.fullscreenElement && document.fullscreenElement !== null) ||
+                (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
+                (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
+                (document.msFullscreenElement && document.msFullscreenElement !== null);
+
+                var elem = document.getElementById("myImage"+id);
+            if (!isInFullScreen) {
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.mozRequestFullScreen) {
+                    elem.mozRequestFullScreen();
+                } else if (elem.webkitRequestFullScreen) {
+                    elem.webkitRequestFullScreen();
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
     </script>
 </body>
 </html>

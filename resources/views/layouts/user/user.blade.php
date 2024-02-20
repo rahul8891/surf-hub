@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="{{ asset('images/logo_small.png') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ config('customarray.siteTitle.user') }}</title>    
+    <title>{{ config('customarray.siteTitle.user') }}</title>
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/bootstrap.min.css")}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset("/css/style.css")}}">
@@ -26,10 +26,10 @@
     @endphp
     @include('layouts/header')
     <main class="{{ $profileClass }}">
-        <div id="loader"></div> 
+        <div id="loader"></div>
         <div class="loaderWrap">
             <div class="lds-hourglass"></div>
-        </div>        
+        </div>
         @include('layouts/user/user_banner')
         @if ($errors->any())
         <div class="alert alert-danger alert-dismissible" id="msg" role="alert">
@@ -68,13 +68,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
     <script src="{{ asset('/js/bootstrap.js') }}"></script>
     <script src="{{ asset('/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- <script src="{{ asset('/js/bootstrap.js') }}"></script> -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="{{ asset("/js/jquery.validate.min.js") }}"></script>
     <script src="{{ asset("/js/custom.js") }}"></script>
     @if (Auth::user())
     <script src="{{ asset("/js/post.js")}}"></script>
     @endif
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
-    
+
     <script>
         $(document).ready(function() {
             $("#My-Profile").click(function() {
@@ -113,11 +115,24 @@
             });
         });
 
-        function openFullscreen(id) {
+       function openFullscreen(id) {
             var elem = document.getElementById("myImage"+id);
-            $('.home-row').hide();
-            $('.show-vid').html('<video width="100%" preload="auto" data-setup="{}" controls controlsList="nofullscreen nodownload" autoplay playsinline muted class="vid-expand" id="myImage"><source src="'+id+'" /></video>');
-        }    
+            if (elem.requestFullScreen) {
+                elem.requestFullScreen();
+                elem.webkitEnterFullscreen();
+                elem.enterFullscreen();
+            } else if (elem.webkitRequestFullScreen) {  // Safari
+                elem.webkitRequestFullScreen();
+                elem.webkitEnterFullscreen();
+                elem.enterFullscreen();
+            } else if (elem.mozRequestFullScreen) {
+                elem.mozRequestFullScreen();
+                elem.enterFullscreen();
+            } else if (elem.msRequestFullScreen) { // IE11
+                elem.msRequestFullScreen();
+                elem.enterFullscreen();
+            }
+        }
     </script>
 </body>
 </html>
