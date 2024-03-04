@@ -1759,8 +1759,7 @@ class PostService {
      * @param  message return message based on the condition
      * @return dataArray with message
      */
-    public function surferRequest($id,&$message=''){
-
+    public function surferRequestSave($id,&$message=''){
         try{
             $this->surferRequest->post_id = $id;
             $this->surferRequest->user_id = Auth::user()->id;
@@ -1780,13 +1779,15 @@ class PostService {
                 $notification->save();
             }
 
-            return 'Surfer request has been made successfully!';
+            $message = 'Surfer request has been made successfully!';
         }
         catch (\Exception $e){
             // throw ValidationException::withMessages([$e->getPrevious()->getMessage()]);
-            $message='"'.$e->getMessage().'"';
-            return $message;
+            $message = $e->getMessage();
+            
         }
+
+        return $message;
     }
     /**
      * [surferRequest] we are getting surfer request

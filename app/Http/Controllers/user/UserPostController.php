@@ -39,7 +39,8 @@ use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Config;
 use PreSignedUrl;
 
-class UserPostController extends Controller {
+class UserPostController extends Controller
+{
 
     use PasswordTrait;
 
@@ -49,7 +50,7 @@ class UserPostController extends Controller {
      * @var AdminUserService
      */
     protected $posts;
-    Protected $masterService;
+    protected $masterService;
     public $language;
     public $accountType;
     public $notifications;
@@ -60,7 +61,8 @@ class UserPostController extends Controller {
      * @param  AdminUserService  $users
      * @return void
      */
-    public function __construct(PostService $posts, AdminUserService $users, MasterService $masterService, UserService $userService) {
+    public function __construct(PostService $posts, AdminUserService $users, MasterService $masterService, UserService $userService)
+    {
         $this->posts = $posts;
         $this->users = $users;
         $this->userService = $userService;
@@ -76,7 +78,8 @@ class UserPostController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function comment(Request $request) {
+    public function comment(Request $request)
+    {
         try {
             $data = $request->all();
             $rules = array(
@@ -106,7 +109,8 @@ class UserPostController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function report(Request $request) {
+    public function report(Request $request)
+    {
         try {
             $data = $request->all();
             $rules = array(
@@ -115,13 +119,13 @@ class UserPostController extends Controller {
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to current page.
-                return json_encode(array('status'=>'failure', 'message' => 'The comment field is required.'));
+                return json_encode(array('status' => 'failure', 'message' => 'The comment field is required.'));
             } else {
                 $result = $this->posts->saveReport($data, $message);
                 if ($result) {
-                    return json_encode(array('status'=>'success', 'message' => $message));
+                    return json_encode(array('status' => 'success', 'message' => $message));
                 } else {
-                    return json_encode(array('status'=>'failure', 'message' => $message));
+                    return json_encode(array('status' => 'failure', 'message' => $message));
                 }
             }
         } catch (\Exception $e) {
@@ -134,7 +138,8 @@ class UserPostController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function follow(Request $request) {
+    public function follow(Request $request)
+    {
         try {
             $data = $request->all();
 
@@ -149,7 +154,8 @@ class UserPostController extends Controller {
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         try {
             $data = $request->all();
 
@@ -159,8 +165,8 @@ class UserPostController extends Controller {
                 $data['surfer'] = Auth::user()->user_name;
             }
 
-            $imageArray["images"] = (isset($data['imagesHid_input'][0]) && !empty($data['imagesHid_input'][0]))?json_decode($data['imagesHid_input'][0]):[];
-            $videoArray["videos"] = (isset($data['videosHid_input'][0]) && !empty($data['videosHid_input'][0]))?json_decode($data['videosHid_input'][0]):[];
+            $imageArray["images"] = (isset($data['imagesHid_input'][0]) && !empty($data['imagesHid_input'][0])) ? json_decode($data['imagesHid_input'][0]) : [];
+            $videoArray["videos"] = (isset($data['videosHid_input'][0]) && !empty($data['videosHid_input'][0])) ? json_decode($data['videosHid_input'][0]) : [];
             $postArray = array_filter(array_merge($imageArray, $videoArray));
 
             $rules = array(
@@ -201,7 +207,8 @@ class UserPostController extends Controller {
         }
     }
 
-    public function storeAdvert(Request $request) {
+    public function storeAdvert(Request $request)
+    {
         try {
             $data = $request->all();
             $postArray = (isset($data['files']) && !empty($data['files'])) ? $data['files'] : [];
@@ -260,16 +267,17 @@ class UserPostController extends Controller {
         }
     }
 
-    public function publishAdvert(Request $request) {
+    public function publishAdvert(Request $request)
+    {
         try {
             $data = $request->all();
 
-                        if (isset($data['post_id']) && $data['post_id']) {
-                            $advertPost = AdvertPost::where('post_id', $data['post_id'])->first();
-                            $advertPost->preview_ad = 0;
-                            $advertPost->save();
-                        }
-                        return Redirect()->route('payment', Crypt::encrypt($data['post_id']))->withSuccess('Advertisment has been published successfully!');
+            if (isset($data['post_id']) && $data['post_id']) {
+                $advertPost = AdvertPost::where('post_id', $data['post_id'])->first();
+                $advertPost->preview_ad = 0;
+                $advertPost->save();
+            }
+            return Redirect()->route('payment', Crypt::encrypt($data['post_id']))->withSuccess('Advertisment has been published successfully!');
         } catch (\Exception $e) {
             throw ValidationException::withMessages([$e->getMessage()]);
         }
@@ -281,7 +289,8 @@ class UserPostController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
+    public function show($id)
+    {
         //
     }
 
@@ -291,7 +300,8 @@ class UserPostController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         //
     }
 
@@ -302,7 +312,8 @@ class UserPostController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         //
     }
 
@@ -312,18 +323,23 @@ class UserPostController extends Controller {
      * @param $id, $value
      * @return \Illuminate\Http\Response
      */
-    public function rating(Request $request) {
+    public function rating(Request $request)
+    {
         $data = $request->all();
         if (isset($data['id']) && !empty($data['id'])) {
             try {
                 $result = $this->posts->ratePost($data, $message);
 
                 if ($result) {
-                    return json_encode(array('status' => $result['status'], 'message' => $result['message'],
-                        'averageRating' => $result['averageRating'], 'usersRated' => $result['usersRated']));
+                    return json_encode(array(
+                        'status' => $result['status'], 'message' => $result['message'],
+                        'averageRating' => $result['averageRating'], 'usersRated' => $result['usersRated']
+                    ));
                 } else {
-                    return json_encode(array('status' => $result['status'], 'message' => $result['message'],
-                        'averageRating' => $result['averageRating'], 'usersRated' => $result['usersRated']));
+                    return json_encode(array(
+                        'status' => $result['status'], 'message' => $result['message'],
+                        'averageRating' => $result['averageRating'], 'usersRated' => $result['usersRated']
+                    ));
                 }
             } catch (\Exception $e) {
                 return redirect()->route('dashboard', ['id' => $data['id']])->withErrors($e->getMessage());
@@ -337,16 +353,17 @@ class UserPostController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         try {
             $result = $this->posts->deletePost($id, $message);
             if ($result) {
-                return json_encode(array('status'=>'success', 'message' => $message));
+                return json_encode(array('status' => 'success', 'message' => $message));
             } else {
-                return json_encode(array('status'=>'error', 'message' => $message));
+                return json_encode(array('status' => 'error', 'message' => $message));
             }
         } catch (\Exception $e) {
-            return json_encode(array('status'=>'error', 'message' => $e->getMessage()));
+            return json_encode(array('status' => 'error', 'message' => $e->getMessage()));
         }
     }
     /**
@@ -355,7 +372,8 @@ class UserPostController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function deleteAdvert($id) {
+    public function deleteAdvert($id)
+    {
         try {
             $result = $this->posts->deletePost(Crypt::decrypt($id), $message);
             if ($result) {
@@ -374,17 +392,18 @@ class UserPostController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function saveToMyHub($id) {
+    public function saveToMyHub($id)
+    {
         $message = '';
         try {
             $result = $this->posts->saveToMyHub($id, $message);
             if ($result) {
-                return json_encode(array('status'=>'success', 'message' => $message));
+                return json_encode(array('status' => 'success', 'message' => $message));
             } else {
-                return json_encode(array('status'=>'error', 'message' => $message));
+                return json_encode(array('status' => 'error', 'message' => $message));
             }
         } catch (\Exception $e) {
-            return json_encode(array('status'=>'error', 'message' => $e->getMessage()));
+            return json_encode(array('status' => 'error', 'message' => $e->getMessage()));
         }
     }
 
@@ -394,17 +413,17 @@ class UserPostController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function surferRequest($id) {
+    public function surferRequest($id)
+    {
         try {
-            $result = $this->posts->surferRequest(Crypt::decrypt($id), $message);
-            if ($result) {
-                return true;
-            } else {
-                return false;
-            }
+            $result = $this->posts->surferRequestSave(Crypt::decrypt($id), $message);
+            
+            $message = $result;
         } catch (\Exception $e) {
-            return false;
+            $message = $e->getMessage();
         }
+
+        return $message;
     }
 
     /**
@@ -413,12 +432,13 @@ class UserPostController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function acceptRejectRequest($id, $type) {
+    public function acceptRejectRequest($id, $type)
+    {
         try {
             $request_id = Crypt::decrypt($id);
 
             $notification = Notification::where("id", $request_id)->first();
-            
+
             // Below code is used in next phase
             $post_id = $notification->post_id;
             $sender_id = $notification->receiver_id;
@@ -427,18 +447,18 @@ class UserPostController extends Controller {
             $this->posts->updateNotificationStatus($request_id);
 
             $surferRequest = SurferRequest::where("post_id", $notification->post_id)
-                            ->where("user_id", $notification->sender_id)->first();
+                ->where("user_id", $notification->sender_id)->first();
 
             $userName = User::select("user_name")->where("id", "=", $surferRequest->user_id)->first();
 
             if ($type == 'accept') {
                 SurferRequest::where(['id' => $request_id])
-                        ->update(['status' => 1]);
+                    ->update(['status' => 1]);
 
                 $this->posts->createNewPostAfterAccept($notification->sender_id, $post_id);
 
                 $result = Post::where(['id' => $surferRequest->post_id])
-                        ->update(['surfer' => $userName->user_name]);
+                    ->update(['surfer' => $userName->user_name]);
                 // sender_id, reciver_id, status, post_id // Below code is used in next phase
                 // $this->posts->updateNotificationStatusAcceptReject($post_id, $sender_id, $receiver_id, 'Surfer Request Accept');
 
@@ -446,7 +466,7 @@ class UserPostController extends Controller {
             }
             if ($type == 'reject') {
                 $result = SurferRequest::where(['id' => $request_id])
-                        ->update(['status' => 2]);
+                    ->update(['status' => 2]);
                 // sender_id, reciver_id, status, post_id // Below code is used in next phase
                 // $this->posts->updateNotificationStatusAcceptReject($post_id, $sender_id, $receiver_id, 'Surfer Request Reject');
                 $message = 'Surfer request rejected';
@@ -468,32 +488,33 @@ class UserPostController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function acceptRejectFollowRequest($id, $type) {
+    public function acceptRejectFollowRequest($id, $type)
+    {
         try {
             $request_id = Crypt::decrypt($id);
             $data = UserFollow::where("id", $request_id)->first();
 
-            if($data) {
+            if ($data) {
                 if ($type == 'accept') {
                     $result = UserFollow::where(['id' => $request_id])
-                            ->update(['follower_request_status' => '0', 'status' => 'FOLLOW']);
+                        ->update(['follower_request_status' => '0', 'status' => 'FOLLOW']);
 
                     $message = 'Surfer follow request accepted.';
-                }elseif ($type == 'reject') {
+                } elseif ($type == 'reject') {
                     $result = UserFollow::where(['id' => $request_id])
-                            ->update(['follower_request_status' => '2', 'status' => 'BLOCK']);
+                        ->update(['follower_request_status' => '2', 'status' => 'BLOCK']);
 
                     $message = 'Surfer follow request rejected.';
                 }
 
-                if($message) {
-                    $notify = New Notification();
+                if ($message) {
+                    $notify = new Notification();
 
                     $notify->sender_id = Auth::user()->id;
                     $notify->receiver_id = $data->follower_user_id;
                     $notify->notification_type = ucfirst($type);
 
-                    if($notify->save()) {
+                    if ($notify->save()) {
                         return redirect()->route('notifications')->withSuccess($message);
                     }
                 }
@@ -509,28 +530,32 @@ class UserPostController extends Controller {
         }
     }
 
-    public function surferFollowRequest($id) {
+    public function surferFollowRequest($id)
+    {
         $request_id = Crypt::decrypt($id);
         $userProfile = '';
-
+        $reviewPost = $postsList = [];
+        
         $customArray = $this->customArray;
-        // $postsList = Post::join('surfer_requests', 'surfer_requests.post_id', '=', 'posts.id')
-        //         ->join('user_profiles', 'user_profiles.user_id', '=', 'posts.user_id')
-        //         ->where('posts.is_deleted', '0')
-        //         ->where('posts.id', $request_id)
-        //         ->orderBy('posts.created_at', 'DESC')
-        //         ->get(['posts.*', 'surfer_requests.id as request_id']);
+        $reviewPost = Post::join('notifications', 'notifications.post_id', '=', 'posts.id')
+        // ->join('user_profiles', 'user_profiles.user_id', '=', 'notifications.sender_id')
+        ->join('users', 'users.id', '=', 'notifications.receiver_id')
+        ->join('user_profiles', 'user_profiles.user_id', '=', 'posts.user_id')
+        ->where('notifications.status', '0')
+        ->where('notifications.id', $request_id)
+        ->orderBy('posts.created_at', 'DESC')
+        ->get(['posts.*', 'notifications.id as request_id', 'notifications.sender_id as sender_id', 'users.profile_photo_path']);
 
-        $postsList = Post::join('notifications', 'notifications.post_id', '=', 'posts.id')
-                // ->join('user_profiles', 'user_profiles.user_id', '=', 'notifications.sender_id')
-                ->join('users', 'users.id', '=', 'notifications.receiver_id')
-                ->join('user_profiles', 'user_profiles.user_id', '=', 'posts.user_id')
-                ->where('notifications.status', '0')
-                ->where('notifications.id', $request_id)
-                ->orderBy('posts.created_at', 'DESC')
-                ->get(['posts.*', 'notifications.id as request_id', 'notifications.sender_id as sender_id', 'users.profile_photo_path']);
-
-        foreach($postsList as $post) {
+        $postList = Post::join('notifications', 'notifications.post_id', '=', 'posts.id')
+            // ->join('user_profiles', 'user_profiles.user_id', '=', 'notifications.sender_id')
+            ->join('users', 'users.id', '=', 'notifications.sender_id')
+            ->join('user_profiles', 'user_profiles.user_id', '=', 'posts.user_id')
+            ->where('notifications.status', '0')
+            ->where('notifications.id', $request_id)
+            ->orderBy('posts.created_at', 'DESC')
+            ->get(['posts.*', 'notifications.id as request_id', 'notifications.sender_id as sender_id', 'users.profile_photo_path']);
+        // dd($request_id);
+        foreach ($postList as $post) {
             $userProfile = $this->userService->getUserDetail($post->sender_id);
 
             $postsList = Post::with('followPost')->where('is_deleted', '0')
@@ -539,13 +564,13 @@ class UserPostController extends Controller {
                 ->where('is_highlight', '1')
                 ->where(function ($query) {
                     $query->where('post_type', 'PUBLIC')
-                    ->orWhere('is_feed', '1');
+                        ->orWhere('is_feed', '1');
                 })
                 ->orderBy('posts.created_at', 'DESC')
                 ->get();
         }
-
-        return view('user.surfer-follow-request', compact('customArray', 'postsList', 'request_id', 'userProfile', 'postsList'));
+        
+        return view('user.surfer-follow-request', compact('customArray', 'postsList', 'request_id', 'userProfile', 'postsList', 'reviewPost'));
     }
 
     /**
@@ -554,7 +579,8 @@ class UserPostController extends Controller {
      * @param  int  $post_id $notification_id
      * @return \Illuminate\Http\Response
      */
-    public function posts($post_id, $notification_id, $notification_type) {
+    public function posts($post_id, $notification_id, $notification_type)
+    {
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
@@ -570,7 +596,8 @@ class UserPostController extends Controller {
      * @param  int  $post_id $notification_id
      * @return \Illuminate\Http\Response
      */
-    public function getPostData($post_id) {
+    public function getPostData($post_id)
+    {
         $countries = $this->masterService->getCountries();
         $customArray = $this->customArray;
         $postData = Post::where('id', $post_id)->first();
@@ -580,7 +607,8 @@ class UserPostController extends Controller {
         return view('user.postData', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postData'));
     }
 
-    public function updateNotificationCountStatus(Request $request) {
+    public function updateNotificationCountStatus(Request $request)
+    {
         $data = $request->all();
         $result = $this->posts->updateNotificationCountStatus($data);
         if ($result) {
@@ -590,7 +618,8 @@ class UserPostController extends Controller {
         }
     }
 
-    public function updateAllNotification() {
+    public function updateAllNotification()
+    {
         $result = $this->posts->updateAllNotification();
         if ($result) {
             echo json_encode(array('status' => 'success'));
@@ -603,7 +632,8 @@ class UserPostController extends Controller {
      *Function use to update the notication count once read
      *
      */
-    public function updateNotificationCount(Request $request) {
+    public function updateNotificationCount(Request $request)
+    {
         $data = $request->all();
         $result = $this->posts->updateNotificationCount($data['id']);
         if ($result) {
@@ -613,7 +643,8 @@ class UserPostController extends Controller {
         }
     }
 
-    public function uploadFiles(Request $request, PostService $postService) {
+    public function uploadFiles(Request $request, PostService $postService)
+    {
         $fileArray = [];
 
         $data = $request->all();
@@ -637,41 +668,45 @@ class UserPostController extends Controller {
         return response()->json(['success' => $filename]);
     }
 
-    public function surferRequestList() {
+    public function surferRequestList()
+    {
         $surferRequest = Notification::join('posts', 'notifications.post_id', '=', 'posts.id')
-                ->join('user_profiles', 'notifications.sender_id', '=', 'user_profiles.user_id')
-                ->join('users', 'notifications.sender_id', '=', 'users.id')
-                ->where("notifications.receiver_id", '=', Auth::user()->id)
-                ->where("notifications.status", "=", "0")
-                ->orderBy('notifications.id', 'DESC')
-                ->get(['notifications.*', 'user_profiles.first_name', 'user_profiles.last_name', 'users.profile_photo_path']);
+            ->join('user_profiles', 'notifications.sender_id', '=', 'user_profiles.user_id')
+            ->join('users', 'notifications.sender_id', '=', 'users.id')
+            ->where("notifications.receiver_id", '=', Auth::user()->id)
+            ->where("notifications.status", "=", "0")
+            ->orderBy('notifications.id', 'DESC')
+            ->get(['notifications.*', 'user_profiles.first_name', 'user_profiles.last_name', 'users.profile_photo_path']);
+            
         return view('user.surfersRequestList', compact('surferRequest'));
     }
 
-    public function notifications() {
+    public function notifications()
+    {
         return view('user.notifications');
     }
 
-    public function upload(Request $request) {
+    public function upload(Request $request)
+    {
         $currentUserCountryId = Auth::user()->user_profiles->country_id;
         $countries = $this->masterService->getCountries();
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         $beaches = $this->masterService->getBeaches();
         $customArray = $this->customArray;
         $postsList = Post::with('followPost')->where('is_deleted', '0')
-                ->where('parent_id', '0')
-                ->where(function ($query) {
-                    $query->where('post_type', 'PUBLIC')
+            ->where('parent_id', '0')
+            ->where(function ($query) {
+                $query->where('post_type', 'PUBLIC')
                     ->orWhere('is_feed', '1');
-                })
-                ->orderBy('posts.created_at', 'DESC')
-                ->paginate(10);
+            })
+            ->orderBy('posts.created_at', 'DESC')
+            ->paginate(10);
         $requestSurfer = array();
         foreach ($postsList as $val) {
             $surferRequest = SurferRequest::join('user_profiles', 'surfer_requests.user_id', '=', 'user_profiles.user_id')
-                    ->where("surfer_requests.post_id", "=", $val['id'])
-                    ->where("surfer_requests.status", "=", 0)
-                    ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
+                ->where("surfer_requests.post_id", "=", $val['id'])
+                ->where("surfer_requests.status", "=", 0)
+                ->get(['surfer_requests.id', 'user_profiles.first_name', 'user_profiles.last_name']);
 
             foreach ($surferRequest as $res) {
                 $requestSurfer[$val['id']]['id'] = $res['id'];
@@ -683,7 +718,8 @@ class UserPostController extends Controller {
 
         return view('user.upload', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postsList', 'url', 'requestSurfer', 'beaches'));
     }
-    public function getPresignedUrl(Request $request) {
+    public function getPresignedUrl(Request $request)
+    {
 
         $data = $request->all();
 
@@ -693,7 +729,6 @@ class UserPostController extends Controller {
         $presignedUrl = PreSignedUrl::getPreSignedUrl($key, $type);
 
         return response()->json($presignedUrl);
-
     }
 
     /**
@@ -702,17 +737,18 @@ class UserPostController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroyPost(Request $request) {
+    public function destroyPost(Request $request)
+    {
         $param = $request->all();
         try {
             $result = $this->posts->deletePost($param['id']);
             if ($result) {
-                echo json_encode(array('status'=>'success', 'message' => $result));
+                echo json_encode(array('status' => 'success', 'message' => $result));
             } else {
-                echo json_encode(array('status'=>'error', 'message' => $result));
+                echo json_encode(array('status' => 'error', 'message' => $result));
             }
         } catch (\Exception $e) {
-            echo json_encode(array('status'=>'error', 'message' => $e->getMessage()));
+            echo json_encode(array('status' => 'error', 'message' => $e->getMessage()));
         }
         die;
     }
@@ -723,17 +759,18 @@ class UserPostController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function surferRequestAjax(Request $request) {
+    public function surferRequestAjax(Request $request)
+    {
         $param = $request->all();
         try {
-            $result = $this->posts->surferRequest($param['id']);
+            $result = $this->posts->surferRequestSave($param['id']);
             if ($result) {
-                echo json_encode(array('status'=>'success', 'message' => $result));
+                echo json_encode(array('status' => 'success', 'message' => $result));
             } else {
-                echo json_encode(array('status'=>'error', 'message' => $result));
+                echo json_encode(array('status' => 'error', 'message' => $result));
             }
         } catch (\Exception $e) {
-            echo json_encode(array('status'=>'error', 'message' => $e->getMessage()));
+            echo json_encode(array('status' => 'error', 'message' => $e->getMessage()));
         }
         die;
     }
@@ -744,20 +781,20 @@ class UserPostController extends Controller {
      * @param  int  $post_id
      * @return \Illuminate\Http\Response
      */
-    public function getPostDataReport($post_id) {
+    public function getPostDataReport($post_id)
+    {
         $countries = $this->masterService->getCountries();
         $customArray = $this->customArray;
         $postData = Post::where('id', $post_id)->first();
         DB::table('reports')
-        ->where('post_id', '=', $post_id)
-        ->update([
-            'is_read' => '1',
-            'updated_at' => Carbon::now()
-        ]);
+            ->where('post_id', '=', $post_id)
+            ->update([
+                'is_read' => '1',
+                'updated_at' => Carbon::now()
+            ]);
         $currentUserCountryId = UserProfile::where('user_id', $postData->user_id)->pluck('country_id')->first();
 
         $states = $this->masterService->getStateByCountryId($currentUserCountryId);
         return view('user.postData', compact('customArray', 'countries', 'states', 'currentUserCountryId', 'postData'));
     }
-
 }
