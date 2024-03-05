@@ -164,11 +164,11 @@ class UserPostController extends Controller
             } elseif (isset($data['surfer']) && ($data['surfer'] == 'Me')) {
                 $data['surfer'] = Auth::user()->user_name;
             }
-
-            $imageArray["images"] = (isset($data['imagesHid_input'][0]) && !empty($data['imagesHid_input'][0])) ? json_decode($data['imagesHid_input'][0]) : [];
-            $videoArray["videos"] = (isset($data['videosHid_input'][0]) && !empty($data['videosHid_input'][0])) ? json_decode($data['videosHid_input'][0]) : [];
+            
+            $imageArray["images"] = (isset($data['imagesHid_input'][0]) && !empty($data['imagesHid_input'][0])) ? $data['imagesHid_input'][0] : [];
+            $videoArray["videos"] = (isset($data['videosHid_input'][0]) && !empty($data['videosHid_input'][0])) ? $data['videosHid_input'][0] : [];
             $postArray = array_filter(array_merge($imageArray, $videoArray));
-
+            // dd($postArray);
             $rules = array(
                 'post_type' => ['required'],
                 'user_id' => ['required'],
@@ -184,13 +184,20 @@ class UserPostController extends Controller
             } else {
                 if (!empty($postArray["images"]) || !empty($postArray["videos"])) {
                     if (!empty($postArray["images"])) {
-                        foreach ($postArray["images"] as $value) {
-                            $result = $this->posts->savePost($data, "image", $value, $message);
+                        $postImages = preg_split('/[\s,[\]""]/', $postArray["images"]);
+                        // dd($postImages);
+                        foreach ($postImages as $value) {
+                            if (isset($value) && !empty($value)) {
+                                $result = $this->posts->savePost($data, "image", $value, $message);
+                            }
                         }
                     }
                     if (!empty($postArray["videos"])) {
-                        foreach ($postArray["videos"] as $value) {
-                            $result = $this->posts->savePost($data, "video", $value, $message);
+                        $postVideos = preg_split('/[\s,[\]""]/', $postArray["videos"]);
+                        foreach ($postVideos as $value) {
+                            if (isset($value) && !empty($value)) {
+                                $result = $this->posts->savePost($data, "video", $value, $message);
+                            }
                         }
                     }
                 } else {

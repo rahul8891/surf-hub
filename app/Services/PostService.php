@@ -1212,6 +1212,18 @@ class PostService {
      */
     public function updatePostData($input, $filename, $type, &$message = '') {
         $posts = Post::findOrFail($input['id']);
+
+        if (isset($posts->parent_post_id) && ($posts->parent_post_id != 0)) {
+            $parentPost = Post::findOrFail($posts->parent_post_id);
+            $message = $this->updateDataByValue($parentPost, $filename, $type, $message = '');
+        }
+
+        $message = $this->updateDataByValue($posts, $filename, $type, $message = '');   
+        
+        return $message;
+    }
+
+    private function updateDataByValue($posts, $filename, $type, &$message = '') {
         $posts->post_type = $input['post_type'];
         $posts->post_text = $input['post_text'];
         $posts->country_id =$input['country_id'];
