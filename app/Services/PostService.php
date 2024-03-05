@@ -362,7 +362,7 @@ class PostService {
                         ->join('users', 'posts.user_id', '=', 'users.id')
                         ->select(DB::raw('avg(ratings.rating) as average, posts.*'))
                         ->whereNull('posts.deleted_at')
-                        // ->where('posts.id', '=', 654) // testing nominated surfer name on full screen slide when user click on zoom icon
+                        ->where('posts.parent_id', 0) 
                         ->groupBy('posts.id');
         }
 
