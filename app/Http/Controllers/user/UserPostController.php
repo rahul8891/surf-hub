@@ -452,10 +452,10 @@ class UserPostController extends Controller
             $userName = User::select("user_name")->where("id", "=", $surferRequest->user_id)->first();
 
             if ($type == 'accept') {
-                SurferRequest::where(['id' => $request_id])
+                SurferRequest::where(['id' => $surferRequest->id])
                     ->update(['status' => 1]);
 
-                $this->posts->createNewPostAfterAccept($notification->sender_id, $post_id);
+                $this->posts->createNewPostAfterAccept($notification->sender_id, $post_id, $userName->user_name);
 
                 $result = Post::where(['id' => $surferRequest->post_id])
                     ->update(['surfer' => $userName->user_name]);
@@ -535,7 +535,7 @@ class UserPostController extends Controller
         $request_id = Crypt::decrypt($id);
         $userProfile = '';
         $reviewPost = $postsList = [];
-        
+        // dd($request_id);
         $customArray = $this->customArray;
         $reviewPost = Post::join('notifications', 'notifications.post_id', '=', 'posts.id')
         // ->join('user_profiles', 'user_profiles.user_id', '=', 'notifications.sender_id')

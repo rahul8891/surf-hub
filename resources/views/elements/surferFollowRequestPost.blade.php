@@ -1,7 +1,7 @@
 <div class="news-feed">
     <div class="inner-news-feed">
         <div class="user-details">
-            <div class="user-left">
+            <!-- <div class="user-left">
                 @if(asset('storage/'.$posts->profile_photo_path))
                 <img src="{{ asset('storage/'.$posts->profile_photo_path) }}" class="profileImg" alt="">
                 @else
@@ -13,7 +13,53 @@
                     <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
                     <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
                 </div>
-            </div>
+            </div> -->
+            <div class="user-left">
+                                @if(file_exists(storage_path('app/public/'.$posts->user->profile_photo_path)))
+                                    @if($posts->user_id != Auth::user()->id)
+                                        @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
+                                            <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                        @elseif($posts->user->user_type == 'PHOTOGRAPHER')
+                                            <a href="{{route('photographer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                        @elseif($posts->user->user_type == 'SURFER CAMP')
+                                            <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                        @endif
+                                    @else
+                                        <img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt="">
+                                    @endif
+                                @else
+                                    @if($posts->user_id != Auth::user()->id)
+                                        @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
+                                            <a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                        @elseif($posts->user->user_type == 'PHOTOGRAPHER')
+                                            <a href="{{route('photographer-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                        @elseif($posts->user->user_type == 'SURFER CAMP')
+                                            <a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}"><img src="{{ asset('storage/'.$posts->user->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                        @endif
+                                    @else
+                                        <img src="/img/logo_small.png" class="profileImg" alt="">
+                                    @endif
+                                @endif
+
+                                <div>
+                                    @if($posts->user_id != Auth::user()->id)
+                                    @if($posts->user->user_type == 'USER' || ( $posts->user->user_type !== 'SURFER CAMP' && $posts->user->user_type !== 'PHOTOGRAPHER'))
+                                    <p class="name"><span><a href="{{route('surfer-profile', Crypt::encrypt($posts->user_id))}}">{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
+                                    @elseif($posts->user->user_type == 'PHOTOGRAPHER')
+                                    <p class="name"><span><a href="{{route('photographer-profile', Crypt::encrypt($posts->user_id))}}">{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
+                                    @elseif($posts->user->user_type == 'SURFER CAMP')
+                                    <p class="name"><span><a href="{{route('resort-profile', Crypt::encrypt($posts->user_id))}}">{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</a></span> </p>
+                                    @endif
+
+
+                                    @else
+                                    <p class="name"><span>{{ (isset($posts->user->user_name) && !empty($posts->user->user_name))?ucfirst($posts->user->user_name):"SurfHub" }} ( <?php echo postSurferIcon();?> {{ucfirst($posts->surfer) }} )</span>
+                                    </p>
+                                    @endif
+                                    <p class="address">{{ (isset($posts->beach_breaks->beach_name))?$posts->beach_breaks->beach_name:'' }} {{ (isset($posts->breakName->break_name))?$posts->breakName->break_name:'' }}, {{\Carbon\Carbon::parse($posts->surf_start_date)->format('d-m-Y') }}</p>
+                                    <p class="time-ago">{{ postedDateTime($posts->created_at) }}</p>
+                                </div>
+                            </div>
             <div class="user-right">
                 <a class="btn grey-borderBtn me-3 accept" href="{{ route('acceptRejectRequest', [Crypt::encrypt($posts->request_id),'accept']) }}">
                     <img src="/img/accept.png" class="align-middle me-1" alt="ACCEPT">

@@ -403,9 +403,9 @@ class UserController extends Controller {
             return json_encode(array('status' => 'failure', 'message' => $result->user->user_name . ' ' . 'already tagged for this post.'));
         } else {
             $result = $this->users->tagUserOnPost($data);
-            $responceResult = $this->users->getAllTaggedUsers($data);
+            $responseResult = $this->users->getAllTaggedUsers($data);
             $returnObject = '';
-            foreach ($responceResult as $key => $value) {
+            foreach ($responseResult as $key => $value) {
                 $val = ucfirst($value->user->user_profiles->first_name) . ' ' . ucfirst($value->user->user_profiles->last_name);
                 $img = (!empty($value->user->profile_photo_path)) ? "/storage/" . $value->user->profile_photo_path : '';
                 $returnObject .= '<div class="post-head"><div class="userDetail"><div class="imgWrap">';
@@ -416,6 +416,7 @@ class UserController extends Controller {
                 }
                 $returnObject .= '</div><span class="userName">' . $val . '</span></div></div>';
             }
+
             return json_encode(array('status' => 'success', 'responsData' => $returnObject));
         }
     }

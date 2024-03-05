@@ -82,6 +82,9 @@ class PostService {
 
         // SurferRequest model object
         $this->surferRequest = new SurferRequest();
+
+        // User service object
+        $this->userService = new UserService();
     }
 
     /**
@@ -1944,7 +1947,7 @@ class PostService {
     }
 
 
-    public function createNewPostAfterAccept($user_id, $post_id) {
+    public function createNewPostAfterAccept($user_id, $post_id, $username = null) {
         if ( isset($user_id) && !empty($user_id) && isset($post_id) && !empty($post_id) ) {
             $posts = new Post();
             $postsData =  $this->posts->whereNull('deleted_at')
@@ -1966,20 +1969,29 @@ class PostService {
                 $posts->board_type = $postsData->board_type;
                 $posts->state_id = $postsData->state_id;
                 $posts->local_beach_id = $postsData->local_beach_id;
-                $posts->surfer = $postsData->surfer;
+                $posts->surfer = $username;
+                $posts->parent_post_id = $post_id;
                 $posts->optional_info = (!empty($postsData->optional_info)) ? $postsData->optional_info : null;
 
                 if ( $posts->save() ) {
-                    $uploads = new Upload();
-
                     $uploadData =  $this->upload->where('post_id', $post_id)
                                     ->where('is_deleted','0')
                                     ->first();
+                    
+                    $uploads = new Upload();
+
                     $uploads->post_id = $posts->id;
                     $uploads->image = $uploadData->image;
                     $uploads->video = $uploadData->video;
 
-                    $uploads->save();
+                    if($uploads->save()) {
+                        $tag = new Tag();
+
+                        $this->tag->post_id = $posts->id;
+                        $this->tag->user_id = $user_id;
+                        
+                        $this->tag->save();
+                    }
 
                 }
             }

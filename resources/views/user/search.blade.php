@@ -38,8 +38,9 @@
                                             <a href="{{route('resort-profile', Crypt::encrypt($posts->parent_id))}}"><img src="{{ asset('storage/'.$posts->parentPost->profile_photo_path) }}" class="profileImg" alt=""></a>
                                         @elseif($posts->user->user_type == 'PHOTOGRAPHER')
                                             <a href="{{route('photographer-profile', Crypt::encrypt($posts->parent_id))}}"><img src="{{ asset('storage/'.$posts->parentPost->profile_photo_path) }}" class="profileImg" alt=""></a>
+                                        @else
+                                            <a href="{{route('surfer-profile', Crypt::encrypt($posts->parent_id))}}"><img src="{{ asset('storage/'.$posts->parentPost->profile_photo_path) }}" class="profileImg" alt=""></a>
                                         @endif
-                                        <a href="{{route('surfer-profile', Crypt::encrypt($posts->parent_id))}}"><img src="{{ asset('storage/'.$posts->parentPost->profile_photo_path) }}" class="profileImg" alt=""></a>
                                     @else
                                         <img src="/img/logo_small.png" class="profileImg" alt="">
                                     @endif
