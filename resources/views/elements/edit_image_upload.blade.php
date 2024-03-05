@@ -2,6 +2,9 @@
     <div class="modal-content">
         <form id="updateVideoPostData" method="POST" name="updatePostData"  class="upload-form" accept-charset="utf-8" enctype="multipart/form-data">
             @csrf
+            @php
+                $dataDisplyType = ($myHubs->parent_id != 0)?"disabled":"";
+            @endphp
             <input type="hidden" name="id" value="{{ $myHubs->id }}">
             <div class="upload-wrap">
                 <div class="upload-header">
@@ -49,7 +52,7 @@
                                 <label class="col-md-4">Surf Date<span class="red-txt">*</span></label>
                                 <div class="col-md-8">
                                     <input class="form-control ps-2 mb-0" type="date" name="surf_date" id="datepicker"
-                                           value="{{ (isset($myHubs->surf_start_date) && !empty($myHubs->surf_start_date))?$myHubs->surf_start_date:'' }}" required />
+                                           value="{{ (isset($myHubs->surf_start_date) && !empty($myHubs->surf_start_date))?$myHubs->surf_start_date:'' }}" required {{ $dataDisplyType }} />
                                 </div>
                             </div>
                         </div>
@@ -57,7 +60,7 @@
                             <div class="row mb-3 align-items-center">
                                 <label class="col-md-4">Wave Size<span class="red-txt">*</span></label>
                                 <div class="col-md-8">
-                                    <select class="form-select ps-2 mb-0" name="wave_size" required>
+                                    <select class="form-select ps-2 mb-0" name="wave_size" required {{ $dataDisplyType }}>
                                         <option value="">{{ __('-- Select --')}}</option>
                                         @foreach($customArray['wave_size'] as $key => $value)
                                         <option value="{{ $key }}"
@@ -75,7 +78,7 @@
                                 <label class="col-md-4">Country<span class="red-txt">*</span></label>
                                 <div class="col-md-8">
                                     <select class="form-select ps-2 mb-0" name="country_id" id="country_id" district
-                                            required>
+                                            required {{ $dataDisplyType }}>
                                         <option value="">-- Country --</option>
                                         @foreach($countries as $key => $value)
                                         <option value="{{ $value->id }}"
@@ -90,7 +93,7 @@
                             <div class="row mb-3 align-items-center">
                                 <label class="col-md-4">State<span class="red-txt">*</span></label>
                                 <div class="col-md-8">
-                                    <select class="form-select ps-2 mb-0" name="state_id" id="state_id" required>
+                                    <select class="form-select ps-2 mb-0" name="state_id" id="state_id" required {{ $dataDisplyType }}>
                                         <option selected="selected" value="">-- State --</option>
                                         @foreach($states as $key => $value)
                                         <option value="{{ $value->id }}"
@@ -109,7 +112,7 @@
                                 <label class="col-md-4">Beach<span class="red-txt">*</span></label>
                                 <div class="col-md-8">
                                     <input type="text" value="{{ old('local_beach_break', $beach_name) }}"
-                                           class="form-control ps-2 mb-0 search-box" name="local_beach_break" autocomplete="off" required>
+                                           class="form-control ps-2 mb-0 search-box" name="local_beach_break" autocomplete="off" required {{ $dataDisplyType }}>
                                     <input type="hidden" name="local_beach_break_id"
                                            id="local_beach_break_id" class="form-control" value="{{ old('local_beach_break', $myHubs->local_beach_id) }}">
                                     <div class="auto-search search12" id="country_list"></div>
@@ -121,7 +124,7 @@
                             <div class="row mb-3 align-items-center">
                                 <label class="col-md-4">Break<span class="red-txt">*</span></label>
                                 <div class="col-md-8">
-                                    <select class="form-select ps-2 mb-0" name="break_id" id="break_id">
+                                    <select class="form-select ps-2 mb-0" name="break_id" id="break_id" {{ $dataDisplyType }}>
                                         <option selected="selected" value="">-- Break --</option>
                                         @foreach($breaks as $key => $value)
                                         <option value="{{ $value->id }}"
@@ -143,10 +146,10 @@
                                     $surfer = (isset($myHubs->surfer) && ($myHubs->surfer == $username))?'Me':(isset($myHubs->surfer) && ($myHubs->surfer != 'Unknown'))?"Others":$myHubs->surfer;
                                     @endphp
                                     @foreach ($customArray['surfer'] as $key => $value)
-                                    <div class="form-check d-inline-block me-3">
-                                        <input class="form-check-input surfer-info" type="radio" name="surfer" value="{{$value}}" id="{{$value}}" required {{ ((in_array($surfer, $customArray['surfer'])) && ($surfer == $value)) ? 'checked' : '' }} />
-                                        <label for="{{$value}}" class="form-check-label">{{$value}}</label>
-                                    </div>
+                                        <div class="form-check d-inline-block me-3">
+                                            <input class="form-check-input surfer-info" type="radio" name="surfer" value="{{$value}}" id="{{$value}}" required {{ ((in_array($surfer, $customArray['surfer'])) && ($surfer == $value)) ? 'checked' : '' }}  {{ $dataDisplyType }}/>
+                                            <label for="{{$value}}" class="form-check-label">{{$value}}</label>
+                                        </div>
                                     @endforeach
                                 </div>
                             </div>
@@ -158,7 +161,7 @@
                                 <label class="col-md-4 d-md-block  d-none"></label>
                                 <div class="col-md-8">
                                     <input type="text" value="{{ $myHubs->surfer }}" name="other_surfer"
-                                           class="form-control ps-2 mb-0 edit_other_surfer" placeholder="Search another user">
+                                           class="form-control ps-2 mb-0 edit_other_surfer" placeholder="Search another user" {{ $dataDisplyType }}>
                                     <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id"
                                            id="edit_surfer_id" class="form-control surfer_id">
                                     <div class="auto-search searchOther" id="edit_other_surfer_list"></div>

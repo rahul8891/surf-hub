@@ -131,6 +131,8 @@
                                 <a href="javascript:void(0);" class="deletePost" onclick="deletePostByAdmin({{$posts->id}});" data-id=""><img src="/img/delete.png" alt="Delete"></a>
                                 @if (isset($posts->parent_id) && ($posts->parent_id == 0))
                                     <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
+                                @elseif (isset($posts->parent_post_id) && ($posts->parent_post_id != 0))
+                                    <a href="javascript:void(0)" class="editBtn editBtnVideo" data-id="{{ $posts->id }}"><img src="/img/edit.png" alt="Edit"></a>
                                 @endif
                             @elseif(Auth::user() && Auth::user()->id == 1)
                                 <a href="javascript:void(0);" class="deletePost" onclick="deletePostByAdmin({{$posts->id}});" data-id=""><img src="/img/delete.png" alt="Delete"></a>
