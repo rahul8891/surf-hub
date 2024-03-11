@@ -4,6 +4,7 @@
             @csrf
             @php
                 $dataDisplyType = ($myHubs->parent_id != 0)?"disabled":"";
+                $dataDisplyTypeInput = ($myHubs->parent_id != 0)?"readonly":"";
             @endphp
             <input type="hidden" name="id" value="{{ $myHubs->id }}">
             <div class="upload-wrap">
@@ -29,7 +30,7 @@
                                     <span>Drag files to<br>upload</span>
                                 </div>
                                 <button class="blue-btn btn">CHOOSE FILE</button>
-                                <input type="file" id="input_multifile" name="files">
+                                <input type="file" id="input_multifile" name="files" {{ $dataDisplyTypeInput }}>
                             </div>
                             <div class="upload-file-name" id="filesInfo">
 
@@ -38,7 +39,7 @@
                     </div>
                     <div class="mt-3">
                         <textarea class="form-control ps-2" placeholder="Share your surf experience..."
-                                  style="height: 80px" name="post_text">{{ (isset($myHubs->post_text) && !empty($myHubs->post_text))?$myHubs->post_text:'' }}</textarea>
+                                  style="height: 80px" name="post_text" {{ $dataDisplyTypeInput }}>{{ (isset($myHubs->post_text) && !empty($myHubs->post_text))?$myHubs->post_text:'' }}</textarea>
                     </div>
                 </div>
                 <div class="upload-header">
@@ -52,7 +53,7 @@
                                 <label class="col-md-4">Surf Date<span class="red-txt">*</span></label>
                                 <div class="col-md-8">
                                     <input class="form-control ps-2 mb-0" type="date" name="surf_date" id="datepicker"
-                                           value="{{ (isset($myHubs->surf_start_date) && !empty($myHubs->surf_start_date))?$myHubs->surf_start_date:'' }}" required {{ $dataDisplyType }} />
+                                           value="{{ (isset($myHubs->surf_start_date) && !empty($myHubs->surf_start_date))?$myHubs->surf_start_date:'' }}" required {{ $dataDisplyTypeInput }} />
                                 </div>
                             </div>
                         </div>
@@ -60,7 +61,7 @@
                             <div class="row mb-3 align-items-center">
                                 <label class="col-md-4">Wave Size<span class="red-txt">*</span></label>
                                 <div class="col-md-8">
-                                    <select class="form-select ps-2 mb-0" name="wave_size" required {{ $dataDisplyType }}>
+                                    <select class="form-select ps-2 mb-0" name="wave_size" required {{ $dataDisplyTypeInput }}>
                                         <option value="">{{ __('-- Select --')}}</option>
                                         @foreach($customArray['wave_size'] as $key => $value)
                                         <option value="{{ $key }}"
@@ -78,7 +79,7 @@
                                 <label class="col-md-4">Country<span class="red-txt">*</span></label>
                                 <div class="col-md-8">
                                     <select class="form-select ps-2 mb-0" name="country_id" id="country_id" district
-                                            required {{ $dataDisplyType }}>
+                                            required {{ $dataDisplyTypeInput }}>
                                         <option value="">-- Country --</option>
                                         @foreach($countries as $key => $value)
                                         <option value="{{ $value->id }}"
@@ -93,7 +94,7 @@
                             <div class="row mb-3 align-items-center">
                                 <label class="col-md-4">State<span class="red-txt">*</span></label>
                                 <div class="col-md-8">
-                                    <select class="form-select ps-2 mb-0" name="state_id" id="state_id" required {{ $dataDisplyType }}>
+                                    <select class="form-select ps-2 mb-0" name="state_id" id="state_id" required {{ $dataDisplyTypeInput }}>
                                         <option selected="selected" value="">-- State --</option>
                                         @foreach($states as $key => $value)
                                         <option value="{{ $value->id }}"
@@ -112,7 +113,7 @@
                                 <label class="col-md-4">Beach<span class="red-txt">*</span></label>
                                 <div class="col-md-8">
                                     <input type="text" value="{{ old('local_beach_break', $beach_name) }}"
-                                           class="form-control ps-2 mb-0 search-box" name="local_beach_break" autocomplete="off" required {{ $dataDisplyType }}>
+                                           class="form-control ps-2 mb-0 search-box" name="local_beach_break" autocomplete="off" required {{ $dataDisplyTypeInput }}>
                                     <input type="hidden" name="local_beach_break_id"
                                            id="local_beach_break_id" class="form-control" value="{{ old('local_beach_break', $myHubs->local_beach_id) }}">
                                     <div class="auto-search search12" id="country_list"></div>
@@ -124,7 +125,7 @@
                             <div class="row mb-3 align-items-center">
                                 <label class="col-md-4">Break<span class="red-txt">*</span></label>
                                 <div class="col-md-8">
-                                    <select class="form-select ps-2 mb-0" name="break_id" id="break_id" {{ $dataDisplyType }}>
+                                    <select class="form-select ps-2 mb-0" name="break_id" id="break_id" {{ $dataDisplyTypeInput }}>
                                         <option selected="selected" value="">-- Break --</option>
                                         @foreach($breaks as $key => $value)
                                         <option value="{{ $value->id }}"
@@ -147,7 +148,7 @@
                                     @endphp
                                     @foreach ($customArray['surfer'] as $key => $value)
                                         <div class="form-check d-inline-block me-3">
-                                            <input class="form-check-input surfer-info" type="radio" name="surfer" value="{{$value}}" id="{{$value}}" required {{ ((in_array($surfer, $customArray['surfer'])) && ($surfer == $value)) ? 'checked' : '' }}  {{ $dataDisplyType }}/>
+                                            <input class="form-check-input surfer-info" type="radio" name="surfer" value="{{$value}}" id="{{$value}}" required {{ ((in_array($surfer, $customArray['surfer'])) && ($surfer == $value)) ? 'checked' : '' }}  {{ $dataDisplyTypeInput }}/>
                                             <label for="{{$value}}" class="form-check-label">{{$value}}</label>
                                         </div>
                                     @endforeach
@@ -161,7 +162,7 @@
                                 <label class="col-md-4 d-md-block  d-none"></label>
                                 <div class="col-md-8">
                                     <input type="text" value="{{ $myHubs->surfer }}" name="other_surfer"
-                                           class="form-control ps-2 mb-0 edit_other_surfer" placeholder="Search another user" {{ $dataDisplyType }}>
+                                           class="form-control ps-2 mb-0 edit_other_surfer" placeholder="Search another user" {{ $dataDisplyTypeInput }}>
                                     <input type="hidden" value="{{ old('surfer_id')}}" name="surfer_id"
                                            id="edit_surfer_id" class="form-control surfer_id">
                                     <div class="auto-search searchOther" id="edit_other_surfer_list"></div>
@@ -336,13 +337,13 @@ $(document).ready(function () {
         //prevent Default functionality
         e.preventDefault();
         var postID = jQuery('#updateVideoPostData input[name="id"]').val();
-
+        // console.log($("#updateVideoPostData").serialize());
         jQuery.ajax({
             url: '/updatePostData',
             type: 'POST',
             data: $("#updateVideoPostData").serialize(),
-            success: function(datas) {
-                var jsonData = JSON.parse(datas);
+            success: function(datas) { 
+                var jsonData = datas;
                 if(jsonData.status == 'success') {
                     $(".feed"+postID).remove();
                     jQuery("main").prepend('<div class="alert alert-success alert-dismissible" role="alert" id="msg-alert"><button type="button" class="close btn-primary" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Data updated successfully.</div>');

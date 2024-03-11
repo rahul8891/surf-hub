@@ -108,7 +108,7 @@ class MyHubController extends Controller {
 
         if ($request->ajax()) {
             $data = $request->all();
-            $page = $data['page'];
+            $page = (isset($data['page']) && !empty($data['page']))? $data['page'] : 0;
             $view = view('elements/myhubdata', compact('postsList', 'customArray', 'countries', 'states', 'currentUserCountryId', 'myHubs', 'userDetail', 'beach_name', 'beaches','page', 'post_type'))->render();
             return response()->json(['html' => $view]);
         }
@@ -295,9 +295,8 @@ class MyHubController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request) {
-
         try {
-            $data = $request->all();
+            $data = $request->all(); 
             if (!empty($data['other_surfer'])) {
                 $data['surfer'] = $data['other_surfer'];
             } elseif (isset($data['surfer']) && ($data['surfer'] == 'Me')) {
@@ -310,14 +309,13 @@ class MyHubController extends Controller {
                 'post_text' => ['nullable', 'string', 'max:255'],
                 'surf_date' => ['required', 'string'],
                 'wave_size' => ['required', 'string'],
-                'surfer' => ['required'],
             );
             $validate = Validator::make($data, $rules);
             if ($validate->fails()) {
                 // If validation falis redirect back to register.
                 return redirect()->back()->withErrors($validate)->withInput();
             } else {
-
+                
                 $postArray = (isset($data['files']) && !empty($data['files'])) ? $data['files'] : [];
 
                 $filePath = $type = "";
@@ -335,9 +333,9 @@ class MyHubController extends Controller {
                     $fileArray = explode("/", $filePath);
                     $filename = end($fileArray);
 
-                    $result = $this->postService->updatePostData($data, $filename, $fileType[0], $message);
+                    $result = $this->postService->updatePostData($data, $filename, $fileType[0]);
                 } else {
-                    $result = $this->postService->updatePostData($data, '', '', $message);
+                    $result = $this->postService->updatePostData($data, '', '');
                 }
                 if ($result['status'] === TRUE) {
                     return json_encode(array('status'=>'success', 'message' => $message['message']));
@@ -419,7 +417,7 @@ class MyHubController extends Controller {
     //                             ->where('is_deleted','0')
     //                             ->orderBy('id','DESC')
     //                             ->get();
-    //         }
+    //         }                
     //         $trackArray = array();
     //         $token = '';
     //         $trackArray['track_uri'] = '';

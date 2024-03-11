@@ -1210,20 +1210,21 @@ class PostService {
      * @param  message return message based on the condition
      * @return dataArray with message
      */
-    public function updatePostData($input, $filename, $type, &$message = '') {
+    public function updatePostData($input, $filename, $type) {
         $posts = Post::findOrFail($input['id']);
-
-        if (isset($posts->parent_post_id) && ($posts->parent_post_id != 0)) {
+        
+        if ($posts->parent_post_id > 0) {             
             $parentPost = Post::findOrFail($posts->parent_post_id);
-            $message = $this->updateDataByValue($parentPost, $filename, $type, $message = '');
+            $message = $this->updateDataByValue($parentPost, $input, $filename, $type);
         }
-
-        $message = $this->updateDataByValue($posts, $filename, $type, $message = '');   
+        
+        $message = $this->updateDataByValue($posts, $input, $filename, $type);   
         
         return $message;
     }
 
-    private function updateDataByValue($posts, $filename, $type, &$message = '') {
+    private function updateDataByValue($posts, $input, $filename, $type) {
+        $message = [];
         $posts->post_type = $input['post_type'];
         $posts->post_text = $input['post_text'];
         $posts->country_id =$input['country_id'];
@@ -1239,6 +1240,7 @@ class PostService {
         $posts->fin_set_up = (!empty($input['fin_set_up'])) ? $input['fin_set_up'] : null;
         $posts->created_at = Carbon::now();
         $posts->updated_at = Carbon::now();
+        
         if($posts->save()){
             //for store media into upload table
             if (isset($filename) && !empty($filename)) {
@@ -1258,7 +1260,7 @@ class PostService {
             $this->savePostNotification($posts->id);
             $message = ['status' => TRUE, 'message' => "Data updated successfully."];
         } else {
-            $message = ['status' => TRUE, 'message' => "Something went wrong. Please try again later."];
+            $message = ['status' => FALSE, 'message' => "Something went wrong. Please try again later."];
         }
 
         return $message;
